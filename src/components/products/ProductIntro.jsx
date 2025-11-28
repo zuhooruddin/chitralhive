@@ -40,7 +40,7 @@ const ProductIntro = ({ product, slug, total, average }) => {
   const calculatedDiscountAmount = (salePrice * discount) / 100;
   const calculatedDiscountedSubtotal = salePrice - calculatedDiscountAmount;
 
-  salePrice = calculatedDiscountedSubtotal;
+  const salePrices = calculatedDiscountedSubtotal;
 
   const [currency,setCurrency]=useState('')
 
@@ -86,10 +86,10 @@ const ProductIntro = ({ product, slug, total, average }) => {
         type: "CHANGE_CART_AMOUNT",
         payload: {
           mrp,
-          salePrice,
+          salePrices,
           sku,
           slug,
-          price: salePrice,
+          price: salePrices,
           qty: amount,
           name: name,
           image: localimageurl + imgGroup[0],
@@ -286,7 +286,7 @@ const ProductIntro = ({ product, slug, total, average }) => {
 
           <Box mb={3}>
             <H2 color="primary.main" mt={5} lineHeight="1">
-              {currency}. {salePrice.toFixed(2)}
+              {currency}. {salePrices.toFixed(2)}
             </H2>
             {!!discount && (
               <H4 color="primary.main" mt={2} ml={2} lineHeight="1">

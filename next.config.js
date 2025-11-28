@@ -15,7 +15,7 @@ module.exports = {
   },
   
   images: {
-    domains: ["100.64.6.105","idrisbookbank-dev-server.inara.tech","s3-inara.eu-central-1.linodeobjects.com"],
+    domains: ["100.64.6.105","idrisbookbank-dev-server.inara.tech","s3-inara.eu-central-1.linodeobjects.com","chitralhive.com"],
   },
 
   async redirects() {

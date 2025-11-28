@@ -2,7 +2,7 @@ import { Container } from "@mui/material";
 import ShopLayout1 from "components/layouts/ShopLayout1";
 import MobileNavigationBar from "components/mobile-navigation/MobileNavigationBar";
 import SEO from "components/SEO";
-import { H3, H5, Small,Paragraph } from "components/Typography";
+import { H2, H3, H5, Small, Paragraph } from "components/Typography";
 import { Box, Button, Card, Grid, styled } from "@mui/material";
 import LazyImage from "components/LazyImage";
 import Setting from "components/Setting";
@@ -12,11 +12,17 @@ import { FlexBox } from "components/flex-box";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
+const HeroSection = styled(Box)(({ theme }) => ({
+  background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+  padding: "60px 0",
+  marginBottom: "40px",
+  textAlign: "center",
+}));
 
 const StyledCard = styled(Card)(({ theme }) => ({
   display: "flex",
   boxShadow: "none",
-  background:"white !important",
+  background: "white !important",
   alignItems: "center",
   padding: "20px 50px",
   justifyContent: "center",
@@ -27,15 +33,46 @@ const StyledCard = styled(Card)(({ theme }) => ({
       fontSize: 20,
     },
   },
-})); // ======================================================
+}));
 
-// ======================================================
+const LocationCard = styled(Card)(({ theme }) => ({
+  padding: "30px",
+  height: "100%",
+  boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
+  borderRadius: "12px",
+  transition: "transform 0.3s ease, box-shadow 0.3s ease",
+  "&:hover": {
+    transform: "translateY(-5px)",
+    boxShadow: "0 8px 30px rgba(0,0,0,0.12)",
+  },
+}));
+
+const IconWrapper = styled(Box)(({ theme }) => ({
+  width: "50px",
+  height: "50px",
+  borderRadius: "50%",
+  background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  color: "white",
+  marginBottom: "15px",
+}));
+
+const ContactItem = styled(Box)({
+  marginBottom: "12px",
+  display: "flex",
+  alignItems: "center",
+  gap: "8px",
+});
+
 const ContactUs = (props) => {
-  const imgbaseurl=process.env.NEXT_PUBLIC_BACKEND_API_BASE+'media/'
+  const imgbaseurl = process.env.NEXT_PUBLIC_BACKEND_API_BASE + "media/";
   const apiUrl = process.env.NEXT_PUBLIC_BACKEND_API_BASE;
 
   const title = "contact-us";
   const [data, setData] = useState(null);
+  
   useEffect(() => {
     if (title) {
       fetchData();
@@ -49,7 +86,7 @@ const ContactUs = (props) => {
       .get(url)
       .then((response) => {
         setData(response.data);
-        console.log("Respomse", response.data);
+        console.log("Response", response.data);
       })
       .catch((error) => {
         console.error("API Error:", error);
@@ -58,147 +95,290 @@ const ContactUs = (props) => {
 
   return (
     <ShopLayout1>
-      <SEO 
-        title="Contact Us" 
-        description={"Looking for Books? Order online and get it to your door-step."}
-        metaTitle = "Contact Us"
+      <SEO
+        title="Contact Us - Get in Touch"
+        description="Get in touch with Chitral Hive for authentic Chitrali products. We are here to help with your orders and inquiries. Contact us via phone, email, or visit our stores in Chitral, Upper Chitral, and Islamabad."
+        metaTitle="Contact Us"
       />
-       {data && data
-              .filter((item) => item.status === 1)
-              .map((item) => (
-                <div
-                  key={item.id}
-                  dangerouslySetInnerHTML={{ __html: item.value }}
-                />
-              ))}
-      <Container
-      sx={{
-        mb: "70px",
-      }}
-      >
-        
-        <Grid container spacing={3}>
-          {/* ==================== CARD 1 ================== */}
-         
+      
+      <HeroSection>
+        <Container>
+          <H2 sx={{ color: "white", mb: 2, fontWeight: 700 }}>Get in Touch</H2>
+          <Paragraph
+            sx={{
+              color: "rgba(255,255,255,0.9)",
+              fontSize: "18px",
+              maxWidth: "600px",
+              margin: "0 auto",
+            }}
+          >
+            Have questions? We would love to hear from you. Send us a message and we will respond as soon as possible.
+          </Paragraph>
+        </Container>
+      </HeroSection>
+
+      <Container sx={{ mb: "80px" }}>
+        {data &&
+          data
+            .filter((item) => item.status === 1)
+            .map((item) => (
+              <Box
+                key={item.id}
+                sx={{ mb: 4 }}
+                dangerouslySetInnerHTML={{ __html: item.value }}
+              />
+            ))}
+
+        <Grid container spacing={4}>
+          {/* ==================== CHITRAL LOCATION ================== */}
           <Grid item xs={12} md={4}>
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3323.373192551484!2d73.05024881454193!3d33.59562024910311!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38df949ccb759c21%3A0x3b738aa09d4ac3d1!2sIdris%20Book%20Bank!5e0!3m2!1sen!2s!4v1623312812821!5m2!1sen!2s" style={{'width': '100%', 'height': '300px'}} frameBorder="0" allowfullscreen="" aria-hidden="false" tabIndex="0"></iframe>
-            <br/>
-            <H3>Saddar Rawalpindi</H3>
-            <br/>
-            <FlexBox alignItems="center" gap={1}>
-              <Place
-                color="inherit"
-                fontSize="small"
-                className="nav-icon"
-              />
-              <span>Bank Road Saddar Rawalpindi.</span>
-            </FlexBox>
-            <br/>
-            <H5>Contact Info</H5>
-            <br/>
-            <FlexBox alignItems="center" gap={1}>
-              <Phone
-                color="inherit"
-                fontSize="small"
-                className="nav-icon"
-              />
-                <a href="tel:0515568898" style={{'color': 'gray','font-family': 'Lato'}}>051-5568898</a>
-                <a href="tel:0515568272" style={{'color': 'gray','font-family': 'Lato'}}>051-5568272</a>
-                <a href="tel:0518460272" style={{'color': 'gray','font-family': 'Lato'}}>051-8460272</a> 
-            </FlexBox>
-            <br/>
-            <FlexBox alignItems="center" gap={1}>
-              <Email
-                color="inherit"
-                fontSize="small"
-                className="nav-icon"
-              />
-              <a href="mailto:idrisbookbank@gmail.com " style={{'color': 'gray','font-family': 'Lato'}}> idrisbookbank@gmail.com </a>
-            </FlexBox>
+            <LocationCard>
+              <iframe
+                src="https://maps.google.com/maps?q=Chitral,Pakistan&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                style={{ width: "100%", height: "250px", borderRadius: "8px" }}
+                frameBorder="0"
+                allowFullScreen=""
+                aria-hidden="false"
+                tabIndex="0"
+              ></iframe>
+              
+              <Box sx={{ mt: 3 }}>
+                <H3 sx={{ mb: 2, fontWeight: 600, color: "#667eea" }}>Chitral</H3>
+                
+                <Box sx={{ mb: 3 }}>
+                  <IconWrapper>
+                    <Place fontSize="medium" />
+                  </IconWrapper>
+                  <H5 sx={{ mb: 1, fontWeight: 600 }}>Location</H5>
+                  <Paragraph sx={{ color: "#666", fontSize: "15px" }}>
+                    Chitral, Khyber Pakhtunkhwa, Pakistan
+                  </Paragraph>
+                </Box>
+
+                <Box sx={{ mb: 3 }}>
+                  <IconWrapper>
+                    <Phone fontSize="medium" />
+                  </IconWrapper>
+                  <H5 sx={{ mb: 2, fontWeight: 600 }}>Call Us</H5>
+                  <ContactItem>
+                    <a
+                      href="tel:03239119309"
+                      style={{
+                        color: "#667eea",
+                        textDecoration: "none",
+                        fontWeight: 500,
+                        fontSize: "16px",
+                      }}
+                    >
+                      03239119309
+                    </a>
+                  </ContactItem>
+                  <ContactItem>
+                    <a
+                      href="tel:03407964648"
+                      style={{
+                        color: "#667eea",
+                        textDecoration: "none",
+                        fontWeight: 500,
+                        fontSize: "16px",
+                      }}
+                    >
+                      03407964648
+                    </a>
+                  </ContactItem>
+                </Box>
+
+                <Box>
+                  <IconWrapper>
+                    <Email fontSize="medium" />
+                  </IconWrapper>
+                  <H5 sx={{ mb: 2, fontWeight: 600 }}>Email Us</H5>
+                  <ContactItem>
+                    <a
+                      href="mailto:zuhooruddin055@gmail.com"
+                      style={{
+                        color: "#667eea",
+                        textDecoration: "none",
+                        fontWeight: 500,
+                        fontSize: "16px",
+                        wordBreak: "break-all",
+                      }}
+                    >
+                      zuhooruddin055@gmail.com
+                    </a>
+                  </ContactItem>
+                </Box>
+              </Box>
+            </LocationCard>
           </Grid>
 
-          {/* ==================== CARD 2 ================== */}
-
+          {/* ==================== UPPER CHITRAL LOCATION ================== */}
           <Grid item xs={12} md={4}>
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3324.3609355852223!2d73.13930221454119!3d33.56997675043842!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38dfec50c5d59683%3A0xc5bfdf5adf0d12f1!2sIdris%20Book%20Bank%20Too*21%20PWD!5e0!3m2!1sen!2s!4v1623312703848!5m2!1sen!2s" style={{'width': '100%', 'height': '300px'}} frameBorder="0" allowfullscreen="" aria-hidden="false" tabIndex="0"></iframe>
-            <br/>
-            <H3>Main PWD Road Islamabad</H3>
-            <br/>
-            <FlexBox alignItems="center" gap={1}>
-              <Place
-                color="inherit"
-                fontSize="small"
-                className="nav-icon"
-              />
-              <span>Main PWD Road, Din Plaza ,Islamabad.</span>
-            </FlexBox>
-            <br/>
-            <H5>Contact Info</H5>
-            <br/>
-            <FlexBox alignItems="center" gap={1}>
-              <Phone
-                color="inherit"
-                fontSize="small"
-                className="nav-icon"
-              />
-                <a href="tel:0515170709" style={{'color': 'gray','font-family': 'Lato'}}>051-5170709</a>
-                <a href="tel:0515194196" style={{'color': 'gray','font-family': 'Lato'}}>051-5194196</a>
-            </FlexBox>
-            <br/>
-            <FlexBox alignItems="center" gap={1}>
-              <Email
-                color="inherit"
-                fontSize="small"
-                className="nav-icon"
-              />
-              <a href="mailto:idrisbookbank@gmail.com " style={{'color': 'gray','font-family': 'Lato'}}> idrisbookbank@gmail.com </a>
-            </FlexBox>
+            <LocationCard>
+              <iframe
+                src="https://maps.google.com/maps?q=Upper+Chitral,Pakistan&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                style={{ width: "100%", height: "250px", borderRadius: "8px" }}
+                frameBorder="0"
+                allowFullScreen=""
+                aria-hidden="false"
+                tabIndex="0"
+              ></iframe>
+              
+              <Box sx={{ mt: 3 }}>
+                <H3 sx={{ mb: 2, fontWeight: 600, color: "#667eea" }}>Upper Chitral</H3>
+                
+                <Box sx={{ mb: 3 }}>
+                  <IconWrapper>
+                    <Place fontSize="medium" />
+                  </IconWrapper>
+                  <H5 sx={{ mb: 1, fontWeight: 600 }}>Location</H5>
+                  <Paragraph sx={{ color: "#666", fontSize: "15px" }}>
+                    Upper Chitral, Khyber Pakhtunkhwa, Pakistan
+                  </Paragraph>
+                </Box>
+
+                <Box sx={{ mb: 3 }}>
+                  <IconWrapper>
+                    <Phone fontSize="medium" />
+                  </IconWrapper>
+                  <H5 sx={{ mb: 2, fontWeight: 600 }}>Call Us</H5>
+                  <ContactItem>
+                    <a
+                      href="tel:03239119309"
+                      style={{
+                        color: "#667eea",
+                        textDecoration: "none",
+                        fontWeight: 500,
+                        fontSize: "16px",
+                      }}
+                    >
+                      03239119309
+                    </a>
+                  </ContactItem>
+                  <ContactItem>
+                    <a
+                      href="tel:03407964648"
+                      style={{
+                        color: "#667eea",
+                        textDecoration: "none",
+                        fontWeight: 500,
+                        fontSize: "16px",
+                      }}
+                    >
+                      03407964648
+                    </a>
+                  </ContactItem>
+                </Box>
+
+                <Box>
+                  <IconWrapper>
+                    <Email fontSize="medium" />
+                  </IconWrapper>
+                  <H5 sx={{ mb: 2, fontWeight: 600 }}>Email Us</H5>
+                  <ContactItem>
+                    <a
+                      href="mailto:zuhooruddin055@gmail.com"
+                      style={{
+                        color: "#667eea",
+                        textDecoration: "none",
+                        fontWeight: 500,
+                        fontSize: "16px",
+                        wordBreak: "break-all",
+                      }}
+                    >
+                      zuhooruddin055@gmail.com
+                    </a>
+                  </ContactItem>
+                </Box>
+              </Box>
+            </LocationCard>
           </Grid>
 
-          {/* ==================== CARD 3 ================== */}
-
-
+          {/* ==================== ISLAMABAD LOCATION ================== */}
           <Grid item xs={12} md={4}>
-          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3325.7464385439876!2d73.12702861454015!3d33.53397755231164!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38dfedf75d8d1047%3A0xd7f831a8e140ac48!2sIdris%20Book%20Bank%20Too%20GT%20Road%20Dha%202!5e0!3m2!1sen!2s!4v1623312900922!5m2!1sen!2s" style={{'width': '100%', 'height': '300px'}} frameBorder="0" allowfullscreen="" aria-hidden="false" tabIndex="0"></iframe>
-          <br/>
-          <H3>DHA Phase 2 Islamabad</H3>
-          <br/>
-            <FlexBox alignItems="center" gap={1}>
-              <Place
-                color="inherit"
-                fontSize="small"
-                className="nav-icon"
-              />
-              <span>Main G.T Road, DHA Phase 2 ,Islamabad.</span>
-            </FlexBox>
-            <br/>
-            <H5>Contact Info</H5>
-            <br/>
-            <FlexBox alignItems="center" gap={1}>
-              <Phone
-                color="inherit"
-                fontSize="small"
-                className="nav-icon"
-              />
-                <a href="tel:0518448496" style={{'color': 'gray','font-family': 'Lato'}}>051-8448496</a>
-                <a href="tel:0514720439" style={{'color': 'gray','font-family': 'Lato'}}>051-4720439</a> 
-            </FlexBox>
-            <br/>
-            <FlexBox alignItems="center" gap={1}>
-              <Email
-                color="inherit"
-                fontSize="small"
-                className="nav-icon"
-              />
-              <a href="mailto:idrisbookbank@gmail.com " style={{'color': 'gray','font-family': 'Lato'}}> idrisbookbank@gmail.com </a>
-            </FlexBox>
-          </Grid>
+            <LocationCard>
+              <iframe
+                src="https://maps.google.com/maps?q=Islamabad,Pakistan&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                style={{ width: "100%", height: "250px", borderRadius: "8px" }}
+                frameBorder="0"
+                allowFullScreen=""
+                aria-hidden="false"
+                tabIndex="0"
+              ></iframe>
+              
+              <Box sx={{ mt: 3 }}>
+                <H3 sx={{ mb: 2, fontWeight: 600, color: "#667eea" }}>Islamabad</H3>
+                
+                <Box sx={{ mb: 3 }}>
+                  <IconWrapper>
+                    <Place fontSize="medium" />
+                  </IconWrapper>
+                  <H5 sx={{ mb: 1, fontWeight: 600 }}>Location</H5>
+                  <Paragraph sx={{ color: "#666", fontSize: "15px" }}>
+                    Islamabad, Federal Capital, Pakistan
+                  </Paragraph>
+                </Box>
 
+                <Box sx={{ mb: 3 }}>
+                  <IconWrapper>
+                    <Phone fontSize="medium" />
+                  </IconWrapper>
+                  <H5 sx={{ mb: 2, fontWeight: 600 }}>Call Us</H5>
+                  <ContactItem>
+                    <a
+                      href="tel:03239119309"
+                      style={{
+                        color: "#667eea",
+                        textDecoration: "none",
+                        fontWeight: 500,
+                        fontSize: "16px",
+                      }}
+                    >
+                      03239119309
+                    </a>
+                  </ContactItem>
+                  <ContactItem>
+                    <a
+                      href="tel:03407964648"
+                      style={{
+                        color: "#667eea",
+                        textDecoration: "none",
+                        fontWeight: 500,
+                        fontSize: "16px",
+                      }}
+                    >
+                      03407964648
+                    </a>
+                  </ContactItem>
+                </Box>
+
+                <Box>
+                  <IconWrapper>
+                    <Email fontSize="medium" />
+                  </IconWrapper>
+                  <H5 sx={{ mb: 2, fontWeight: 600 }}>Email Us</H5>
+                  <ContactItem>
+                    <a
+                      href="mailto:zuhooruddin055@gmail.com"
+                      style={{
+                        color: "#667eea",
+                        textDecoration: "none",
+                        fontWeight: 500,
+                        fontSize: "16px",
+                        wordBreak: "break-all",
+                      }}
+                    >
+                      zuhooruddin055@gmail.com
+                    </a>
+                  </ContactItem>
+                </Box>
+              </Box>
+            </LocationCard>
+          </Grid>
         </Grid>
       </Container>
     </ShopLayout1>
   );
 };
-
 
 export default ContactUs;

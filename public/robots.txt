@@ -5,4 +5,4 @@ Disallow: /public/assets/
 User-agent: *
 Allow: /
 
-Sitemap: https://www.idrisbookbank.com/sitemap.xml
+Sitemap: https://www.chitralhive.com/sitemap.xml

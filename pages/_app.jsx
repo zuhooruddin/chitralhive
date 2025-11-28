@@ -62,7 +62,7 @@ const imgbaseurl=process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL
     <Fragment>
       <Head>
         <meta charSet="utf-8" />
-        <title>Idris Book Bank | Online Bookstore</title>
+        <title>Chitral Hive | Online Chitrali </title>
         <meta
           name="description"
           content="Navigate through our wide collection of School, Colleges and other Story Books. Buy Books & other items Online from largest bookstore in Islamabad. Order Now!"

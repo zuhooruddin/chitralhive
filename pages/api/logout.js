@@ -5,7 +5,7 @@ import { useSession, getSession } from "next-auth/react"
 // import { authOptions } from "./auth/[...nextauth]"
 
 const signoutCallbackUrl = process.env.NEXT_PUBLIC_BACKEND_API_BASE+'api/auth/logout/';
-process.env.NEXTAUTH_SITE = "http://idrisbookbank-dev.inara.tech"
+process.env.NEXTAUTH_SITE = "http://chitralhive.com/api"
 export default  function handler (req, res){
    ("request in logout")
   // const session =   getSession({req});

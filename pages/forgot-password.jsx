@@ -101,7 +101,7 @@ const Forget = (props) => {
      
     
        <H3 textAlign="center" mb={1}>
-         Welcome To Idris Book Bank
+         Welcome To Chitral Hive
        </H3>
        <Small
          mb={4.5}

@@ -30,7 +30,7 @@ export const AuthenticationProvider = ({ children }) => {
 
 		
 			// call nextjs api function to create a user
-			await axios.post('https://idrisbookbank-dev-server.inara.tech/registerUser', body, config)
+			await axios.post('https://chitralhive.com/api/registerUser', body, config)
 		
 		
 	}

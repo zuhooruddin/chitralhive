@@ -3,7 +3,7 @@ import React from "react";
 
 
 const SEO = ({ title, description,metaTitle, sitename  }) => {
-  const metaDescription = "Idris Book Bank nurturing creativity and innovation by offering design-minded and interdisciplinary events, experiences and objects related to books and reading."
+  const metaDescription = "Get in touch with Chitral Hive for authentic Chitrali products. We're here to help with your orders and inquiries. Contact us via phone, email, or visit our store in Chitral.Get in touch with Chitral Hive for authentic Chitrali products. We're here to help with your orders and inquiries. Contact us via phone, email, or visit our store in Chitral."
   sitename=process.env.NEXT_PUBLIC_COMPANY_NAME
   return (
     <Head>
