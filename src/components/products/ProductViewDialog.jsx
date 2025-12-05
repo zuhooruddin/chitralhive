@@ -151,14 +151,14 @@ useEffect(()=>{
               product.categoryName === undefined ? (
                 ""
               ) : (
-                <Paragraph
-                  py={1}
-                  color="grey.500"
-                  fontWeight={600}
-                  fontSize={13}
-                >
-                  CATEGORY: {product.categoryName}
-                </Paragraph>
+              <Paragraph
+                py={1}
+                color="grey.700"
+                fontWeight={600}
+                fontSize={13}
+              >
+                CATEGORY: {product.categoryName}
+              </Paragraph>
               )}
 
               <H1 color="primary.main">{currency}. {product.salePrice}</H1>
@@ -227,8 +227,11 @@ useEffect(()=>{
                     sx={{
                       p: ".6rem",
                       height: 45,
+                      minWidth: "44px",
+                      minHeight: "44px",
                     }}
                     onClick={handleCartAmountChange(cartItem?.qty - 1, false)}
+                    aria-label={`Decrease quantity of ${product.name}`}
                   >
                     <Remove fontSize="small" />
                   </BazaarButton>
@@ -244,8 +247,11 @@ useEffect(()=>{
                     sx={{
                       p: ".6rem",
                       height: 45,
+                      minWidth: "44px",
+                      minHeight: "44px",
                     }}
                     onClick={handleCartAmountChange(cartItem?.qty + 1, true)}
+                    aria-label={`Increase quantity of ${product.name}`}
                   >
                     <Add fontSize="small" />
                   </BazaarButton>
@@ -260,8 +266,11 @@ useEffect(()=>{
             position: "absolute",
             top: 3,
             right: 3,
+            minWidth: "44px",
+            minHeight: "44px",
           }}
           onClick={handleCloseDialog}
+          aria-label="Close product dialog"
         >
           <Close fontSize="small" color="secondary" />
         </IconButton>

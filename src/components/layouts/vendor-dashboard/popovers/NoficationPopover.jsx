@@ -112,11 +112,15 @@ const NotificationsPopover = () => {
   return (
     <ClickAwayListener onClickAway={handleClose}>
       <Box>
-        <IconButton onClick={handleClick}>
+        <IconButton 
+          onClick={handleClick}
+          aria-label="View notifications"
+          sx={{ minWidth: '44px', minHeight: '44px' }}
+        >
           <Badge color="secondary" variant="dot" badgeContent={1}>
             <Notifications
               sx={{
-                color: "grey.500",
+                color: "grey.600",
               }}
             />
           </Badge>

@@ -132,9 +132,9 @@ const Section1 = (data) => {
 
 
 {data.slidersListLocal.length > 0 ? (
-  data.slidersListLocal.map((slider) => (
+  data.slidersListLocal.map((slider, index) => (
     <CarouselCard4
-      key='123' // Assuming each slider object has an 'id' property
+      key={slider.id || slider.slug || `slider-${index}`}
       content={carouselContent1}
       mode="light"
       bgImage={imgbaseurl + slider.image}

@@ -292,11 +292,12 @@ rating =5 , hideRating , hoverEffect , stock , isNewArrival , discount , showPro
                                         children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx((next_image__WEBPACK_IMPORTED_MODULE_14___default()), {
                                             width: 300,
                                             height: 300,
-                                            alt: "category",
+                                            alt: name || "product",
                                             objectFit: "contain",
                                             layout: "intrinsic",
                                             className: "product-img",
                                             src: imgbaseurl + image,
+                                            loading: "lazy",
                                             media: {
                                                 // Adjust image size for screens smaller than 600px wide
                                                 "(max-width: 600px)": {
@@ -321,6 +322,7 @@ rating =5 , hideRating , hoverEffect , stock , isNewArrival , discount , showPro
                         /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(AddToCartButton, {
                             className: "product-actions",
                             onClick: ()=>setOpenDialog(true),
+                            "aria-label": `View details for ${name}`,
                             children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(_mui_icons_material__WEBPACK_IMPORTED_MODULE_1__.RemoveRedEye, {
                                 color: "disabled",
                                 fontSize: "small"
@@ -329,6 +331,7 @@ rating =5 , hideRating , hoverEffect , stock , isNewArrival , discount , showPro
                         /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(FavouriteButton, {
                             className: "product-actions",
                             onClick: ()=>addwishtlist(),
+                            "aria-label": isFavorite ? `Remove ${name} from wishlist` : `Add ${name} to wishlist`,
                             children: isFavorite ? /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(_mui_icons_material__WEBPACK_IMPORTED_MODULE_1__.Favorite, {
                                 color: "primary",
                                 fontSize: "small"
@@ -393,7 +396,7 @@ rating =5 , hideRating , hoverEffect , stock , isNewArrival , discount , showPro
                                         salePrice.toFixed(2),
                                         !!discount && /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(components_Typography__WEBPACK_IMPORTED_MODULE_7__.H5, {
                                             children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(_mui_material__WEBPACK_IMPORTED_MODULE_3__.Box, {
-                                                color: "grey.600",
+                                                color: "grey.700",
                                                 fontWeight: "200",
                                                 sx: {
                                                     justifyContent: "center",
@@ -539,11 +542,12 @@ rating =5 , hideRating , hoverEffect , stock , isNewArrival , discount , showPro
                                         children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx((next_image__WEBPACK_IMPORTED_MODULE_14___default()), {
                                             width: 300,
                                             height: 300,
-                                            alt: "category",
+                                            alt: name || "product",
                                             objectFit: "contain",
                                             layout: "intrinsic",
                                             className: "product-img",
                                             src: imgbaseurl + image,
+                                            loading: "lazy",
                                             media: {
                                                 // Adjust image size for screens smaller than 600px wide
                                                 "(max-width: 600px)": {
@@ -568,6 +572,7 @@ rating =5 , hideRating , hoverEffect , stock , isNewArrival , discount , showPro
                         /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(AddToCartButton, {
                             className: "product-actions",
                             onClick: ()=>setOpenDialog(true),
+                            "aria-label": `View details for ${name}`,
                             children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(_mui_icons_material__WEBPACK_IMPORTED_MODULE_1__.RemoveRedEye, {
                                 color: "disabled",
                                 fontSize: "small"
@@ -629,7 +634,7 @@ rating =5 , hideRating , hoverEffect , stock , isNewArrival , discount , showPro
                                         salePrice.toFixed(2),
                                         !!discount && /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(components_Typography__WEBPACK_IMPORTED_MODULE_7__.H5, {
                                             children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(_mui_material__WEBPACK_IMPORTED_MODULE_3__.Box, {
-                                                color: "grey.600",
+                                                color: "grey.700",
                                                 fontWeight: "200",
                                                 sx: {
                                                     justifyContent: "center",

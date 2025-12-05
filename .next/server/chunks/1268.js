@@ -152,7 +152,8 @@ BazaarMenu.defaultProps = {
 
 
 
-const LazyImage = (0,_mui_system__WEBPACK_IMPORTED_MODULE_1__.styled)(({ borderRadius , ...rest })=>/*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx((next_image__WEBPACK_IMPORTED_MODULE_2___default()), {
+const LazyImage = (0,_mui_system__WEBPACK_IMPORTED_MODULE_1__.styled)(({ borderRadius , loading ="lazy" , ...rest })=>/*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx((next_image__WEBPACK_IMPORTED_MODULE_2___default()), {
+        loading: loading,
         ...rest
     }))((0,_mui_system__WEBPACK_IMPORTED_MODULE_1__.compose)(_mui_system__WEBPACK_IMPORTED_MODULE_1__.spacing, _mui_system__WEBPACK_IMPORTED_MODULE_1__.borderRadius, _mui_system__WEBPACK_IMPORTED_MODULE_1__.bgcolor));
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (LazyImage);
@@ -975,8 +976,12 @@ const Header = ({ isFixed , headerdata , className , searchBoxType ="type2"  })=
                             children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx("a", {
                                 children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(components_BazaarImage__WEBPACK_IMPORTED_MODULE_9__/* ["default"] */ .Z, {
                                     height: 44,
-                                    src: headerdata ? imgbaseurl + headerdata[0].site_logo : "assets/images/logos/webpack.png",
-                                    alt: comopanyalt
+                                    width: 150,
+                                    src: headerdata ? imgbaseurl + headerdata[0].site_logo : "/assets/images/logos/webpack.png",
+                                    alt: comopanyalt,
+                                    style: {
+                                        display: "block"
+                                    }
                                 })
                             })
                         }),
@@ -1342,10 +1347,13 @@ const MiniCart = ({ toggleSidenav  })=>{
                                             color: "primary",
                                             variant: "outlined",
                                             onClick: handleCartAmountChange(item.qty + 1, item),
+                                            "aria-label": `Increase quantity of ${item.name}`,
                                             sx: {
                                                 height: "32px",
                                                 width: "32px",
-                                                borderRadius: "300px"
+                                                borderRadius: "300px",
+                                                minWidth: "44px",
+                                                minHeight: "44px"
                                             },
                                             children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(_mui_icons_material__WEBPACK_IMPORTED_MODULE_1__.Add, {
                                                 fontSize: "small"
@@ -1362,10 +1370,13 @@ const MiniCart = ({ toggleSidenav  })=>{
                                             variant: "outlined",
                                             disabled: item.qty === 1,
                                             onClick: handleCartAmountChange(item.qty - 1, item),
+                                            "aria-label": `Decrease quantity of ${item.name}`,
                                             sx: {
                                                 height: "32px",
                                                 width: "32px",
-                                                borderRadius: "300px"
+                                                borderRadius: "300px",
+                                                minWidth: "44px",
+                                                minHeight: "44px"
                                             },
                                             children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(_mui_icons_material__WEBPACK_IMPORTED_MODULE_1__.Remove, {
                                                 fontSize: "small"
@@ -1426,6 +1437,7 @@ const MiniCart = ({ toggleSidenav  })=>{
                                     ml: 2.5,
                                     size: "small",
                                     onClick: handleCartAmountChange(0, item),
+                                    "aria-label": `Remove ${item.name} from cart`,
                                     children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(_mui_icons_material__WEBPACK_IMPORTED_MODULE_1__.Close, {
                                         fontSize: "small"
                                     })
@@ -3788,9 +3800,9 @@ const GrocerySearchBox = ()=>{
     const { 0: resultList , 1: setResultList  } = (0,react__WEBPACK_IMPORTED_MODULE_4__.useState)([]);
     const parentRef = (0,react__WEBPACK_IMPORTED_MODULE_4__.useRef)();
     const handleSearch = (0,react__WEBPACK_IMPORTED_MODULE_4__.useCallback)(()=>{
-        console.log("search words", message);
+        ;
         setMessage(message.replaceAll("/", " "));
-        console.log("search words after", message);
+        ;
         router.push("/search/" + message);
     }, [
         router,
@@ -5511,10 +5523,22 @@ const useWindowSize = ()=>{
 
 // import {server_ip} from "../backend_server_ip.jsx"
 const server_ip = "https://chitralhive.com/api/";
+// Create axios instance with timeout to prevent hanging
+const axiosInstance = axios__WEBPACK_IMPORTED_MODULE_0___default().create({
+    timeout: 10000,
+    headers: {
+        "Content-Type": "application/json"
+    }
+});
 // Used 
 const getNavCategories = async ()=>{
-    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(server_ip + "getNavCategories");
-    return response.data;
+    try {
+        const response = await axiosInstance.get(server_ip + "getNavCategories");
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching nav categories:", error.message);
+        return [];
+    }
 };
 // Used 
 const getCategoryDetail = async (catSlug)=>{
@@ -5670,8 +5694,13 @@ const getAllSchoolBundle = async (catSlug)=>{
     return response.data;
 };
 const getReviews = async ()=>{
-    const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(server_ip + "getReviews");
-    return response.data;
+    try {
+        const response = await axiosInstance.get(server_ip + "getReviews");
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching reviews:", error.message);
+        return [];
+    }
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
     getNavCategories,

@@ -132,7 +132,9 @@ const spacePropList = [
 
 
 
-const StyledBox = (0,_mui_material__WEBPACK_IMPORTED_MODULE_1__.styled)(_mui_material__WEBPACK_IMPORTED_MODULE_1__.Box)(({ textTransformStyle , ellipsis  })=>({
+const StyledBox = (0,_mui_material__WEBPACK_IMPORTED_MODULE_1__.styled)(_mui_material__WEBPACK_IMPORTED_MODULE_1__.Box, {
+    shouldForwardProp: (prop)=>prop !== "textTransformStyle" && prop !== "ellipsis"
+})(({ textTransformStyle , ellipsis  })=>({
         textTransform: textTransformStyle || "none",
         whiteSpace: ellipsis ? "nowrap" : "normal",
         overflow: ellipsis ? "hidden" : "",
@@ -269,8 +271,9 @@ const Small = ({ children , className , ellipsis , textTransform , ...props })=>
         children: children
     });
 };
-const Span = ({ children , className , ellipsis , textTransform , ...props })=>{
+const Span = /*#__PURE__*/ react__WEBPACK_IMPORTED_MODULE_3___default().forwardRef(({ children , className , ellipsis , textTransform , ...props }, ref)=>{
     return /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(StyledBox, {
+        ref: ref,
         textTransformStyle: textTransform,
         ellipsis: ellipsis,
         className: clsx__WEBPACK_IMPORTED_MODULE_2___default()({
@@ -281,7 +284,8 @@ const Span = ({ children , className , ellipsis , textTransform , ...props })=>{
         ...props,
         children: children
     });
-};
+});
+Span.displayName = "Span";
 const Tiny = ({ children , className , ellipsis , textTransform , ...props })=>{
     return /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(StyledBox, {
         textTransformStyle: textTransform,

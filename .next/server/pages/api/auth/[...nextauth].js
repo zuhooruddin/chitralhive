@@ -171,8 +171,8 @@ async function refreshAccessTokenCredentials(token) {
                 return token;
             }
             if (account && user && account.provider === "facebook") {
-                console.log("facebook: account", account);
-                console.log("facebook: profile", profile);
+                ;
+                ;
                 const response1 = await external_axios_default()({
                     method: "post",
                     url: "https://chitralhive.com/api/" + "facebook/",

@@ -2,26 +2,59 @@ import { Box } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import ShopLayout1 from "components/layouts/ShopLayout1";
 import SEO from "components/SEO";
-import Setting from "components/Setting";
-import Section1 from "pages-sections/market-2/Section1";
-import Section2 from "pages-sections/market-2/Section2";
-import Section3 from "pages-sections/market-2/Section3";
-import Section4 from "pages-sections/market-2/Section4";
-import Section5 from "pages-sections/market-2/Section5";
-import Section6 from "pages-sections/market-2/Section6";
-import Section7 from "pages-sections/market-2/Section7";
-import Section9 from "pages-sections/market-2/Section9";
-import Section10 from "pages-sections/market-2/Section10";
-import Section12 from "pages-sections/market-2/Section12";
+import dynamic from "next/dynamic";
 import { useSession, signIn, signOut } from "next-auth/react";
-import { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import apiNav from "utils/api/market-2";
 import api from "utils/api/fashion-shop-2";
+import LazySection from "components/LazySection";
+
+// Lazy load heavy components for better code splitting
+// Only Section1 needs SSR (above the fold), others can load client-side
+// Add loading states for better UX
+const Section1 = dynamic(() => import("pages-sections/market-2/Section1"), { 
+  ssr: true,
+  loading: () => null, // No loading indicator for above-the-fold content
+});
+const Section2 = dynamic(() => import("pages-sections/market-2/Section2"), { 
+  ssr: false,
+  loading: () => null,
+});
+const Section3 = dynamic(() => import("pages-sections/market-2/Section3"), { 
+  ssr: false,
+  loading: () => null,
+});
+const Section4 = dynamic(() => import("pages-sections/market-2/Section4"), { 
+  ssr: false,
+  loading: () => null,
+});
+const Section5 = dynamic(() => import("pages-sections/market-2/Section5"), { 
+  ssr: false,
+  loading: () => null,
+});
+const Section6 = dynamic(() => import("pages-sections/market-2/Section6"), { 
+  ssr: false,
+  loading: () => null,
+});
+const Section7 = dynamic(() => import("pages-sections/market-2/Section7"), { 
+  ssr: false,
+  loading: () => null,
+});
+const Section9 = dynamic(() => import("pages-sections/market-2/Section9"), { 
+  ssr: false,
+  loading: () => null,
+});
+const Section10 = dynamic(() => import("pages-sections/market-2/Section10"), { 
+  ssr: false,
+  loading: () => null,
+});
+const Section12 = dynamic(() => import("pages-sections/market-2/Section12"), { 
+  ssr: false,
+  loading: () => null,
+});
 
 const IndexPage = (props) => {
   
-
-const GeneralSetting=props.GeneralSetting
 
   // const { data: session } = useSession();
   const { data: session, status } = useSession();
@@ -29,27 +62,34 @@ const GeneralSetting=props.GeneralSetting
   const { navCategories } = props;
   const [Wishlistdata, setWishlistdata] = useState(undefined);
 
-  if (
-    session !== undefined &&
-    Wishlistdata === undefined &&
-    status === "authenticated"
-  ) {
-    const data = ["4783"];
-
-    setWishlistdata(data);
-  }
+  // Fix: Move conditional state update to useEffect to avoid React hook rules violation
+  useEffect(() => {
+    if (
+      session !== undefined &&
+      Wishlistdata === undefined &&
+      status === "authenticated"
+    ) {
+      const data = ["4783"];
+      setWishlistdata(data);
+    }
+  }, [session, status, Wishlistdata]);
 
   const theme = useTheme();
+  
+  // Memoize expensive computations
+  const GeneralSettingMemo = useMemo(() => props.GeneralSetting, [props.GeneralSetting]);
 
   return (
     <ShopLayout1
       topbarBgColor={theme.palette.grey[900]}
       navCategories={navCategories}
+      generalSetting={GeneralSettingMemo}
+      footerData={null} // Can be passed from props if available
     >
       <SEO
-        title={GeneralSetting&&GeneralSetting.length>0?GeneralSetting[0].site_name:'Ecommerce Online Store'       }
-        description={GeneralSetting&&GeneralSetting.length>0?GeneralSetting[0].site_description:'Ecommerce Online Store'       }
-         metaTitle={GeneralSetting&&GeneralSetting.length>0?GeneralSetting[0].site_metatitle:'Ecommerce Online Store'       }
+        title={GeneralSettingMemo&&GeneralSettingMemo.length>0?GeneralSettingMemo[0].site_name:'Ecommerce Online Store'       }
+        description={GeneralSettingMemo&&GeneralSettingMemo.length>0?GeneralSettingMemo[0].site_description:'Ecommerce Online Store'       }
+         metaTitle={GeneralSettingMemo&&GeneralSettingMemo.length>0?GeneralSettingMemo[0].site_metatitle:'Ecommerce Online Store'       }
          
          />
       <Box bgcolor="#F6F6F6">
@@ -60,61 +100,79 @@ const GeneralSetting=props.GeneralSetting
           slidersListLocal={props.slidersListLocal}
         />
 
-        <Section9 data={props.ProductReviews} />
-        <Box sx={{ my: -7 }}>
-          <Section3
-            data1={props.Section2SequenceData || []}
-            data2={props.Section2SequenceData2 || []}
-            data3={props.Section2SequenceData3 || []}
-            data4={props.Section2SequenceData4 || []}
-            data5={props.Section2SequenceData5 || []}
-            data6={props.Section2SequenceData6 || []}
-          />
-        </Box>
-        <Box sx={{ mt: 3, display: "flex", justifyContent: "center" }}>
-          <Section2 data={props.brandbundles || []} />
-        </Box>
-        <Box sx={{ my: -12 }}>
-          <Section4
-            data1={props.Section3SequenceData || []}
-            data2={props.Section3SequenceData2 || []}
-            data3={props.Section3SequenceData3 || []}
-            userWishlist={Wishlistdata || []}
-          />
-        </Box>
-        <Box sx={{ mt: 5 }}>
-          <Section5
-            products={props.products || []}
-            data={props.SectionSequenceOrdera || []}
-            SectionName={props.Section1Name || ""}
-            slug={props.slug || ""}
+        <LazySection>
+          <Section9 data={props.ProductReviews} />
+        </LazySection>
+        <LazySection>
+          <Box sx={{ my: -7 }}>
+            <Section3
+              data1={props.Section2SequenceData || []}
+              data2={props.Section2SequenceData2 || []}
+              data3={props.Section2SequenceData3 || []}
+              data4={props.Section2SequenceData4 || []}
+              data5={props.Section2SequenceData5 || []}
+              data6={props.Section2SequenceData6 || []}
+            />
+          </Box>
+        </LazySection>
+        <LazySection>
+          <Box sx={{ mt: 3, display: "flex", justifyContent: "center" }}>
+            <Section2 data={props.brandbundles || []} />
+          </Box>
+        </LazySection>
+        <LazySection>
+          <Box sx={{ my: -12 }}>
+            <Section4
+              data1={props.Section3SequenceData || []}
+              data2={props.Section3SequenceData2 || []}
+              data3={props.Section3SequenceData3 || []}
+              userWishlist={Wishlistdata || []}
+            />
+          </Box>
+        </LazySection>
+        <LazySection>
+          <Box sx={{ mt: 5 }}>
+            <Section5
+              products={props.products || []}
+              data={props.SectionSequenceOrdera || []}
+              SectionName={props.Section1Name || ""}
+              slug={props.slug || ""}
+              productreviews={props.ProductReviews} 
+
+            />
+          </Box>
+        </LazySection>
+        <LazySection>
+          <Box sx={{ my: -7 }}>
+            <Section6
+              data1={props.Section4SequenceData || []}
+              data2={props.Section4SequenceData2 || []}
+            />
+          </Box>
+        </LazySection>
+        <LazySection>
+          <Section12
+            products={props.product || []}
+            data={props.SectionSequenceOrdera2 || []}
+            Section2Name={props.Section2Name || ""}
+            slug={props.slug2 || ""}
             productreviews={props.ProductReviews} 
 
           />
-        </Box>
-        <Box sx={{ my: -7 }}>
-          <Section6
-            data1={props.Section4SequenceData || []}
-            data2={props.Section4SequenceData2 || []}
-          />
-        </Box>
-        <Section12
-          products={props.product || []}
-          data={props.SectionSequenceOrdera2 || []}
-          Section2Name={props.Section2Name || ""}
-          slug={props.slug2 || ""}
-          productreviews={props.ProductReviews} 
-
-        />
+        </LazySection>
         {props.productbundles.length > 0 && (
-          <Box sx={{ mt: 3, display: "flex", justifyContent: "center" }}>
-            <Section10 data={props.productbundles} />
-          </Box>
+          <LazySection>
+            <Box sx={{ mt: 3, display: "flex", justifyContent: "center" }}>
+              <Section10 data={props.productbundles} />
+            </Box>
+          </LazySection>
         )}
 
-        <Box sx={{ my: -4 }}>
-          <Section7 data1={props.Section5SequenceData || []} />
-        </Box>
+        <LazySection>
+          <Box sx={{ my: -4 }}>
+            <Section7 data1={props.Section5SequenceData || []} />
+          </Box>
+        </LazySection>
         {/* <Section13 products={props.sect13products || []} /> */}
         {/* <Section8 /> */}
       </Box>
@@ -124,25 +182,39 @@ const GeneralSetting=props.GeneralSetting
   );
 };
 
-export async function getServerSideProps(context) {
-  // const { data: session } = useSession();
-  const navCategories = await apiNav.getNavCategories();
-  const sect4products = await api.getProducts();
+// Memoize component to prevent unnecessary re-renders
+const MemoizedIndexPage = React.memo(IndexPage);
+MemoizedIndexPage.displayName = 'IndexPage';
 
-  const inara = await api.getProducts();
-  // const bundles=await api.getBundles();
-  const brandbundles = await api.getBrandBundles();
-  const productbundles = await api.getProductBundles();
-
-  // const latestproduct=await api.getLatestProducts();
-
-  // const featureProducts = await api.getFeatureProducts();
-  const individulorder = await api.getindvidualorderbox();
-  const sectionsequenceorder = await api.getSectionSequence();
-
-  // Get Sliders Api
-  const slidersList = await api.getSlidersFromCloud();
-  const slidersListLocal = await api.getSlidersFromLocal();
+// Use getStaticProps with ISR for better performance - pages are cached and regenerated periodically
+export async function getStaticProps(context) {
+  try {
+    // Parallelize all independent API calls for better performance
+    const [
+      navCategories,
+      sect4products,
+      inara,
+      brandbundles,
+      productbundles,
+      individulorder,
+      sectionsequenceorder,
+      slidersList,
+      slidersListLocal,
+      ProductReviews,
+      GeneralSetting
+    ] = await Promise.all([
+      apiNav.getNavCategories(),
+      api.getProducts(),
+      api.getProducts(),
+      api.getBrandBundles(),
+      api.getProductBundles(),
+      api.getindvidualorderbox(),
+      api.getSectionSequence(),
+      api.getSlidersFromCloud(),
+      api.getSlidersFromLocal(),
+      apiNav.getReviews(),
+      api.getGeneralSetting()
+    ]);
 
   ////////////////////////Section 1/////////////////////////
   const Section1SequenceData = individulorder.find(
@@ -230,17 +302,19 @@ export async function getServerSideProps(context) {
   const slug = SectionSequenceOrder?.category_slug || "";
   const slug2 = SectionSequence?.category_slug || "";
 
-  const products = await api.getProducts(slug);
-  const product = await api.getSectionProduct(slug2);
-  const ProductReviews = await apiNav.getReviews();
-
-  const GeneralSetting=await api.getGeneralSetting();
+  // Parallelize product fetches if both slugs exist
+  const [products, product] = await Promise.all([
+    slug ? api.getProducts(slug) : Promise.resolve(null),
+    slug2 ? api.getSectionProduct(slug2) : Promise.resolve(null)
+  ]);
 
   ////////////////////////Section Sequence Order 2/////////////////////////
 
   // const products=sect4products;
   return {
     props: {
+      // Add cache headers for API responses
+      _cacheTime: Date.now(),
       navCategories,
       products,
       product,
@@ -268,7 +342,8 @@ export async function getServerSideProps(context) {
       Section4SequenceData: Section4SequenceData || null,
       Section4SequenceData2: Section4SequenceData2 || null,
       Section5SequenceData: Section5SequenceData || null,
-      individulorder,
+      // Don't pass entire individulorder array - it's large and not needed
+      // individulorder,
       SectionSequenceOrder: SectionSequenceOrder || null,
       // bundles,
       brandbundles,
@@ -278,7 +353,23 @@ export async function getServerSideProps(context) {
       ProductReviews,
       GeneralSetting
     },
+    // Revalidate every 60 seconds - ISR (Incremental Static Regeneration)
+    // This means pages are cached and only regenerated every 60 seconds
+    revalidate: 60,
   };
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    // Return empty props on error to prevent build failure
+    return {
+      props: {
+        navCategories: [],
+        products: null,
+        product: null,
+        GeneralSetting: [],
+      },
+      revalidate: 60,
+    };
+  }
 }
 
-export default IndexPage;
+export default MemoizedIndexPage;

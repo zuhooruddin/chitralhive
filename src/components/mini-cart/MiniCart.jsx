@@ -112,10 +112,13 @@ const MiniCart = ({ toggleSidenav }) => {
                 color="primary"
                 variant="outlined"
                 onClick={handleCartAmountChange(item.qty + 1, item)}
+                aria-label={`Increase quantity of ${item.name}`}
                 sx={{
                   height: "32px",
                   width: "32px",
                   borderRadius: "300px",
+                  minWidth: "44px",
+                  minHeight: "44px",
                 }}
               >
                 <Add fontSize="small" />
@@ -130,10 +133,13 @@ const MiniCart = ({ toggleSidenav }) => {
                 variant="outlined"
                 disabled={item.qty === 1}
                 onClick={handleCartAmountChange(item.qty - 1, item)}
+                aria-label={`Decrease quantity of ${item.name}`}
                 sx={{
                   height: "32px",
                   width: "32px",
                   borderRadius: "300px",
+                  minWidth: "44px",
+                  minHeight: "44px",
                 }}
               >
                 <Remove fontSize="small" />
@@ -186,6 +192,7 @@ const MiniCart = ({ toggleSidenav }) => {
               ml={2.5}
               size="small"
               onClick={handleCartAmountChange(0, item)}
+              aria-label={`Remove ${item.name} from cart`}
             >
               <Close fontSize="small" />
             </BazaarIconButton>

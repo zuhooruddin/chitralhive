@@ -2,7 +2,8 @@ import { CallOutlined, ExpandMore, MailOutline, LogOut } from "@mui/icons-materi
 import LogoutIcon from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
 import { Box, Container, MenuItem, styled } from "@mui/material";
-import Image from "components/BazaarImage";
+import BazaarImage from "components/BazaarImage";
+import Image from "next/image";
 import { FlexBox } from "components/flex-box";
 import { Span } from "components/Typography";
 import Link from "next/link";
@@ -15,7 +16,9 @@ import ReactModal from 'react-modal';
 import CloseIcon from '@mui/icons-material/Close';
 import { IconButton } from '@mui/material';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
-const TopbarWrapper = styled(Box)(({ theme, bgColor }) => ({
+const TopbarWrapper = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'bgColor' && prop !== 'color',
+})(({ theme, bgColor, color }) => ({
   fontSize: 12,
   height: layoutConstant.topbarHeight,
   background: bgColor || theme.palette.secondary.dark,
@@ -160,74 +163,172 @@ const server_ip=process.env.NEXT_PUBLIC_BACKEND_API_BASE
 
   const[coupon,setCoupon]=useState()
 
-
   useEffect(() => {
+    const server_ip = process.env.NEXT_PUBLIC_BACKEND_API_BASE;
     fetch(server_ip+'getvoucher')
       .then((res) => res.json())
       .then((data) => {
         setCoupon(data)
       })
+      .catch((error) => {
+        console.error('Error fetching voucher:', error);
+      })
   }, [])
  
-  const data=coupon &&coupon?coupon.voucher[0]:''
+  const data = coupon?.voucher?.[0] || null
 
   
   const couponContainerStyle = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    padding: '10px',
   };
 
   const modalContentStyle = {
     overlay: {
-      backgroundColor: 'rgba(0, 0, 0, 0.6)',
+      backgroundColor: 'rgba(0, 0, 0, 0.75)',
       zIndex: 1000,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backdropFilter: 'blur(4px)',
     },
     content: {
-      width: '400px',
+      width: '90%',
+      maxWidth: '500px',
       margin: 'auto',
-      padding: '20px',
+      padding: '0',
       backgroundColor: 'white',
-      borderRadius: '8px',
-      boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
+      borderRadius: '16px',
+      boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
       position: 'relative',
+      border: 'none',
+      overflow: 'hidden',
+      top: 'auto',
+      left: 'auto',
+      right: 'auto',
+      bottom: 'auto',
     },
   };
+  
   const couponTitleStyle = {
-    fontSize: '24px',
-    fontWeight: 'bold',
-    margin: '10px 0',
+    fontSize: '28px',
+    fontWeight: '700',
+    margin: '16px 0 8px 0',
+    color: '#1a1a1a',
+    textAlign: 'center',
   };
 
   const couponInfoStyle = {
-    fontSize: '16px',
-    margin: '8px 0',
+    fontSize: '15px',
+    margin: '6px 0',
+    color: '#666',
+    textAlign: 'center',
   };
-  const copyIconStyle = {
-    color: '#007bff',
+
+  const couponCodeContainerStyle = {
+    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    borderRadius: '12px',
+    padding: '20px',
+    margin: '20px 0',
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    boxShadow: '0 4px 15px rgba(102, 126, 234, 0.4)',
+  };
+
+  const couponCodeTextStyle = {
+    fontSize: '24px',
+    fontWeight: '700',
+    color: 'white',
+    letterSpacing: '2px',
+    fontFamily: 'monospace',
+  };
+
+  const copyButtonStyle = {
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    color: 'white',
+    border: '2px solid rgba(255, 255, 255, 0.3)',
+    borderRadius: '8px',
+    padding: '8px 16px',
     cursor: 'pointer',
-    marginLeft: '10px',
-  }
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    transition: 'all 0.3s ease',
+    fontSize: '14px',
+    fontWeight: '600',
+  };
+
+  const discountBadgeStyle = {
+    display: 'inline-block',
+    backgroundColor: '#ff6b6b',
+    color: 'white',
+    padding: '6px 16px',
+    borderRadius: '20px',
+    fontSize: '18px',
+    fontWeight: '700',
+    marginBottom: '12px',
+  };
+
+  const dateContainerStyle = {
+    display: 'flex',
+    justifyContent: 'space-around',
+    width: '100%',
+    marginTop: '16px',
+    padding: '16px',
+    backgroundColor: '#f8f9fa',
+    borderRadius: '12px',
+  };
+
+  const dateItemStyle = {
+    textAlign: 'center',
+    flex: 1,
+  };
+
+  const dateLabelStyle = {
+    fontSize: '12px',
+    color: '#999',
+    textTransform: 'uppercase',
+    letterSpacing: '1px',
+    marginBottom: '4px',
+  };
+
+  const dateValueStyle = {
+    fontSize: '16px',
+    fontWeight: '600',
+    color: '#333',
+  };
 
 
-  const handleCopyClick = (couponCode) => {
-    const textarea = document.createElement('textarea');
-    textarea.value = couponCode;
-    document.body.appendChild(textarea);
-    textarea.select();
-
+  const handleCopyClick = async (couponCode) => {
     try {
-      const copySuccessful = document.execCommand('copy');
-      if (copySuccessful) {
-      toast.success("Code Copied Sucessfully", {
-                position: toast.POSITION.TOP_RIGHT
-              });
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(couponCode);
+        toast.success("Code Copied Successfully!", {
+          position: toast.POSITION.TOP_RIGHT
+        });
       } else {
+        // Fallback for older browsers
+        const textarea = document.createElement('textarea');
+        textarea.value = couponCode;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        toast.success("Code Copied Successfully!", {
+          position: toast.POSITION.TOP_RIGHT
+        });
       }
     } catch (err) {
       console.error('Error copying coupon code:', err);
-    } finally {
-      document.body.removeChild(textarea);
+      toast.error("Failed to copy code", {
+        position: toast.POSITION.TOP_RIGHT
+      });
     }
   };
 
@@ -247,7 +348,8 @@ const server_ip=process.env.NEXT_PUBLIC_BACKEND_API_BASE
                 <Image
                   display="block"
                   height="28px"
-                  src={topbardata?imgbaseurl+topbardata[0].site_logo:'assets/images/logos/webpack.png'}
+                  width={120}
+                  src={topbardata?imgbaseurl+topbardata[0].site_logo:'/assets/images/logos/webpack.png'}
                   alt="logo"
                 />
               </Link>
@@ -291,37 +393,80 @@ const server_ip=process.env.NEXT_PUBLIC_BACKEND_API_BASE
         <CloseIcon
           style={{
             position: 'absolute',
-            top: '10px',
-            right: '10px',
+            top: '16px',
+            right: '16px',
             cursor: 'pointer',
+            color: '#666',
+            zIndex: 1,
+            transition: 'color 0.2s ease',
           }}
           onClick={closePopup}
+          onMouseEnter={(e) => e.target.style.color = '#000'}
+          onMouseLeave={(e) => e.target.style.color = '#666'}
         />
       <div className="voucher-content" style={couponContainerStyle}>
-          <img
-            src={imgbaseurl + data.image}
-            alt={data.name}
-            width="100%"
-            height="auto"
-            style={{ marginBottom: '20px' }}
-          />
-          <h2 style={couponTitleStyle}>{data.name}</h2>
-          <p style={couponInfoStyle}>Discount: {data.discount}%</p>
-          <p style={couponInfoStyle}>Start Date: {data.startdate}</p>
-          <p style={couponInfoStyle}>End Date: {data.enddate}</p>
-          <p style={couponInfoStyle}>
-        Coupon Code: {data.code}
-        <IconButton
-          onClick={() => handleCopyClick(data.code)}
-          size="small"
-          style={copyIconStyle}
-        >
-          <FileCopyIcon />
-        </IconButton>
-      </p>
+          {data ? (
+            <>
+              {data.image && (
+                <Image
+                  src={imgbaseurl + data.image}
+                  alt={data.name || 'Voucher'}
+                  width={400}
+                  height={200}
+                  style={{
+                    width: '100%',
+                    height: 'auto',
+                    borderRadius: '12px',
+                    marginBottom: '24px',
+                    objectFit: 'cover',
+                    maxHeight: '200px',
+                  }}
+                  loading="lazy"
+                />
+              )}
+              <div style={discountBadgeStyle}>
+                {data.discount || 0}% OFF
+              </div>
+              <h2 style={couponTitleStyle}>{data.name || ''}</h2>
+              
+              <div style={couponCodeContainerStyle}>
+                <span style={couponCodeTextStyle}>{data.code || ''}</span>
+                <button
+                  onClick={() => handleCopyClick(data.code || '')}
+                  style={copyButtonStyle}
+                  onMouseEnter={(e) => {
+                    e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
+                    e.target.style.transform = 'scale(1.05)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+                    e.target.style.transform = 'scale(1)';
+                  }}
+                >
+                  <FileCopyIcon style={{ fontSize: '18px' }} />
+                  Copy
+                </button>
+              </div>
 
-  
-
+              <div style={dateContainerStyle}>
+                <div style={dateItemStyle}>
+                  <div style={dateLabelStyle}>Start Date</div>
+                  <div style={dateValueStyle}>{data.startdate || 'N/A'}</div>
+                </div>
+                <div style={{ width: '1px', backgroundColor: '#ddd', margin: '0 16px' }}></div>
+                <div style={dateItemStyle}>
+                  <div style={dateLabelStyle}>End Date</div>
+                  <div style={dateValueStyle}>{data.enddate || 'N/A'}</div>
+                </div>
+              </div>
+            </>
+          ) : (
+            <div style={{ textAlign: 'center', padding: '40px 20px' }}>
+              <p style={{ ...couponInfoStyle, fontSize: '18px', color: '#999' }}>
+                No voucher available at this time.
+              </p>
+            </div>
+          )}
              </div>
       </ReactModal>
       </TopbarWrapper>
@@ -345,6 +490,7 @@ const server_ip=process.env.NEXT_PUBLIC_BACKEND_API_BASE
               <Image
                   display="block"
                   height="28px"
+                  width={120}
                   src={topbardata?imgbaseurl+topbardata[0].site_logo:''}
                   alt="logo"
                 />
@@ -385,37 +531,80 @@ const server_ip=process.env.NEXT_PUBLIC_BACKEND_API_BASE
         <CloseIcon
           style={{
             position: 'absolute',
-            top: '10px',
-            right: '10px',
+            top: '16px',
+            right: '16px',
             cursor: 'pointer',
+            color: '#666',
+            zIndex: 1,
+            transition: 'color 0.2s ease',
           }}
           onClick={closePopup}
+          onMouseEnter={(e) => e.target.style.color = '#000'}
+          onMouseLeave={(e) => e.target.style.color = '#666'}
         />
       <div className="voucher-content" style={couponContainerStyle}>
-          <img
-            src={imgbaseurl + data?.image || ''}
-            alt={data?.name || ''}
-            width="100%"
-            height="auto"
-            style={{ marginBottom: '20px' }}
-          />
-          <h2 style={couponTitleStyle}>{data?.name || ''}</h2>
-          <p style={couponInfoStyle}>Discount: {data?.discount || ''}%</p>
-          <p style={couponInfoStyle}>Start Date: {data?.startdate || ''}</p>
-          <p style={couponInfoStyle}>End Date: {data?.enddate || ''}</p>
-          <p style={couponInfoStyle}>
-        Coupon Code: {data?.code || ''}
-        <IconButton
-          onClick={() => handleCopyClick(data?.code || '')}
-          size="small"
-          style={copyIconStyle}
-        >
-          <FileCopyIcon />
-        </IconButton>
-      </p>
+          {data ? (
+            <>
+              {data.image && (
+                <Image
+                  src={imgbaseurl + data.image}
+                  alt={data.name || 'Voucher'}
+                  width={400}
+                  height={200}
+                  style={{
+                    width: '100%',
+                    height: 'auto',
+                    borderRadius: '12px',
+                    marginBottom: '24px',
+                    objectFit: 'cover',
+                    maxHeight: '200px',
+                  }}
+                  loading="lazy"
+                />
+              )}
+              <div style={discountBadgeStyle}>
+                {data.discount || 0}% OFF
+              </div>
+              <h2 style={couponTitleStyle}>{data.name || ''}</h2>
+              
+              <div style={couponCodeContainerStyle}>
+                <span style={couponCodeTextStyle}>{data.code || ''}</span>
+                <button
+                  onClick={() => handleCopyClick(data.code || '')}
+                  style={copyButtonStyle}
+                  onMouseEnter={(e) => {
+                    e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
+                    e.target.style.transform = 'scale(1.05)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+                    e.target.style.transform = 'scale(1)';
+                  }}
+                >
+                  <FileCopyIcon style={{ fontSize: '18px' }} />
+                  Copy
+                </button>
+              </div>
 
-  
-
+              <div style={dateContainerStyle}>
+                <div style={dateItemStyle}>
+                  <div style={dateLabelStyle}>Start Date</div>
+                  <div style={dateValueStyle}>{data.startdate || 'N/A'}</div>
+                </div>
+                <div style={{ width: '1px', backgroundColor: '#ddd', margin: '0 16px' }}></div>
+                <div style={dateItemStyle}>
+                  <div style={dateLabelStyle}>End Date</div>
+                  <div style={dateValueStyle}>{data.enddate || 'N/A'}</div>
+                </div>
+              </div>
+            </>
+          ) : (
+            <div style={{ textAlign: 'center', padding: '40px 20px' }}>
+              <p style={{ ...couponInfoStyle, fontSize: '18px', color: '#999' }}>
+                No voucher available at this time.
+              </p>
+            </div>
+          )}
              </div>
       </ReactModal>
       </TopbarWrapper>

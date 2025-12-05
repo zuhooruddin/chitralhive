@@ -1,7 +1,9 @@
 import { Box, styled } from "@mui/material";
 import clsx from "clsx";
 import React from "react";
-const StyledBox = styled(Box)(({ textTransformStyle, ellipsis }) => ({
+const StyledBox = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'textTransformStyle' && prop !== 'ellipsis',
+})(({ textTransformStyle, ellipsis }) => ({
   textTransform: textTransformStyle || "none",
   whiteSpace: ellipsis ? "nowrap" : "normal",
   overflow: ellipsis ? "hidden" : "",
@@ -210,15 +212,16 @@ export const Small = ({
     </StyledBox>
   );
 };
-export const Span = ({
+export const Span = React.forwardRef(({
   children,
   className,
   ellipsis,
   textTransform,
   ...props
-}) => {
+}, ref) => {
   return (
     <StyledBox
+      ref={ref}
       textTransformStyle={textTransform}
       ellipsis={ellipsis}
       className={clsx({
@@ -231,7 +234,8 @@ export const Span = ({
       {children}
     </StyledBox>
   );
-};
+});
+Span.displayName = 'Span';
 export const Tiny = ({
   children,
   className,

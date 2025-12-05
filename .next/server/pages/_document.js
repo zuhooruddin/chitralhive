@@ -41,12 +41,37 @@ class Bazaar extends next_document__WEBPACK_IMPORTED_MODULE_3__["default"] {
                 /*#__PURE__*/ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(next_document__WEBPACK_IMPORTED_MODULE_3__.Head, {
                     children: [
                         /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx("link", {
+                            rel: "preconnect",
+                            href: "https://fonts.googleapis.com"
+                        }),
+                        /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx("link", {
+                            rel: "preconnect",
+                            href: "https://fonts.gstatic.com",
+                            crossOrigin: "anonymous"
+                        }),
+                        /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx("link", {
                             href: "https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;900&display=swap",
-                            rel: "stylesheet"
+                            rel: "stylesheet",
+                            media: "print",
+                            onLoad: "this.media='all'"
+                        }),
+                        /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx("noscript", {
+                            children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx("link", {
+                                href: "https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;900&display=swap",
+                                rel: "stylesheet"
+                            })
                         }),
                         /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx("link", {
                             rel: "stylesheet",
-                            href: "https://fonts.googleapis.com/icon?family=Material+Icons"
+                            href: "https://fonts.googleapis.com/icon?family=Material+Icons",
+                            media: "print",
+                            onLoad: "this.media='all'"
+                        }),
+                        /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx("noscript", {
+                            children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx("link", {
+                                rel: "stylesheet",
+                                href: "https://fonts.googleapis.com/icon?family=Material+Icons"
+                            })
                         }),
                         /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(utils_OpenGraphTags__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .Z, {}),
                         /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(utils_GoogleAnalytics__WEBPACK_IMPORTED_MODULE_7__/* ["default"] */ .Z, {})
@@ -339,7 +364,7 @@ module.exports = import("@emotion/server/create-instance");;
 var __webpack_require__ = require("../webpack-runtime.js");
 __webpack_require__.C(exports);
 var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
-var __webpack_exports__ = __webpack_require__.X(0, [2952,6859], () => (__webpack_exec__(4553)));
+var __webpack_exports__ = __webpack_require__.X(0, [6377,2952,6859], () => (__webpack_exec__(4553)));
 module.exports = __webpack_exports__;
 
 })();

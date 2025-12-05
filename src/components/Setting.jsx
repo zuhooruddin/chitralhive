@@ -83,7 +83,11 @@ const Setting = () => {
     <ClickAwayListener onClickAway={() => setShowBody(false)}>
       <MainContainer>
         <Tooltip title="Settings & Demos" placement="left">
-          <StyledIconButton onClick={() => setShowBody((state) => !state)}>
+          <StyledIconButton 
+            onClick={() => setShowBody((state) => !state)}
+            aria-label={showBody ? "Close settings" : "Open settings"}
+            sx={{ minWidth: '44px', minHeight: '44px' }}
+          >
             {!showBody && <Settings />}
             {showBody && <Close />}
           </StyledIconButton>

@@ -94,7 +94,7 @@ const ErrorContainer = (0,_mui_material__WEBPACK_IMPORTED_MODULE_1__.styled)(_mu
         }
     }));
 const ProductDetails = (props)=>{
-    console.log("Propsssssss", props);
+    ;
     const { productDetails , ProductReviews  } = props;
     const imgbaseurl = "https://chitralhive.com/media/";
     const baseurl = process.env.NEXT_PUBLIC_URL;
@@ -1620,7 +1620,7 @@ module.exports = import("swr");;
 var __webpack_require__ = require("../../webpack-runtime.js");
 __webpack_require__.C(exports);
 var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
-var __webpack_exports__ = __webpack_require__.X(0, [2952,1664,5675,9029,317,4210,8745,1268,6044,7434], () => (__webpack_exec__(146)));
+var __webpack_exports__ = __webpack_require__.X(0, [6377,2952,6964,1664,5675,9029,317,4210,8745,1268,6044,7434], () => (__webpack_exec__(146)));
 module.exports = __webpack_exports__;
 
 })();

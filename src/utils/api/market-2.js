@@ -2,10 +2,23 @@ import axios from "axios";
 // import {server_ip} from "../backend_server_ip.jsx"
 const server_ip = process.env.NEXT_PUBLIC_BACKEND_API_BASE;
 
+// Create axios instance with timeout to prevent hanging
+const axiosInstance = axios.create({
+  timeout: 10000, // 10 second timeout for API calls
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
 // Used 
 const getNavCategories = async () => {
-  const response = await axios.get(server_ip+"getNavCategories");
-  return response.data;
+  try {
+    const response = await axiosInstance.get(server_ip+"getNavCategories");
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching nav categories:', error.message);
+    return [];
+  }
 };
 // Used 
 const getCategoryDetail = async (catSlug) => {
@@ -188,8 +201,13 @@ const getAllSchoolBundle = async (catSlug) => {
   return response.data;
 };
 const getReviews= async () => {
-  const response = await axios.get(server_ip+'getReviews');
-  return response.data;
+  try {
+    const response = await axiosInstance.get(server_ip+'getReviews');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching reviews:', error.message);
+    return [];
+  }
 };
 export default {
   getNavCategories,

@@ -12,14 +12,34 @@ export default class Bazaar extends Document {
     return (
       <Html lang="en">
         <Head>
+          {/* Optimize font loading - use font-display: swap for better performance */}
+          {/* Limit preconnect to essential origins only (Lighthouse recommendation) */}
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
           <link
             href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;900&display=swap"
             rel="stylesheet"
+            media="print"
+            onLoad="this.media='all'"
           />
+          <noscript>
+            <link
+              href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;900&display=swap"
+              rel="stylesheet"
+            />
+          </noscript>
           <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/icon?family=Material+Icons"
+            media="print"
+            onLoad="this.media='all'"
           />
+          <noscript>
+            <link
+              rel="stylesheet"
+              href="https://fonts.googleapis.com/icon?family=Material+Icons"
+            />
+          </noscript>
           <OpenGraphTags />
           <GoogleAnalytics />
         </Head>
@@ -93,3 +113,4 @@ Bazaar.getInitialProps = async (ctx) => {
     ],
   };
 };
+

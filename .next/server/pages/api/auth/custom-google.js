@@ -46,7 +46,7 @@ async function fetchGoogleCredentials() {
 }
 function getGoogleProvider() {
     return fetchGoogleCredentials().then((credentials)=>{
-        console.log("HIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII", credentials);
+        ;
         return next_auth_providers_google__WEBPACK_IMPORTED_MODULE_1___default()({
             clientId: credentials.googleClientId,
             clientSecret: credentials.googleClientSecret

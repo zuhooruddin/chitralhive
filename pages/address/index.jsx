@@ -217,8 +217,12 @@ console.log("Values",values)
                 {item.area}
               </Typography>
 
-              <Typography whiteSpace="pre" textAlign="center" color="grey.600">
-                <IconButton onClick={() => deleteCustomerShipping(item.id, index)}>
+              <Typography whiteSpace="pre" textAlign="center" color="grey.700">
+                <IconButton 
+                  onClick={() => deleteCustomerShipping(item.id, index)}
+                  aria-label={`Delete address ${item.address}`}
+                  sx={{ minWidth: '44px', minHeight: '44px' }}
+                >
                   <Delete fontSize="small" color="inherit" />
                 </IconButton>
               </Typography>

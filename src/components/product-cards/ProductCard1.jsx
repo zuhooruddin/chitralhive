@@ -342,11 +342,12 @@ useEffect(()=>{
                 <Image
                   width={300}
                   height={300}
-                  alt="category"
+                  alt={name || "product"}
                   objectFit="contain"
                   layout="intrinsic"
                   className="product-img"
                   src={imgbaseurl + image}
+                  loading="lazy"
                   media={{
                     // Adjust image size for screens smaller than 600px wide
                     "(max-width: 600px)": {
@@ -372,12 +373,14 @@ useEffect(()=>{
           <AddToCartButton
             className="product-actions"
             onClick={() => setOpenDialog(true)}
+            aria-label={`View details for ${name}`}
           >
             <RemoveRedEye color="disabled" fontSize="small" />
           </AddToCartButton>
           <FavouriteButton
             className="product-actions"
             onClick={() => addwishtlist()}
+            aria-label={isFavorite ? `Remove ${name} from wishlist` : `Add ${name} to wishlist`}
           >
             {isFavorite ? (
               <Favorite color="primary" fontSize="small" />
@@ -432,7 +435,7 @@ useEffect(()=>{
                 {!!discount && (
                   <H5>
                     <Box
-                      color="grey.600"
+                      color="grey.700"
                       fontWeight="200"
                       sx={{
                         justifyContent: "center",
@@ -593,11 +596,12 @@ useEffect(()=>{
                 <Image
                   width={300}
                   height={300}
-                  alt="category"
+                  alt={name || "product"}
                   objectFit="contain"
                   layout="intrinsic"
                   className="product-img"
                   src={imgbaseurl + image}
+                  loading="lazy"
                   media={{
                     // Adjust image size for screens smaller than 600px wide
                     "(max-width: 600px)": {
@@ -623,6 +627,7 @@ useEffect(()=>{
           <AddToCartButton
             className="product-actions"
             onClick={() => setOpenDialog(true)}
+            aria-label={`View details for ${name}`}
           >
             <RemoveRedEye color="disabled" fontSize="small" />
           </AddToCartButton>
@@ -673,7 +678,7 @@ useEffect(()=>{
                 {!!discount && (
                   <H5>
                     <Box
-                      color="grey.600"
+                      color="grey.700"
                       fontWeight="200"
                       sx={{
                         justifyContent: "center",

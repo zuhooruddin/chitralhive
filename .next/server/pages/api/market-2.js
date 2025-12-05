@@ -69,25 +69,43 @@ swr__WEBPACK_IMPORTED_MODULE_2__ = (__webpack_async_dependencies__.then ? (await
 
 
 
+const server_ip = "https://chitralhive.com/api/" || 0;
+// Create axios instance with timeout to prevent hanging
+const axiosInstance = axios__WEBPACK_IMPORTED_MODULE_1___default().create({
+    timeout: 10000,
+    headers: {
+        "Content-Type": "application/json"
+    }
+});
 const getProducts = async (slug)=>{
-    const url = process.env.BACKEND_API_BASE + "getItemSearchCategory";
+    const url = server_ip + "getItemSearchCategory";
     if (slug !== undefined) {
-        const args = {
-            "id": slug
-        };
-        let data = await axios__WEBPACK_IMPORTED_MODULE_1___default().post(url, args).then((res)=>res.data);
-        return data;
+        try {
+            const args = {
+                "id": slug
+            };
+            let data = await axiosInstance.post(url, args).then((res)=>res.data);
+            return data;
+        } catch (error) {
+            console.error("Error fetching products:", error.message);
+            return null;
+        }
     }
     return null;
 };
 const getSectionProduct = async (slug2)=>{
-    const url = process.env.BACKEND_API_BASE + "getItemSearchCategory";
+    const url = server_ip + "getItemSearchCategory";
     if (slug2 !== undefined) {
-        const args = {
-            "id": slug2
-        };
-        let data = await axios__WEBPACK_IMPORTED_MODULE_1___default().post(url, args).then((res)=>res.data);
-        return data;
+        try {
+            const args = {
+                "id": slug2
+            };
+            let data = await axiosInstance.post(url, args).then((res)=>res.data);
+            return data;
+        } catch (error) {
+            console.error("Error fetching section products:", error.message);
+            return null;
+        }
     }
     return null;
 };
@@ -97,7 +115,7 @@ const GetWishlist = async ()=>{
                 Authorization: `Bearer ${session.accessToken}`
             }
         }).then((response)=>response.data);
-    const { data , error  } = (0,swr__WEBPACK_IMPORTED_MODULE_2__["default"])(process.env.BACKEND_API_BASE + "getWishlist", fetcher);
+    const { data , error  } = (0,swr__WEBPACK_IMPORTED_MODULE_2__["default"])(server_ip + "getWishlist", fetcher);
     if (error) return /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx("div", {
         children: "failed to load"
     });
@@ -106,44 +124,94 @@ const GetWishlist = async ()=>{
     });
 };
 const getindvidualorderbox = async ()=>{
-    const response = await axios__WEBPACK_IMPORTED_MODULE_1___default().get(process.env.BACKEND_API_BASE + "webind");
-    return response.data;
+    try {
+        const response = await axiosInstance.get(server_ip + "webind");
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching individual order box:", error.message);
+        return [];
+    }
 };
 const getSectionSequence = async ()=>{
-    const response = await axios__WEBPACK_IMPORTED_MODULE_1___default().get(process.env.BACKEND_API_BASE + "getsection");
-    return response.data;
+    try {
+        const response = await axiosInstance.get(server_ip + "getsection");
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching section sequence:", error.message);
+        return [];
+    }
 };
 const getLatestProducts = async ()=>{
-    const response = await axios__WEBPACK_IMPORTED_MODULE_1___default().get(process.env.BACKEND_API_BASE + "getFearuredProduct");
-    return response.data;
+    try {
+        const response = await axiosInstance.get(server_ip + "getFearuredProduct");
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching latest products:", error.message);
+        return [];
+    }
 };
 const getBundles = async ()=>{
-    const response = await axios__WEBPACK_IMPORTED_MODULE_1___default().get(process.env.BACKEND_API_BASE + "getBundels");
-    return response.data;
+    try {
+        const response = await axiosInstance.get(server_ip + "getBundels");
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching bundles:", error.message);
+        return [];
+    }
 };
 const getBrandBundles = async ()=>{
-    const response = await axios__WEBPACK_IMPORTED_MODULE_1___default().get(process.env.BACKEND_API_BASE + "getBrandBundels");
-    return response.data;
+    try {
+        const response = await axiosInstance.get(server_ip + "getBrandBundels");
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching brand bundles:", error.message);
+        return [];
+    }
 };
 const getProductBundles = async ()=>{
-    const response = await axios__WEBPACK_IMPORTED_MODULE_1___default().get(process.env.BACKEND_API_BASE + "getProductBundels");
-    return response.data;
+    try {
+        const response = await axiosInstance.get(server_ip + "getProductBundels");
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching product bundles:", error.message);
+        return [];
+    }
 };
 const getSlidersFromCloud = async ()=>{
-    const response = await axios__WEBPACK_IMPORTED_MODULE_1___default().get(process.env.BACKEND_API_BASE + "getSlidersFromCloud");
-    return response.data;
+    try {
+        const response = await axiosInstance.get(server_ip + "getSlidersFromCloud");
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching sliders from cloud:", error.message);
+        return [];
+    }
 };
 const getSlidersFromLocal = async ()=>{
-    const response = await axios__WEBPACK_IMPORTED_MODULE_1___default().get(process.env.BACKEND_API_BASE + "getsliderimage");
-    return response.data;
+    try {
+        const response = await axiosInstance.get(server_ip + "getsliderimage");
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching sliders from local:", error.message);
+        return [];
+    }
 };
 const getFooterItem = async ()=>{
-    const response = await axios__WEBPACK_IMPORTED_MODULE_1___default().get(process.env.BACKEND_API_BASE + "getFooterSettings");
-    return response.data;
+    try {
+        const response = await axiosInstance.get(server_ip + "getFooterSettings");
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching footer item:", error.message);
+        return {};
+    }
 };
 const getGeneralSetting = async ()=>{
-    const response = await axios__WEBPACK_IMPORTED_MODULE_1___default().get(process.env.BACKEND_API_BASE + "getGeneralSetting");
-    return response.data;
+    try {
+        const response = await axiosInstance.get(server_ip + "getGeneralSetting");
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching general setting:", error.message);
+        return [];
+    }
 };
 // const getFeatureProducts = async () => {
 //   const response = await axios.get("/api/fashion-shop-2/feature-products");

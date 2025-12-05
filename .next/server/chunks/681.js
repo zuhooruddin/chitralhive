@@ -99,6 +99,11 @@ const Setting = ()=>{
                     placement: "left",
                     children: /*#__PURE__*/ _jsxs(StyledIconButton, {
                         onClick: ()=>setShowBody((state)=>!state),
+                        "aria-label": showBody ? "Close settings" : "Open settings",
+                        sx: {
+                            minWidth: "44px",
+                            minHeight: "44px"
+                        },
                         children: [
                             !showBody && /*#__PURE__*/ _jsx(Settings, {}),
                             showBody && /*#__PURE__*/ _jsx(Close, {})

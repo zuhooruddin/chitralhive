@@ -1,3 +1,4 @@
+"use strict";
 (() => {
 var exports = {};
 exports.id = 2888;
@@ -7,7 +8,6 @@ exports.modules = {
 /***/ 2581:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -31,18 +31,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var next_auth_react__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(1649);
 /* harmony import */ var next_auth_react__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(next_auth_react__WEBPACK_IMPORTED_MODULE_10__);
 /* harmony import */ var _context_AuthenticationContext__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(8298);
-/* harmony import */ var react_toastify__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(3590);
-/* harmony import */ var react_toastify_dist_ReactToastify_css__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(8819);
-/* harmony import */ var react_toastify_dist_ReactToastify_css__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(react_toastify_dist_ReactToastify_css__WEBPACK_IMPORTED_MODULE_13__);
-/* harmony import */ var _src_utils_useScrollRestoration__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(7107);
-/* harmony import */ var react_floating_whatsapp__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(2382);
-/* harmony import */ var react_floating_whatsapp__WEBPACK_IMPORTED_MODULE_15___default = /*#__PURE__*/__webpack_require__.n(react_floating_whatsapp__WEBPACK_IMPORTED_MODULE_15__);
-/* harmony import */ var swr__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(5941);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(2167);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_17___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_17__);
-/* harmony import */ var _src_loader__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(4555);
-var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([components_RTL__WEBPACK_IMPORTED_MODULE_1__, react_toastify__WEBPACK_IMPORTED_MODULE_12__, swr__WEBPACK_IMPORTED_MODULE_16__, _src_loader__WEBPACK_IMPORTED_MODULE_18__]);
-([components_RTL__WEBPACK_IMPORTED_MODULE_1__, react_toastify__WEBPACK_IMPORTED_MODULE_12__, swr__WEBPACK_IMPORTED_MODULE_16__, _src_loader__WEBPACK_IMPORTED_MODULE_18__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
+/* harmony import */ var _src_utils_useScrollRestoration__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(7107);
+/* harmony import */ var swr__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(5941);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(2167);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_14__);
+/* harmony import */ var next_dynamic__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(5152);
+/* harmony import */ var next_dynamic__WEBPACK_IMPORTED_MODULE_15___default = /*#__PURE__*/__webpack_require__.n(next_dynamic__WEBPACK_IMPORTED_MODULE_15__);
+/* harmony import */ var _src_loader__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(4555);
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([components_RTL__WEBPACK_IMPORTED_MODULE_1__, swr__WEBPACK_IMPORTED_MODULE_13__, _src_loader__WEBPACK_IMPORTED_MODULE_16__]);
+([components_RTL__WEBPACK_IMPORTED_MODULE_1__, swr__WEBPACK_IMPORTED_MODULE_13__, _src_loader__WEBPACK_IMPORTED_MODULE_16__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
 
 
 
@@ -52,6 +49,7 @@ var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([comp
 
 
 
+// Lazy load heavy CSS to improve initial load - only load when needed
 
 
 
@@ -61,10 +59,25 @@ var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([comp
 
 
 
-
-
-
-
+// Lazy load heavy components that aren't needed immediately
+const ToastContainer = next_dynamic__WEBPACK_IMPORTED_MODULE_15___default()(null, {
+    loadableGenerated: {
+        modules: [
+            "_app.jsx -> " + "react-toastify"
+        ]
+    },
+    ssr: false
+});
+const FloatingWhatsApp = next_dynamic__WEBPACK_IMPORTED_MODULE_15___default()(null, {
+    loadableGenerated: {
+        modules: [
+            "_app.jsx -> " + "react-floating-whatsapp"
+        ]
+    },
+    ssr: false
+});
+// Lazy load CSS for toastify - only load when needed
+if (false) {}
 //Binding events.
 next_router__WEBPACK_IMPORTED_MODULE_5___default().events.on("routeChangeStart", ()=>nprogress__WEBPACK_IMPORTED_MODULE_6___default().start());
 next_router__WEBPACK_IMPORTED_MODULE_5___default().events.on("routeChangeComplete", ()=>nprogress__WEBPACK_IMPORTED_MODULE_6___default().done());
@@ -82,13 +95,69 @@ const App = ({ router , Component , pageProps: { session , ...pageProps }  })=>{
         if (jssStyles) {
             jssStyles.parentElement.removeChild(jssStyles);
         }
+        // Lazy load heavy CSS only when needed (not on initial load)
+        // These will be loaded on-demand when components that need them are rendered
+        const loadHeavyCSS = async ()=>{
+            // Only load if not already loaded
+            if (!document.querySelector('link[href*="quill"]')) {
+                const quillCSS = document.createElement("link");
+                quillCSS.rel = "stylesheet";
+                quillCSS.href = "https://cdn.quilljs.com/1.3.6/quill.snow.css";
+                quillCSS.media = "print";
+                quillCSS.onload = ()=>{
+                    quillCSS.media = "all";
+                };
+                document.head.appendChild(quillCSS);
+            }
+        };
+        // Load after initial render to not block
+        setTimeout(loadHeavyCSS, 2000);
     }, []);
     // useScrollRestoration(router);
     const imgbaseurl = "https://chitralhive.com/media/";
-    const fetcher = async (url)=>await axios__WEBPACK_IMPORTED_MODULE_17___default().get(url).then((res)=>res.data);
+    // Create axios instance with timeout to prevent hanging
+    const axiosWithTimeout = axios__WEBPACK_IMPORTED_MODULE_14___default().create({
+        timeout: 5000
+    });
+    const fetcher = async (url)=>{
+        try {
+            const res = await axiosWithTimeout.get(url);
+            return res.data;
+        } catch (error) {
+            // Return empty array on error to prevent crashes
+            console.error("API Error:", error.message);
+            return [];
+        }
+    };
     const server_ip = "https://chitralhive.com/api/";
-    const { data , error  } = (0,swr__WEBPACK_IMPORTED_MODULE_16__["default"])(server_ip + "getGeneralSetting", fetcher);
-    if (false) {}
+    // Use SWR with revalidation to cache and share data across components
+    const { data , error  } = (0,swr__WEBPACK_IMPORTED_MODULE_13__["default"])(server_ip + "getGeneralSetting", fetcher, {
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
+        dedupingInterval: 60000,
+        // Don't retry on error to prevent hanging
+        shouldRetryOnError: false,
+        // Use stale data if available
+        revalidateIfStale: false
+    });
+    (0,react__WEBPACK_IMPORTED_MODULE_7__.useEffect)(()=>{
+        if (false) {}
+    }, [
+        data
+    ]);
+    // Memoize FloatingWhatsApp props to prevent unnecessary re-renders
+    const whatsappProps = (0,react__WEBPACK_IMPORTED_MODULE_7__.useMemo)(()=>({
+            phoneNumber: data && data.length > 0 ? data[0].whatsapp : "+923239119309",
+            accountName: data && data.length > 0 ? data[0].site_name : "Ecommerce",
+            avatar: data && data.length > 0 ? imgbaseurl + data[0].site_logo : "/assets/images/banners/banner-1.png",
+            allowEsc: true,
+            allowClickAway: true,
+            notification: true,
+            notificationSound: true
+        }), [
+        data,
+        imgbaseurl
+    ]);
     return /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(next_auth_react__WEBPACK_IMPORTED_MODULE_10__.SessionProvider, {
         session: session,
         children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(_context_AuthenticationContext__WEBPACK_IMPORTED_MODULE_11__/* .AuthenticationProvider */ .i, {
@@ -113,19 +182,20 @@ const App = ({ router , Component , pageProps: { session , ...pageProps }  })=>{
                             /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx("meta", {
                                 httpEquiv: "Content-Type",
                                 content: "text/html; charset=utf-8"
+                            }),
+                            /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx("link", {
+                                rel: "preconnect",
+                                href: "https://chitralhive.com/api/",
+                                crossOrigin: "anonymous"
+                            }),
+                            /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx("link", {
+                                rel: "dns-prefetch",
+                                href: "https://chitralhive.com/media/"
                             })
                         ]
                     }),
-                    /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(_src_loader__WEBPACK_IMPORTED_MODULE_18__/* ["default"] */ .Z, {}),
-                    /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(react_floating_whatsapp__WEBPACK_IMPORTED_MODULE_15__.FloatingWhatsApp, {
-                        phoneNumber: data && data.length > 0 ? data[0].whatsapp : "+923239119309",
-                        accountName: data && data.length > 0 ? data[0].site_name : "Ecommerce",
-                        avatar: data && data.length > 0 ? imgbaseurl + data[0].site_logo : "assets/images/banners/banner-1.png",
-                        allowEsc: true,
-                        allowClickAway: true,
-                        notification: true,
-                        notificationSound: true
-                    }),
+                    /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(_src_loader__WEBPACK_IMPORTED_MODULE_16__/* ["default"] */ .Z, {}),
+                     false && /*#__PURE__*/ 0,
                     /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(contexts_SettingContext__WEBPACK_IMPORTED_MODULE_3__/* ["default"] */ .Z, {
                         children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(contexts_AppContext__WEBPACK_IMPORTED_MODULE_2__/* .AppProvider */ .wI, {
                             children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(theme_MuiTheme__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .Z, {
@@ -134,17 +204,7 @@ const App = ({ router , Component , pageProps: { session , ...pageProps }  })=>{
                                         getLayout(/*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(AnyComponent, {
                                             ...pageProps
                                         })),
-                                        /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(react_toastify__WEBPACK_IMPORTED_MODULE_12__.ToastContainer, {
-                                            position: "top-right",
-                                            autoClose: 5000,
-                                            hideProgressBar: true,
-                                            newestOnTop: true,
-                                            closeOnClick: true,
-                                            rtl: false,
-                                            pauseOnFocusLoss: false,
-                                            draggable: true,
-                                            pauseOnHover: true
-                                        })
+                                         false && /*#__PURE__*/ 0
                                     ]
                                 })
                             })
@@ -174,7 +234,6 @@ __webpack_async_result__();
 /***/ 8074:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
@@ -234,7 +293,6 @@ __webpack_async_result__();
 /***/ 6047:
 /***/ ((__unused_webpack_module, __unused_webpack___webpack_exports__, __webpack_require__) => {
 
-"use strict";
 
 ;// CONCATENATED MODULE: ./src/fake-db/mock.js
 const MockAdapter = __webpack_require__(6963);
@@ -11289,7 +11347,6 @@ mock.onAny().passThrough();
 /***/ 4555:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Z": () => (/* binding */ Loader)
@@ -11301,22 +11358,89 @@ __webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __we
 /* harmony import */ var swr__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5941);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(2167);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var next_image__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(5675);
+/* harmony import */ var next_image__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(next_image__WEBPACK_IMPORTED_MODULE_4__);
 var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([swr__WEBPACK_IMPORTED_MODULE_2__]);
 swr__WEBPACK_IMPORTED_MODULE_2__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
 
 
 
 
+
+// Create axios instance with timeout to prevent hanging
+const axiosWithTimeout = axios__WEBPACK_IMPORTED_MODULE_3___default().create({
+    timeout: 2000
+});
 function Loader() {
     const { 0: showLoader , 1: setShowLoader  } = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(true);
+    const { 0: hasShown , 1: setHasShown  } = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
     const imgbaseurl = "https://chitralhive.com/media/";
-    const fetcher = async (url)=>await axios__WEBPACK_IMPORTED_MODULE_3___default().get(url).then((res)=>res.data);
+    const fetcher = async (url)=>{
+        try {
+            const res = await axiosWithTimeout.get(url);
+            return res.data;
+        } catch (error) {
+            // If API fails, return null to use fallback
+            return null;
+        }
+    };
     const server_ip = "https://chitralhive.com/api/";
-    const { data , error  } = (0,swr__WEBPACK_IMPORTED_MODULE_2__["default"])(server_ip + "getGeneralSetting", fetcher);
+    // Share the same SWR cache from _app.jsx to avoid duplicate API calls
+    const { data , error  } = (0,swr__WEBPACK_IMPORTED_MODULE_2__["default"])(server_ip + "getGeneralSetting", fetcher, {
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
+        dedupingInterval: 60000,
+        // Don't block on error - use fallback
+        shouldRetryOnError: false
+    });
     (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(()=>{
-        setTimeout(()=>{
+        // Maximum 500ms wait time - much faster initial load
+        // Don't wait for API response - show loader briefly then hide
+        const maxWaitTime = 500;
+        const timer = setTimeout(()=>{
             setShowLoader(false);
-        }, data && data.length > 0 ? data[0].splashtime : 8000);
+            setHasShown(true);
+        }, maxWaitTime);
+        return ()=>clearTimeout(timer);
+    }, []);
+    // If API data arrives quickly, use it; otherwise use fallback
+    (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(()=>{
+        if (data && !hasShown) {
+            const splashTime = data.length > 0 ? Math.min(Math.max(data[0].splashtime || 300, 200), 500) : 300;
+            const timer = setTimeout(()=>{
+                setShowLoader(false);
+                setHasShown(true);
+            }, splashTime);
+            return ()=>clearTimeout(timer);
+        }
+    }, [
+        data,
+        hasShown
+    ]);
+    // Hide loader immediately on user interaction for better UX
+    (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(()=>{
+        const handleInteraction = ()=>{
+            setShowLoader(false);
+            setHasShown(true);
+        };
+        window.addEventListener("click", handleInteraction, {
+            once: true
+        });
+        window.addEventListener("keydown", handleInteraction, {
+            once: true
+        });
+        window.addEventListener("scroll", handleInteraction, {
+            once: true
+        });
+        window.addEventListener("touchstart", handleInteraction, {
+            once: true
+        });
+        return ()=>{
+            window.removeEventListener("click", handleInteraction);
+            window.removeEventListener("keydown", handleInteraction);
+            window.removeEventListener("scroll", handleInteraction);
+            window.removeEventListener("touchstart", handleInteraction);
+        };
     }, []);
     const closeLoader = ()=>{
         setShowLoader(false);
@@ -11356,21 +11480,31 @@ function Loader() {
         fontSize: "20px",
         color: "#000"
     };
+    // Use fallback image if data not loaded yet
+    const splashImage = data && data.length > 0 && data[0].site_splash ? imgbaseurl + data[0].site_splash : "/assets/images/banners/banner-1.png";
     return showLoader && /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx("div", {
         style: loaderStyle,
         children: /*#__PURE__*/ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", {
             style: contentStyle,
             children: [
-                /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx("img", {
-                    src: data && data.length > 0 ? imgbaseurl + data[0].site_splash : "assets/images/banners/banner-1.png",
+                /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx((next_image__WEBPACK_IMPORTED_MODULE_4___default()), {
+                    src: splashImage,
                     alt: "Loading",
-                    style: imageStyle
+                    width: 500,
+                    height: 500,
+                    style: imageStyle,
+                    priority: true,
+                    onError: (e)=>{
+                        // Fallback if image fails to load
+                        e.target.src = "/assets/images/banners/banner-1.png";
+                    }
                 }),
                 /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx("span", {
                     style: closeStyle,
                     onClick: closeLoader,
                     role: "button",
                     tabIndex: 0,
+                    "aria-label": "Close loader",
                     children: "✖"
                 })
             ]
@@ -11386,7 +11520,6 @@ __webpack_async_result__();
 /***/ 6917:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
@@ -11899,7 +12032,6 @@ const MuiTheme = ({ children  })=>{
 /***/ 7107:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 /* unused harmony export default */
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6689);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
@@ -11961,17 +12093,9 @@ function useScrollRestoration(router) {
 
 /***/ }),
 
-/***/ 8819:
-/***/ (() => {
-
-
-
-/***/ }),
-
 /***/ 5692:
 /***/ ((module) => {
 
-"use strict";
 module.exports = require("@mui/material");
 
 /***/ }),
@@ -11979,7 +12103,6 @@ module.exports = require("@mui/material");
 /***/ 8442:
 /***/ ((module) => {
 
-"use strict";
 module.exports = require("@mui/material/styles");
 
 /***/ }),
@@ -11987,7 +12110,6 @@ module.exports = require("@mui/material/styles");
 /***/ 2167:
 /***/ ((module) => {
 
-"use strict";
 module.exports = require("axios");
 
 /***/ }),
@@ -11995,7 +12117,6 @@ module.exports = require("axios");
 /***/ 6963:
 /***/ ((module) => {
 
-"use strict";
 module.exports = require("axios-mock-adapter");
 
 /***/ }),
@@ -12003,15 +12124,62 @@ module.exports = require("axios-mock-adapter");
 /***/ 1649:
 /***/ ((module) => {
 
-"use strict";
 module.exports = require("next-auth/react");
+
+/***/ }),
+
+/***/ 4957:
+/***/ ((module) => {
+
+module.exports = require("next/dist/shared/lib/head.js");
+
+/***/ }),
+
+/***/ 744:
+/***/ ((module) => {
+
+module.exports = require("next/dist/shared/lib/image-config-context.js");
+
+/***/ }),
+
+/***/ 5843:
+/***/ ((module) => {
+
+module.exports = require("next/dist/shared/lib/image-config.js");
+
+/***/ }),
+
+/***/ 5832:
+/***/ ((module) => {
+
+module.exports = require("next/dist/shared/lib/loadable.js");
+
+/***/ }),
+
+/***/ 8854:
+/***/ ((module) => {
+
+module.exports = require("next/dist/shared/lib/router/utils/parse-path.js");
+
+/***/ }),
+
+/***/ 3297:
+/***/ ((module) => {
+
+module.exports = require("next/dist/shared/lib/router/utils/remove-trailing-slash.js");
+
+/***/ }),
+
+/***/ 9232:
+/***/ ((module) => {
+
+module.exports = require("next/dist/shared/lib/utils.js");
 
 /***/ }),
 
 /***/ 968:
 /***/ ((module) => {
 
-"use strict";
 module.exports = require("next/head");
 
 /***/ }),
@@ -12019,7 +12187,6 @@ module.exports = require("next/head");
 /***/ 1853:
 /***/ ((module) => {
 
-"use strict";
 module.exports = require("next/router");
 
 /***/ }),
@@ -12027,7 +12194,6 @@ module.exports = require("next/router");
 /***/ 808:
 /***/ ((module) => {
 
-"use strict";
 module.exports = require("nprogress");
 
 /***/ }),
@@ -12035,23 +12201,13 @@ module.exports = require("nprogress");
 /***/ 6689:
 /***/ ((module) => {
 
-"use strict";
 module.exports = require("react");
-
-/***/ }),
-
-/***/ 2382:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("react-floating-whatsapp");
 
 /***/ }),
 
 /***/ 997:
 /***/ ((module) => {
 
-"use strict";
 module.exports = require("react/jsx-runtime");
 
 /***/ }),
@@ -12059,7 +12215,6 @@ module.exports = require("react/jsx-runtime");
 /***/ 3195:
 /***/ ((module) => {
 
-"use strict";
 module.exports = require("stylis-plugin-rtl");
 
 /***/ }),
@@ -12067,7 +12222,6 @@ module.exports = require("stylis-plugin-rtl");
 /***/ 8440:
 /***/ ((module) => {
 
-"use strict";
 module.exports = import("@emotion/cache");;
 
 /***/ }),
@@ -12075,23 +12229,13 @@ module.exports = import("@emotion/cache");;
 /***/ 3139:
 /***/ ((module) => {
 
-"use strict";
 module.exports = import("@emotion/react");;
-
-/***/ }),
-
-/***/ 3590:
-/***/ ((module) => {
-
-"use strict";
-module.exports = import("react-toastify");;
 
 /***/ }),
 
 /***/ 4615:
 /***/ ((module) => {
 
-"use strict";
 module.exports = import("stylis");;
 
 /***/ }),
@@ -12099,7 +12243,6 @@ module.exports = import("stylis");;
 /***/ 5941:
 /***/ ((module) => {
 
-"use strict";
 module.exports = import("swr");;
 
 /***/ })
@@ -12111,7 +12254,7 @@ module.exports = import("swr");;
 var __webpack_require__ = require("../webpack-runtime.js");
 __webpack_require__.C(exports);
 var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
-var __webpack_exports__ = __webpack_require__.X(0, [8745,8298], () => (__webpack_exec__(2581)));
+var __webpack_exports__ = __webpack_require__.X(0, [6377,6964,5675,5152,8745,8298], () => (__webpack_exec__(2581)));
 module.exports = __webpack_exports__;
 
 })();

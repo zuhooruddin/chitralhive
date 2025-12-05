@@ -13,8 +13,6 @@ import { useSession } from 'next-auth/react';
 const Section9 = ({data}) => {
   const { data: session} = useSession()
 
-console.log("Section09",data)
-
   const width = useWindowSize();
   const [visibleSlides, setVisibleSlides] = useState(4);
   const [selected, setSelected] = useState("new");
@@ -31,7 +29,6 @@ console.log("Section09",data)
           },
         });
         const fetchedProducts = response.data;
-        console.log("Products:", fetchedProducts);
         const shuffledProducts = shuffle(fetchedProducts);
         setNewArrivalProducts(
           shuffledProducts.filter((product) => product.isNewArrival)

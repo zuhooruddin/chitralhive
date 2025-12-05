@@ -76,7 +76,13 @@ const Header = ({ isFixed,headerdata, className, searchBoxType = "type2" }) => {
         >
           <Link href="/">
             <a>
-              <Image height={44} src={headerdata?imgbaseurl+headerdata[0].site_logo:'assets/images/logos/webpack.png'} alt={comopanyalt} />
+              <Image 
+                height={44} 
+                width={150}
+                src={headerdata?imgbaseurl+headerdata[0].site_logo:'/assets/images/logos/webpack.png'} 
+                alt={comopanyalt}
+                style={{ display: 'block' }}
+              />
             </a>
           </Link>
 

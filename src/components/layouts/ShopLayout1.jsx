@@ -28,13 +28,54 @@ const ShopLayout1 = ({
   topbarBgColor,
   showNavbar = true,
   navCategories,
+  footerData, // Pass from props to avoid duplicate API calls
+  generalSetting, // Pass from props to avoid duplicate API calls
 }) => {
   const [isFixed, setIsFixed] = useState(false);
   const toggleIsFixed = useCallback((fixed) => setIsFixed(fixed), []);
-  const fetcher = async (url) => await axios.get(url).then((res) => res.data);
+  
+  // Only fetch if not provided via props (fallback for pages that don't pass it)
+  // Create axios instance with timeout to prevent hanging
+  const axiosWithTimeout = axios.create({
+    timeout: 5000, // 5 second timeout
+  });
+  
+  const fetcher = async (url) => {
+    try {
+      const res = await axiosWithTimeout.get(url);
+      return res.data;
+    } catch (error) {
+      console.error('API Error in ShopLayout1:', error.message);
+      // Return empty data on error to prevent crashes
+      return url.includes('Footer') ? {} : [];
+    }
+  };
+  
   const server_ip = process.env.NEXT_PUBLIC_BACKEND_API_BASE;
-  const { data, error } = useSWR(server_ip + 'getFooterSettings', fetcher);
-  const { data: data1, error: error1 } = useSWR(server_ip + 'getGeneralSetting', fetcher);
+  const { data: swrFooterData } = useSWR(
+    !footerData ? server_ip + 'getFooterSettings' : null, 
+    fetcher,
+    { 
+      revalidateOnFocus: false, 
+      dedupingInterval: 60000,
+      shouldRetryOnError: false,
+      revalidateIfStale: false,
+    }
+  );
+  const { data: swrGeneralSetting } = useSWR(
+    !generalSetting ? server_ip + 'getGeneralSetting' : null, 
+    fetcher,
+    { 
+      revalidateOnFocus: false, 
+      dedupingInterval: 60000,
+      shouldRetryOnError: false,
+      revalidateIfStale: false,
+    }
+  );
+  
+  // Use props if available, otherwise use SWR data
+  const data = footerData || swrFooterData;
+  const data1 = generalSetting || swrGeneralSetting;
 
 
 
