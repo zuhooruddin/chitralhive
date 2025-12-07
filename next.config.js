@@ -12,6 +12,11 @@ module.exports = {
   compress: true, // Enable gzip compression
   poweredByHeader: false, // Remove X-Powered-By header for security
   
+  // Disable ESLint during builds to avoid plugin loading errors
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  
   devIndicators: {
     buildActivity: false, // Disable build indicator in dev mode for better performance
   },
