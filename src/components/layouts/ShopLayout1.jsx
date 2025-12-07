@@ -43,16 +43,25 @@ const ShopLayout1 = ({
   const fetcher = async (url) => {
     try {
       const res = await axiosWithTimeout.get(url);
-      return res.data;
+      console.log('API Response from', url, ':', res.data);
+      // Check if response is valid
+      if (res.data && typeof res.data === 'object') {
+        return res.data;
+      }
+      return url.includes('Footer') ? {} : [];
     } catch (error) {
-      console.error('API Error in ShopLayout1:', error.message);
+      console.error('API Error in ShopLayout1:', url, error.message);
+      if (error.response) {
+        console.error('Response status:', error.response.status);
+        console.error('Response data:', error.response.data);
+      }
       // Return empty data on error to prevent crashes
       return url.includes('Footer') ? {} : [];
     }
   };
   
   const server_ip = process.env.NEXT_PUBLIC_BACKEND_API_BASE;
-  const { data: swrFooterData } = useSWR(
+  const { data: swrFooterData, error: footerError } = useSWR(
     !footerData ? server_ip + 'getFooterSettings' : null, 
     fetcher,
     { 
@@ -77,6 +86,12 @@ const ShopLayout1 = ({
   const data = footerData || swrFooterData;
   const data1 = generalSetting || swrGeneralSetting;
 
+  // Debug logging
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Footer Data:', data);
+    console.log('Footer Error:', footerError);
+  }
+
 
 
   return (
@@ -99,7 +114,7 @@ const ShopLayout1 = ({
 
       <MobileNavigationBar />
 
-      <Footer footerData={data && Object.keys(data).length > 0 ? data : null} />
+      <Footer footerData={data || null} />
     </Fragment>
   );
 };

@@ -22,7 +22,7 @@ module.exports = {
   },
   
   images: {
-    domains: ["100.64.6.105","idrisbookbank-dev-server.inara.tech","s3-inara.eu-central-1.linodeobjects.com","chitralhive.com"],
+    domains: ["100.64.6.105","idrisbookbank-dev-server.inara.tech","api.chitralhive.com","s3-inara.eu-central-1.linodeobjects.com","chitralhive.com"],
     formats: ['image/avif', 'image/webp'], // Enable modern image formats
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],

@@ -44,9 +44,9 @@ const Footer = ({ footerData: initialFooterData }) => {
 
   useEffect(() => {
     setMounted(true);
-    // If footerData needs to be fetched client-side, do it here
-    if (!initialFooterData) {
-      // fetchFooterData().then(setFooterData);
+    // Update footerData when initialFooterData changes
+    if (initialFooterData) {
+      setFooterData(initialFooterData);
     }
   }, [initialFooterData]);
 
@@ -54,6 +54,15 @@ const Footer = ({ footerData: initialFooterData }) => {
   const imgbaseurl = process.env.NEXT_PUBLIC_BACKEND_API_BASE + "media/";
   const defaultLogo = "/assets/images/logos/webpack.png";
 
+  // Debug logging in development
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Footer component - footerData:', footerData);
+      console.log('Footer component - initialFooterData:', initialFooterData);
+    }
+  }, [footerData, initialFooterData]);
+
+  // Always render footer structure, even if data is missing
   return (
     <Footwrapper>
       <footer>
