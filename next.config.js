@@ -8,7 +8,8 @@
 
 module.exports = {
   reactStrictMode: true,
-  swcMinify: true, // Use SWC for faster minification
+  // Disable SWC minify if it causes bus errors - can fall back to Terser
+  swcMinify: process.env.DISABLE_SWC !== 'true', // Can disable via env var if needed
   compress: true, // Enable gzip compression
   poweredByHeader: false, // Remove X-Powered-By header for security
   
@@ -38,7 +39,8 @@ module.exports = {
   
   // Optimize bundle size
   experimental: {
-    optimizeCss: true,
+    // Disable optimizeCss if it causes build issues
+    optimizeCss: process.env.DISABLE_CSS_OPT !== 'true',
   },
   
   // Enable production source maps for debugging (only for large first-party JS)
@@ -56,12 +58,31 @@ module.exports = {
   
   // Webpack optimizations
   webpack: (config, { dev, isServer }) => {
-    // Reduce file handle pressure on Windows - CRITICAL for EMFILE errors
-    // Always limit parallelism to prevent "too many open files" error
-    config.parallelism = 1;
+    // Optimize parallelism based on environment
+    // Use more parallelism on Linux (production), less on Windows
+    if (process.platform === 'win32') {
+      config.parallelism = 1; // Windows has low file handle limits
+    } else {
+      // Linux can handle more parallelism, but limit to prevent memory issues
+      config.parallelism = Math.min(4, require('os').cpus().length);
+    }
     
-    // Disable caching to reduce file handles (Windows has low file handle limits)
-    config.cache = false;
+    // Enable caching for production builds to reduce memory usage
+    // Only disable on Windows if needed
+    if (process.platform !== 'win32' && !dev) {
+      // Enable caching on Linux for better performance
+      if (!config.cache) {
+        config.cache = {
+          type: 'filesystem',
+          buildDependencies: {
+            config: [__filename],
+          },
+        };
+      }
+    } else if (process.platform === 'win32') {
+      // Disable caching on Windows to reduce file handles
+      config.cache = false;
+    }
     
     // Optimize file watching to reduce open file handles in dev mode
     if (dev) {
@@ -69,16 +90,16 @@ module.exports = {
         ...config.watchOptions,
         ignored: /node_modules/,
         aggregateTimeout: 300,
-        poll: false,
+        poll: process.platform === 'win32', // Only poll on Windows
       };
     }
     
-    // Optimize module resolution to reduce file system access
+    // Optimize module resolution
     config.resolve = {
       ...config.resolve,
-      cache: false, // Disable resolve cache to reduce file handles
-      // Limit symlink resolution to reduce file system calls
-      symlinks: false,
+      // Enable resolve cache on Linux, disable on Windows
+      cache: process.platform !== 'win32',
+      symlinks: true, // Enable symlinks on Linux
     };
     
     // Reduce file system operations during build
