@@ -20,7 +20,7 @@ exports.modules = {
 
 const SEO = ({ title , description , metaTitle , sitename  })=>{
     const metaDescription = "Get in touch with Chitral Hive for authentic Chitrali products. We're here to help with your orders and inquiries. Contact us via phone, email, or visit our store in Chitral.Get in touch with Chitral Hive for authentic Chitrali products. We're here to help with your orders and inquiries. Contact us via phone, email, or visit our store in Chitral.";
-    sitename = "ChitralHive";
+    sitename = "Inara Technologies Limited";
     return /*#__PURE__*/ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)((next_head__WEBPACK_IMPORTED_MODULE_1___default()), {
         children: [
             /*#__PURE__*/ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("title", {

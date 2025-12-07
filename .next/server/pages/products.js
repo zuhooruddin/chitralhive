@@ -84,8 +84,8 @@ const ContentWrapper = (0,_mui_material__WEBPACK_IMPORTED_MODULE_3__.styled)(_mu
         }
     }));
 const ProductBundles = (data)=>{
-    const apiUrl = "https://chitralhive.com/api/";
-    const imgbaseurl = "https://chitralhive.com/api/";
+    const apiUrl = "https://api.chitralhive.com/api/";
+    const imgbaseurl = "https://api.chitralhive.com/api/";
     const slugbaseurl = "bundle/";
     return data && data.productbundles ? /*#__PURE__*/ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(components_layouts_ShopLayout1__WEBPACK_IMPORTED_MODULE_1__/* ["default"] */ .Z, {
         children: [

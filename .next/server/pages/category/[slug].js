@@ -258,14 +258,14 @@ rating =5 , hideRating , hoverEffect , discount , showProductSize , stock , isNe
     const calculatedDiscountAmount = salePrice * discount / 100;
     const calculatedDiscountedSubtotal = salePrice - calculatedDiscountAmount;
     salePrice = calculatedDiscountedSubtotal;
-    const imgbaseurl = "https://chitralhive.com/media/";
+    const imgbaseurl = "https://api.chitralhive.com/api/media/";
     const { 0: currency , 1: setCurrency  } = (0,react__WEBPACK_IMPORTED_MODULE_9__.useState)("");
     (0,react__WEBPACK_IMPORTED_MODULE_9__.useEffect)(()=>{
         if (false) {}
     }, []);
     const addwishtlist = async ()=>{
         let userid = session.user.id;
-        await fetch("https://chitralhive.com/api/" + "updateWishlist", {
+        await fetch("https://api.chitralhive.com/api/" + "updateWishlist", {
             method: "POST",
             body: JSON.stringify({
                 userid: userid,
@@ -784,7 +784,7 @@ var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([swr_
 
 
 const ProductCard1List = ({ category , ProductReviews  })=>{
-    const server_ip = "https://chitralhive.com/api/";
+    const server_ip = "https://api.chitralhive.com/api/";
     const router = (0,next_router__WEBPACK_IMPORTED_MODULE_11__.useRouter)();
     const { 0: pageIndex , 1: setPageIndex  } = (0,react__WEBPACK_IMPORTED_MODULE_5__.useState)(1);
     const { 0: pageSize , 1: setPageSize  } = (0,react__WEBPACK_IMPORTED_MODULE_5__.useState)(15);
@@ -1090,7 +1090,7 @@ var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([comp
 
 
 const ProductCard9List = ({ category , ProductReviews  })=>{
-    const server_ip = "https://chitralhive.com/api/";
+    const server_ip = "https://api.chitralhive.com/api/";
     const { 0: pageIndex , 1: setPageIndex  } = (0,react__WEBPACK_IMPORTED_MODULE_4__.useState)(1);
     const { 0: pageSize , 1: setPageSize  } = (0,react__WEBPACK_IMPORTED_MODULE_4__.useState)(15);
     const { 0: sortOption , 1: setSortOption  } = (0,react__WEBPACK_IMPORTED_MODULE_4__.useState)("");

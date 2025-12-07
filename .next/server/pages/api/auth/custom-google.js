@@ -34,7 +34,7 @@ __webpack_require__.r(__webpack_exports__);
 
 async function fetchGoogleCredentials() {
     try {
-        const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get("https://chitralhive.com/api/" + "getGeneralSetting");
+        const response = await axios__WEBPACK_IMPORTED_MODULE_0___default().get("https://api.chitralhive.com/api/" + "getGeneralSetting");
         const data = response.data[0];
         return {
             googleClientId: data.googleid,

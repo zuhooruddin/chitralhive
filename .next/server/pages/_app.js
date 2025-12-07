@@ -114,7 +114,7 @@ const App = ({ router , Component , pageProps: { session , ...pageProps }  })=>{
         setTimeout(loadHeavyCSS, 2000);
     }, []);
     // useScrollRestoration(router);
-    const imgbaseurl = "https://chitralhive.com/media/";
+    const imgbaseurl = "https://api.chitralhive.com/api/media/";
     // Create axios instance with timeout to prevent hanging
     const axiosWithTimeout = axios__WEBPACK_IMPORTED_MODULE_14___default().create({
         timeout: 5000
@@ -129,7 +129,7 @@ const App = ({ router , Component , pageProps: { session , ...pageProps }  })=>{
             return [];
         }
     };
-    const server_ip = "https://chitralhive.com/api/";
+    const server_ip = "https://api.chitralhive.com/api/";
     // Use SWR with revalidation to cache and share data across components
     const { data , error  } = (0,swr__WEBPACK_IMPORTED_MODULE_13__["default"])(server_ip + "getGeneralSetting", fetcher, {
         revalidateOnFocus: false,
@@ -185,12 +185,12 @@ const App = ({ router , Component , pageProps: { session , ...pageProps }  })=>{
                             }),
                             /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx("link", {
                                 rel: "preconnect",
-                                href: "https://chitralhive.com/api/",
+                                href: "https://api.chitralhive.com/api/",
                                 crossOrigin: "anonymous"
                             }),
                             /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx("link", {
                                 rel: "dns-prefetch",
-                                href: "https://chitralhive.com/media/"
+                                href: "https://api.chitralhive.com/api/media/"
                             })
                         ]
                     }),
@@ -11374,7 +11374,7 @@ const axiosWithTimeout = axios__WEBPACK_IMPORTED_MODULE_3___default().create({
 function Loader() {
     const { 0: showLoader , 1: setShowLoader  } = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(true);
     const { 0: hasShown , 1: setHasShown  } = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
-    const imgbaseurl = "https://chitralhive.com/media/";
+    const imgbaseurl = "https://api.chitralhive.com/api/media/";
     const fetcher = async (url)=>{
         try {
             const res = await axiosWithTimeout.get(url);
@@ -11384,7 +11384,7 @@ function Loader() {
             return null;
         }
     };
-    const server_ip = "https://chitralhive.com/api/";
+    const server_ip = "https://api.chitralhive.com/api/";
     // Share the same SWR cache from _app.jsx to avoid duplicate API calls
     const { data , error  } = (0,swr__WEBPACK_IMPORTED_MODULE_2__["default"])(server_ip + "getGeneralSetting", fetcher, {
         revalidateOnFocus: false,

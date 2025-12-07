@@ -34,7 +34,7 @@ __webpack_require__.r(__webpack_exports__);
 // import { getSession } from "next-auth/react"
 
 // import { authOptions } from "./auth/[...nextauth]"
-const signoutCallbackUrl = (/* unused pure expression or super */ null && ("https://chitralhive.com/api/" + "api/auth/logout/"));
+const signoutCallbackUrl = (/* unused pure expression or super */ null && ("https://api.chitralhive.com/api/" + "api/auth/logout/"));
 process.env.NEXTAUTH_SITE = "http://chitralhive.com/api";
 function handler(req, res) {
     "request in logout";

@@ -52,7 +52,7 @@ var external_axios_default = /*#__PURE__*/__webpack_require__.n(external_axios_)
 
 
 async function refreshAccessTokenCredentials(token) {
-    const url = "https://chitralhive.com/api/" + "api/auth/token/refresh/";
+    const url = "https://api.chitralhive.com/api/" + "api/auth/token/refresh/";
     const payload = {
         refresh: token.refreshToken
     };
@@ -103,7 +103,7 @@ async function refreshAccessTokenCredentials(token) {
                     password: credentials.password,
                     role: credentials.role
                 };
-                const url = "https://chitralhive.com/api/" + "api/auth/login/";
+                const url = "https://api.chitralhive.com/api/" + "api/auth/login/";
                 const res = await fetch(url, {
                     method: "POST",
                     body: JSON.stringify(payload),
@@ -152,7 +152,7 @@ async function refreshAccessTokenCredentials(token) {
             if (account && user && account.provider === "google") {
                 const response = await external_axios_default()({
                     method: "post",
-                    url: "https://chitralhive.com/api/" + "google/",
+                    url: "https://api.chitralhive.com/api/" + "google/",
                     data: {
                         access_token: account.access_token,
                         id_token: account.id_token
@@ -175,7 +175,7 @@ async function refreshAccessTokenCredentials(token) {
                 ;
                 const response1 = await external_axios_default()({
                     method: "post",
-                    url: "https://chitralhive.com/api/" + "facebook/",
+                    url: "https://api.chitralhive.com/api/" + "facebook/",
                     data: {
                         access_token: account.access_token
                     }
@@ -210,7 +210,7 @@ async function refreshAccessTokenCredentials(token) {
                 session.accessToken = token.accessToken;
                 session.user = token.user;
                 session.provider = token.provider;
-                const url = "https://chitralhive.com/api/" + "getCusWishlists";
+                const url = "https://api.chitralhive.com/api/" + "getCusWishlists";
                 if (session.accessToken) {
                     try {
                         const response = await fetch(url, {

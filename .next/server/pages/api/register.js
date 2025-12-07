@@ -33,7 +33,7 @@ const router_namespaceObject = require("next/router");
 
 /* harmony default export */ const register = (async (req, res)=>{
     const router = (0,router_namespaceObject.useRouter)();
-    const server_ip = "https://chitralhive.com/api/";
+    const server_ip = "https://api.chitralhive.com/api/";
     let accessToken = null;
     if (req.method === "POST") {
         const { username , email , password  } = req.body;

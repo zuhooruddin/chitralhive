@@ -333,7 +333,7 @@ const StyledCategoryMenuItem = (0,_mui_material__WEBPACK_IMPORTED_MODULE_1__.sty
     }));
 const CategoryMenuCard = (props)=>{
     const { open , position , navCategories  } = props;
-    const apiUrl = "https://chitralhive.com/api/";
+    const apiUrl = "https://api.chitralhive.com/api/";
     const megaMenu = {
         MegaMenu1: _mega_menu_MegaMenu1__WEBPACK_IMPORTED_MODULE_4__/* ["default"] */ .Z,
         MegaMenu2: _mega_menu_MegaMenu2__WEBPACK_IMPORTED_MODULE_5__/* ["default"] */ .Z
@@ -948,7 +948,7 @@ const Header = ({ isFixed , headerdata , className , searchBoxType ="type2"  })=
     const toggleSidenav = ()=>setSidenavOpen(!sidenavOpen);
     const companyLogo = "https://s3-inara.eu-central-1.linodeobjects.com/idris/logo/idris-logo.png";
     const comopanyalt = "companylogo";
-    const imgbaseurl = "https://chitralhive.com/api/" + "media/";
+    const imgbaseurl = "https://api.chitralhive.com/api/" + "media/";
     return /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(HeaderWrapper, {
         className: clsx__WEBPACK_IMPORTED_MODULE_7___default()(className),
         children: /*#__PURE__*/ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)((_mui_material_Container__WEBPACK_IMPORTED_MODULE_3___default()), {
@@ -1260,7 +1260,7 @@ const ShoppingBagOutlined = (props)=>{
 
 // import {server_ip} from "utils/backend_server_ip.jsx"
 const MiniCart = ({ toggleSidenav  })=>{
-    const imgurl = "https://chitralhive.com/api/";
+    const imgurl = "https://api.chitralhive.com/api/";
     const slugbaseurl = "/product/";
     const { palette  } = (0,_mui_material_styles__WEBPACK_IMPORTED_MODULE_3__.useTheme)();
     const { state , dispatch  } = (0,contexts_AppContext__WEBPACK_IMPORTED_MODULE_11__/* .useAppContext */ .bp)();
@@ -3793,7 +3793,7 @@ var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_Sea
 const GrocerySearchBox = ()=>{
     const { 0: pageIndex , 1: setPageIndex  } = (0,react__WEBPACK_IMPORTED_MODULE_4__.useState)(1);
     const router = (0,next_router__WEBPACK_IMPORTED_MODULE_8__.useRouter)();
-    const server_ip = "https://chitralhive.com/api/";
+    const server_ip = "https://api.chitralhive.com/api/";
     const { 0: value , 1: setValue  } = (0,react__WEBPACK_IMPORTED_MODULE_4__.useState)("");
     const { 0: message , 1: setMessage  } = (0,react__WEBPACK_IMPORTED_MODULE_4__.useState)("");
     const { 0: messageError , 1: setMessageError  } = (0,react__WEBPACK_IMPORTED_MODULE_4__.useState)(false); // Add messageError state variable
@@ -5522,7 +5522,7 @@ const useWindowSize = ()=>{
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
 // import {server_ip} from "../backend_server_ip.jsx"
-const server_ip = "https://chitralhive.com/api/";
+const server_ip = "https://api.chitralhive.com/api/";
 // Create axios instance with timeout to prevent hanging
 const axiosInstance = axios__WEBPACK_IMPORTED_MODULE_0___default().create({
     timeout: 10000,

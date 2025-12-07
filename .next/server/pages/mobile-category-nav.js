@@ -81,7 +81,7 @@ const MobileCategoryNav = (props)=>{
     // }
     (0,react__WEBPACK_IMPORTED_MODULE_10__.useEffect)(()=>setSuggestedList(suggestion), []);
     "SubCategories", subCategoryList;
-    const imgbaseurl = "https://chitralhive.com/api/" + "media/";
+    const imgbaseurl = "https://api.chitralhive.com/api/" + "media/";
     return /*#__PURE__*/ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(components_mobile_category_nav_MobileCategoryNavStyle__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .Z, {
         children: [
             /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(components_header_Header__WEBPACK_IMPORTED_MODULE_4__/* ["default"] */ .Z, {

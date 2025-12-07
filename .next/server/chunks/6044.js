@@ -163,7 +163,7 @@ const Footer = ({ footerData: initialFooterData  })=>{
         initialFooterData
     ]);
     // Prevent hydration mismatch - always render consistent structure
-    const imgbaseurl = "https://chitralhive.com/api/" + "media/";
+    const imgbaseurl = "https://api.chitralhive.com/api/" + "media/";
     const defaultLogo = "/assets/images/logos/webpack.png";
     return /*#__PURE__*/ jsx_runtime_.jsx(Footwrapper, {
         children: /*#__PURE__*/ jsx_runtime_.jsx("footer", {
@@ -448,7 +448,7 @@ const ShopLayout1 = ({ children , showTopbar =true , topbarBgColor , showNavbar 
             return url.includes("Footer") ? {} : [];
         }
     };
-    const server_ip = "https://chitralhive.com/api/";
+    const server_ip = "https://api.chitralhive.com/api/";
     const { data: swrFooterData  } = (0,swr__WEBPACK_IMPORTED_MODULE_8__["default"])(!footerData ? server_ip + "getFooterSettings" : null, fetcher, {
         revalidateOnFocus: false,
         dedupingInterval: 60000,
@@ -1396,7 +1396,7 @@ const Topbar = ({ bgColor , topbardata , color  })=>{
             accessToken: session.accessToken
         };
         try {
-            const response = await fetch(`${"https://chitralhive.com/api/"}apiSignOut`, {
+            const response = await fetch(`${"https://api.chitralhive.com/api/"}apiSignOut`, {
                 method: "POST",
                 body: JSON.stringify(payload),
                 headers: {
@@ -1453,8 +1453,8 @@ const Topbar = ({ bgColor , topbardata , color  })=>{
             }
         }
     }
-    const imgbaseurl = "https://chitralhive.com/api/" + "media/";
-    const server_ip = "https://chitralhive.com/api/";
+    const imgbaseurl = "https://api.chitralhive.com/api/" + "media/";
+    const server_ip = "https://api.chitralhive.com/api/";
     const handleSignOut = ()=>{
         tokenBlacklist();
     };
@@ -1474,7 +1474,7 @@ const Topbar = ({ bgColor , topbardata , color  })=>{
     };
     const { 0: coupon , 1: setCoupon  } = (0,react__WEBPACK_IMPORTED_MODULE_10__.useState)();
     (0,react__WEBPACK_IMPORTED_MODULE_10__.useEffect)(()=>{
-        const server_ip = "https://chitralhive.com/api/";
+        const server_ip = "https://api.chitralhive.com/api/";
         fetch(server_ip + "getvoucher").then((res)=>res.json()).then((data)=>{
             setCoupon(data);
         }).catch((error)=>{

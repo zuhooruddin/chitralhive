@@ -266,9 +266,9 @@ const ContentWrapper = (0,_mui_material__WEBPACK_IMPORTED_MODULE_3__.styled)(_mu
 // ========================================================
 const BundleCard1 = ({ id , name , mrp , image , slug , sku , salePrice , description , // category = "Product Dialog",
 rating =5 , hideRating , hoverEffect , discount =0 , showProductSize , category , wishList , stock , props  })=>{
-    const imgurl = "https://chitralhive.com/media/";
-    const server_ip = "https://chitralhive.com/api/";
-    const itemImgUrl = "https://chitralhive.com/api/" + "media/";
+    const imgurl = "https://api.chitralhive.com/api/media/";
+    const server_ip = "https://api.chitralhive.com/api/";
+    const itemImgUrl = "https://api.chitralhive.com/api/" + "media/";
     const { 0: currency , 1: setCurrency  } = (0,react__WEBPACK_IMPORTED_MODULE_10__.useState)("");
     (0,react__WEBPACK_IMPORTED_MODULE_10__.useEffect)(()=>{
         if (false) {}
@@ -276,7 +276,7 @@ rating =5 , hideRating , hoverEffect , discount =0 , showProductSize , category 
     const { data: session , status  } = (0,next_auth_react__WEBPACK_IMPORTED_MODULE_12__.useSession)();
     const addwishtlist = async ()=>{
         let userid = session.user.id;
-        await fetch("https://chitralhive.com/api/" + "updateWishlist", {
+        await fetch("https://api.chitralhive.com/api/" + "updateWishlist", {
             method: "POST",
             body: JSON.stringify({
                 userid: userid,
@@ -732,12 +732,12 @@ rating =5 , hideRating , hoverEffect , discount =0 , category , wishList  })=>{
     const toggleDialog = (0,react__WEBPACK_IMPORTED_MODULE_11__.useCallback)(()=>setOpenModal((open)=>!open), []);
     const categoryName = category["name"];
     const { data: session , status  } = (0,next_auth_react__WEBPACK_IMPORTED_MODULE_3__.useSession)();
-    const server_ip = "https://chitralhive.com/api/";
-    const itemImgUrl = "https://chitralhive.com/api/" + "media/";
-    const imgbaseurl = "https://chitralhive.com/api/";
+    const server_ip = "https://api.chitralhive.com/api/";
+    const itemImgUrl = "https://api.chitralhive.com/api/" + "media/";
+    const imgbaseurl = "https://api.chitralhive.com/api/";
     const addwishtlist = async ()=>{
         let userid = session.user.id;
-        await fetch("https://chitralhive.com/api/" + "updateWishlist", {
+        await fetch("https://api.chitralhive.com/api/" + "updateWishlist", {
             method: "POST",
             body: JSON.stringify({
                 userid: userid,
@@ -1187,7 +1187,7 @@ var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([comp
 
 // ========================================================
 const BundleCard1List = ({ category  }, props)=>{
-    const server_ip = "https://chitralhive.com/api/";
+    const server_ip = "https://api.chitralhive.com/api/";
     const { 0: pageIndex , 1: setPageIndex  } = (0,react__WEBPACK_IMPORTED_MODULE_5__.useState)(1);
     const fetcher = async (url)=>await axios__WEBPACK_IMPORTED_MODULE_7___default().get(url).then((res)=>res.data);
     const { data , error  } = (0,swr__WEBPACK_IMPORTED_MODULE_6__["default"])(server_ip + `getWebsitePagniatedBundlesForCategory?page=${pageIndex}&slug=${category["slug"]}`, fetcher);
@@ -1314,7 +1314,7 @@ var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([comp
 
 // ==========================================================
 const BundleCard9List = ({ category  })=>{
-    const server_ip = "https://chitralhive.com/api/";
+    const server_ip = "https://api.chitralhive.com/api/";
     const { 0: pageIndex , 1: setPageIndex  } = (0,react__WEBPACK_IMPORTED_MODULE_7__.useState)(1);
     const fetcher = async (url)=>await axios__WEBPACK_IMPORTED_MODULE_6___default().get(url).then((res)=>res.data);
     const { data , error  } = (0,swr__WEBPACK_IMPORTED_MODULE_5__["default"])(server_ip + `getWebsitePagniatedBundlesForCategory?page=${pageIndex}&slug=${category["slug"]}`, fetcher);

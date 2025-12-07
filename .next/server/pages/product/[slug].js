@@ -96,8 +96,8 @@ const ErrorContainer = (0,_mui_material__WEBPACK_IMPORTED_MODULE_1__.styled)(_mu
 const ProductDetails = (props)=>{
     ;
     const { productDetails , ProductReviews  } = props;
-    const imgbaseurl = "https://chitralhive.com/media/";
-    const baseurl = process.env.NEXT_PUBLIC_URL;
+    const imgbaseurl = "https://api.chitralhive.com/api/media/";
+    const baseurl = "https://chitralhive.com/api/login";
     const currentDate = new Date().toLocaleDateString();
     const { 0: product , 1: setProduct  } = (0,react__WEBPACK_IMPORTED_MODULE_10__.useState)(productDetails[0]);
     const { 0: selectedOption , 1: setSelectedOption  } = (0,react__WEBPACK_IMPORTED_MODULE_10__.useState)(0);
@@ -108,9 +108,9 @@ const ProductDetails = (props)=>{
     const totalRatings = filteredReviews.reduce((total, item)=>total + item.rating, 0);
     const averageRating = totalRatings / filteredReviews.length;
     const roundedAverageRating = Math.min(Math.round(averageRating * 100) / 100, 5);
-    const companyname = "ChitralHive";
+    const companyname = "Inara Technologies Limited";
     const handleGoBack = ()=>router.back();
-    const searchWords = process.env.NEXT_PUBLIC_URL + "/search/" + productDetails[0]["slug"];
+    const searchWords = "https://chitralhive.com/api/login" + "/search/" + productDetails[0]["slug"];
     const slugbaseurl = "/product/";
     (0,react__WEBPACK_IMPORTED_MODULE_10__.useEffect)(()=>{
         (0,utils_api_related_products__WEBPACK_IMPORTED_MODULE_15__/* .getRelatedProducts */ .E)().then((data)=>setRelatedProducts(data));
@@ -563,8 +563,8 @@ const ProductIntro = ({ product , slug , total , average  })=>{
     (0,react__WEBPACK_IMPORTED_MODULE_9__.useEffect)(()=>{
         if (false) {}
     }, []);
-    const imgurl = "https://chitralhive.com/media/";
-    const localimageurl = "https://chitralhive.com/api/" + "media/";
+    const imgurl = "https://api.chitralhive.com/api/media/";
+    const localimageurl = "https://api.chitralhive.com/api/" + "media/";
     const router = (0,next_router__WEBPACK_IMPORTED_MODULE_8__.useRouter)();
     const routerId = router.query.id;
     const { 0: selectedImage , 1: setSelectedImage  } = (0,react__WEBPACK_IMPORTED_MODULE_9__.useState)(0);
@@ -968,7 +968,7 @@ const ProductReview = ({ itemid , reviews , itemname  })=>{
             formData.append("username", session.user.name);
             formData.append("itemid", itemid);
             formData.append("itemname", itemname);
-            const response = await fetch("https://chitralhive.com/api/" + "addReviews", {
+            const response = await fetch("https://api.chitralhive.com/api/" + "addReviews", {
                 method: "POST",
                 headers: {
                     Authorization: "Bearer " + session.accessToken

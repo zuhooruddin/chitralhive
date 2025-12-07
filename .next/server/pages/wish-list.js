@@ -69,7 +69,7 @@ const WishList = (props)=>{
     const { 0: isLoading , 1: setIsLoading  } = (0,react__WEBPACK_IMPORTED_MODULE_12__.useState)(true);
     const { ProductReviews  } = props;
     const { 0: sorting , 1: setSorting  } = (0,react__WEBPACK_IMPORTED_MODULE_12__.useState)("Default"); // New state for sorting value
-    const url = "https://chitralhive.com/api/" + "getWishlists";
+    const url = "https://api.chitralhive.com/api/" + "getWishlists";
     const fetcher = (...args)=>fetch(url, {
             method: "POST",
             headers: {

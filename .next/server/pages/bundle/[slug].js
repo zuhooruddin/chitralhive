@@ -236,9 +236,9 @@ react_toastify__WEBPACK_IMPORTED_MODULE_17__ = (__webpack_async_dependencies__.t
 
 // ================================================================
 const BundleIntro = ({ product , bundle  })=>{
-    const imgbaseurl = "https://chitralhive.com/media/" + "/";
-    const imgurl = "https://chitralhive.com/api/" + "media/";
-    const imgurls = "https://chitralhive.com/api/";
+    const imgbaseurl = "https://api.chitralhive.com/api/media/" + "/";
+    const imgurl = "https://api.chitralhive.com/api/" + "media/";
+    const imgurls = "https://api.chitralhive.com/api/";
     const slugbaseurl = "/product/";
     const { id , status , name , image , imgGroup , mrp , manufacturer , author , aliasCode , sku ,  } = bundle;
     const { 0: rowsData , 1: setRowsData  } = (0,react__WEBPACK_IMPORTED_MODULE_15__.useState)(product);

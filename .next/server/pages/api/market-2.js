@@ -69,7 +69,7 @@ swr__WEBPACK_IMPORTED_MODULE_2__ = (__webpack_async_dependencies__.then ? (await
 
 
 
-const server_ip = "https://chitralhive.com/api/" || 0;
+const server_ip = "https://api.chitralhive.com/api/" || 0;
 // Create axios instance with timeout to prevent hanging
 const axiosInstance = axios__WEBPACK_IMPORTED_MODULE_1___default().create({
     timeout: 10000,

@@ -174,7 +174,7 @@ rating =5 , hideRating , hoverEffect , stock , isNewArrival , discount , showPro
     const calculatedDiscountAmount = salePrice * discount / 100;
     const calculatedDiscountedSubtotal = salePrice - calculatedDiscountAmount;
     salePrice = calculatedDiscountedSubtotal;
-    const imgbaseurl = "https://chitralhive.com/media/";
+    const imgbaseurl = "https://api.chitralhive.com/api/media/";
     var image = image ? image : imageUrl;
     const categoryName = "";
     const { data: session , status  } = (0,next_auth_react__WEBPACK_IMPORTED_MODULE_12__.useSession)();
@@ -194,7 +194,7 @@ rating =5 , hideRating , hoverEffect , stock , isNewArrival , discount , showPro
     const toggleIsFavorite = ()=>setIsFavorite((fav)=>!fav);
     const addwishtlist = async ()=>{
         let userid = session.user.id;
-        await fetch("https://chitralhive.com/api/" + "updateWishlist", {
+        await fetch("https://api.chitralhive.com/api/" + "updateWishlist", {
             method: "POST",
             body: JSON.stringify({
                 userid: userid,

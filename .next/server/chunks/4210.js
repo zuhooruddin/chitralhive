@@ -159,7 +159,7 @@ const Login = ()=>{
     const { data: session  } = (0,next_auth_react__WEBPACK_IMPORTED_MODULE_11__.useSession)();
     const { 0: loginError , 1: setLoginError  } = (0,react__WEBPACK_IMPORTED_MODULE_7__.useState)("");
     const fetcher = async (url)=>await axios__WEBPACK_IMPORTED_MODULE_16___default().get(url).then((res)=>res.data);
-    const server_ip = "https://chitralhive.com/api/";
+    const server_ip = "https://api.chitralhive.com/api/";
     const { data , error  } = (0,swr__WEBPACK_IMPORTED_MODULE_15__["default"])(server_ip + "getGeneralSetting", fetcher);
     const { 0: passwordVisibility , 1: setPasswordVisibility  } = (0,react__WEBPACK_IMPORTED_MODULE_7__.useState)(false);
     const togglePasswordVisibility = (0,react__WEBPACK_IMPORTED_MODULE_7__.useCallback)(()=>{
