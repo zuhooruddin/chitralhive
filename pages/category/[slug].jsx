@@ -31,9 +31,12 @@ const ProductSearchResult = (props) => {
 
   return (
     <ShopLayout1>
-      <SEO title={categoryDetail['name']}
-        description={categoryDetail['metaDescription'] && categoryDetail['metaDescription'] != "undefined" ? categoryDetail['metaDescription'] : "Home Delivery Service for all " + categoryDetail['name'] + ". Order online from a wide range of " + categoryDetail['name'] + " at your doorstep across Pakistan."}
-        metaTitle={categoryDetail['metaTitle'] && categoryDetail['metaTitle'] != "undefined" ? categoryDetail['metaTitle'] : "Buy " + categoryDetail['name'] + " Now"}
+      <SEO 
+        title={categoryDetail['name']}
+        description={categoryDetail['metaDescription'] && categoryDetail['metaDescription'] != "undefined" ? categoryDetail['metaDescription'] : `Shop authentic ${categoryDetail['name']} from Chitral Hive. Browse our wide collection of Chitrali ${categoryDetail['name']} products. Order online and get delivered to your doorstep across Pakistan.`}
+        metaTitle={categoryDetail['metaTitle'] && categoryDetail['metaTitle'] != "undefined" ? categoryDetail['metaTitle'] : `Buy ${categoryDetail['name']} Online | Chitral Hive`}
+        keywords={`${categoryDetail['name']}, Chitrali ${categoryDetail['name']}, buy ${categoryDetail['name']} online, Chitral Hive, authentic Chitrali products, ${categoryDetail['name']} Pakistan`}
+        canonical={`https://chitralhive.com/category/${categoryDetail['slug'] || categoryDetail['id']}`}
       />
       <Container
         sx={{

@@ -4,6 +4,7 @@ const OpenGraphTags = () => {
   const baseUrl = "https://chitralhive.com";
   return (
     
+
     <React.Fragment>
       {/* Primary Open Graph Tags */}
       <meta property="og:url" content={baseUrl} />

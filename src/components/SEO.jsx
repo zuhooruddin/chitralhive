@@ -57,6 +57,20 @@ const SEO = ({ title, description, metaTitle, sitename, keywords, image, canonic
       <meta name="geo.placename" content="Chitral" />
       <meta name="geo.position" content="35.8514;71.7864" />
       <meta name="ICBM" content="35.8514, 71.7864" />
+      
+      {/* Additional Meta Tags for Better Indexing */}
+      <meta name="application-name" content="Chitral Hive" />
+      <meta name="apple-mobile-web-app-title" content="Chitral Hive" />
+      <meta name="msapplication-TileColor" content="#1976d2" />
+      <meta name="msapplication-config" content="/browserconfig.xml" />
+      
+      {/* Preconnect to improve page speed */}
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      
+      {/* DNS Prefetch for external resources */}
+      <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+      <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
     </Head>
   );
 };

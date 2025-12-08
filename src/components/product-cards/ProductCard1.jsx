@@ -346,7 +346,8 @@ useEffect(()=>{
                 <Image
                   width={300}
                   height={300}
-                  alt={name || "product"}
+                  alt={name ? `${name} - Buy Authentic Chitrali Products Online at Chitral Hive` : "Chitrali Product - Authentic Chitral Hive Products"}
+                  title={name || "Chitrali Product"}
                   objectFit="contain"
                   layout="intrinsic"
                   className="product-img"
@@ -600,7 +601,8 @@ useEffect(()=>{
                 <Image
                   width={300}
                   height={300}
-                  alt={name || "product"}
+                  alt={name ? `${name} - Buy Authentic Chitrali Products Online at Chitral Hive` : "Chitrali Product - Authentic Chitral Hive Products"}
+                  title={name || "Chitrali Product"}
                   objectFit="contain"
                   layout="intrinsic"
                   className="product-img"
