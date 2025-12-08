@@ -3,9 +3,12 @@ import React from "react";
 const OpenGraphTags = () => {
   const baseUrl = "https://chitralhive.com";
   return (
+
     
 
-    <React.Fragment>
+
+    
+    <>
       {/* Primary Open Graph Tags */}
       <meta property="og:url" content={baseUrl} />
       <meta property="og:type" content="website" />
@@ -38,7 +41,7 @@ const OpenGraphTags = () => {
       <meta name="twitter:image:alt" content="Chitral Hive - Authentic Chitrali Products" />
       <meta name="twitter:site" content="@chitralhive" />
       <meta name="twitter:creator" content="@chitralhive" />
-    </React.Fragment>
+    </>
   );
 };
 
