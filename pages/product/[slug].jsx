@@ -152,18 +152,52 @@ const companyname=process.env.NEXT_PUBLIC_COMPANY_NAME
   const productschema = {
     "@context": "https://schema.org/",
     "@type": "Product",
-    name: productDetails[0]["name"],
-    // "image": imgbaseurl+productDetails[0]["imgUrl"],
-
-    image: [imgbaseurl + productDetails[0]["imgUrl"]],
-
-    offers: {
-      "@type": "Offer",
-      url: baseurl + slugbaseurl + productDetails[0]["slug"],
-
-      price: productDetails[0]["salePrice"],
-      priceCurrency: "PKR",
+    "@id": baseurl + slugbaseurl + productDetails[0]["slug"],
+    "name": productDetails[0]["name"],
+    "image": [imgbaseurl + productDetails[0]["imgUrl"]],
+    "description": productDetails[0]["description"] || productDetails[0]["name"],
+    "sku": productDetails[0]["sku"] || productDetails[0]["aliasCode"],
+    "brand": {
+      "@type": "Brand",
+      "name": productDetails[0]["manufacturer"] || "Chitral Hive"
     },
+    "offers": {
+      "@type": "Offer",
+      "url": baseurl + slugbaseurl + productDetails[0]["slug"],
+      "price": productDetails[0]["salePrice"] || productDetails[0]["mrp"],
+      "priceCurrency": "PKR",
+      "availability": productDetails[0]["stock"] && parseFloat(productDetails[0]["stock"]) > 0 
+        ? "https://schema.org/InStock" 
+        : "https://schema.org/OutOfStock",
+      "priceValidUntil": new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+      "itemCondition": "https://schema.org/NewCondition",
+      "seller": {
+        "@type": "Organization",
+        "name": "Chitral Hive"
+      }
+    },
+    "aggregateRating": productDetails[0]["rating"] ? {
+      "@type": "AggregateRating",
+      "ratingValue": productDetails[0]["rating"],
+      "reviewCount": productDetails[0]["reviewCount"] || 0,
+      "bestRating": "5",
+      "worstRating": "1"
+    } : undefined,
+    "review": ProductReviews && ProductReviews.length > 0 ? ProductReviews.slice(0, 5).map(review => ({
+      "@type": "Review",
+      "author": {
+        "@type": "Person",
+        "name": review.user_name || "Customer"
+      },
+      "datePublished": review.created_at || new Date().toISOString(),
+      "reviewBody": review.comment || "",
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": review.rating || 5,
+        "bestRating": "5",
+        "worstRating": "1"
+      }
+    })) : undefined,
   };
 
   // const bookschema = {
@@ -218,9 +252,36 @@ const companyname=process.env.NEXT_PUBLIC_COMPANY_NAME
     productschema.sku = productDetails[0]["sku"];
   }
 
+  // Add BreadcrumbList schema for better SEO
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": baseurl
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Products",
+        "item": `${baseurl}/products`
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": productDetails[0]["name"],
+        "item": baseurl + slugbaseurl + productDetails[0]["slug"]
+      }
+    ]
+  };
+
   return (
     <ShopLayout1>
         <StructuredData data={productschema} />
+        <StructuredData data={breadcrumbSchema} />
 
 
       {/* {productDetails[0]["publisherFlag"] === true ? (
@@ -233,7 +294,7 @@ const companyname=process.env.NEXT_PUBLIC_COMPANY_NAME
         title={
           productDetails[0]["name"]
             ? productDetails[0]["name"]
-            : {companyname}
+            : companyname
         }
         description={
           productDetails[0]["metaDescription"] &&
@@ -243,16 +304,19 @@ const companyname=process.env.NEXT_PUBLIC_COMPANY_NAME
             ? "Buy authentic " +
               productDetails[0]["name"] +
               " from Chitral Hive. Shop Chitrali products online and get it delivered to your doorstep."
-            : {companyname}
+            : "Shop authentic Chitrali products online at Chitral Hive"
         }
         metaTitle={
           productDetails[0]["metaTitle"] &&
           productDetails[0]["metaTitle"] != "undefined"
             ? productDetails[0]["metaTitle"]
             : productDetails[0]["name"]
-            ? "Buy " + productDetails[0]["name"]
-            : {companyname}
+            ? "Buy " + productDetails[0]["name"] + " Online | Chitral Hive"
+            : companyname
         }
+        keywords={`${productDetails[0]["name"]}, Chitrali products, Chitral Hive, buy ${productDetails[0]["name"]} online, authentic Chitrali products, Chitral specialties`}
+        canonical={`${baseurl}${slugbaseurl}${productDetails[0]["slug"]}`}
+        image={imgbaseurl + productDetails[0]["imgUrl"]}
       />
 
       <Container sx={{ my: 4 }}>

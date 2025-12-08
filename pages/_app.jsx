@@ -128,19 +128,19 @@ const imgbaseurl=process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL
     <Fragment>
       <Head>
         <meta charSet="utf-8" />
-        <title>Chitral Hive | Online Chitrali </title>
-        <meta
-          name="description"
-          content="Navigate through our wide collection of authentic Chitrali products at Chitral Hive. Shop traditional crafts, local specialties, handmade items, and unique products from Chitral. Buy Chitrali products online and get them delivered to your doorstep. Order Now!"
-        />
-        {/* <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests"/>  */}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="language" content="English" />
+        <meta name="geo.region" content="PK-KP" />
+        <meta name="geo.placename" content="Chitral" />
         {/* Resource hints for faster loading - limit to most important origins only */}
         <link rel="preconnect" href={process.env.NEXT_PUBLIC_BACKEND_API_BASE} crossOrigin="anonymous" />
         <link rel="dns-prefetch" href={process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL} />
+        <link rel="canonical" href="https://chitralhive.com" />
       </Head>
       <Loader />
+
+
 
       {/* Lazy load FloatingWhatsApp - only render after initial load */}
       {typeof window !== 'undefined' && (

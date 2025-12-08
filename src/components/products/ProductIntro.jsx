@@ -131,7 +131,7 @@ const ProductIntro = ({ product, slug, total, average }) => {
           <FlexBox justifyContent="center" mb={6}>
             <LazyImage
               width={300}
-              alt={name}
+              alt={name ? `${name} - Authentic Chitrali Product | Buy Online at Chitral Hive` : "Chitrali Product - Chitral Hive"}
               height={300}
               loading="eager"
               objectFit="contain"
@@ -139,6 +139,7 @@ const ProductIntro = ({ product, slug, total, average }) => {
               onClick={() =>
                 openImageViewer(imgGroup.indexOf(imgGroup[selectedImage]))
               }
+              title={name || "Chitrali Product"}
             />
             {isViewerOpen && (
               <ImageViewer

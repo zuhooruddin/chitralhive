@@ -2,6 +2,7 @@ import { Box } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import ShopLayout1 from "components/layouts/ShopLayout1";
 import SEO from "components/SEO";
+import StructuredData from "components/schema/StructuredData";
 import dynamic from "next/dynamic";
 import { useSession, signIn, signOut } from "next-auth/react";
 import React, { useState, useEffect, useMemo } from "react";
@@ -53,6 +54,134 @@ const Section12 = dynamic(() => import("pages-sections/market-2/Section12"), {
   loading: () => null,
 });
 
+// Generate structured data for homepage
+const getHomePageStructuredData = (generalSetting) => {
+  const baseUrl = "https://chitralhive.com";
+  const siteName = generalSetting && generalSetting.length > 0 ? generalSetting[0].site_name : "Chitral Hive";
+  const siteDescription = generalSetting && generalSetting.length > 0 ? generalSetting[0].site_description : "Shop authentic Chitrali products online at Chitral Hive";
+  
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": `${baseUrl}/#organization`,
+        "name": siteName,
+        "url": baseUrl,
+        "logo": {
+          "@type": "ImageObject",
+          "url": `${baseUrl}/images/logo.png`,
+          "width": 300,
+          "height": 60
+        },
+        "description": siteDescription,
+        "sameAs": [
+          "https://www.facebook.com/chitralhive",
+          "https://www.instagram.com/chitralhive",
+          "https://twitter.com/chitralhive"
+        ],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+92-323-9119309",
+          "contactType": "Customer Service",
+          "areaServed": "PK",
+          "availableLanguage": ["en", "ur"]
+        }
+      },
+      {
+        "@type": "LocalBusiness",
+        "@id": `${baseUrl}/#localbusiness`,
+        "name": siteName,
+        "image": `${baseUrl}/images/og-image.jpg`,
+        "description": siteDescription,
+        "url": baseUrl,
+        "telephone": "+92-323-9119309",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Chitral",
+          "addressRegion": "Khyber Pakhtunkhwa",
+          "addressCountry": "PK"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": "35.8514",
+          "longitude": "71.7864"
+        },
+        "priceRange": "$$",
+        "openingHoursSpecification": {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday"
+          ],
+          "opens": "09:00",
+          "closes": "18:00"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${baseUrl}/#website`,
+        "url": baseUrl,
+        "name": siteName,
+        "description": siteDescription,
+        "publisher": {
+          "@id": `${baseUrl}/#organization`
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": `${baseUrl}/search?q={search_term_string}`
+          },
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@type": "ItemList",
+        "@id": `${baseUrl}/#itemlist`,
+        "name": "Featured Chitrali Products",
+        "description": "Browse our collection of authentic Chitrali products",
+        "url": `${baseUrl}/products`
+      },
+      {
+        "@type": "FAQPage",
+        "@id": `${baseUrl}/#faq`,
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What are Chitrali products?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Chitrali products are authentic, traditional items from Chitral, Pakistan. These include handmade crafts, local specialties, traditional foods, and unique cultural products that represent the rich heritage of Chitral."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Do you ship Chitrali products nationwide?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, Chitral Hive delivers authentic Chitrali products to your doorstep across Pakistan. We ensure safe packaging and timely delivery of all orders."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Are the products authentic?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, all products at Chitral Hive are 100% authentic and sourced directly from Chitral. We work with local artisans and suppliers to bring you genuine Chitrali products."
+            }
+          }
+        ]
+      }
+    ]
+  };
+};
+
 const IndexPage = (props) => {
   
 
@@ -87,11 +216,13 @@ const IndexPage = (props) => {
       footerData={null} // Can be passed from props if available
     >
       <SEO
-        title={GeneralSettingMemo&&GeneralSettingMemo.length>0?GeneralSettingMemo[0].site_name:'Ecommerce Online Store'       }
-        description={GeneralSettingMemo&&GeneralSettingMemo.length>0?GeneralSettingMemo[0].site_description:'Ecommerce Online Store'       }
-         metaTitle={GeneralSettingMemo&&GeneralSettingMemo.length>0?GeneralSettingMemo[0].site_metatitle:'Ecommerce Online Store'       }
-         
-         />
+        title={GeneralSettingMemo&&GeneralSettingMemo.length>0?GeneralSettingMemo[0].site_name:'Chitral Hive - Authentic Chitrali Products Online'}
+        description={GeneralSettingMemo&&GeneralSettingMemo.length>0?GeneralSettingMemo[0].site_description:'Shop authentic Chitrali products online at Chitral Hive. Discover traditional crafts, local specialties, handmade items, and unique products from Chitral. Buy Chitrali products online and get them delivered to your doorstep.'}
+        metaTitle={GeneralSettingMemo&&GeneralSettingMemo.length>0?GeneralSettingMemo[0].site_metatitle:'Chitral Hive - Authentic Chitrali Products Online Store'}
+        keywords="Chitrali products, Chitral Hive, authentic Chitrali crafts, traditional Chitrali items, Chitral specialties, handmade Chitrali products, buy Chitrali products online, Chitral online store, Chitrali food, Chitrali handicrafts, Chitral culture, Pakistan products, Chitral honey, Chitrali dry fruits, Chitrali shawls"
+        canonical="https://chitralhive.com"
+      />
+      <StructuredData data={getHomePageStructuredData(GeneralSettingMemo)} />
       <Box bgcolor="#F6F6F6">
         <Section1
           data1={props.Section1SequenceData}

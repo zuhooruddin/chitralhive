@@ -2,15 +2,22 @@
 
 function generateSiteMap(pages) {
   return `<?xml version="1.0" encoding="UTF-8"?>
-   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+           xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
      ${pages
-       .map(({ loc, lastmod, changefreq, priority }) => {
+       .map(({ loc, lastmod, changefreq, priority, images }) => {
          return `
        <url>
            <loc>${loc}</loc>
            ${lastmod ? `<lastmod>${lastmod}</lastmod>` : ''}
            ${changefreq ? `<changefreq>${changefreq}</changefreq>` : ''}
            ${priority ? `<priority>${priority}</priority>` : ''}
+           ${images && images.length > 0 ? images.map(img => `
+           <image:image>
+             <image:loc>${img.url}</image:loc>
+             ${img.title ? `<image:title>${img.title}</image:title>` : ''}
+             ${img.caption ? `<image:caption>${img.caption}</image:caption>` : ''}
+           </image:image>`).join('') : ''}
        </url>
      `;
        })
@@ -24,8 +31,8 @@ function SiteMap() {
 }
 
 export async function getServerSideProps({ res }) {
-  const baseUrl = 'https://chitralhive.com';
-  const apiUrl = `${baseUrl}/api`;
+  const baseUrl = process.env.NEXT_PUBLIC_URL || 'https://chitralhive.com';
+  const apiUrl = process.env.NEXT_PUBLIC_BACKEND_API_BASE || `${baseUrl}/api`;
   
   // Static pages with high priority
   const staticPages = [
@@ -36,46 +43,28 @@ export async function getServerSideProps({ res }) {
       priority: '1.0',
     },
     {
-      loc: `${baseUrl}/shop`,
+      loc: `${baseUrl}/products`,
       lastmod: new Date().toISOString(),
       changefreq: 'daily',
       priority: '0.9',
     },
     {
-      loc: `${baseUrl}/about`,
+      loc: `${baseUrl}/brands`,
+      lastmod: new Date().toISOString(),
+      changefreq: 'weekly',
+      priority: '0.9',
+    },
+    {
+      loc: `${baseUrl}/about-us`,
       lastmod: new Date().toISOString(),
       changefreq: 'monthly',
       priority: '0.8',
     },
     {
-      loc: `${baseUrl}/contact`,
+      loc: `${baseUrl}/categories`,
       lastmod: new Date().toISOString(),
-      changefreq: 'monthly',
-      priority: '0.8',
-    },
-    {
-      loc: `${baseUrl}/faqs`,
-      lastmod: new Date().toISOString(),
-      changefreq: 'monthly',
-      priority: '0.7',
-    },
-    {
-      loc: `${baseUrl}/shipping-returns`,
-      lastmod: new Date().toISOString(),
-      changefreq: 'monthly',
-      priority: '0.7',
-    },
-    {
-      loc: `${baseUrl}/privacy-policy`,
-      lastmod: new Date().toISOString(),
-      changefreq: 'yearly',
-      priority: '0.5',
-    },
-    {
-      loc: `${baseUrl}/terms-conditions`,
-      lastmod: new Date().toISOString(),
-      changefreq: 'yearly',
-      priority: '0.5',
+      changefreq: 'weekly',
+      priority: '0.9',
     },
   ];
 
@@ -134,11 +123,17 @@ export async function getServerSideProps({ res }) {
     const allItemsData = await allItemsResponse.json();
     
     if (allItemsData && Array.isArray(allItemsData)) {
+      const imgBaseUrl = process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL || `${baseUrl}/media/`;
       const allProductPages = allItemsData.map((item) => ({
         loc: `${baseUrl}/product/${item.slug || item.id}`,
         lastmod: item.updated_at || item.created_at || new Date().toISOString(),
         changefreq: 'weekly',
         priority: '0.6',
+        images: item.imgUrl ? [{
+          url: imgBaseUrl + item.imgUrl,
+          title: item.name || 'Chitrali Product',
+          caption: item.description || `Buy ${item.name} from Chitral Hive - Authentic Chitrali Products`
+        }] : []
       }));
       
       dynamicPages = [...dynamicPages, ...allProductPages];
