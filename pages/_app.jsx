@@ -131,7 +131,7 @@ const imgbaseurl=process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL
         <title>Chitral Hive | Online Chitrali </title>
         <meta
           name="description"
-          content="Navigate through our wide collection of School, Colleges and other Story Books. Buy Books & other items Online from largest bookstore in Islamabad. Order Now!"
+          content="Navigate through our wide collection of authentic Chitrali products at Chitral Hive. Shop traditional crafts, local specialties, handmade items, and unique products from Chitral. Buy Chitrali products online and get them delivered to your doorstep. Order Now!"
         />
         {/* <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests"/>  */}
         <meta name="viewport" content="width=device-width, initial-scale=1" />

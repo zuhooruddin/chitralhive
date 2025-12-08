@@ -59,7 +59,7 @@ const AboutUs = (props) => {
     <ShopLayout1>
       <SEO 
         title="About Us" 
-        description={"Looking for Books? Order online and get it to your door-step."}
+        description={"Learn about Chitral Hive - your trusted online marketplace for authentic Chitrali products. Discover traditional crafts, local specialties, and unique items from Chitral. Shop now and support local artisans."}
         metaTitle = "About Us"
       />
       <Container

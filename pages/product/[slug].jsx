@@ -240,9 +240,9 @@ const companyname=process.env.NEXT_PUBLIC_COMPANY_NAME
           productDetails[0]["metaDescription"] != "undefined"
             ? productDetails[0]["metaDescription"]
             : productDetails[0]["name"]
-            ? "Looking for " +
+            ? "Buy authentic " +
               productDetails[0]["name"] +
-              "? Order online and get it to your door-step."
+              " from Chitral Hive. Shop Chitrali products online and get it delivered to your doorstep."
             : {companyname}
         }
         metaTitle={

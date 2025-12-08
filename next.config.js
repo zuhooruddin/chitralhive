@@ -248,6 +248,16 @@ module.exports = {
     ];
   },
 
+  async rewrites() {
+    return [
+      // Rewrite /api/callback/google to NextAuth's callback handler
+      {
+        source: '/api/callback/google',
+        destination: '/api/auth/callback/google',
+      },
+    ];
+  },
+
   async redirects() {
     return [
       {

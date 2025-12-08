@@ -45,9 +45,11 @@ async function refreshAccessTokenCredentials(token) {
 
 
 export default NextAuth({
-
-
-
+  // Base URL for NextAuth (set via NEXTAUTH_URL environment variable)
+  // This ensures the redirect URI is correctly constructed for OAuth callbacks
+  // For localhost: http://localhost:4000
+  // For production: https://chitralhive.com
+  ...(process.env.NEXTAUTH_URL && { url: process.env.NEXTAUTH_URL }),
   
   secret: process.env.JWT_SECRET,
   providers: [

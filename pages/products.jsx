@@ -63,8 +63,8 @@ const ProductBundles = (data) => {
     <ShopLayout1>
       <SEO 
         title="Schools" 
-        description={"Looking for Books? Order online and get it to your door-step."}
-        metaTitle="Schools"
+        description={"Shop authentic Chitrali products online at Chitral Hive. Discover traditional crafts, local specialties, and unique items from Chitral. Order now and get it delivered to your doorstep."}
+        metaTitle="products"
       />
   
       <div style={{ margin: "50px 10px 20px 20px" }}>
