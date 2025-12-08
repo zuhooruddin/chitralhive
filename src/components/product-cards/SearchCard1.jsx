@@ -142,8 +142,13 @@ const SearchCard1 = ({
   wishlist,
 }) => {
   const discountprice = salePrice;
-  const calculatedDiscountAmount = (salePrice * discount) / 100;
-  const calculatedDiscountedSubtotal = salePrice - calculatedDiscountAmount;
+  // Ensure salePrice and discount are valid numbers
+  const numericSalePrice = parseFloat(salePrice) || 0;
+  const numericDiscount = parseFloat(discount) || 0;
+  const discountprice = numericSalePrice;
+  
+  const calculatedDiscountAmount = (numericSalePrice * numericDiscount) / 100;
+  const calculatedDiscountedSubtotal = numericSalePrice - calculatedDiscountAmount;
 
   salePrice = calculatedDiscountedSubtotal;
 
@@ -392,8 +397,8 @@ const SearchCard1 = ({
                   display: "flex",
                 }}
               >
-                {currency}. {salePrice.toFixed(2)}
-                {!!discount && (
+                {currency}. {isNaN(salePrice) ? '0.00' : salePrice.toFixed(2)}
+                {!!numericDiscount && numericDiscount > 0 && (
                   <H5>
                     <Box
                       color="grey.600"
@@ -405,7 +410,7 @@ const SearchCard1 = ({
                         ml: "15px",
                       }}
                     >
-                      <del>{currency}.{discountprice?.toFixed(2)}</del>
+                      <del>{currency}.{isNaN(discountprice) ? '0.00' : discountprice.toFixed(2)}</del>
                     </Box>
                   </H5>
                 )}

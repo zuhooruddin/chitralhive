@@ -36,11 +36,23 @@ const ProductIntro = ({ product, slug, total, average }) => {
     discount,
   } = product;
 
-  const discountprice = salePrice;
-  const calculatedDiscountAmount = (salePrice * discount) / 100;
-  const calculatedDiscountedSubtotal = salePrice - calculatedDiscountAmount;
+  // Ensure salePrice and discount are valid numbers
+  // Handle null, undefined, empty string, and invalid values
+  // Use mrp as fallback if salePrice is not available
+  const numericSalePrice = salePrice != null && salePrice !== '' && !isNaN(salePrice) 
+    ? parseFloat(salePrice) 
+    : (mrp != null && mrp !== '' && !isNaN(mrp) ? parseFloat(mrp) : 0);
+  const numericDiscount = discount != null && discount !== '' && !isNaN(discount) 
+    ? parseFloat(discount) 
+    : 0;
+  
+  const discountprice = numericSalePrice;
+  const calculatedDiscountAmount = (numericSalePrice * numericDiscount) / 100;
+  const calculatedDiscountedSubtotal = numericSalePrice - calculatedDiscountAmount;
 
-  const salePrices = calculatedDiscountedSubtotal;
+  const salePrices = isNaN(calculatedDiscountedSubtotal) || calculatedDiscountedSubtotal <= 0 
+    ? numericSalePrice 
+    : calculatedDiscountedSubtotal;
 
   const [currency,setCurrency]=useState('')
 
@@ -69,12 +81,14 @@ const ProductIntro = ({ product, slug, total, average }) => {
   const handleImageClick = (ind) => () => {
     setSelectedImage(ind);
   };
+  
 
   const openImageViewer = useCallback((index) => {
     setCurrentImage(index);
     setIsViewerOpen(true);
   }, []);
 
+  
   const closeImageViewer = () => {
     setCurrentImage(0);
     setIsViewerOpen(false);
@@ -82,14 +96,17 @@ const ProductIntro = ({ product, slug, total, average }) => {
 
   const handleCartAmountChange = useCallback(
     (amount, addflag) => () => {
+      // Ensure we're storing the correct price - use salePrices if valid, otherwise use numericSalePrice
+      const priceToStore = salePrices > 0 ? salePrices : numericSalePrice;
       dispatch({
         type: "CHANGE_CART_AMOUNT",
         payload: {
           mrp,
-          salePrices,
+          salePrice: priceToStore,
+          salePrices: priceToStore,
           sku,
           slug,
-          price: salePrices,
+          price: priceToStore,
           qty: amount,
           name: name,
           image: localimageurl + imgGroup[0],
@@ -286,11 +303,11 @@ const ProductIntro = ({ product, slug, total, average }) => {
 
           <Box mb={3}>
             <H2 color="primary.main" mt={5} lineHeight="1">
-              {currency}. {salePrices.toFixed(2)}
+              {currency || 'PKR'}. {isNaN(salePrices) || salePrices === null || salePrices === undefined ? '0.00' : salePrices.toFixed(2)}
             </H2>
-            {!!discount && (
+            {!!numericDiscount && numericDiscount > 0 && (
               <H4 color="primary.main" mt={2} ml={2} lineHeight="1">
-                <del> {currency}. {discountprice?.toFixed(2)}</del>
+                <del> {currency || 'PKR'}. {isNaN(discountprice) || discountprice === null || discountprice === undefined ? '0.00' : discountprice.toFixed(2)}</del>
               </H4>
             )}
             {stock === "0.00" ? (

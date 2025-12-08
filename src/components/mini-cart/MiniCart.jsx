@@ -50,7 +50,11 @@ const MiniCart = ({ toggleSidenav }) => {
 
   const getTotalPrice = () => {
     return cartList.reduce(
-      (accum, item) => accum + item.salePrice * item.qty,
+      (accum, item) => {
+        const price = item.salePrice != null && !isNaN(item.salePrice) ? parseFloat(item.salePrice) : 0;
+        const qty = item.qty != null && !isNaN(item.qty) ? parseFloat(item.qty) : 0;
+        return accum + (price * qty);
+      },
       0
     );
   };
@@ -175,7 +179,7 @@ const MiniCart = ({ toggleSidenav }) => {
               </Link> */}
 
               <Tiny color="grey.600">
-               {currency}. {item.salePrice?.toFixed(2)} x {item.qty}
+               {currency || 'PKR'}. {item.salePrice != null && !isNaN(item.salePrice) ? item.salePrice.toFixed(2) : '0.00'} x {item.qty || 0}
               </Tiny>
 
               <Box
@@ -184,7 +188,7 @@ const MiniCart = ({ toggleSidenav }) => {
                 color="primary.main"
                 mt={0.5}
               >
-                {currency}. {(item.qty * item.salePrice).toFixed(2)}
+                {currency || 'PKR'}. {item.salePrice != null && !isNaN(item.salePrice) && item.qty != null && !isNaN(item.qty) ? (item.qty * item.salePrice).toFixed(2) : '0.00'}
               </Box>
             </Box>
 
@@ -213,7 +217,7 @@ const MiniCart = ({ toggleSidenav }) => {
               }}
               onClick={toggleSidenav}
             >
-              Checkout Now ({currency}. {getTotalPrice().toFixed(2)})
+              Checkout Now ({currency || 'PKR'}. {isNaN(getTotalPrice()) ? '0.00' : getTotalPrice().toFixed(2)})
             </BazaarButton>
           </Link>
 

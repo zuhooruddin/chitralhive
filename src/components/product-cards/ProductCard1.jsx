@@ -158,9 +158,13 @@ const ProductCard1 = ({
   ProductReviews,
   wishlist,
 }) => {
-  const discountprice = salePrice;
-  const calculatedDiscountAmount = (salePrice * discount) / 100;
-  const calculatedDiscountedSubtotal = salePrice - calculatedDiscountAmount;
+  // Ensure salePrice and discount are valid numbers
+  const numericSalePrice = parseFloat(salePrice) || 0;
+  const numericDiscount = parseFloat(discount) || 0;
+  
+  const discountprice = numericSalePrice;
+  const calculatedDiscountAmount = (numericSalePrice * numericDiscount) / 100;
+  const calculatedDiscountedSubtotal = numericSalePrice - calculatedDiscountAmount;
   salePrice = calculatedDiscountedSubtotal;
 
   const imgbaseurl = process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL;
@@ -431,8 +435,8 @@ useEffect(()=>{
                   display: "flex",
                 }}
               >
-                {currency}. {salePrice.toFixed(2)}
-                {!!discount && (
+                {currency}. {isNaN(salePrice) ? '0.00' : salePrice.toFixed(2)}
+                {!!numericDiscount && numericDiscount > 0 && (
                   <H5>
                     <Box
                       color="grey.700"
@@ -444,7 +448,7 @@ useEffect(()=>{
                         ml: "15px",
                       }}
                     >
-                      <del>{currency}.{discountprice?.toFixed(2)}</del>
+                      <del>{currency}.{isNaN(discountprice) ? '0.00' : discountprice.toFixed(2)}</del>
                     </Box>
                   </H5>
                 )}
@@ -674,8 +678,8 @@ useEffect(()=>{
                   display: "flex",
                 }}
               >
-                {currency}. {salePrice.toFixed(2)}
-                {!!discount && (
+                {currency}. {isNaN(salePrice) ? '0.00' : salePrice.toFixed(2)}
+                {!!numericDiscount && numericDiscount > 0 && (
                   <H5>
                     <Box
                       color="grey.700"
@@ -687,7 +691,7 @@ useEffect(()=>{
                         ml: "15px",
                       }}
                     >
-                      <del>{currency}.{discountprice?.toFixed(2)}</del>
+                      <del>{currency}.{isNaN(discountprice) ? '0.00' : discountprice.toFixed(2)}</del>
                     </Box>
                   </H5>
                 )}
