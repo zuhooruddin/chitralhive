@@ -49,9 +49,13 @@ export default NextAuth({
   // This ensures the redirect URI is correctly constructed for OAuth callbacks
   // For localhost: http://localhost:4000
   // For production: https://chitralhive.com
+  // IMPORTANT: Set NEXTAUTH_URL in your production environment variables
   ...(process.env.NEXTAUTH_URL && { url: process.env.NEXTAUTH_URL }),
   
-  secret: process.env.JWT_SECRET,
+  secret: process.env.JWT_SECRET || process.env.NEXTAUTH_SECRET,
+  
+  // Debug mode for development (remove in production)
+  debug: process.env.NODE_ENV === 'development',
   providers: [
     CredentialsProvider({
       name: "Email and Password",
@@ -93,6 +97,7 @@ export default NextAuth({
 
   pages: {
     signIn: "/login",
+    error: "/login", // Redirect errors to login page
   },
 
   callbacks: {
