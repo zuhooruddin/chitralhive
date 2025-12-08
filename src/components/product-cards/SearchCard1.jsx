@@ -141,7 +141,6 @@ const SearchCard1 = ({
   ProductReviews,
   wishlist,
 }) => {
-  const discountprice = salePrice;
   // Ensure salePrice and discount are valid numbers
   const numericSalePrice = parseFloat(salePrice) || 0;
   const numericDiscount = parseFloat(discount) || 0;
