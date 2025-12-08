@@ -1,3 +1,5 @@
+
+
 import React from "react";
 
 const OpenGraphTags = () => {
@@ -6,8 +8,8 @@ const OpenGraphTags = () => {
 
     
 
-
     
+
     <>
       {/* Primary Open Graph Tags */}
       <meta property="og:url" content={baseUrl} />
