@@ -12,6 +12,7 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import { useRouter } from "next/router";
 import { useSession, signIn, signOut } from 'next-auth/react';
+import Head from "next/head";
 
 const ProductCard1List = ({ category,ProductReviews }) => {
 
@@ -142,6 +143,18 @@ const getCurrentScrollPosition = () => {
           </Select>
         </FormControl>
       </FlexBox>
+      {/* SEO Pagination Links */}
+      {data && (
+        <Head>
+          {pageIndex > 1 && (
+            <link rel="prev" href={`${router.asPath.split('?')[0]}?page=${pageIndex - 1}${sorting !== 'Default' ? `&sort=${sorting}` : ''}`} />
+          )}
+          {pageIndex < Math.ceil(data['count'] / pageSize) && (
+            <link rel="next" href={`${router.asPath.split('?')[0]}?page=${pageIndex + 1}${sorting !== 'Default' ? `&sort=${sorting}` : ''}`} />
+          )}
+        </Head>
+      )}
+
       <Grid container spacing={3}>
         {data && data['results'].length > 0 ?
           data['results'].map((item, ind) => (

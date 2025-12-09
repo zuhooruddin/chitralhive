@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import SEO from "components/SEO";
+import StructuredData from "components/schema/StructuredData";
 import { FlexBox } from "components/flex-box";
 import ShopLayout1 from "components/layouts/ShopLayout1";
 import ProductCard1List from "components/products/ProductCard1List";
@@ -16,12 +17,11 @@ import { H5, H3, Paragraph } from "components/Typography";
 import { useCallback, useState } from "react";
 import api from "utils/api/market-2";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 
 const ProductSearchResult = (props) => {
   const { categoryDetail,ProductReviews } = props;
-
-
 
   const [view, setView] = useState("grid");
   const downMd = useMediaQuery((theme) => theme.breakpoints.down("md"));
@@ -29,14 +29,61 @@ const ProductSearchResult = (props) => {
   const router = useRouter();
   const handleGoBack = () => router.back();
 
+  const baseUrl = process.env.NEXT_PUBLIC_URL || "https://chitralhive.com";
+  const imgbaseurl = process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL || "";
+
+  // Generate structured data for category page
+  const categoryStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": `${baseUrl}/category/${categoryDetail['slug'] || categoryDetail['id']}`,
+    "name": categoryDetail['name'],
+    "description": categoryDetail['metaDescription'] && categoryDetail['metaDescription'] != "undefined" 
+      ? categoryDetail['metaDescription'] 
+      : `Shop authentic ${categoryDetail['name']} from Chitral Hive. Browse our wide collection of Chitrali ${categoryDetail['name']} products.`,
+    "url": `${baseUrl}/category/${categoryDetail['slug'] || categoryDetail['id']}`,
+    "mainEntity": {
+      "@type": "ItemList",
+      "name": `${categoryDetail['name']} Products`,
+      "description": `Browse our collection of ${categoryDetail['name']} products from Chitral Hive`,
+      "numberOfItems": categoryDetail['products']?.length || 0
+    },
+    "breadcrumb": {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": baseUrl
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Categories",
+          "item": `${baseUrl}/categories`
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": categoryDetail['name'],
+          "item": `${baseUrl}/category/${categoryDetail['slug'] || categoryDetail['id']}`
+        }
+      ]
+    }
+  };
+
   return (
     <ShopLayout1>
+      <StructuredData data={categoryStructuredData} />
       <SEO 
         title={categoryDetail['name']}
         description={categoryDetail['metaDescription'] && categoryDetail['metaDescription'] != "undefined" ? categoryDetail['metaDescription'] : `Shop authentic ${categoryDetail['name']} from Chitral Hive. Browse our wide collection of Chitrali ${categoryDetail['name']} products. Order online and get delivered to your doorstep across Pakistan.`}
         metaTitle={categoryDetail['metaTitle'] && categoryDetail['metaTitle'] != "undefined" ? categoryDetail['metaTitle'] : `Buy ${categoryDetail['name']} Online | Chitral Hive`}
         keywords={`${categoryDetail['name']}, Chitrali ${categoryDetail['name']}, buy ${categoryDetail['name']} online, Chitral Hive, authentic Chitrali products, ${categoryDetail['name']} Pakistan`}
         canonical={`https://chitralhive.com/category/${categoryDetail['slug'] || categoryDetail['id']}`}
+        type="website"
+        category={categoryDetail['name']}
       />
       <Container
         sx={{

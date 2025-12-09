@@ -60,16 +60,34 @@ export async function getServerSideProps({ res }) {
       priority: '0.9',
     },
     {
+      loc: `${baseUrl}/categories`,
+      lastmod: new Date().toISOString(),
+      changefreq: 'weekly',
+      priority: '0.9',
+    },
+    {
       loc: `${baseUrl}/about-us`,
       lastmod: new Date().toISOString(),
       changefreq: 'monthly',
       priority: '0.8',
     },
     {
-      loc: `${baseUrl}/categories`,
+      loc: `${baseUrl}/contact-us`,
       lastmod: new Date().toISOString(),
-      changefreq: 'weekly',
-      priority: '0.9',
+      changefreq: 'monthly',
+      priority: '0.7',
+    },
+    {
+      loc: `${baseUrl}/privacy-policy`,
+      lastmod: new Date().toISOString(),
+      changefreq: 'yearly',
+      priority: '0.5',
+    },
+    {
+      loc: `${baseUrl}/return-policy`,
+      lastmod: new Date().toISOString(),
+      changefreq: 'yearly',
+      priority: '0.5',
     },
   ];
 
@@ -249,6 +267,34 @@ export async function getServerSideProps({ res }) {
   } catch (error) {
     console.error('Error fetching product bundles:', error.message);
     // Continue even if this fails
+  }
+
+  try {
+    // Fetch brands if API endpoint exists
+    const brandsUrl = `${apiBase}getAllBrands`;
+    const brandsData = await fetchWithTimeout(brandsUrl, 5000);
+    
+    const brands = Array.isArray(brandsData) 
+      ? brandsData 
+      : (brandsData?.data && Array.isArray(brandsData.data) 
+          ? brandsData.data 
+          : (brandsData?.brands && Array.isArray(brandsData.brands)
+              ? brandsData.brands
+              : []));
+    
+    if (brands && brands.length > 0) {
+      const brandPages = brands.map((brand) => ({
+        loc: `${baseUrl}/brand/${brand.slug || brand.id}`,
+        lastmod: brand.updated_at || brand.updatedAt || new Date().toISOString(),
+        changefreq: 'monthly',
+        priority: '0.7',
+      }));
+      
+      dynamicPages = [...dynamicPages, ...brandPages];
+    }
+  } catch (error) {
+    // Silently fail if brands endpoint doesn't exist or times out
+    // This is optional data
   }
 
   // Remove duplicate URLs (in case products appear in multiple endpoints)

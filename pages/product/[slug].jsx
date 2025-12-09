@@ -157,10 +157,13 @@ const companyname=process.env.NEXT_PUBLIC_COMPANY_NAME
     "image": [imgbaseurl + productDetails[0]["imgUrl"]],
     "description": productDetails[0]["description"] || productDetails[0]["name"],
     "sku": productDetails[0]["sku"] || productDetails[0]["aliasCode"],
+    "mpn": productDetails[0]["sku"] || productDetails[0]["aliasCode"],
+    "gtin": productDetails[0]["sku"] || productDetails[0]["aliasCode"],
     "brand": {
       "@type": "Brand",
       "name": productDetails[0]["manufacturer"] || "Chitral Hive"
     },
+    "category": productDetails[0]["category"] || "Chitrali Products",
     "offers": {
       "@type": "Offer",
       "url": baseurl + slugbaseurl + productDetails[0]["slug"],
@@ -173,17 +176,50 @@ const companyname=process.env.NEXT_PUBLIC_COMPANY_NAME
       "itemCondition": "https://schema.org/NewCondition",
       "seller": {
         "@type": "Organization",
-        "name": "Chitral Hive"
+        "name": "Chitral Hive",
+        "url": baseurl
+      },
+      "shippingDetails": {
+        "@type": "OfferShippingDetails",
+        "shippingRate": {
+          "@type": "MonetaryAmount",
+          "value": "0",
+          "currency": "PKR"
+        },
+        "shippingDestination": {
+          "@type": "DefinedRegion",
+          "addressCountry": "PK"
+        },
+        "deliveryTime": {
+          "@type": "ShippingDeliveryTime",
+          "businessDays": {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+          },
+          "cutoffTime": "14:00",
+          "handlingTime": {
+            "@type": "QuantitativeValue",
+            "minValue": 1,
+            "maxValue": 3,
+            "unitCode": "DAY"
+          },
+          "transitTime": {
+            "@type": "QuantitativeValue",
+            "minValue": 3,
+            "maxValue": 7,
+            "unitCode": "DAY"
+          }
+        }
       }
     },
-    "aggregateRating": productDetails[0]["rating"] ? {
+    "aggregateRating": (roundedAverageRating > 0 || productDetails[0]["rating"]) ? {
       "@type": "AggregateRating",
-      "ratingValue": productDetails[0]["rating"],
-      "reviewCount": productDetails[0]["reviewCount"] || 0,
+      "ratingValue": roundedAverageRating || productDetails[0]["rating"] || 0,
+      "reviewCount": filteredReviews.length || productDetails[0]["reviewCount"] || 0,
       "bestRating": "5",
       "worstRating": "1"
     } : undefined,
-    "review": ProductReviews && ProductReviews.length > 0 ? ProductReviews.slice(0, 5).map(review => ({
+    "review": filteredReviews && filteredReviews.length > 0 ? filteredReviews.slice(0, 10).map(review => ({
       "@type": "Review",
       "author": {
         "@type": "Person",
@@ -278,10 +314,61 @@ const companyname=process.env.NEXT_PUBLIC_COMPANY_NAME
     ]
   };
 
+  // FAQ schema for product pages - common questions about products
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": `What is ${productDetails[0]["name"]}?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": productDetails[0]["description"] || `${productDetails[0]["name"]} is an authentic Chitrali product available at Chitral Hive. This traditional item represents the rich cultural heritage of Chitral, Pakistan.`
+        }
+      },
+      {
+        "@type": "Question",
+        "name": `How much does ${productDetails[0]["name"]} cost?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `${productDetails[0]["name"]} is priced at PKR ${productDetails[0]["salePrice"] || productDetails[0]["mrp"]}. You can purchase it online from Chitral Hive and get it delivered to your doorstep across Pakistan.`
+        }
+      },
+      {
+        "@type": "Question",
+        "name": `Is ${productDetails[0]["name"]} available in stock?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": productDetails[0]["stock"] && parseFloat(productDetails[0]["stock"]) > 0 
+            ? `Yes, ${productDetails[0]["name"]} is currently in stock. You can order it now and we'll deliver it to your address.`
+            : `Currently, ${productDetails[0]["name"]} is out of stock. Please check back later or contact us for availability updates.`
+        }
+      },
+      {
+        "@type": "Question",
+        "name": `Do you ship ${productDetails[0]["name"]} nationwide?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `Yes, Chitral Hive delivers ${productDetails[0]["name"]} and all our authentic Chitrali products across Pakistan. We ensure safe packaging and timely delivery to your doorstep.`
+        }
+      },
+      {
+        "@type": "Question",
+        "name": `Is ${productDetails[0]["name"]} authentic?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `Yes, all products at Chitral Hive, including ${productDetails[0]["name"]}, are 100% authentic and sourced directly from Chitral. We work with local artisans and suppliers to bring you genuine Chitrali products.`
+        }
+      }
+    ]
+  };
+
   return (
     <ShopLayout1>
         <StructuredData data={productschema} />
         <StructuredData data={breadcrumbSchema} />
+        <StructuredData data={faqSchema} />
 
 
       {/* {productDetails[0]["publisherFlag"] === true ? (
@@ -317,6 +404,15 @@ const companyname=process.env.NEXT_PUBLIC_COMPANY_NAME
         keywords={`${productDetails[0]["name"]}, Chitrali products, Chitral Hive, buy ${productDetails[0]["name"]} online, authentic Chitrali products, Chitral specialties`}
         canonical={`${baseurl}${slugbaseurl}${productDetails[0]["slug"]}`}
         image={imgbaseurl + productDetails[0]["imgUrl"]}
+        type="product"
+        price={productDetails[0]["salePrice"] || productDetails[0]["mrp"]}
+        priceCurrency="PKR"
+        availability={productDetails[0]["stock"] && parseFloat(productDetails[0]["stock"]) > 0 ? "InStock" : "OutOfStock"}
+        brand={productDetails[0]["manufacturer"] || "Chitral Hive"}
+        category={productDetails[0]["category"] || "Chitrali Products"}
+        sku={productDetails[0]["sku"] || productDetails[0]["aliasCode"]}
+        rating={roundedAverageRating || productDetails[0]["rating"]}
+        reviewCount={filteredReviews.length}
       />
 
       <Container sx={{ my: 4 }}>

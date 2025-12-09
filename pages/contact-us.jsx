@@ -2,6 +2,7 @@ import { Container } from "@mui/material";
 import ShopLayout1 from "components/layouts/ShopLayout1";
 import MobileNavigationBar from "components/mobile-navigation/MobileNavigationBar";
 import SEO from "components/SEO";
+import StructuredData from "components/schema/StructuredData";
 import { H2, H3, H5, Small, Paragraph } from "components/Typography";
 import { Box, Button, Card, Grid, styled } from "@mui/material";
 import LazyImage from "components/LazyImage";
@@ -93,12 +94,96 @@ const ContactUs = (props) => {
       });
   };
 
+  const baseUrl = process.env.NEXT_PUBLIC_URL || "https://chitralhive.com";
+  
+  // LocalBusiness structured data for contact page
+  const localBusinessSchema = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": `${baseUrl}/contact-us#localbusiness`,
+    "name": "Chitral Hive",
+    "image": `${baseUrl}/images/og-image.jpg`,
+    "description": "Chitral Hive - Authentic Chitrali Products Online Store. Shop traditional crafts, local specialties, handmade items, and unique products from Chitral.",
+    "url": baseUrl,
+    "telephone": "+92-323-9119309",
+    "email": "zuhooruddin055@gmail.com",
+    "address": [
+      {
+        "@type": "PostalAddress",
+        "streetAddress": "Chitral",
+        "addressLocality": "Chitral",
+        "addressRegion": "Khyber Pakhtunkhwa",
+        "postalCode": "17200",
+        "addressCountry": "PK"
+      },
+      {
+        "@type": "PostalAddress",
+        "streetAddress": "Upper Chitral",
+        "addressLocality": "Upper Chitral",
+        "addressRegion": "Khyber Pakhtunkhwa",
+        "postalCode": "17200",
+        "addressCountry": "PK"
+      },
+      {
+        "@type": "PostalAddress",
+        "streetAddress": "Islamabad",
+        "addressLocality": "Islamabad",
+        "addressRegion": "Federal Capital",
+        "postalCode": "44000",
+        "addressCountry": "PK"
+      }
+    ],
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": "35.8514",
+      "longitude": "71.7864"
+    },
+    "priceRange": "$$",
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ],
+      "opens": "09:00",
+      "closes": "18:00"
+    },
+    "sameAs": [
+      "https://www.facebook.com/chitralhive",
+      "https://www.instagram.com/chitralhive",
+      "https://twitter.com/chitralhive"
+    ],
+    "contactPoint": [
+      {
+        "@type": "ContactPoint",
+        "telephone": "+92-323-9119309",
+        "contactType": "Customer Service",
+        "areaServed": "PK",
+        "availableLanguage": ["en", "ur"]
+      },
+      {
+        "@type": "ContactPoint",
+        "telephone": "+92-340-7964648",
+        "contactType": "Customer Service",
+        "areaServed": "PK",
+        "availableLanguage": ["en", "ur"]
+      }
+    ]
+  };
+
   return (
     <ShopLayout1>
+      <StructuredData data={localBusinessSchema} />
       <SEO
         title="Contact Us - Get in Touch"
         description="Get in touch with Chitral Hive for authentic Chitrali products. We are here to help with your orders and inquiries. Contact us via phone, email, or visit our stores in Chitral, Upper Chitral, and Islamabad."
         metaTitle="Contact Us"
+        canonical={`${baseUrl}/contact-us`}
       />
       
       <HeroSection>
