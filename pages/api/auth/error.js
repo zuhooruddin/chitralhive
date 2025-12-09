@@ -14,6 +14,11 @@ export default async function handler(req, res) {
   // Get the base URL from environment or request headers
   let baseUrl = process.env.NEXTAUTH_URL;
   
+  // Remove trailing slash if present
+  if (baseUrl && baseUrl.endsWith('/')) {
+    baseUrl = baseUrl.slice(0, -1);
+  }
+  
   if (!baseUrl) {
     // Try to get from referer header
     if (req.headers.referer) {

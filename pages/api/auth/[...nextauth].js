@@ -50,7 +50,12 @@ export default NextAuth({
   // For localhost: http://localhost:4000
   // For production: https://chitralhive.com
   // IMPORTANT: Set NEXTAUTH_URL in your production environment variables
-  ...(process.env.NEXTAUTH_URL && { url: process.env.NEXTAUTH_URL }),
+  // Remove trailing slash if present to avoid routing issues
+  ...(process.env.NEXTAUTH_URL && { 
+    url: process.env.NEXTAUTH_URL.endsWith('/') 
+      ? process.env.NEXTAUTH_URL.slice(0, -1) 
+      : process.env.NEXTAUTH_URL 
+  }),
   
   secret: process.env.JWT_SECRET || process.env.NEXTAUTH_SECRET,
   
