@@ -32,7 +32,12 @@ function SiteMap() {
 
 export async function getServerSideProps({ res }) {
   const baseUrl = process.env.NEXT_PUBLIC_URL || 'https://chitralhive.com';
-  const apiUrl = process.env.NEXT_PUBLIC_BACKEND_API_BASE || `${baseUrl}/api`;
+  // Get API base URL - ensure it has trailing slash (matches API pattern: baseUrl + endpoint)
+  let apiBase = process.env.NEXT_PUBLIC_BACKEND_API_BASE || 'https://api.chitralhive.com/';
+  // Ensure it ends with a slash (API pattern: baseUrl + endpoint)
+  if (!apiBase.endsWith('/')) {
+    apiBase = apiBase + '/';
+  }
   
   // Static pages with high priority
   const staticPages = [
@@ -70,87 +75,145 @@ export async function getServerSideProps({ res }) {
 
   let dynamicPages = [];
 
+  // Helper function to fetch with better error handling
+  const fetchWithTimeout = async (url, timeout = 10000) => {
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), timeout);
+    try {
+      const response = await fetch(url, {
+        signal: controller.signal,
+        headers: {
+          'Accept': 'application/json',
+        },
+      });
+      clearTimeout(id);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      clearTimeout(id);
+      if (error.name === 'AbortError') {
+        throw new Error('Request timeout');
+      }
+      throw error;
+    }
+  };
+
   try {
-    // Fetch all categories
-    const categoriesResponse = await fetch(`${apiUrl}/getNavCategories`);
-    const categoriesData = await categoriesResponse.json();
+    // Fetch all categories - API pattern: baseUrl + endpoint (no slash)
+    const categoriesUrl = `${apiBase}getNavCategories`;
+    const categoriesData = await fetchWithTimeout(categoriesUrl);
     
-    if (categoriesData && Array.isArray(categoriesData)) {
+    // Handle different response formats
+    const categories = Array.isArray(categoriesData) 
+      ? categoriesData 
+      : (categoriesData?.data && Array.isArray(categoriesData.data) 
+          ? categoriesData.data 
+          : []);
+    
+    if (categories && categories.length > 0) {
       // Add category pages
-      const categoryPages = categoriesData.map((category) => ({
+      const categoryPages = categories.map((category) => ({
         loc: `${baseUrl}/category/${category.slug || category.id}`,
-        lastmod: category.updated_at || new Date().toISOString(),
+        lastmod: category.updated_at || category.updatedAt || new Date().toISOString(),
         changefreq: 'weekly',
         priority: '0.8',
       }));
       
       dynamicPages = [...dynamicPages, ...categoryPages];
-
-      // Add categories listing page
-      dynamicPages.push({
-        loc: `${baseUrl}/categories`,
-        lastmod: new Date().toISOString(),
-        changefreq: 'weekly',
-        priority: '0.8',
-      });
     }
   } catch (error) {
-    console.error('Error fetching categories:', error);
+    console.error('Error fetching categories:', error.message);
+    // Continue even if this fails
   }
 
   try {
-    // Fetch featured/new arrival products
-    const productsResponse = await fetch(`${apiUrl}/getFearuredProduct?type=new`);
-    const productsData = await productsResponse.json();
+    // Fetch all items/products from the main catalog (most important)
+    const allItemsUrl = `${apiBase}getAllItems`;
+    const allItemsData = await fetchWithTimeout(allItemsUrl);
     
-    if (productsData && Array.isArray(productsData)) {
-      const productPages = productsData.map((product) => ({
-        loc: `${baseUrl}/product/${product.slug || product.id}`,
-        lastmod: product.updated_at || product.created_at || new Date().toISOString(),
+    // Handle different response formats
+    const items = Array.isArray(allItemsData) 
+      ? allItemsData 
+      : (allItemsData?.data && Array.isArray(allItemsData.data) 
+          ? allItemsData.data 
+          : (allItemsData?.items && Array.isArray(allItemsData.items)
+              ? allItemsData.items
+              : []));
+    
+    if (items && items.length > 0) {
+      const imgBaseUrl = process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL || `${apiBase}/media/`;
+      const allProductPages = items.map((item) => ({
+        loc: `${baseUrl}/product/${item.slug || item.id}`,
+        lastmod: item.updated_at || item.updatedAt || item.created_at || item.createdAt || new Date().toISOString(),
         changefreq: 'weekly',
         priority: '0.7',
-      }));
-      
-      dynamicPages = [...dynamicPages, ...productPages];
-    }
-  } catch (error) {
-    console.error('Error fetching products:', error);
-  }
-
-  try {
-    // Fetch all items/products from the main catalog
-    const allItemsResponse = await fetch(`${apiUrl}/getAllItems`);
-    const allItemsData = await allItemsResponse.json();
-    
-    if (allItemsData && Array.isArray(allItemsData)) {
-      const imgBaseUrl = process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL || `${baseUrl}/media/`;
-      const allProductPages = allItemsData.map((item) => ({
-        loc: `${baseUrl}/product/${item.slug || item.id}`,
-        lastmod: item.updated_at || item.created_at || new Date().toISOString(),
-        changefreq: 'weekly',
-        priority: '0.6',
-        images: item.imgUrl ? [{
-          url: imgBaseUrl + item.imgUrl,
+        images: item.imgUrl || item.image ? [{
+          url: (imgBaseUrl + (item.imgUrl || item.image)).replace(/\/+/g, '/').replace(/^https?:\//, 'https://'),
           title: item.name || 'Chitrali Product',
-          caption: item.description || `Buy ${item.name} from Chitral Hive - Authentic Chitrali Products`
+          caption: item.description || item.name ? `Buy ${item.name} from Chitral Hive - Authentic Chitrali Products` : 'Authentic Chitrali Products'
         }] : []
       }));
       
       dynamicPages = [...dynamicPages, ...allProductPages];
     }
   } catch (error) {
-    console.error('Error fetching all items:', error);
+    console.error('Error fetching all items:', error.message);
+    // Continue even if this fails
+  }
+
+  try {
+    // Fetch featured/new arrival products
+    const productsUrl = `${apiBase}getFearuredProduct?type=new`;
+    const productsData = await fetchWithTimeout(productsUrl);
+    
+    const products = Array.isArray(productsData) 
+      ? productsData 
+      : (productsData?.data && Array.isArray(productsData.data) 
+          ? productsData.data 
+          : []);
+    
+    if (products && products.length > 0) {
+      const imgBaseUrl = process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL || `${apiBase}/media/`;
+      const productPages = products.map((product) => ({
+        loc: `${baseUrl}/product/${product.slug || product.id}`,
+        lastmod: product.updated_at || product.updatedAt || product.created_at || product.createdAt || new Date().toISOString(),
+        changefreq: 'weekly',
+        priority: '0.8',
+        images: product.imgUrl || product.image ? [{
+          url: (imgBaseUrl + (product.imgUrl || product.image)).replace(/\/+/g, '/').replace(/^https?:\//, 'https://'),
+          title: product.name || 'Chitrali Product',
+          caption: product.description || product.name ? `Buy ${product.name} from Chitral Hive` : 'Chitrali Product'
+        }] : []
+      }));
+      
+      // Only add if not already in dynamicPages (avoid duplicates)
+      const existingUrls = new Set(dynamicPages.map(p => p.loc));
+      const newProductPages = productPages.filter(p => !existingUrls.has(p.loc));
+      dynamicPages = [...dynamicPages, ...newProductPages];
+    }
+  } catch (error) {
+    console.error('Error fetching featured products:', error.message);
+    // Continue even if this fails
   }
 
   try {
     // Fetch brand bundles
-    const brandBundlesResponse = await fetch(`${apiUrl}/getBrandBundels`);
-    const brandBundlesData = await brandBundlesResponse.json();
+    const brandBundlesUrl = `${apiBase}getBrandBundels`;
+    const brandBundlesData = await fetchWithTimeout(brandBundlesUrl);
     
-    if (brandBundlesData && Array.isArray(brandBundlesData)) {
-      const bundlePages = brandBundlesData.map((bundle) => ({
+    const bundles = Array.isArray(brandBundlesData) 
+      ? brandBundlesData 
+      : (brandBundlesData?.data && Array.isArray(brandBundlesData.data) 
+          ? brandBundlesData.data 
+          : []);
+    
+    if (bundles && bundles.length > 0) {
+      const bundlePages = bundles.map((bundle) => ({
         loc: `${baseUrl}/bundle/${bundle.slug || bundle.id}`,
-        lastmod: bundle.updated_at || new Date().toISOString(),
+        lastmod: bundle.updated_at || bundle.updatedAt || new Date().toISOString(),
         changefreq: 'weekly',
         priority: '0.7',
       }));
@@ -158,18 +221,25 @@ export async function getServerSideProps({ res }) {
       dynamicPages = [...dynamicPages, ...bundlePages];
     }
   } catch (error) {
-    console.error('Error fetching brand bundles:', error);
+    console.error('Error fetching brand bundles:', error.message);
+    // Continue even if this fails
   }
 
   try {
     // Fetch product bundles
-    const productBundlesResponse = await fetch(`${apiUrl}/getProductBundels`);
-    const productBundlesData = await productBundlesResponse.json();
+    const productBundlesUrl = `${apiBase}getProductBundels`;
+    const productBundlesData = await fetchWithTimeout(productBundlesUrl);
     
-    if (productBundlesData && Array.isArray(productBundlesData)) {
-      const bundlePages = productBundlesData.map((bundle) => ({
+    const bundles = Array.isArray(productBundlesData) 
+      ? productBundlesData 
+      : (productBundlesData?.data && Array.isArray(productBundlesData.data) 
+          ? productBundlesData.data 
+          : []);
+    
+    if (bundles && bundles.length > 0) {
+      const bundlePages = bundles.map((bundle) => ({
         loc: `${baseUrl}/bundle/${bundle.slug || bundle.id}`,
-        lastmod: bundle.updated_at || new Date().toISOString(),
+        lastmod: bundle.updated_at || bundle.updatedAt || new Date().toISOString(),
         changefreq: 'weekly',
         priority: '0.7',
       }));
@@ -177,7 +247,8 @@ export async function getServerSideProps({ res }) {
       dynamicPages = [...dynamicPages, ...bundlePages];
     }
   } catch (error) {
-    console.error('Error fetching product bundles:', error);
+    console.error('Error fetching product bundles:', error.message);
+    // Continue even if this fails
   }
 
   // Remove duplicate URLs (in case products appear in multiple endpoints)
