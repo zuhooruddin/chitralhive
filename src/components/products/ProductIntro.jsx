@@ -131,7 +131,7 @@ const ProductIntro = ({ product, slug, total, average }) => {
           <FlexBox justifyContent="center" mb={6}>
             <LazyImage
               width={300}
-              alt={name ? `${name} - Authentic Chitrali Product | Buy Online at Chitral Hive` : "Chitrali Product - Chitral Hive"}
+              alt={name ? `${name} - Authentic Chitrali Product | Buy Online in Pakistan at Chitral Hive` : "Chitrali Product - Buy Online in Pakistan | Chitral Hive"}
               height={300}
               loading="eager"
               objectFit="contain"

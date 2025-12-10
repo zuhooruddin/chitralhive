@@ -332,7 +332,7 @@ const companyname=process.env.NEXT_PUBLIC_COMPANY_NAME
         "name": `How much does ${productDetails[0]["name"]} cost?`,
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": `${productDetails[0]["name"]} is priced at PKR ${productDetails[0]["salePrice"] || productDetails[0]["mrp"]}. You can purchase it online from Chitral Hive and get it delivered to your doorstep across Pakistan.`
+          "text": `${productDetails[0]["name"]} is priced at PKR ${productDetails[0]["salePrice"] || productDetails[0]["mrp"]}. You can purchase it online from Chitral Hive and get it delivered to your doorstep across all major cities in Pakistan including Karachi, Lahore, Islamabad, Rawalpindi, Peshawar, and more.`
         }
       },
       {
@@ -350,7 +350,7 @@ const companyname=process.env.NEXT_PUBLIC_COMPANY_NAME
         "name": `Do you ship ${productDetails[0]["name"]} nationwide?`,
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": `Yes, Chitral Hive delivers ${productDetails[0]["name"]} and all our authentic Chitrali products across Pakistan. We ensure safe packaging and timely delivery to your doorstep.`
+          "text": `Yes, Chitral Hive delivers ${productDetails[0]["name"]} and all our authentic Chitrali products across all major cities in Pakistan including Karachi, Lahore, Islamabad, Rawalpindi, Peshawar, Multan, Faisalabad, Quetta, and more. We ensure safe packaging and timely delivery to your doorstep.`
         }
       },
       {
@@ -390,8 +390,8 @@ const companyname=process.env.NEXT_PUBLIC_COMPANY_NAME
             : productDetails[0]["name"]
             ? "Buy authentic " +
               productDetails[0]["name"] +
-              " from Chitral Hive. Shop Chitrali products online and get it delivered to your doorstep."
-            : "Shop authentic Chitrali products online at Chitral Hive"
+              " online in Pakistan from Chitral Hive. Shop Chitrali products online and get it delivered to your doorstep across Pakistan."
+            : "Shop authentic Chitrali products online in Pakistan at Chitral Hive"
         }
         metaTitle={
           productDetails[0]["metaTitle"] &&
@@ -401,7 +401,7 @@ const companyname=process.env.NEXT_PUBLIC_COMPANY_NAME
             ? "Buy " + productDetails[0]["name"] + " Online | Chitral Hive"
             : companyname
         }
-        keywords={`${productDetails[0]["name"]}, Chitrali products, Chitral Hive, buy ${productDetails[0]["name"]} online, authentic Chitrali products, Chitral specialties`}
+        keywords={`${productDetails[0]["name"]} Pakistan, Chitrali products Pakistan, Chitral Hive, buy ${productDetails[0]["name"]} online Pakistan, authentic Chitrali products, Chitral specialties, ${productDetails[0]["name"]} price in Pakistan, buy ${productDetails[0]["name"]} in Karachi, buy ${productDetails[0]["name"]} in Lahore`}
         canonical={`${baseurl}${slugbaseurl}${productDetails[0]["slug"]}`}
         image={imgbaseurl + productDetails[0]["imgUrl"]}
         type="product"

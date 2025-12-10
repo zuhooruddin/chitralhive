@@ -84,8 +84,18 @@ const getHomePageStructuredData = (generalSetting) => {
           "@type": "ContactPoint",
           "telephone": "+92-323-9119309",
           "contactType": "Customer Service",
-          "areaServed": "PK",
-          "availableLanguage": ["en", "ur"]
+          "areaServed": {
+            "@type": "Country",
+            "name": "Pakistan"
+          },
+          "availableLanguage": ["en", "ur", "en-PK", "ur-PK"]
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Chitral",
+          "addressRegion": "Khyber Pakhtunkhwa",
+          "postalCode": "17200",
+          "addressCountry": "PK"
         }
       },
       {
@@ -108,6 +118,8 @@ const getHomePageStructuredData = (generalSetting) => {
           "longitude": "71.7864"
         },
         "priceRange": "$$",
+        "currenciesAccepted": "PKR",
+        "paymentAccepted": "Cash, Credit Card, Debit Card, Bank Transfer",
         "openingHoursSpecification": {
           "@type": "OpeningHoursSpecification",
           "dayOfWeek": [
@@ -157,15 +169,15 @@ const getHomePageStructuredData = (generalSetting) => {
             "name": "What are Chitrali products?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Chitrali products are authentic, traditional items from Chitral, Pakistan. These include handmade crafts, local specialties, traditional foods, and unique cultural products that represent the rich heritage of Chitral."
+              "text": "Chitrali products are authentic, traditional items from Chitral, Khyber Pakhtunkhwa, Pakistan. These include handmade crafts, local specialties, traditional foods, and unique cultural products that represent the rich heritage of Chitral. Available for purchase online across Pakistan."
             }
           },
           {
             "@type": "Question",
-            "name": "Do you ship Chitrali products nationwide?",
+            "name": "Do you ship Chitrali products nationwide in Pakistan?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Yes, Chitral Hive delivers authentic Chitrali products to your doorstep across Pakistan. We ensure safe packaging and timely delivery of all orders."
+              "text": "Yes, Chitral Hive delivers authentic Chitrali products to your doorstep across all major cities in Pakistan including Karachi, Lahore, Islamabad, Rawalpindi, Peshawar, Multan, Faisalabad, Quetta, and more. We ensure safe packaging and timely delivery of all orders."
             }
           },
           {
@@ -219,7 +231,7 @@ const IndexPage = (props) => {
         title={GeneralSettingMemo&&GeneralSettingMemo.length>0?GeneralSettingMemo[0].site_name:'Chitral Hive - Authentic Chitrali Products Online'}
         description={GeneralSettingMemo&&GeneralSettingMemo.length>0?GeneralSettingMemo[0].site_description:'Shop authentic Chitrali products online at Chitral Hive. Discover traditional crafts, local specialties, handmade items, and unique products from Chitral. Buy Chitrali products online and get them delivered to your doorstep.'}
         metaTitle={GeneralSettingMemo&&GeneralSettingMemo.length>0?GeneralSettingMemo[0].site_metatitle:'Chitral Hive - Authentic Chitrali Products Online Store'}
-        keywords="Chitrali products, Chitral Hive, authentic Chitrali crafts, traditional Chitrali items, Chitral specialties, handmade Chitrali products, buy Chitrali products online, Chitral online store, Chitrali food, Chitrali handicrafts, Chitral culture, Pakistan products, Chitral honey, Chitrali dry fruits, Chitrali shawls"
+        keywords="Chitrali products Pakistan, Chitral Hive, buy Chitrali products online Pakistan, authentic Chitrali crafts, traditional Chitrali items, Chitral specialties, handmade Chitrali products, Chitral online store Pakistan, Chitrali food Pakistan, Chitrali handicrafts, Chitral culture, Pakistan products, Chitral honey Pakistan, Chitrali dry fruits, Chitrali shawls Pakistan, KPK products, Khyber Pakhtunkhwa products, online shopping Pakistan, Chitral delivery Pakistan"
         canonical="https://chitralhive.com"
       />
       <StructuredData data={getHomePageStructuredData(GeneralSettingMemo)} />

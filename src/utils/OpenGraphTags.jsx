@@ -17,7 +17,7 @@ const OpenGraphTags = () => {
       <meta property="og:title" content="Chitral Hive | Authentic Chitrali Products Online Store" />
       <meta
         property="og:description"
-        content="Shop authentic Chitrali products online at Chitral Hive. Discover traditional crafts, local specialties, handmade items, and unique products from Chitral. Buy Chitrali products online and get them delivered to your doorstep."
+        content="Shop authentic Chitrali products online in Pakistan at Chitral Hive. Discover traditional crafts, local specialties, handmade items, and unique products from Chitral, Khyber Pakhtunkhwa. Buy Chitrali products online in Pakistan and get them delivered to your doorstep across all major cities."
       />
       <meta
         property="og:image"
@@ -27,14 +27,16 @@ const OpenGraphTags = () => {
       <meta property="og:image:height" content="630" />
       <meta property="og:image:alt" content="Chitral Hive - Authentic Chitrali Products" />
       <meta property="og:site_name" content="Chitral Hive" />
-      <meta property="og:locale" content="en_US" />
+      <meta property="og:locale" content="en_PK" />
+      <meta property="og:locale:alternate" content="ur_PK" />
+      <meta property="og:country-name" content="Pakistan" />
       
       {/* Twitter Card Tags */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content="Chitral Hive | Authentic Chitrali Products Online Store" />
       <meta
         name="twitter:description"
-        content="Shop authentic Chitrali products online. Traditional crafts, local specialties, and handmade items from Chitral delivered to your doorstep."
+        content="Shop authentic Chitrali products online in Pakistan. Traditional crafts, local specialties, and handmade items from Chitral, Khyber Pakhtunkhwa delivered to your doorstep across Pakistan."
       />
       <meta
         name="twitter:image"

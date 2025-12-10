@@ -2,7 +2,11 @@ module.exports = {
     apps: [
       {
         name: "my-app",
-        script: "npm run start",
+        script: "npm",
+        args: "run start",
+        env: {
+          NODE_ENV: "production",
+        },
       },
     ],
   };

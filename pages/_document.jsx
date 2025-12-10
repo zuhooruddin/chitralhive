@@ -10,7 +10,7 @@ import GoogleAnalytics from "utils/GoogleAnalytics";
 export default class Bazaar extends Document {
   render() {
     return (
-      <Html lang="en" prefix="og: https://ogp.me/ns#">
+      <Html lang="en-PK" prefix="og: https://ogp.me/ns#">
         <Head>
           {/* SEO Meta Tags */}
           <meta name="theme-color" content="#1976d2" />
