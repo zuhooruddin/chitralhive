@@ -13,13 +13,17 @@ import { useState, useEffect } from "react";
 // styled component
 const StyledLink = styled("a")(({ theme }) => ({
   display: "block",
-  borderRadius: 4,
+  borderRadius: 6,
   cursor: "pointer",
   position: "relative",
-  padding: "0.3rem 0rem",
-  color: theme.palette.grey[500],
+  padding: "8px 0",
+  color: "rgba(255, 255, 255, 0.6)",
+  fontSize: "14px",
+  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
   "&:hover": {
-    color: theme.palette.grey[100],
+    color: "#ffffff",
+    transform: "translateX(6px)",
+    paddingLeft: "4px",
   },
 }));
 
@@ -66,7 +70,22 @@ const Footer = ({ footerData: initialFooterData }) => {
   return (
     <Footwrapper>
       <footer>
-        <Box bgcolor="#222935">
+        <Box 
+          sx={{
+            background: "linear-gradient(180deg, #1a202c 0%, #0f1419 100%)",
+            position: "relative",
+            overflow: "hidden",
+            "&::before": {
+              content: '""',
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              height: "4px",
+              background: "linear-gradient(135deg, #D23F57 0%, #E94560 50%, #FF6B6B 100%)",
+            },
+          }}
+        >
           <Container
             sx={{
               p: "1rem",
@@ -99,11 +118,24 @@ const Footer = ({ footerData: initialFooterData }) => {
                 {footerData?.column_two_heading && footerData?.column_two_links && (
                   <Grid item lg={2} md={6} sm={6} xs={12}>
                     <Box
-                      fontSize="18px"
-                      fontWeight="600"
-                      mb={1.5}
+                      fontSize="16px"
+                      fontWeight="700"
+                      mb={2.5}
                       lineHeight="1"
                       color="white"
+                      sx={{
+                        position: "relative",
+                        "&::after": {
+                          content: '""',
+                          position: "absolute",
+                          bottom: "-10px",
+                          left: 0,
+                          width: "40px",
+                          height: "3px",
+                          background: "linear-gradient(135deg, #D23F57 0%, #E94560 100%)",
+                          borderRadius: "10px",
+                        },
+                      }}
                     >
                       {footerData.column_two_heading}
                     </Box>
@@ -124,11 +156,24 @@ const Footer = ({ footerData: initialFooterData }) => {
                 {footerData?.column_three_heading && footerData?.column_three_links && (
                   <Grid item lg={3} md={6} sm={6} xs={12} style={{ marginBottom: '20px' }}>
                     <Box
-                      fontSize="18px"
-                      fontWeight="600"
-                      mb={1.5}
+                      fontSize="16px"
+                      fontWeight="700"
+                      mb={2.5}
                       lineHeight="1"
                       color="white"
+                      sx={{
+                        position: "relative",
+                        "&::after": {
+                          content: '""',
+                          position: "absolute",
+                          bottom: "-10px",
+                          left: 0,
+                          width: "40px",
+                          height: "3px",
+                          background: "linear-gradient(135deg, #D23F57 0%, #E94560 100%)",
+                          borderRadius: "10px",
+                        },
+                      }}
                     >
                       {footerData.column_three_heading}
                     </Box>
@@ -148,11 +193,24 @@ const Footer = ({ footerData: initialFooterData }) => {
                 {/* Column 4: Contact & Social */}
                 <Grid item lg={3} md={6} sm={6} xs={12}>
                   <Box
-                    fontSize="18px"
-                    fontWeight="600"
-                    mb={1.5}
+                    fontSize="16px"
+                    fontWeight="700"
+                    mb={2.5}
                     lineHeight="1"
                     color="white"
+                    sx={{
+                      position: "relative",
+                      "&::after": {
+                        content: '""',
+                        position: "absolute",
+                        bottom: "-10px",
+                        left: 0,
+                        width: "40px",
+                        height: "3px",
+                        background: "linear-gradient(135deg, #D23F57 0%, #E94560 100%)",
+                        borderRadius: "10px",
+                      },
+                    }}
                   >
                     {footerData?.footer_fourth_column_heading || ""}
                   </Box>
@@ -175,11 +233,23 @@ const Footer = ({ footerData: initialFooterData }) => {
                       >
                         <BazaarIconButton
                           m={0.5}
-                          bgcolor="rgba(0,0,0,0.2)"
-                          fontSize="12px"
-                          padding="10px"
+                          bgcolor="rgba(255,255,255,0.08)"
+                          fontSize="14px"
+                          padding="12px"
                           aria-label="Facebook"
-                          sx={{ minWidth: '44px', minHeight: '44px' }}
+                          sx={{ 
+                            minWidth: '48px', 
+                            minHeight: '48px',
+                            borderRadius: "12px",
+                            border: "1px solid rgba(255,255,255,0.1)",
+                            transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                            "&:hover": {
+                              background: "linear-gradient(135deg, #D23F57 0%, #E94560 100%)",
+                              transform: "translateY(-4px)",
+                              boxShadow: "0 8px 20px rgba(210, 63, 87, 0.3)",
+                              borderColor: "#D23F57",
+                            },
+                          }}
                         >
                           <Facebook fontSize="inherit" />
                         </BazaarIconButton>
@@ -195,11 +265,23 @@ const Footer = ({ footerData: initialFooterData }) => {
                       >
                         <BazaarIconButton
                           m={0.5}
-                          bgcolor="rgba(0,0,0,0.2)"
-                          fontSize="12px"
-                          padding="10px"
+                          bgcolor="rgba(255,255,255,0.08)"
+                          fontSize="14px"
+                          padding="12px"
                           aria-label="Instagram"
-                          sx={{ minWidth: '44px', minHeight: '44px' }}
+                          sx={{ 
+                            minWidth: '48px', 
+                            minHeight: '48px',
+                            borderRadius: "12px",
+                            border: "1px solid rgba(255,255,255,0.1)",
+                            transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                            "&:hover": {
+                              background: "linear-gradient(135deg, #D23F57 0%, #E94560 100%)",
+                              transform: "translateY(-4px)",
+                              boxShadow: "0 8px 20px rgba(210, 63, 87, 0.3)",
+                              borderColor: "#D23F57",
+                            },
+                          }}
                         >
                           <Instagram fontSize="inherit" />
                         </BazaarIconButton>
@@ -215,11 +297,23 @@ const Footer = ({ footerData: initialFooterData }) => {
                       >
                         <BazaarIconButton
                           m={0.5}
-                          bgcolor="rgba(0,0,0,0.2)"
-                          fontSize="12px"
-                          padding="10px"
+                          bgcolor="rgba(255,255,255,0.08)"
+                          fontSize="14px"
+                          padding="12px"
                           aria-label="YouTube"
-                          sx={{ minWidth: '44px', minHeight: '44px' }}
+                          sx={{ 
+                            minWidth: '48px', 
+                            minHeight: '48px',
+                            borderRadius: "12px",
+                            border: "1px solid rgba(255,255,255,0.1)",
+                            transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                            "&:hover": {
+                              background: "linear-gradient(135deg, #D23F57 0%, #E94560 100%)",
+                              transform: "translateY(-4px)",
+                              boxShadow: "0 8px 20px rgba(210, 63, 87, 0.3)",
+                              borderColor: "#D23F57",
+                            },
+                          }}
                         >
                           <Youtube fontSize="inherit" />
                         </BazaarIconButton>
@@ -235,11 +329,23 @@ const Footer = ({ footerData: initialFooterData }) => {
                       >
                         <BazaarIconButton
                           m={0.5}
-                          bgcolor="rgba(0,0,0,0.2)"
-                          fontSize="12px"
-                          padding="10px"
+                          bgcolor="rgba(255,255,255,0.08)"
+                          fontSize="14px"
+                          padding="12px"
                           aria-label="Twitter"
-                          sx={{ minWidth: '44px', minHeight: '44px' }}
+                          sx={{ 
+                            minWidth: '48px', 
+                            minHeight: '48px',
+                            borderRadius: "12px",
+                            border: "1px solid rgba(255,255,255,0.1)",
+                            transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                            "&:hover": {
+                              background: "linear-gradient(135deg, #D23F57 0%, #E94560 100%)",
+                              transform: "translateY(-4px)",
+                              boxShadow: "0 8px 20px rgba(210, 63, 87, 0.3)",
+                              borderColor: "#D23F57",
+                            },
+                          }}
                         >
                           <Twitter fontSize="inherit" />
                         </BazaarIconButton>

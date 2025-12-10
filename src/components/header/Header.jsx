@@ -22,13 +22,20 @@ import { layoutConstant } from "utils/constants";
 import SearchBox from "../search-box/SearchBox"; // styled component
 
 export const HeaderWrapper = styled(Box)(({ theme }) => ({
-  zIndex: 3,
+  zIndex: 1000,
   position: "relative",
   height: layoutConstant.headerHeight,
-  transition: "height 250ms ease-in-out",
-  background: theme.palette.background.paper,
+  transition: "all 300ms cubic-bezier(0.4, 0, 0.2, 1)",
+  background: "rgba(255, 255, 255, 0.98)",
+  backdropFilter: "blur(20px)",
+  WebkitBackdropFilter: "blur(20px)",
+  boxShadow: "0 2px 20px rgba(0, 0, 0, 0.06)",
+  borderBottom: "1px solid rgba(0, 0, 0, 0.04)",
   [theme.breakpoints.down("sm")]: {
     height: layoutConstant.mobileHeaderHeight,
+  },
+  "&.scrolled": {
+    boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
   },
 })); // ==============================================================
 
@@ -115,19 +122,49 @@ const Header = ({ isFixed,headerdata, className, searchBoxType = "type2" }) => {
           <Box
             component={IconButton}
             p={1.25}
-            bgcolor="grey.200"
+            bgcolor="grey.100"
             onClick={toggleDialog}
+            sx={{
+              borderRadius: "12px",
+              transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+              "&:hover": {
+                bgcolor: "primary.light",
+                color: "primary.main",
+                transform: "translateY(-2px)",
+                boxShadow: "0 4px 12px rgba(210, 63, 87, 0.2)",
+              },
+            }}
           >
             <PersonOutline />
           </Box>
 
-          <Badge badgeContent={state.cart.length} color="primary">
+          <Badge 
+            badgeContent={state.cart.length} 
+            color="primary"
+            sx={{
+              "& .MuiBadge-badge": {
+                background: "linear-gradient(135deg, #D23F57 0%, #E94560 100%)",
+                boxShadow: "0 2px 8px rgba(210, 63, 87, 0.4)",
+                fontWeight: 700,
+              },
+            }}
+          >
             <Box
               ml={2.5}
               p={1.25}
-              bgcolor="grey.200"
+              bgcolor="grey.100"
               component={IconButton}
               onClick={toggleSidenav}
+              sx={{
+                borderRadius: "12px",
+                transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                "&:hover": {
+                  bgcolor: "primary.light",
+                  color: "primary.main",
+                  transform: "translateY(-2px)",
+                  boxShadow: "0 4px 12px rgba(210, 63, 87, 0.2)",
+                },
+              }}
             >
               <ShoppingBagOutlined />
             </Box>

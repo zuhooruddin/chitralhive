@@ -18,19 +18,40 @@ import BazaarButton from "components/BazaarButton";
 import { useRouter } from "next/router";
 import { FlexRowCenter } from "components/flex-box";
 
-const StyledBazaarCard = styled(BazaarCard)(() => ({
+const StyledBazaarCard = styled(BazaarCard)(({ theme }) => ({
   height: "100%",
   margin: "auto",
   display: "flex",
   overflow: "hidden",
-  borderRadius: "8px",
+  borderRadius: "16px",
   position: "relative",
   flexDirection: "column",
   justifyContent: "space-between",
-  transition: "all 250ms ease-in-out",
+  transition: "all 350ms cubic-bezier(0.4, 0, 0.2, 1)",
+  background: "#ffffff",
+  border: "1px solid rgba(0, 0, 0, 0.04)",
+  "&::before": {
+    content: '""',
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    height: "3px",
+    background: "linear-gradient(135deg, #D23F57 0%, #E94560 50%, #FF6B6B 100%)",
+    transform: "scaleX(0)",
+    transformOrigin: "left",
+    transition: "transform 350ms cubic-bezier(0.4, 0, 0.2, 1)",
+    zIndex: 1,
+  },
   ":hover": {
+    transform: "translateY(-8px)",
+    boxShadow: "0 20px 40px rgba(0, 0, 0, 0.12)",
+    borderColor: "transparent",
     "& .hover-box": {
       opacity: 1,
+    },
+    "&::before": {
+      transform: "scaleX(1)",
     },
   },
 }));
@@ -40,35 +61,77 @@ const CardMedia = styled(Box)(() => ({
   cursor: "pointer",
   overflow: "hidden",
   position: "relative",
+  background: "#F8FAFC",
   "& img": {
-    transition: "0.3s",
+    transition: "transform 500ms cubic-bezier(0.4, 0, 0.2, 1)",
   },
 }));
-const AddToCartButton = styled(IconButton)(() => ({
-  top: 10,
-  right: -40,
+const AddToCartButton = styled(IconButton)(({ theme }) => ({
+  top: 12,
+  right: -50,
   position: "absolute",
-  transition: "right 0.3s .1s",
+  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+  background: "white",
+  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+  borderRadius: "12px",
+  padding: "10px",
+  "&:hover": {
+    background: theme.palette.primary.main,
+    color: "white",
+    transform: "scale(1.1)",
+    boxShadow: "0 8px 20px rgba(210, 63, 87, 0.3)",
+  },
 }));
-const FavouriteButton = styled(IconButton)(() => ({
-  top: 45,
-  right: -40,
+const FavouriteButton = styled(IconButton)(({ theme }) => ({
+  top: 60,
+  right: -50,
   position: "absolute",
-  transition: "right 0.3s .2s",
+  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+  background: "white",
+  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+  borderRadius: "12px",
+  padding: "10px",
+  transitionDelay: "50ms",
+  "&:hover": {
+    background: theme.palette.primary.main,
+    color: "white",
+    transform: "scale(1.1)",
+    boxShadow: "0 8px 20px rgba(210, 63, 87, 0.3)",
+  },
 }));
 const Card = styled(Box)(({ theme }) => ({
-  borderRadius: "3px",
-  transition: "all 0.3s",
+  borderRadius: "16px",
+  transition: "all 350ms cubic-bezier(0.4, 0, 0.2, 1)",
   backgroundColor: theme.palette.common.white,
-  border: `1px solid ${theme.palette.grey[100]}`,
+  border: "1px solid rgba(0, 0, 0, 0.04)",
+  overflow: "hidden",
+  position: "relative",
+  "&::before": {
+    content: '""',
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    height: "3px",
+    background: "linear-gradient(135deg, #D23F57 0%, #E94560 50%, #FF6B6B 100%)",
+    transform: "scaleX(0)",
+    transformOrigin: "left",
+    transition: "transform 350ms cubic-bezier(0.4, 0, 0.2, 1)",
+    zIndex: 2,
+  },
   ":hover": {
+    transform: "translateY(-8px)",
+    boxShadow: "0 20px 40px rgba(0, 0, 0, 0.12)",
+    borderColor: "transparent",
     "& .product-actions": {
-      right: 5,
+      right: 12,
     },
     "& img": {
-      transform: "scale(1.1)",
+      transform: "scale(1.05)",
     },
-    border: `1px solid ${theme.palette.dark.main}`,
+    "&::before": {
+      transform: "scaleX(1)",
+    },
   },
 }));
 const ImageWrapper = styled(Box)(({ theme }) => ({
@@ -80,34 +143,43 @@ const ImageWrapper = styled(Box)(({ theme }) => ({
   },
 }));
 const StyledChip = styled(Chip)(() => ({
-  zIndex: 1,
-  top: "10px",
-  left: "10px",
-  paddingLeft: 3,
-  paddingRight: 3,
-  fontWeight: 600,
-  fontSize: "10px",
+  zIndex: 3,
+  top: "12px",
+  left: "12px",
+  paddingLeft: 6,
+  paddingRight: 6,
+  fontWeight: 700,
+  fontSize: "11px",
   position: "initial",
+  borderRadius: "20px",
+  letterSpacing: "0.5px",
+  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
 }));
 const StyledChip2 = styled(Chip)(() => ({
-  zIndex: 1,
-  top: "10px",
-  left: "30px",
-  paddingLeft: 3,
-  paddingRight: 3,
-  fontWeight: 600,
-  fontSize: "10px",
+  zIndex: 3,
+  top: "12px",
+  left: "12px",
+  paddingLeft: 6,
+  paddingRight: 6,
+  fontWeight: 700,
+  fontSize: "11px",
   position: "initial",
+  borderRadius: "20px",
+  letterSpacing: "0.5px",
+  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
 }));
 const StyledChip1 = styled(Chip)(() => ({
-  zIndex: 1,
-  top: "10px",
-  left: "15px",
-  paddingLeft: 3,
-  paddingRight: 3,
-  fontWeight: 600,
-  fontSize: "10px",
+  zIndex: 3,
+  top: "12px",
+  left: "12px",
+  paddingLeft: 6,
+  paddingRight: 6,
+  fontWeight: 700,
+  fontSize: "11px",
   position: "absolute",
+  borderRadius: "20px",
+  letterSpacing: "0.5px",
+  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
 }));
 const HoverIconWrapper = styled(Box)(({ theme }) => ({
   zIndex: 2,
@@ -121,7 +193,7 @@ const HoverIconWrapper = styled(Box)(({ theme }) => ({
   transition: "all 0.3s ease-in-out",
 }));
 const ContentWrapper = styled(Box)(() => ({
-  padding: "1rem",
+  padding: "1.25rem",
   "& .title, & .categories": {
     overflow: "hidden",
     whiteSpace: "nowrap",

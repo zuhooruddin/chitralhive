@@ -1,21 +1,21 @@
 // =================================================================
 // =================================================================
 export const grey = {
-  900: "#2B3445",
-  // 900: "#f50057",
-  // Main Text
-  800: "#373F50",
+  900: "#1a202c",
+  // Main Text - darker for better contrast
+  800: "#2B3445",
   // Paragraph
   700: "#4B566B",
-  600: "#7D879C",
+  600: "#6B7280",
   // Low Priority form Title/Text
-  500: "#AEB4BE",
-  400: "#DAE1E7",
+  500: "#9CA3AF",
+  400: "#D1D5DB",
   // Border
-  300: "#E3E9EF",
-  200: "#F3F5F9",
+  300: "#E5E7EB",
+  200: "#F3F4F6",
   // Line Stroke
-  100: "#F6F9FC",
+  100: "#F8FAFC",
+  50: "#FAFAFA",
 };
 export const primary = {
   100: "#FCE9EC",
@@ -133,11 +133,17 @@ export const themeColors = {
   info: blue,
   divider: grey[200],
   background: {
-    default: grey[100],
+    default: "#F8FAFC",
+    paper: "#FFFFFF",
   },
   text: {
     primary: grey[900],
-    secondary: grey[800],
+    secondary: grey[700],
     disabled: grey[400],
+  },
+  action: {
+    hover: "rgba(210, 63, 87, 0.08)",
+    selected: "rgba(210, 63, 87, 0.12)",
+    focus: "rgba(210, 63, 87, 0.12)",
   },
 };

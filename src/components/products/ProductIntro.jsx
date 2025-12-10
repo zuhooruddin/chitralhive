@@ -125,14 +125,39 @@ const ProductIntro = ({ product, slug, total, average }) => {
   );
 
   return (
-    <Box width="100%">
-      <Grid container spacing={3} justifyContent="space-around">
+    <Box width="100%" sx={{ animation: "fadeIn 0.5s ease-out" }}>
+      <Grid container spacing={4} justifyContent="space-around">
         <Grid item md={6} xs={12} alignItems="center">
-          <FlexBox justifyContent="center" mb={6}>
+          <Box 
+            sx={{ 
+              background: "white",
+              borderRadius: "20px",
+              padding: "24px",
+              boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08)",
+              border: "1px solid rgba(0, 0, 0, 0.04)",
+              transition: "all 0.3s ease",
+              "&:hover": {
+                boxShadow: "0 12px 40px rgba(0, 0, 0, 0.12)",
+              },
+            }}
+          >
+          <FlexBox justifyContent="center" mb={4}>
+            <Box
+              sx={{
+                background: "linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%)",
+                borderRadius: "16px",
+                padding: "20px",
+                cursor: "zoom-in",
+                transition: "all 0.3s ease",
+                "&:hover": {
+                  background: "linear-gradient(135deg, #F1F5F9 0%, #E2E8F0 100%)",
+                },
+              }}
+            >
             <LazyImage
-              width={300}
+              width={350}
               alt={name ? `${name} - Authentic Chitrali Product | Buy Online in Pakistan at Chitral Hive` : "Chitrali Product - Buy Online in Pakistan | Chitral Hive"}
-              height={300}
+              height={350}
               loading="eager"
               objectFit="contain"
               src={localimageurl + `${product.imgGroup[selectedImage]}`}
@@ -140,6 +165,7 @@ const ProductIntro = ({ product, slug, total, average }) => {
                 openImageViewer(imgGroup.indexOf(imgGroup[selectedImage]))
               }
               title={name || "Chitrali Product"}
+              style={{ borderRadius: "12px" }}
             />
             {isViewerOpen && (
               <ImageViewer
@@ -147,47 +173,74 @@ const ProductIntro = ({ product, slug, total, average }) => {
                 onClose={closeImageViewer}
                 currentIndex={currentImage}
                 backgroundStyle={{
-                  backgroundColor: "rgba(0,0,0,0.9)",
+                  backgroundColor: "rgba(0,0,0,0.95)",
                   zIndex: 1501,
+                  backdropFilter: "blur(10px)",
                 }}
               />
             )}
+            </Box>
           </FlexBox>
 
-          <FlexBox overflow="auto">
+          <FlexBox overflow="auto" sx={{ gap: "12px", justifyContent: "center", pb: 1 }}>
             {imgGroup.map((url, ind) => (
               <FlexRowCenter
                 key={ind}
-                width={64}
-                height={64}
-                minWidth={64}
-                bgcolor="white"
-                border="1px solid"
-                borderRadius="10px"
-                ml={ind === 0 ? "auto" : 0}
+                width={70}
+                height={70}
+                minWidth={70}
+                bgcolor={selectedImage === ind ? "primary.light" : "#F8FAFC"}
+                borderRadius="12px"
                 style={{
                   cursor: "pointer",
+                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                  border: selectedImage === ind ? "2px solid" : "2px solid transparent",
+                  borderColor: selectedImage === ind ? "#D23F57" : "transparent",
+                  boxShadow: selectedImage === ind ? "0 4px 12px rgba(210, 63, 87, 0.2)" : "0 2px 8px rgba(0, 0, 0, 0.05)",
                 }}
                 onClick={handleImageClick(ind)}
-                mr={ind === imgGroup.length - 1 ? "auto" : "10px"}
-                borderColor={
-                  selectedImage === ind ? "primary.main" : "grey.400"
-                }
+                sx={{
+                  "&:hover": {
+                    transform: "translateY(-3px)",
+                    boxShadow: "0 6px 16px rgba(0, 0, 0, 0.1)",
+                  },
+                }}
               >
                 <BazaarAvatar
                   src={localimageurl + `${url}`}
                   variant="square"
-                  height={40}
+                  height={50}
+                  sx={{ borderRadius: "8px" }}
                 />
               </FlexRowCenter>
             ))}
           </FlexBox>
+          </Box>
         </Grid>
 
         <Grid item md={6} xs={12} alignItems="center">
-          <H1 mb={2}>{name}</H1>
-          <FlexBox alignItems="center" mb={2}>
-            <Box lineHeight="1">Rated:</Box>
+          <Box
+            sx={{
+              background: "white",
+              borderRadius: "20px",
+              padding: "32px",
+              boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08)",
+              border: "1px solid rgba(0, 0, 0, 0.04)",
+            }}
+          >
+          <H1 mb={2} sx={{ 
+            fontSize: "clamp(1.5rem, 3vw, 2rem)", 
+            fontWeight: 700,
+            color: "#1a202c",
+            lineHeight: 1.3,
+          }}>{name}</H1>
+          <FlexBox alignItems="center" mb={3} sx={{
+            background: "linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%)",
+            padding: "10px 16px",
+            borderRadius: "12px",
+            width: "fit-content",
+          }}>
+            <Box lineHeight="1" sx={{ fontWeight: 500, color: "#92400E", mr: 1 }}>Rated:</Box>
             <Box mx={1} lineHeight="1">
               <BazaarRating
                 color="warn"
@@ -196,7 +249,7 @@ const ProductIntro = ({ product, slug, total, average }) => {
                 readOnly
               />
             </Box>
-            <H6 lineHeight="1">({total && total ? total : 0})</H6>
+            <H6 lineHeight="1" sx={{ color: "#92400E", fontWeight: 600 }}>({total && total ? total : 0} reviews)</H6>
           </FlexBox>
           {/* {manufacturer==='NOT AVAILABLE' || manufacturer==='' || manufacturer===undefined?'':
 
@@ -302,22 +355,61 @@ const ProductIntro = ({ product, slug, total, average }) => {
             ""
           )}
 
-          <Box mb={3}>
-            <H2 color="primary.main" mt={5} lineHeight="1">
-              {currency || 'PKR'}. {isNaN(salePrices) || salePrices === null || salePrices === undefined ? '0.00' : salePrices.toFixed(2)}
-            </H2>
-            {!!numericDiscount && numericDiscount > 0 && (
-              <H4 color="primary.main" mt={2} ml={2} lineHeight="1">
-                <del> {currency || 'PKR'}. {isNaN(discountprice) || discountprice === null || discountprice === undefined ? '0.00' : discountprice.toFixed(2)}</del>
-              </H4>
-            )}
+          <Box mb={3} sx={{ 
+            background: "linear-gradient(135deg, #FCE9EC 0%, #FFF1F3 100%)",
+            padding: "20px",
+            borderRadius: "16px",
+            mt: 3,
+          }}>
+            <FlexBox alignItems="baseline" flexWrap="wrap">
+              <H2 sx={{ 
+                background: "linear-gradient(135deg, #D23F57 0%, #E94560 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                fontSize: "2rem",
+                fontWeight: 800,
+                lineHeight: "1",
+              }}>
+                {currency || 'PKR'} {isNaN(salePrices) || salePrices === null || salePrices === undefined ? '0.00' : salePrices.toFixed(2)}
+              </H2>
+              {!!numericDiscount && numericDiscount > 0 && (
+                <>
+                  <H4 color="grey.500" ml={2} lineHeight="1">
+                    <del>{currency || 'PKR'} {isNaN(discountprice) || discountprice === null || discountprice === undefined ? '0.00' : discountprice.toFixed(2)}</del>
+                  </H4>
+                  <Box sx={{
+                    background: "linear-gradient(135deg, #10B981 0%, #059669 100%)",
+                    color: "white",
+                    padding: "4px 12px",
+                    borderRadius: "20px",
+                    fontSize: "12px",
+                    fontWeight: 700,
+                    ml: 2,
+                    boxShadow: "0 4px 12px rgba(16, 185, 129, 0.3)",
+                  }}>
+                    {numericDiscount}% OFF
+                  </Box>
+                </>
+              )}
+            </FlexBox>
             {stock === "0.00" ? (
-              <FlexBox alignItems="center" mt={1.5}>
-                <H5 color="inherit">Stock : </H5>
-                <H6 color="red"> Out of Stock </H6>
+              <FlexBox alignItems="center" mt={2} sx={{
+                background: "linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%)",
+                padding: "8px 16px",
+                borderRadius: "10px",
+                width: "fit-content",
+              }}>
+                <H5 color="#B91C1C" sx={{ fontWeight: 600 }}>Out of Stock</H5>
               </FlexBox>
             ) : (
-              ""
+              <FlexBox alignItems="center" mt={2} sx={{
+                background: "linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%)",
+                padding: "8px 16px",
+                borderRadius: "10px",
+                width: "fit-content",
+              }}>
+                <H5 color="#047857" sx={{ fontWeight: 600 }}>✓ In Stock</H5>
+              </FlexBox>
             )}
           </Box>
 
@@ -327,12 +419,18 @@ const ProductIntro = ({ product, slug, total, average }) => {
               disabled={true}
               variant="contained"
               sx={{
-                mb: 4.5,
-                px: "1.75rem",
-                height: 40,
+                mb: 2,
+                px: "2.5rem",
+                height: 52,
+                borderRadius: "14px",
+                fontSize: "16px",
+                fontWeight: 600,
+                textTransform: "none",
+                background: "#E5E7EB",
+                boxShadow: "none",
               }}
             >
-              Add to Cart
+              Out of Stock
             </BazaarButton>
           ) : !cartItem?.qty ? (
             <BazaarButton
@@ -340,19 +438,42 @@ const ProductIntro = ({ product, slug, total, average }) => {
               variant="contained"
               onClick={handleCartAmountChange(1, true)}
               sx={{
-                mb: 4.5,
-                px: "1.75rem",
-                height: 40,
+                mb: 2,
+                px: "2.5rem",
+                height: 52,
+                borderRadius: "14px",
+                fontSize: "16px",
+                fontWeight: 600,
+                textTransform: "none",
+                background: "linear-gradient(135deg, #D23F57 0%, #E94560 100%)",
+                boxShadow: "0 10px 30px rgba(210, 63, 87, 0.3)",
+                transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                "&:hover": {
+                  transform: "translateY(-3px)",
+                  boxShadow: "0 15px 40px rgba(210, 63, 87, 0.4)",
+                  background: "linear-gradient(135deg, #C73550 0%, #D83A55 100%)",
+                },
               }}
             >
-              Add to Cart
+              🛒 Add to Cart
             </BazaarButton>
           ) : (
-            <FlexBox alignItems="center" mb={4.5}>
+            <FlexBox alignItems="center" mb={2} sx={{
+              background: "#F8FAFC",
+              padding: "8px 16px",
+              borderRadius: "14px",
+              width: "fit-content",
+            }}>
               <BazaarButton
                 size="small"
                 sx={{
-                  p: 1,
+                  p: 1.5,
+                  minWidth: 44,
+                  borderRadius: "10px",
+                  transition: "all 0.2s ease",
+                  "&:hover": {
+                    background: "#FCE9EC",
+                  },
                 }}
                 color="primary"
                 variant="outlined"
@@ -361,14 +482,20 @@ const ProductIntro = ({ product, slug, total, average }) => {
                 <Remove fontSize="small" />
               </BazaarButton>
 
-              <H3 fontWeight="600" mx={2.5}>
+              <H3 fontWeight="700" mx={3} sx={{ fontSize: "1.25rem", color: "#1a202c" }}>
                 {cartItem?.qty.toString().padStart(2, "0")}
               </H3>
 
               <BazaarButton
                 size="small"
                 sx={{
-                  p: 1,
+                  p: 1.5,
+                  minWidth: 44,
+                  borderRadius: "10px",
+                  transition: "all 0.2s ease",
+                  "&:hover": {
+                    background: "#FCE9EC",
+                  },
                 }}
                 color="primary"
                 variant="outlined"
@@ -378,6 +505,7 @@ const ProductIntro = ({ product, slug, total, average }) => {
               </BazaarButton>
             </FlexBox>
           )}
+          </Box>
         </Grid>
       </Grid>
     </Box>
