@@ -13,32 +13,7 @@ module.exports = {
   compress: true, // Enable gzip compression
   poweredByHeader: false, // Remove X-Powered-By header for security
   
-  // SEO and Performance Headers
-  async headers() {
-    return [
-      {
-        source: '/:path*',
-        headers: [
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
-          },
-          {
-            key: 'X-Frame-Options',
-            value: 'SAMEORIGIN',
-          },
-          {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block',
-          },
-          {
-            key: 'Referrer-Policy',
-            value: 'origin-when-cross-origin',
-          },
-        ],
-      },
-    ];
-  },
+  // SEO and Performance Headers - merged into single headers() function below
   
   // Disable ESLint during builds to avoid plugin loading errors
   eslint: {
@@ -207,6 +182,7 @@ module.exports = {
     return config;
   },
 
+  // SEO and Performance Headers - Optimized cache lifetimes
   async headers() {
     return [
       {
@@ -248,10 +224,6 @@ module.exports = {
             key: 'Strict-Transport-Security',
             value: 'max-age=31536000; includeSubDomains; preload',
           },
-          {
-            key: 'Strict-Transport-Security',
-            value: 'max-age=31536000; includeSubDomains; preload',
-          },
         ],
       },
       {
@@ -265,6 +237,24 @@ module.exports = {
       },
       {
         source: '/images/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/assets/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/_next/image',
         headers: [
           {
             key: 'Cache-Control',

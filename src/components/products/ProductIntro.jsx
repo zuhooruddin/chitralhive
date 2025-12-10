@@ -143,6 +143,18 @@ const ProductIntro = ({ product, slug, total, average }) => {
           >
           <FlexBox justifyContent="center" mb={4}>
             <Box
+              component="figure"
+              role="button"
+              tabIndex={0}
+              aria-label={`View larger image of ${name}`}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  openImageViewer(imgGroup.indexOf(imgGroup[selectedImage]));
+                }
+              }}
+
+              
               sx={{
                 background: "linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%)",
                 borderRadius: "16px",
@@ -152,20 +164,27 @@ const ProductIntro = ({ product, slug, total, average }) => {
                 "&:hover": {
                   background: "linear-gradient(135deg, #F1F5F9 0%, #E2E8F0 100%)",
                 },
+                "&:focus": {
+                  outline: "2px solid #D23F57",
+                  outlineOffset: "2px",
+                },
               }}
             >
             <LazyImage
               width={350}
-              alt={name ? `${name} - Authentic Chitrali Product | Buy Online in Pakistan at Chitral Hive` : "Chitrali Product - Buy Online in Pakistan | Chitral Hive"}
               height={350}
+              alt={name ? `${name} - Authentic Chitrali Product | Buy Online in Pakistan at Chitral Hive` : "Chitrali Product - Buy Online in Pakistan | Chitral Hive"}
               loading="eager"
+              priority
               objectFit="contain"
               src={localimageurl + `${product.imgGroup[selectedImage]}`}
               onClick={() =>
                 openImageViewer(imgGroup.indexOf(imgGroup[selectedImage]))
               }
               title={name || "Chitrali Product"}
-              style={{ borderRadius: "12px" }}
+              style={{ borderRadius: "12px", aspectRatio: "1 / 1" }}
+              sizes="(max-width: 768px) 100vw, 50vw"
+              quality={85}
             />
             {isViewerOpen && (
               <ImageViewer
@@ -189,8 +208,19 @@ const ProductIntro = ({ product, slug, total, average }) => {
                 width={70}
                 height={70}
                 minWidth={70}
+                minHeight={70}
                 bgcolor={selectedImage === ind ? "primary.light" : "#F8FAFC"}
                 borderRadius="12px"
+                role="button"
+                tabIndex={0}
+                aria-label={`View ${name} image ${ind + 1}`}
+                aria-pressed={selectedImage === ind}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleImageClick(ind)();
+                  }
+                }}
                 style={{
                   cursor: "pointer",
                   transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
@@ -204,13 +234,19 @@ const ProductIntro = ({ product, slug, total, average }) => {
                     transform: "translateY(-3px)",
                     boxShadow: "0 6px 16px rgba(0, 0, 0, 0.1)",
                   },
+                  "&:focus": {
+                    outline: "2px solid #D23F57",
+                    outlineOffset: "2px",
+                  },
                 }}
               >
                 <BazaarAvatar
                   src={localimageurl + `${url}`}
                   variant="square"
                   height={50}
+                  width={50}
                   sx={{ borderRadius: "8px" }}
+                  alt={`${name} - Image ${ind + 1}`}
                 />
               </FlexRowCenter>
             ))}
@@ -228,7 +264,7 @@ const ProductIntro = ({ product, slug, total, average }) => {
               border: "1px solid rgba(0, 0, 0, 0.04)",
             }}
           >
-          <H1 mb={2} sx={{ 
+          <H1 mb={2} component="h1" sx={{ 
             fontSize: "clamp(1.5rem, 3vw, 2rem)", 
             fontWeight: 700,
             color: "#1a202c",
@@ -362,7 +398,7 @@ const ProductIntro = ({ product, slug, total, average }) => {
             mt: 3,
           }}>
             <FlexBox alignItems="baseline" flexWrap="wrap">
-              <H2 sx={{ 
+              <H2 component="h2" sx={{ 
                 background: "linear-gradient(135deg, #D23F57 0%, #E94560 100%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
@@ -374,7 +410,7 @@ const ProductIntro = ({ product, slug, total, average }) => {
               </H2>
               {!!numericDiscount && numericDiscount > 0 && (
                 <>
-                  <H4 color="grey.500" ml={2} lineHeight="1">
+                  <H4 component="span" color="grey.500" ml={2} lineHeight="1">
                     <del>{currency || 'PKR'} {isNaN(discountprice) || discountprice === null || discountprice === undefined ? '0.00' : discountprice.toFixed(2)}</del>
                   </H4>
                   <Box sx={{
@@ -418,10 +454,12 @@ const ProductIntro = ({ product, slug, total, average }) => {
               color="primary"
               disabled={true}
               variant="contained"
+              aria-label="Out of stock - cannot add to cart"
               sx={{
                 mb: 2,
                 px: "2.5rem",
                 height: 52,
+                minHeight: 44,
                 borderRadius: "14px",
                 fontSize: "16px",
                 fontWeight: 600,
@@ -437,10 +475,12 @@ const ProductIntro = ({ product, slug, total, average }) => {
               color="primary"
               variant="contained"
               onClick={handleCartAmountChange(1, true)}
+              aria-label={`Add ${name} to cart`}
               sx={{
                 mb: 2,
                 px: "2.5rem",
                 height: 52,
+                minHeight: 44,
                 borderRadius: "14px",
                 fontSize: "16px",
                 fontWeight: 600,
@@ -466,9 +506,11 @@ const ProductIntro = ({ product, slug, total, average }) => {
             }}>
               <BazaarButton
                 size="small"
+                aria-label={`Decrease quantity of ${name} in cart`}
                 sx={{
                   p: 1.5,
                   minWidth: 44,
+                  minHeight: 44,
                   borderRadius: "10px",
                   transition: "all 0.2s ease",
                   "&:hover": {
@@ -482,15 +524,17 @@ const ProductIntro = ({ product, slug, total, average }) => {
                 <Remove fontSize="small" />
               </BazaarButton>
 
-              <H3 fontWeight="700" mx={3} sx={{ fontSize: "1.25rem", color: "#1a202c" }}>
+              <H3 fontWeight="700" mx={3} sx={{ fontSize: "1.25rem", color: "#1a202c" }} aria-label={`Current quantity: ${cartItem?.qty}`}>
                 {cartItem?.qty.toString().padStart(2, "0")}
               </H3>
 
               <BazaarButton
                 size="small"
+                aria-label={`Increase quantity of ${name} in cart`}
                 sx={{
                   p: 1.5,
                   minWidth: 44,
+                  minHeight: 44,
                   borderRadius: "10px",
                   transition: "all 0.2s ease",
                   "&:hover": {

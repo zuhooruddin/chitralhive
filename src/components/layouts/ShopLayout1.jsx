@@ -109,7 +109,9 @@ const ShopLayout1 = ({
         {showNavbar && <Navbar elevation={0} border={1} navCategories={navCategories} />}
 
         {/* BODY CONTENT */}
-        {children}
+        <main id="main-content" role="main">
+          {children}
+        </main>
       </div>
 
       <MobileNavigationBar />
