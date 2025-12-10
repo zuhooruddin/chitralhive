@@ -33,9 +33,13 @@ export const components = {
         position: "fixed",
         overflow: "hidden",
         height: "3px !important",
-        backgroundColor: blue.main,
+        backgroundColor: "#D23F57",
         zIndex: "99999999 !important",
         borderRadius: "0px 300px 300px 0px !important",
+        boxShadow: "0 0 10px rgba(210, 63, 87, 0.5)",
+      },
+      "#nprogress .peg": {
+        boxShadow: "0 0 10px rgba(210, 63, 87, 0.5), 0 0 5px rgba(210, 63, 87, 0.5)",
       },
     },
   },
@@ -49,14 +53,19 @@ export const components = {
   MuiDialog: {
     styleOverrides: {
       paper: {
-        borderRadius: 8,
+        borderRadius: 16,
+        boxShadow: "0px 16px 48px rgba(0, 0, 0, 0.18)",
       },
     },
   },
   MuiCard: {
     styleOverrides: {
       root: {
-        borderRadius: "8px",
+        borderRadius: "12px",
+        transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+        "&:hover": {
+          boxShadow: "0px 8px 24px rgba(0, 0, 0, 0.12)",
+        },
       },
     },
   },
@@ -108,33 +117,52 @@ export const components = {
         minWidth: 0,
         minHeight: 0,
         fontWeight: 600,
-        textTransform: "capitalize",
+        textTransform: "none",
+        letterSpacing: "0.02em",
+        borderRadius: "8px",
+        padding: "10px 24px",
+        transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+        boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.08)",
+        "&:hover": {
+          transform: "translateY(-2px)",
+          boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.15)",
+        },
         ...(ownerState.color === "info" && {
           borderRadius: "8px",
         }),
         ...(ownerState.color === "dark" && {
           color: "#fff",
-          borderRadius: 0,
+          borderRadius: "8px",
           transition: "all 0.3s",
           ":hover": {
             backgroundColor: "#343434",
+            transform: "translateY(-2px)",
           },
         }),
         ...(ownerState.color === "dark" &&
           ownerState.variant === "outlined" && {
             color: dark.main,
-            borderRadius: "3px",
+            borderRadius: "8px",
             transition: "all 0.3s",
             ":hover": {
               backgroundColor: dark.main,
               color: "white",
+              transform: "translateY(-2px)",
             },
           }),
       }),
       sizeLarge: {
-        padding: ".6rem 2.5rem",
-      }, // sizeMedium: { padding: "1.07rem 2.15rem" },
-      // sizeSmall: { padding: ".92rem 1.61rem" },
+        padding: "14px 32px",
+        fontSize: "1rem",
+      },
+      sizeMedium: {
+        padding: "10px 24px",
+        fontSize: "0.875rem",
+      },
+      sizeSmall: {
+        padding: "8px 16px",
+        fontSize: "0.75rem",
+      },
     },
     defaultProps: {
       color: "inherit",

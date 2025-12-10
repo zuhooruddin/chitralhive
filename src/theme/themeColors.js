@@ -27,6 +27,10 @@ export const primary = {
   700: "#E3364E",
   800: "#DF2E44",
   900: "#D91F33",
+  main: "#D23F57", // Modern vibrant red for Chitral Hive
+  light: "#FCE9EC",
+  dark: "#D91F33",
+  contrastText: "#FFFFFF",
 };
 export const secondary = {
   100: "#e8e8ee",
