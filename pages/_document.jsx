@@ -23,11 +23,17 @@ export default class Bazaar extends Document {
           <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
           <link rel="manifest" href="/site.webmanifest" />
           
-          {/* Preconnect to font origins for faster loading */}
+          {/* Preconnect to critical origins for faster loading */}
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+          {process.env.NEXT_PUBLIC_BACKEND_API_BASE && (
+            <link rel="preconnect" href={process.env.NEXT_PUBLIC_BACKEND_API_BASE.replace('/api/', '')} crossOrigin="anonymous" />
+          )}
+          {process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL && (
+            <link rel="preconnect" href={process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL.replace('/api/', '')} crossOrigin="anonymous" />
+          )}
           
-          {/* Premium Fonts - Plus Jakarta Sans, DM Sans, and Outfit */}
+          {/* Premium Fonts - Plus Jakarta Sans, DM Sans, and Outfit with font-display swap to prevent layout shifts */}
           <link
             href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Outfit:wght@100..900&display=swap"
             rel="stylesheet"

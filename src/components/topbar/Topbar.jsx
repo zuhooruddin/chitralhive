@@ -371,6 +371,10 @@ const server_ip=process.env.NEXT_PUBLIC_BACKEND_API_BASE
                   width={120}
                   src={topbardata?imgbaseurl+topbardata[0].site_logo:'/assets/images/logos/webpack.png'}
                   alt="logo"
+                  priority
+                  fetchPriority="high"
+                  quality={85}
+                  sizes="120px"
                 />
               </Link>
             </div>
@@ -514,6 +518,10 @@ const server_ip=process.env.NEXT_PUBLIC_BACKEND_API_BASE
                   width={120}
                   src={topbardata?imgbaseurl+topbardata[0].site_logo:''}
                   alt="logo"
+                  priority
+                  fetchPriority="high"
+                  quality={85}
+                  sizes="120px"
                 />
               </Link>
             </div>

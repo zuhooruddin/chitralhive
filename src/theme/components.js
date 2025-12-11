@@ -17,6 +17,14 @@ export const components = {
         fontSize,
         lineHeight: 1.7,
       },
+      // Prevent layout shifts from font loading
+      "@font-face": {
+        fontDisplay: "swap",
+      },
+      // Reserve space for text to prevent CLS
+      "h1, h2, h3, h4, h5, h6": {
+        fontDisplay: "swap",
+      },
       p: {
         lineHeight: 1.8,
       },

@@ -138,6 +138,8 @@ const Section1 = (data) => {
       content={carouselContent1}
       mode="light"
       bgImage={imgbaseurl + slider.image}
+      priority={index === 0} // Mark first slider as priority for LCP
+      fetchPriority={index === 0 ? "high" : "auto"}
     />
   ))
 ) : (
@@ -147,6 +149,8 @@ const Section1 = (data) => {
       content={carouselContent1}
       mode="light"
       bgImage={dummyImage.image}
+      priority={index === 0}
+      fetchPriority={index === 0 ? "high" : "auto"}
     />
   ))
 )}

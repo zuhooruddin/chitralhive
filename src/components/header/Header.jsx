@@ -217,10 +217,14 @@ const Header = ({ isFixed, headerdata, className, searchBoxType = "type2" }) => 
                   width={160}
                   src={headerdata ? imgbaseurl + headerdata[0].site_logo : '/assets/images/logos/webpack.png'} 
                 alt={comopanyalt}
+                  priority
+                  fetchPriority="high"
+                  quality={85}
                   style={{ 
                     display: 'block',
                     transition: 'all 0.3s ease',
                   }}
+                  sizes="(max-width: 768px) 120px, 160px"
               />
               </LogoContainer>
             </a>
