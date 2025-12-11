@@ -15,7 +15,7 @@ import useScrollRestoration from "../src/utils/useScrollRestoration";
 import useSWR from 'swr'
 import axios from 'axios';
 import dynamic from 'next/dynamic';
-import Loader from '../src/loader';
+// Loader removed - no popup on page load
 
 // Lazy load heavy components that aren't needed immediately
 const ToastContainer = dynamic(
