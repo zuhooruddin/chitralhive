@@ -6,7 +6,7 @@ import BazaarImage from "components/BazaarImage";
 import Image from "next/image";
 import { FlexBox } from "components/flex-box";
 import { Span } from "components/Typography";
-import ThemeSwitcher from "components/ThemeSwitcher";
+// ThemeSwitcher removed from topbar
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { layoutConstant } from "utils/constants";
@@ -26,9 +26,23 @@ const TopbarWrapper = styled(Box, {
     ? "rgba(15, 23, 42, 0.95)" 
     : theme.palette.secondary.dark),
   color: color || (theme.palette.mode === 'dark' 
-    ? "rgba(255, 255, 255, 0.9)" 
+    ? "#FFFFFF" 
     : theme.palette.secondary.contrastText),
   transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+  // Ensure all text and icons are visible in dark mode
+  "& a": {
+    color: "inherit",
+    textDecoration: "none",
+    "&:hover": {
+      opacity: 0.85,
+    },
+  },
+  "& svg": {
+    color: "inherit",
+  },
+  "& p, & span": {
+    color: "inherit",
+  },
   "& .topbarLeft": {
     "& .logo": {
       display: "none",
@@ -36,6 +50,10 @@ const TopbarWrapper = styled(Box, {
     "& .title": {
       marginLeft: "10px",
       fontsize: 12,
+      color: "inherit", // Ensure title text inherits color
+    },
+    "& .icon": {
+      color: "inherit", // Ensure icons inherit color
     },
     "& .drawer": {
       display: "none",
@@ -370,13 +388,16 @@ const server_ip=process.env.NEXT_PUBLIC_BACKEND_API_BASE
               </FlexBox>
 
               <FlexBox alignItems="center" ml={2.5}>
-                <MailOutline className="icon" fontSize="small" />
-                <Span className="title"><a href={`mailto:${topbardata?topbardata[0].top_bar_left_email:''}`}>{topbardata?topbardata[0].top_bar_left_email:'email@company.com'}</a></Span>
+                <MailOutline className="icon" fontSize="small" sx={{ color: 'inherit' }} />
+                <Span className="title" sx={{ color: 'inherit' }}>
+                  <a href={`mailto:${topbardata?topbardata[0].top_bar_left_email:''}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                    {topbardata?topbardata[0].top_bar_left_email:'email@company.com'}
+                  </a>
+                </Span>
               </FlexBox>
             </FlexBox>
           </FlexBox>
           <FlexBox className="topbarRight" alignItems="center" gap={2} style={{ cursor: 'pointer' }}>
-          <ThemeSwitcher iconOnly={true} />
           <LogoutIcon fontSize="small" onClick={handleSignOut} sx={{ color: 'inherit' }} />
           <Span sx={{ color: 'inherit', fontSize: '12px' }}> Sign Out</Span>
                </FlexBox>
@@ -520,7 +541,6 @@ const server_ip=process.env.NEXT_PUBLIC_BACKEND_API_BASE
             </FlexBox>
           </FlexBox>
           <FlexBox className="topbarRight" alignItems="center" gap={2} style={{'cursor': 'pointer'}} >
-            <ThemeSwitcher iconOnly={true} />
             <LoginIcon fontSize="small" onClick={signIn} sx={{ color: 'inherit' }} />
             <Span sx={{ color: 'inherit', fontSize: '12px' }}> Sign In</Span>
           </FlexBox>
