@@ -6,6 +6,7 @@ import BazaarImage from "components/BazaarImage";
 import Image from "next/image";
 import { FlexBox } from "components/flex-box";
 import { Span } from "components/Typography";
+import ThemeSwitcher from "components/ThemeSwitcher";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { layoutConstant } from "utils/constants";
@@ -21,8 +22,9 @@ const TopbarWrapper = styled(Box, {
 })(({ theme, bgColor, color }) => ({
   fontSize: 12,
   height: layoutConstant.topbarHeight,
-  background: bgColor || theme.palette.secondary.dark,
-  color: theme.palette.secondary.contrastText,
+  background: bgColor || (theme.palette.mode === 'dark' ? theme.palette.background.paper : theme.palette.secondary.dark),
+  color: color || theme.palette.secondary.contrastText,
+  transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
   "& .topbarLeft": {
     "& .logo": {
       display: "none",
@@ -373,10 +375,11 @@ const server_ip=process.env.NEXT_PUBLIC_BACKEND_API_BASE
               </FlexBox>
             </FlexBox>
           </FlexBox>
-          <FlexBox className="topbarRight" alignItems="center" style={{ cursor: 'pointer' }}>
+          <FlexBox className="topbarRight" alignItems="center" gap={2} style={{ cursor: 'pointer' }}>
           <div style={todayDealStyle} onClick={openPopup}>
             Today Deal
           </div>
+          <ThemeSwitcher iconOnly={true} />
           <LogoutIcon fontSize="small" onClick={handleSignOut}  />
           <p> Sign Out</p>
                </FlexBox>
@@ -512,10 +515,11 @@ const server_ip=process.env.NEXT_PUBLIC_BACKEND_API_BASE
               </FlexBox>
             </FlexBox>
           </FlexBox>
-          <FlexBox className="topbarRight" alignItems="center" style={{'cursor': 'pointer'}} >
+          <FlexBox className="topbarRight" alignItems="center" gap={2} style={{'cursor': 'pointer'}} >
           <div style={todayDealStyle} onClick={openPopup}>
             Today Deal
           </div>
+            <ThemeSwitcher iconOnly={true} />
             <LoginIcon fontSize="small" onClick={signIn} />
             <p> Sign In</p>
           </FlexBox>

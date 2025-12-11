@@ -1,5 +1,5 @@
 import { components } from "./components";
-import { blue, marron, paste, primary, themeColors } from "./themeColors";
+import { blue, marron, paste, primary, themeColors, darkThemeColors } from "./themeColors";
 import { typography } from "./typography";
 const THEMES = {
   GIFT: "GIFT",
@@ -23,12 +23,14 @@ WE CREATED MULTIPLE THEME OPTIONS FOR DIFFERENT SHOP VARIATION.
 YOU CAN JUST KEEP [THEMES.DEFAULT] AND REMOVE OTHER THEME OPTIONS.
 */
 
+// Light theme options
 const themesOptions = {
   [THEMES.DEFAULT]: {
     typography,
     breakpoints,
     components: { ...components },
     palette: {
+      mode: 'light',
       primary: { ...primary, light: primary[100] },
       ...themeColors,
     },
@@ -38,6 +40,7 @@ const themesOptions = {
     breakpoints,
     components: { ...components },
     palette: {
+      mode: 'light',
       primary: { ...primary, light: primary[100] },
       ...themeColors,
     },
@@ -47,6 +50,7 @@ const themesOptions = {
     breakpoints,
     components: { ...components },
     palette: {
+      mode: 'light',
       primary: { ...paste, light: paste[100] },
       ...themeColors,
     },
@@ -56,6 +60,7 @@ const themesOptions = {
     breakpoints,
     components: { ...components },
     palette: {
+      mode: 'light',
       primary: { ...blue, light: blue[100] },
       ...themeColors,
     },
@@ -65,14 +70,71 @@ const themesOptions = {
     breakpoints,
     components: { ...components },
     palette: {
+      mode: 'light',
       primary: { ...marron, light: marron[100] },
       ...themeColors,
     },
   },
 };
 
-const themeOptions = (publicRuntimeConfig, pathname) => {
+// Dark theme options
+const darkThemesOptions = {
+  [THEMES.DEFAULT]: {
+    typography,
+    breakpoints,
+    components: { ...components },
+    palette: {
+      mode: 'dark',
+      primary: { ...primary, light: primary[100] },
+      ...darkThemeColors,
+    },
+  },
+  [THEMES.GROCERY]: {
+    typography,
+    breakpoints,
+    components: { ...components },
+    palette: {
+      mode: 'dark',
+      primary: { ...primary, light: primary[100] },
+      ...darkThemeColors,
+    },
+  },
+  [THEMES.FURNITURE]: {
+    typography,
+    breakpoints,
+    components: { ...components },
+    palette: {
+      mode: 'dark',
+      primary: { ...paste, light: paste[100] },
+      ...darkThemeColors,
+    },
+  },
+  [THEMES.HEALTH]: {
+    typography,
+    breakpoints,
+    components: { ...components },
+    palette: {
+      mode: 'dark',
+      primary: { ...blue, light: blue[100] },
+      ...darkThemeColors,
+    },
+  },
+  [THEMES.GIFT]: {
+    typography,
+    breakpoints,
+    components: { ...components },
+    palette: {
+      mode: 'dark',
+      primary: { ...marron, light: marron[100] },
+      ...darkThemeColors,
+    },
+  },
+};
+
+const themeOptions = (publicRuntimeConfig, pathname, isDark = false) => {
   let themeOptions;
+  const themeSource = isDark ? darkThemesOptions : themesOptions;
+  
   /*
     YOU CAN ALSO REMOVE updateTheme function
     AND FOLLOWING ENTIRE switch case BLOCK.
@@ -80,7 +142,7 @@ const themeOptions = (publicRuntimeConfig, pathname) => {
 
   const updateTheme = (themeName) => {
     publicRuntimeConfig.theme = themeName;
-    themeOptions = themesOptions[publicRuntimeConfig.theme];
+    themeOptions = themeSource[publicRuntimeConfig.theme];
   };
 
   switch (pathname) {
@@ -111,7 +173,7 @@ const themeOptions = (publicRuntimeConfig, pathname) => {
       break;
 
     default:
-      themeOptions = themesOptions[publicRuntimeConfig.theme];
+      themeOptions = themeSource[publicRuntimeConfig.theme];
       break;
   }
   /*

@@ -121,6 +121,7 @@ export const dark = {
 export const white = {
   main: "#fff",
 };
+// Light theme colors
 export const themeColors = {
   dark,
   grey,
@@ -145,5 +146,46 @@ export const themeColors = {
     hover: "rgba(210, 63, 87, 0.08)",
     selected: "rgba(210, 63, 87, 0.12)",
     focus: "rgba(210, 63, 87, 0.12)",
+  },
+};
+
+// Dark theme colors
+export const darkThemeColors = {
+  dark: {
+    main: "#ffffff",
+  },
+  grey: {
+    900: "#F9FAFB",
+    800: "#E5E7EB",
+    700: "#D1D5DB",
+    600: "#9CA3AF",
+    500: "#6B7280",
+    400: "#4B5563",
+    300: "#374151",
+    200: "#2B3445",
+    100: "#1F2937",
+    50: "#111827",
+  },
+  paste,
+  error,
+  marron,
+  warning,
+  success,
+  secondary,
+  info: blue,
+  divider: "rgba(255, 255, 255, 0.12)",
+  background: {
+    default: "#0F172A", // Dark navy background
+    paper: "#1E293B",   // Slightly lighter for cards
+  },
+  text: {
+    primary: "#F9FAFB",
+    secondary: "#D1D5DB",
+    disabled: "#6B7280",
+  },
+  action: {
+    hover: "rgba(210, 63, 87, 0.15)",
+    selected: "rgba(210, 63, 87, 0.2)",
+    focus: "rgba(210, 63, 87, 0.2)",
   },
 };

@@ -14,6 +14,7 @@ import ShoppingBagOutlined from "components/icons/ShoppingBagOutlined";
 import MiniCart from "components/mini-cart/MiniCart";
 import MobileMenu from "components/navbar/MobileMenu";
 import GrocerySearchBox from "components/search-box/GrocerySearchBox";
+import ThemeSwitcher from "components/ThemeSwitcher";
 import { useAppContext } from "contexts/AppContext";
 import Link from "next/link";
 import Login from "pages-sections/sessions/Login";
@@ -26,16 +27,24 @@ export const HeaderWrapper = styled(Box)(({ theme }) => ({
   position: "relative",
   height: layoutConstant.headerHeight,
   transition: "all 300ms cubic-bezier(0.4, 0, 0.2, 1)",
-  background: "rgba(255, 255, 255, 0.98)",
+  background: theme.palette.mode === 'dark' 
+    ? "rgba(30, 41, 59, 0.98)" 
+    : "rgba(255, 255, 255, 0.98)",
   backdropFilter: "blur(20px)",
   WebkitBackdropFilter: "blur(20px)",
-  boxShadow: "0 2px 20px rgba(0, 0, 0, 0.06)",
-  borderBottom: "1px solid rgba(0, 0, 0, 0.04)",
+  boxShadow: theme.palette.mode === 'dark'
+    ? "0 2px 20px rgba(0, 0, 0, 0.4)"
+    : "0 2px 20px rgba(0, 0, 0, 0.06)",
+  borderBottom: theme.palette.mode === 'dark'
+    ? "1px solid rgba(255, 255, 255, 0.1)"
+    : "1px solid rgba(0, 0, 0, 0.04)",
   [theme.breakpoints.down("sm")]: {
     height: layoutConstant.mobileHeaderHeight,
   },
   "&.scrolled": {
-    boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+    boxShadow: theme.palette.mode === 'dark'
+      ? "0 4px 30px rgba(0, 0, 0, 0.6)"
+      : "0 4px 30px rgba(0, 0, 0, 0.1)",
   },
 })); // ==============================================================
 
@@ -112,6 +121,7 @@ const Header = ({ isFixed,headerdata, className, searchBoxType = "type2" }) => {
 
         <FlexBox
           alignItems="center"
+          gap={2}
           sx={{
             display: {
               xs: "none",
@@ -138,6 +148,9 @@ const Header = ({ isFixed,headerdata, className, searchBoxType = "type2" }) => {
             <PersonOutline />
           </Box>
 
+          {/* Theme Switcher */}
+          <ThemeSwitcher iconOnly={false} />
+
           <Badge 
             badgeContent={state.cart.length} 
             color="primary"
@@ -150,7 +163,6 @@ const Header = ({ isFixed,headerdata, className, searchBoxType = "type2" }) => {
             }}
           >
             <Box
-              ml={2.5}
               p={1.25}
               bgcolor="grey.100"
               component={IconButton}
