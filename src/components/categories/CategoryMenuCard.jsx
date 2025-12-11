@@ -5,6 +5,7 @@ import MegaMenu1 from "./mega-menu/MegaMenu1";
 import MegaMenu2 from "./mega-menu/MegaMenu2";
 import Dress from "components/icons/Dress";
 import api from "utils/api/market-2";
+
 import {server_ip} from "utils/backend_server_ip.jsx"
 import useSWR from 'swr';
 import axios from 'axios';

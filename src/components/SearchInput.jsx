@@ -36,4 +36,5 @@ const SearchInput = (props) => {
   );
 };
 
+
 export default SearchInput;
