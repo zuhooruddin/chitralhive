@@ -121,6 +121,8 @@ const InnerContainer = styled(Container)(() => ({
   justifyContent: "space-between",
 }));
 
+
+
 // Premium Category Menu Button
 const CategoryMenuButton = styled(BazaarButton)(({ theme }) => ({
   width: "280px",
