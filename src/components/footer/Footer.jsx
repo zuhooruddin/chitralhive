@@ -1,4 +1,4 @@
-import { Box, Container, Grid, styled } from "@mui/material";
+import { Box, Container, Grid, styled, keyframes } from "@mui/material";
 import BazaarIconButton from "components/BazaarIconButton";
 import Image from "components/BazaarImage";
 import { FlexBox } from "components/flex-box";
@@ -6,27 +6,127 @@ import Facebook from "components/icons/Facebook";
 import Youtube from "components/icons/Youtube";
 import Instagram from "components/icons/Instagram";
 import Twitter from "components/icons/Twitter";
-import { Paragraph } from "components/Typography";
+import { Paragraph, H6 } from "components/Typography";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 
-// styled component
+// Gradient animation
+const gradientShift = keyframes`
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+`;
+
+// Float animation for decorative elements
+const float = keyframes`
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(5deg);
+  }
+`;
+
+// Styled link with premium hover effect
 const StyledLink = styled("a")(({ theme }) => ({
-  display: "block",
-  borderRadius: 6,
+  display: "flex",
+  alignItems: "center",
+  gap: "10px",
+  borderRadius: 8,
   cursor: "pointer",
   position: "relative",
-  padding: "8px 0",
+  padding: "10px 0",
   color: "rgba(255, 255, 255, 0.6)",
   fontSize: "14px",
-  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+  fontWeight: 500,
+  transition: "all 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
+  "&::before": {
+    content: '""',
+    position: "absolute",
+    left: 0,
+    bottom: 8,
+    width: 0,
+    height: "2px",
+    background: "linear-gradient(135deg, #D23F57 0%, #E94560 100%)",
+    transition: "width 0.35s ease",
+  },
   "&:hover": {
     color: "#ffffff",
-    transform: "translateX(6px)",
-    paddingLeft: "4px",
+    transform: "translateX(8px)",
+    "&::before": {
+      width: "30px",
+    },
   },
 }));
 
+// Section title with gradient underline
+const SectionTitle = styled(Box)(({ theme }) => ({
+  fontSize: "18px",
+  fontWeight: 700,
+  marginBottom: "28px",
+  lineHeight: 1,
+  color: "white",
+  position: "relative",
+  display: "inline-block",
+  fontFamily: "'Outfit', sans-serif",
+  letterSpacing: "-0.02em",
+  "&::after": {
+    content: '""',
+    position: "absolute",
+    bottom: "-12px",
+    left: 0,
+    width: "50px",
+    height: "4px",
+    background: "linear-gradient(135deg, #D23F57 0%, #E94560 100%)",
+    borderRadius: "10px",
+  },
+}));
+
+// Premium Social Icon Button
+const SocialButton = styled(BazaarIconButton)(({ theme }) => ({
+  minWidth: "52px",
+  minHeight: "52px",
+  borderRadius: "14px",
+  background: "rgba(255, 255, 255, 0.05)",
+  border: "1px solid rgba(255, 255, 255, 0.1)",
+  transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+  position: "relative",
+  overflow: "hidden",
+  "&::before": {
+    content: '""',
+    position: "absolute",
+    inset: 0,
+    background: "linear-gradient(135deg, #D23F57 0%, #E94560 100%)",
+    opacity: 0,
+    transition: "opacity 0.4s ease",
+  },
+  "&:hover": {
+    transform: "translateY(-6px) scale(1.05)",
+    boxShadow: "0 16px 32px rgba(210, 63, 87, 0.4)",
+    border: "1px solid transparent",
+    "& svg": {
+      color: "white",
+      transform: "scale(1.1)",
+    },
+    "&::before": {
+      opacity: 1,
+    },
+  },
+  "& svg": {
+    position: "relative",
+    zIndex: 1,
+    transition: "all 0.4s ease",
+    color: "rgba(255, 255, 255, 0.7)",
+  },
+}));
+
+// Footer Wrapper with premium design
 const Footwrapper = styled(Box)(() => ({
   "@media only screen and (max-width: 600px)": {
     ".logo": {
@@ -42,105 +142,179 @@ const Footwrapper = styled(Box)(() => ({
   },
 }));
 
+// Decorative Circle
+const DecorativeCircle = styled(Box)(({ size = 200, top, left, right, bottom }) => ({
+  position: "absolute",
+  width: size,
+  height: size,
+  borderRadius: "50%",
+  background: "radial-gradient(circle, rgba(210, 63, 87, 0.15) 0%, transparent 70%)",
+  filter: "blur(60px)",
+  top,
+  left,
+  right,
+  bottom,
+  animation: `${float} 8s ease-in-out infinite`,
+  pointerEvents: "none",
+}));
+
 const Footer = ({ footerData: initialFooterData }) => {
   const [mounted, setMounted] = useState(false);
   const [footerData, setFooterData] = useState(initialFooterData);
 
   useEffect(() => {
     setMounted(true);
-    // Update footerData when initialFooterData changes
     if (initialFooterData) {
       setFooterData(initialFooterData);
     }
   }, [initialFooterData]);
 
-  // Prevent hydration mismatch - always render consistent structure
   const imgbaseurl = process.env.NEXT_PUBLIC_BACKEND_API_BASE + "media/";
   const defaultLogo = "/assets/images/logos/webpack.png";
 
-  // Debug logging in development
   useEffect(() => {
     if (process.env.NODE_ENV === 'development') {
       console.log('Footer component - footerData:', footerData);
-      console.log('Footer component - initialFooterData:', initialFooterData);
     }
-  }, [footerData, initialFooterData]);
+  }, [footerData]);
 
-  // Always render footer structure, even if data is missing
   return (
     <Footwrapper>
       <footer>
         <Box 
           sx={{
-            background: "linear-gradient(180deg, #1a202c 0%, #0f1419 100%)",
+            background: "linear-gradient(180deg, #0F172A 0%, #020617 100%)",
             position: "relative",
             overflow: "hidden",
+            // Premium gradient top border
             "&::before": {
               content: '""',
               position: "absolute",
               top: 0,
               left: 0,
               right: 0,
-              height: "4px",
-              background: "linear-gradient(135deg, #D23F57 0%, #E94560 50%, #FF6B6B 100%)",
+              height: "5px",
+              background: "linear-gradient(90deg, #D23F57 0%, #E94560 25%, #FF6B7A 50%, #E94560 75%, #D23F57 100%)",
+              backgroundSize: "200% 100%",
+              animation: `${gradientShift} 4s ease infinite`,
             },
           }}
         >
+          {/* Decorative Elements */}
+          <DecorativeCircle size={400} top="-100px" left="-100px" />
+          <DecorativeCircle size={300} bottom="-50px" right="-50px" />
+          <DecorativeCircle size={200} top="50%" left="50%" />
+          
           <Container
             sx={{
               p: "1rem",
               color: "white",
+              position: "relative",
+              zIndex: 1,
             }}
           >
-            <Box py={10} overflow="hidden">
-              <Grid container spacing={3}>
+            <Box py={{ xs: 6, md: 10 }} overflow="hidden">
+              <Grid container spacing={4}>
                 {/* Column 1: Logo and Description */}
                 <Grid item lg={4} md={6} sm={6} xs={12}>
                   <Link href="/" passHref>
                     <a>
-                      <Image
-                        mb={2.5}
-                        width={150}
-                        height={44}
-                        src={footerData?.footer_logo ? imgbaseurl + footerData.footer_logo : defaultLogo}
-                        alt="logo"
-                        style={{ display: 'block' }}
-                      />
+                      <Box
+                        sx={{
+                          transition: "all 0.3s ease",
+                          "&:hover": {
+                            transform: "scale(1.03)",
+                            filter: "brightness(1.1)",
+                          },
+                        }}
+                      >
+                        <Image
+                          mb={3}
+                          width={160}
+                          height={48}
+                          src={footerData?.footer_logo ? imgbaseurl + footerData.footer_logo : defaultLogo}
+                          alt="Chitral Hive Logo"
+                          style={{ display: 'block' }}
+                        />
+                      </Box>
                     </a>
                   </Link>
 
-                  <Paragraph mb={2.5} color="grey.500">
-                    {footerData?.footer_description || ""}
+                  <Paragraph 
+                    mb={3} 
+                    sx={{
+                      color: "rgba(255, 255, 255, 0.6)",
+                      fontSize: "15px",
+                      lineHeight: 1.8,
+                      maxWidth: "320px",
+                    }}
+                  >
+                    {footerData?.footer_description || "Discover authentic Chitrali products. Quality craftsmanship delivered to your doorstep."}
                   </Paragraph>
+                  
+                  {/* Newsletter Signup */}
+                  <Box
+                    sx={{
+                      display: "flex",
+                      gap: 1,
+                      mt: 3,
+                      maxWidth: "320px",
+                    }}
+                  >
+                    <Box
+                      component="input"
+                      placeholder="Enter your email"
+                      sx={{
+                        flex: 1,
+                        padding: "14px 18px",
+                        borderRadius: "12px",
+                        border: "1px solid rgba(255, 255, 255, 0.1)",
+                        background: "rgba(255, 255, 255, 0.05)",
+                        color: "white",
+                        fontSize: "14px",
+                        outline: "none",
+                        transition: "all 0.3s ease",
+                        "&::placeholder": {
+                          color: "rgba(255, 255, 255, 0.4)",
+                        },
+                        "&:focus": {
+                          borderColor: "rgba(210, 63, 87, 0.5)",
+                          background: "rgba(255, 255, 255, 0.08)",
+                          boxShadow: "0 0 0 4px rgba(210, 63, 87, 0.1)",
+                        },
+                      }}
+                    />
+                    <Box
+                      component="button"
+                      sx={{
+                        padding: "14px 20px",
+                        borderRadius: "12px",
+                        border: "none",
+                        background: "linear-gradient(135deg, #D23F57 0%, #E94560 100%)",
+                        color: "white",
+                        fontWeight: 600,
+                        fontSize: "14px",
+                        cursor: "pointer",
+                        transition: "all 0.3s ease",
+                        "&:hover": {
+                          transform: "translateY(-2px)",
+                          boxShadow: "0 8px 24px rgba(210, 63, 87, 0.4)",
+                        },
+                      }}
+                    >
+                      Subscribe
+                    </Box>
+                  </Box>
                 </Grid>
 
                 {/* Column 2: Links */}
                 {footerData?.column_two_heading && footerData?.column_two_links && (
                   <Grid item lg={2} md={6} sm={6} xs={12}>
-                    <Box
-                      fontSize="16px"
-                      fontWeight="700"
-                      mb={2.5}
-                      lineHeight="1"
-                      color="white"
-                      sx={{
-                        position: "relative",
-                        "&::after": {
-                          content: '""',
-                          position: "absolute",
-                          bottom: "-10px",
-                          left: 0,
-                          width: "40px",
-                          height: "3px",
-                          background: "linear-gradient(135deg, #D23F57 0%, #E94560 100%)",
-                          borderRadius: "10px",
-                        },
-                      }}
-                    >
+                    <SectionTitle>
                       {footerData.column_two_heading}
-                    </Box>
+                    </SectionTitle>
 
-                    <div>
+                    <Box sx={{ mt: 4 }}>
                       {footerData.column_two_links
                         .filter((item) => item.column === 2)
                         .map((item, ind) => (
@@ -148,37 +322,18 @@ const Footer = ({ footerData: initialFooterData }) => {
                             <StyledLink>{item.name}</StyledLink>
                           </Link>
                         ))}
-                    </div>
+                    </Box>
                   </Grid>
                 )}
 
                 {/* Column 3: Links */}
                 {footerData?.column_three_heading && footerData?.column_three_links && (
-                  <Grid item lg={3} md={6} sm={6} xs={12} style={{ marginBottom: '20px' }}>
-                    <Box
-                      fontSize="16px"
-                      fontWeight="700"
-                      mb={2.5}
-                      lineHeight="1"
-                      color="white"
-                      sx={{
-                        position: "relative",
-                        "&::after": {
-                          content: '""',
-                          position: "absolute",
-                          bottom: "-10px",
-                          left: 0,
-                          width: "40px",
-                          height: "3px",
-                          background: "linear-gradient(135deg, #D23F57 0%, #E94560 100%)",
-                          borderRadius: "10px",
-                        },
-                      }}
-                    >
+                  <Grid item lg={3} md={6} sm={6} xs={12}>
+                    <SectionTitle>
                       {footerData.column_three_heading}
-                    </Box>
+                    </SectionTitle>
                     
-                    <div>
+                    <Box sx={{ mt: 4 }}>
                       {footerData.column_three_links
                         .filter((item) => item.column === 3)
                         .map((item, ind) => (
@@ -186,44 +341,42 @@ const Footer = ({ footerData: initialFooterData }) => {
                             <StyledLink>{item.name}</StyledLink>
                           </Link>
                         ))}
-                    </div>
+                    </Box>
                   </Grid>
                 )}
                 
                 {/* Column 4: Contact & Social */}
                 <Grid item lg={3} md={6} sm={6} xs={12}>
-                  <Box
-                    fontSize="16px"
-                    fontWeight="700"
-                    mb={2.5}
-                    lineHeight="1"
-                    color="white"
-                    sx={{
-                      position: "relative",
-                      "&::after": {
-                        content: '""',
-                        position: "absolute",
-                        bottom: "-10px",
-                        left: 0,
-                        width: "40px",
-                        height: "3px",
-                        background: "linear-gradient(135deg, #D23F57 0%, #E94560 100%)",
-                        borderRadius: "10px",
-                      },
-                    }}
-                  >
-                    {footerData?.footer_fourth_column_heading || ""}
-                  </Box>
+                  <SectionTitle>
+                    {footerData?.footer_fourth_column_heading || "Get in Touch"}
+                  </SectionTitle>
                   
                   {footerData?.footer_fourth_column_content && (
-                    <div
+                    <Box
+                      sx={{
+                        mt: 4,
+                        color: "rgba(255, 255, 255, 0.6)",
+                        fontSize: "14px",
+                        lineHeight: 1.8,
+                        "& p": {
+                          marginBottom: "10px",
+                        },
+                        "& a": {
+                          color: "rgba(255, 255, 255, 0.8)",
+                          transition: "color 0.3s ease",
+                          "&:hover": {
+                            color: "#D23F57",
+                          },
+                        },
+                      }}
                       dangerouslySetInnerHTML={{
                         __html: footerData.footer_fourth_column_content,
                       }}
                     />
                   )}
 
-                  <FlexBox className="flex" mx={-0.625}>
+                  {/* Social Icons */}
+                  <FlexBox gap={1.5} mt={4}>
                     {footerData?.facebook && (
                       <a
                         href={footerData.facebook}
@@ -231,28 +384,9 @@ const Footer = ({ footerData: initialFooterData }) => {
                         rel="noreferrer noopener"
                         aria-label="Visit our Facebook page"
                       >
-                        <BazaarIconButton
-                          m={0.5}
-                          bgcolor="rgba(255,255,255,0.08)"
-                          fontSize="14px"
-                          padding="12px"
-                          aria-label="Facebook"
-                          sx={{ 
-                            minWidth: '48px', 
-                            minHeight: '48px',
-                            borderRadius: "12px",
-                            border: "1px solid rgba(255,255,255,0.1)",
-                            transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                            "&:hover": {
-                              background: "linear-gradient(135deg, #D23F57 0%, #E94560 100%)",
-                              transform: "translateY(-4px)",
-                              boxShadow: "0 8px 20px rgba(210, 63, 87, 0.3)",
-                              borderColor: "#D23F57",
-                            },
-                          }}
-                        >
-                          <Facebook fontSize="inherit" />
-                        </BazaarIconButton>
+                        <SocialButton aria-label="Facebook">
+                          <Facebook fontSize="small" />
+                        </SocialButton>
                       </a>
                     )}
 
@@ -263,28 +397,9 @@ const Footer = ({ footerData: initialFooterData }) => {
                         rel="noreferrer noopener"
                         aria-label="Visit our Instagram page"
                       >
-                        <BazaarIconButton
-                          m={0.5}
-                          bgcolor="rgba(255,255,255,0.08)"
-                          fontSize="14px"
-                          padding="12px"
-                          aria-label="Instagram"
-                          sx={{ 
-                            minWidth: '48px', 
-                            minHeight: '48px',
-                            borderRadius: "12px",
-                            border: "1px solid rgba(255,255,255,0.1)",
-                            transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                            "&:hover": {
-                              background: "linear-gradient(135deg, #D23F57 0%, #E94560 100%)",
-                              transform: "translateY(-4px)",
-                              boxShadow: "0 8px 20px rgba(210, 63, 87, 0.3)",
-                              borderColor: "#D23F57",
-                            },
-                          }}
-                        >
-                          <Instagram fontSize="inherit" />
-                        </BazaarIconButton>
+                        <SocialButton aria-label="Instagram">
+                          <Instagram fontSize="small" />
+                        </SocialButton>
                       </a>
                     )}
 
@@ -295,28 +410,9 @@ const Footer = ({ footerData: initialFooterData }) => {
                         rel="noreferrer noopener"
                         aria-label="Visit our YouTube channel"
                       >
-                        <BazaarIconButton
-                          m={0.5}
-                          bgcolor="rgba(255,255,255,0.08)"
-                          fontSize="14px"
-                          padding="12px"
-                          aria-label="YouTube"
-                          sx={{ 
-                            minWidth: '48px', 
-                            minHeight: '48px',
-                            borderRadius: "12px",
-                            border: "1px solid rgba(255,255,255,0.1)",
-                            transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                            "&:hover": {
-                              background: "linear-gradient(135deg, #D23F57 0%, #E94560 100%)",
-                              transform: "translateY(-4px)",
-                              boxShadow: "0 8px 20px rgba(210, 63, 87, 0.3)",
-                              borderColor: "#D23F57",
-                            },
-                          }}
-                        >
-                          <Youtube fontSize="inherit" />
-                        </BazaarIconButton>
+                        <SocialButton aria-label="YouTube">
+                          <Youtube fontSize="small" />
+                        </SocialButton>
                       </a>
                     )}
 
@@ -327,33 +423,70 @@ const Footer = ({ footerData: initialFooterData }) => {
                         rel="noreferrer noopener"
                         aria-label="Visit our Twitter page"
                       >
-                        <BazaarIconButton
-                          m={0.5}
-                          bgcolor="rgba(255,255,255,0.08)"
-                          fontSize="14px"
-                          padding="12px"
-                          aria-label="Twitter"
-                          sx={{ 
-                            minWidth: '48px', 
-                            minHeight: '48px',
-                            borderRadius: "12px",
-                            border: "1px solid rgba(255,255,255,0.1)",
-                            transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                            "&:hover": {
-                              background: "linear-gradient(135deg, #D23F57 0%, #E94560 100%)",
-                              transform: "translateY(-4px)",
-                              boxShadow: "0 8px 20px rgba(210, 63, 87, 0.3)",
-                              borderColor: "#D23F57",
-                            },
-                          }}
-                        >
-                          <Twitter fontSize="inherit" />
-                        </BazaarIconButton>
+                        <SocialButton aria-label="Twitter">
+                          <Twitter fontSize="small" />
+                        </SocialButton>
                       </a>
                     )}
                   </FlexBox>
                 </Grid>
               </Grid>
+
+              {/* Bottom Bar */}
+              <Box
+                sx={{
+                  mt: 8,
+                  pt: 4,
+                  borderTop: "1px solid rgba(255, 255, 255, 0.08)",
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: 2,
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <Paragraph
+                  sx={{
+                    color: "rgba(255, 255, 255, 0.5)",
+                    fontSize: "14px",
+                  }}
+                >
+                  © {new Date().getFullYear()} Chitral Hive. All rights reserved.
+                </Paragraph>
+                
+                <FlexBox gap={3}>
+                  <Link href="/privacy-policy" passHref>
+                    <Box
+                      component="a"
+                      sx={{
+                        color: "rgba(255, 255, 255, 0.5)",
+                        fontSize: "14px",
+                        transition: "color 0.3s ease",
+                        "&:hover": {
+                          color: "#D23F57",
+                        },
+                      }}
+                    >
+                      Privacy Policy
+                    </Box>
+                  </Link>
+                  <Link href="/return-policy" passHref>
+                    <Box
+                      component="a"
+                      sx={{
+                        color: "rgba(255, 255, 255, 0.5)",
+                        fontSize: "14px",
+                        transition: "color 0.3s ease",
+                        "&:hover": {
+                          color: "#D23F57",
+                        },
+                      }}
+                    >
+                      Return Policy
+                    </Box>
+                  </Link>
+                </FlexBox>
+              </Box>
             </Box>
           </Container>
         </Box>

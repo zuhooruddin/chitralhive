@@ -13,7 +13,7 @@ export default class Bazaar extends Document {
       <Html lang="en-PK" prefix="og: https://ogp.me/ns#">
         <Head>
           {/* SEO Meta Tags */}
-          <meta name="theme-color" content="#1976d2" />
+          <meta name="theme-color" content="#D23F57" />
           <meta name="apple-mobile-web-app-capable" content="yes" />
           <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
           <meta name="format-detection" content="telephone=yes" />
@@ -23,22 +23,17 @@ export default class Bazaar extends Document {
           <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
           <link rel="manifest" href="/site.webmanifest" />
           
-          {/* Optimize font loading - use font-display: swap for better performance */}
-          {/* Limit preconnect to essential origins only (Lighthouse recommendation) */}
+          {/* Preconnect to font origins for faster loading */}
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+          
+          {/* Premium Fonts - Plus Jakarta Sans, DM Sans, and Outfit */}
           <link
-            href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;900&display=swap"
+            href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Outfit:wght@100..900&display=swap"
             rel="stylesheet"
-            media="print"
-            onLoad="this.media='all'"
           />
-          <noscript>
-            <link
-              href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;900&display=swap"
-              rel="stylesheet"
-            />
-          </noscript>
+          
+          {/* Material Icons */}
           <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -51,6 +46,7 @@ export default class Bazaar extends Document {
               href="https://fonts.googleapis.com/icon?family=Material+Icons"
             />
           </noscript>
+          
           <OpenGraphTags />
           <GoogleAnalytics />
         </Head>
@@ -62,32 +58,11 @@ export default class Bazaar extends Document {
       </Html>
     );
   }
-} // `getInitialProps` belongs to `_document` (instead of `_app`),
-// it's compatible with static-site generation (SSG).
+}
 
+// `getInitialProps` belongs to `_document` (instead of `_app`),
+// it's compatible with static-site generation (SSG).
 Bazaar.getInitialProps = async (ctx) => {
-  // Resolution order
-  //
-  // On the server:
-  // 1. app.getInitialProps
-  // 2. page.getInitialProps
-  // 3. document.getInitialProps
-  // 4. app.render
-  // 5. page.render
-  // 6. document.render
-  //
-  // On the server with error:
-  // 1. document.getInitialProps
-  // 2. app.render
-  // 3. page.render
-  // 4. document.render
-  //
-  // On the client
-  // 1. app.getInitialProps
-  // 2. page.getInitialProps
-  // 3. app.render
-  // 4. page.render
-  // Render app and page and get the context of the page with collected side effects.
   const originalRenderPage = ctx.renderPage;
   const cache = createEmotionCache();
   const { extractCriticalToChunks } = createEmotionServer(cache);
@@ -102,26 +77,24 @@ Bazaar.getInitialProps = async (ctx) => {
         ),
     });
 
-  const initialProps = await Document.getInitialProps(ctx); // This is important. It prevents emotion to render invalid HTML.
-  // See https://github.com/mui-org/material-ui/issues/26561#issuecomment-855286153
+  const initialProps = await Document.getInitialProps(ctx);
 
   const emotionStyles = extractCriticalToChunks(initialProps.html);
   const emotionStyleTags = emotionStyles.styles.map((style) => (
     <style
       data-emotion={`${style.key} ${style.ids.join(" ")}`}
-      key={style.key} // eslint-disable-next-line react/no-danger
+      key={style.key}
       dangerouslySetInnerHTML={{
         __html: style.css,
       }}
     />
   ));
+  
   return {
     ...initialProps,
-    // Styles fragment is rendered after the app and page rendering finish.
     styles: [
       ...React.Children.toArray(initialProps.styles),
       ...emotionStyleTags,
     ],
   };
 };
-
