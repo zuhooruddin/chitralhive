@@ -228,14 +228,14 @@ const Footer = ({ footerData: initialFooterData }) => {
                           },
                         }}
                       >
-                        <Image
+                      <Image
                           mb={3}
                           width={160}
                           height={48}
-                          src={footerData?.footer_logo ? imgbaseurl + footerData.footer_logo : defaultLogo}
+                        src={footerData?.footer_logo ? imgbaseurl + footerData.footer_logo : defaultLogo}
                           alt="Chitral Hive Logo"
-                          style={{ display: 'block' }}
-                        />
+                        style={{ display: 'block' }}
+                      />
                       </Box>
                     </a>
                   </Link>

@@ -212,22 +212,22 @@ const Header = ({ isFixed, headerdata, className, searchBoxType = "type2" }) => 
           <Link href="/">
             <a>
               <LogoContainer>
-                <Image 
+              <Image 
                   height={48} 
                   width={160}
                   src={headerdata ? imgbaseurl + headerdata[0].site_logo : '/assets/images/logos/webpack.png'} 
-                  alt={comopanyalt}
+                alt={comopanyalt}
                   style={{ 
                     display: 'block',
                     transition: 'all 0.3s ease',
                   }}
-                />
+              />
               </LogoContainer>
             </a>
           </Link>
 
           {isFixed && (
-            <CategoryMenu>
+            <CategoryMenu navCategories={null}>
               <FlexBox color="grey.600" alignItems="center" ml={2}>
                 <BazaarButton 
                   color="inherit"

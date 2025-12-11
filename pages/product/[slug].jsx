@@ -422,7 +422,8 @@ const companyname=process.env.NEXT_PUBLIC_COMPANY_NAME
             slug={productDetails[0]["slug"]}
             total={filteredReviews.length}
             average={averageRating}
-              />
+            category={productDetails[0]["category"] || productDetails[0]["categoryName"] || ""}
+          />
         ) : (
           <H2>Loading...</H2>
         )}

@@ -22,8 +22,12 @@ const TopbarWrapper = styled(Box, {
 })(({ theme, bgColor, color }) => ({
   fontSize: 12,
   height: layoutConstant.topbarHeight,
-  background: bgColor || (theme.palette.mode === 'dark' ? theme.palette.background.paper : theme.palette.secondary.dark),
-  color: color || theme.palette.secondary.contrastText,
+  background: bgColor || (theme.palette.mode === 'dark' 
+    ? "rgba(15, 23, 42, 0.95)" 
+    : theme.palette.secondary.dark),
+  color: color || (theme.palette.mode === 'dark' 
+    ? "rgba(255, 255, 255, 0.9)" 
+    : theme.palette.secondary.contrastText),
   transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)',
   "& .topbarLeft": {
     "& .logo": {
@@ -61,7 +65,9 @@ const TopbarWrapper = styled(Box, {
   "& .topbarRight": {
     "& .link": {
       paddingRight: 30,
-      color: theme.palette.secondary.contrastText,
+      color: theme.palette.mode === 'dark' 
+        ? "rgba(255, 255, 255, 0.9)" 
+        : theme.palette.secondary.contrastText,
       fontSize: 12,
     },
     "@media only screen and (max-width: 600px)": {
@@ -155,13 +161,7 @@ const server_ip=process.env.NEXT_PUBLIC_BACKEND_API_BASE
   const closePopup = () => {
     setIsPopupOpen(false);
   };
-  const todayDealStyle = {
-    cursor: 'pointer',
-    color: 'blue', 
-    textDecoration: 'underline',
-    fontWeight: 'bold',
-    marginRight:'15px'
-  };
+  // Removed todayDealStyle - no longer needed
 
   const[coupon,setCoupon]=useState()
 
@@ -361,9 +361,9 @@ const server_ip=process.env.NEXT_PUBLIC_BACKEND_API_BASE
             </FlexBox>
             <FlexBox>
               <FlexBox alignItems="center">
-                <CallOutlined className="icon" fontSize="small" />
-                <Span className="title">
-  <a href={`tel:${topbardata ? topbardata[0].top_bar_left_phone : ''}`}>
+                <CallOutlined className="icon" fontSize="small" sx={{ color: 'inherit' }} />
+                <Span className="title" sx={{ color: 'inherit' }}>
+  <a href={`tel:${topbardata ? topbardata[0].top_bar_left_phone : ''}`} style={{ color: 'inherit', textDecoration: 'none' }}>
     {topbardata ? topbardata[0].top_bar_left_phone : '+923'}
   </a>
 </Span>
@@ -376,12 +376,9 @@ const server_ip=process.env.NEXT_PUBLIC_BACKEND_API_BASE
             </FlexBox>
           </FlexBox>
           <FlexBox className="topbarRight" alignItems="center" gap={2} style={{ cursor: 'pointer' }}>
-          <div style={todayDealStyle} onClick={openPopup}>
-            Today Deal
-          </div>
           <ThemeSwitcher iconOnly={true} />
-          <LogoutIcon fontSize="small" onClick={handleSignOut}  />
-          <p> Sign Out</p>
+          <LogoutIcon fontSize="small" onClick={handleSignOut} sx={{ color: 'inherit' }} />
+          <Span sx={{ color: 'inherit', fontSize: '12px' }}> Sign Out</Span>
                </FlexBox>
       </Container>
 
@@ -504,24 +501,28 @@ const server_ip=process.env.NEXT_PUBLIC_BACKEND_API_BASE
             </FlexBox>
             <FlexBox>
               <FlexBox alignItems="center">
-                <CallOutlined className="icon" fontSize="small" />
-                <Span className="title"><a href={topbardata?topbardata[0].top_bar_left_phone:''}>    {topbardata ? topbardata[0].top_bar_left_phone : '+923'}
-</a></Span>
+                <CallOutlined className="icon" fontSize="small" sx={{ color: 'inherit' }} />
+                <Span className="title" sx={{ color: 'inherit' }}>
+                  <a href={topbardata?topbardata[0].top_bar_left_phone:''} style={{ color: 'inherit', textDecoration: 'none' }}>
+                    {topbardata ? topbardata[0].top_bar_left_phone : '+923'}
+                  </a>
+                </Span>
               </FlexBox>
 
               <FlexBox alignItems="center" ml={2.5}>
-                <MailOutline className="icon" fontSize="small" />
-                <Span className="title"><a href={`mailto:${topbardata?topbardata[0].top_bar_left_email:''}`}>{topbardata?topbardata[0].top_bar_left_email:'email@company.com'}</a></Span>
+                <MailOutline className="icon" fontSize="small" sx={{ color: 'inherit' }} />
+                <Span className="title" sx={{ color: 'inherit' }}>
+                  <a href={`mailto:${topbardata?topbardata[0].top_bar_left_email:''}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                    {topbardata?topbardata[0].top_bar_left_email:'email@company.com'}
+                  </a>
+                </Span>
               </FlexBox>
             </FlexBox>
           </FlexBox>
           <FlexBox className="topbarRight" alignItems="center" gap={2} style={{'cursor': 'pointer'}} >
-          <div style={todayDealStyle} onClick={openPopup}>
-            Today Deal
-          </div>
             <ThemeSwitcher iconOnly={true} />
-            <LoginIcon fontSize="small" onClick={signIn} />
-            <p> Sign In</p>
+            <LoginIcon fontSize="small" onClick={signIn} sx={{ color: 'inherit' }} />
+            <Span sx={{ color: 'inherit', fontSize: '12px' }}> Sign In</Span>
           </FlexBox>
         </Container>
         <ReactModal

@@ -138,9 +138,7 @@ const imgbaseurl=process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL
         <link rel="dns-prefetch" href={process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL} />
         <link rel="canonical" href="https://chitralhive.com" />
       </Head>
-      <Loader />
-
-
+      {/* Loader removed - no popup on page load */}
 
       {/* Lazy load FloatingWhatsApp - only render after initial load */}
       {typeof window !== 'undefined' && (

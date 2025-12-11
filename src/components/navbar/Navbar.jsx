@@ -96,6 +96,7 @@ const NavBarWrapper = styled(BazaarCard)(({ theme, border }) => ({
   display: "block",
   borderRadius: "0px",
   position: "relative",
+  zIndex: 999, // Lower than CategoryMenuCard (1600) but above content
   backgroundColor: theme.palette.mode === 'dark' 
     ? "rgba(15, 23, 42, 0.95)" 
     : "rgba(255, 255, 255, 0.98)",
