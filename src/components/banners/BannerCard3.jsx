@@ -18,10 +18,19 @@ const CardContent = styled(Box)(() => ({
 })); // ========================================================
 
 // ========================================================
-const BannerCard3 = ({ img, children, ...props }) => {
+const BannerCard3 = ({ img, children, priority = false, ...props }) => {
   return (
     <CardWrapper {...props}>
-      <BazaarImage alt="category" height="100%" width="100%" src={img} />
+      <BazaarImage 
+        alt="category banner" 
+        height={400} 
+        width={600} 
+        src={img}
+        priority={priority}
+        quality={85}
+        objectFit="cover"
+        style={{ width: '100%', height: '100%' }}
+      />
 
       <CardContent>{children}</CardContent>
     </CardWrapper>

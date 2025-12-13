@@ -234,7 +234,9 @@ const Footer = ({ footerData: initialFooterData }) => {
                           height={48}
                         src={footerData?.footer_logo ? imgbaseurl + footerData.footer_logo : defaultLogo}
                           alt="Chitral Hive Logo"
-                        style={{ display: 'block' }}
+                        style={{ display: 'block', maxWidth: '160px', height: 'auto' }}
+                        quality={85}
+                        loading="lazy"
                       />
                       </Box>
                     </a>

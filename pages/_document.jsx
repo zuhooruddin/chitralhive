@@ -54,7 +54,7 @@ export default class Bazaar extends Document {
           </noscript>
           
           <OpenGraphTags />
-          <GoogleAnalytics />
+          {/* GoogleAnalytics is now loaded client-side only to improve performance */}
         </Head>
 
         <body>

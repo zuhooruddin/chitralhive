@@ -31,12 +31,16 @@ module.exports = {
   
   images: {
     domains: ["100.64.6.105","idrisbookbank-dev-server.inara.tech","api.chitralhive.com","s3-inara.eu-central-1.linodeobjects.com","chitralhive.com"],
-    formats: ['image/avif', 'image/webp'], // Enable modern image formats
+    formats: ['image/avif', 'image/webp'], // Enable modern image formats (AVIF preferred, WebP fallback)
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 31536000, // Cache images for 1 year (aggressive caching)
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    // Optimize image quality - balance between quality and file size
+    quality: 85,
+    // Enable image optimization for all external images
+    unoptimized: false,
   },
   
   // Optimize bundle size
@@ -118,9 +122,9 @@ module.exports = {
         sideEffects: false, // Mark as side-effect free for better tree-shaking
         splitChunks: {
           chunks: 'all',
-          maxInitialRequests: 20, // Reduced to limit initial chunks
+          maxInitialRequests: 25, // Allow more initial chunks for better parallel loading
           minSize: 20000, // Only split chunks larger than 20KB
-          maxSize: 200000, // Reduced max size for better code splitting
+          maxSize: 150000, // Reduced max size for better code splitting and faster loads
           cacheGroups: {
             default: false,
             vendors: false,
@@ -132,6 +136,14 @@ module.exports = {
               priority: 40,
               enforce: true,
             },
+            // Next.js framework (high priority)
+            nextjs: {
+              name: 'nextjs',
+              test: /[\\/]node_modules[\\/](next)[\\/]/,
+              chunks: 'all',
+              priority: 38,
+              enforce: true,
+            },
             // MUI core (high priority)
             mui: {
               name: 'mui',
@@ -139,15 +151,24 @@ module.exports = {
               chunks: 'all',
               priority: 35,
               enforce: true,
+              maxSize: 150000, // Split MUI if too large
             },
-            // MUI Icons (separate to reduce initial load and file handle pressure)
+            // MUI Icons (separate to reduce initial load)
             muiIcons: {
               name: 'mui-icons',
               test: /[\\/]node_modules[\\/]@mui[\\/]icons-material[\\/]/,
               chunks: 'async', // Load on demand
               priority: 30,
               enforce: true,
-              maxSize: 200000, // Split if larger to reduce file processing
+              maxSize: 150000,
+            },
+            // Emotion (MUI dependency)
+            emotion: {
+              name: 'emotion',
+              test: /[\\/]node_modules[\\/]@emotion[\\/]/,
+              chunks: 'all',
+              priority: 32,
+              enforce: true,
             },
             // Large third-party libraries (load on demand)
             largeVendors: {
@@ -155,6 +176,15 @@ module.exports = {
               test: /[\\/]node_modules[\\/](apexcharts|react-apexcharts|react-quill|simplebar|react-floating-whatsapp|react-toastify)[\\/]/,
               chunks: 'async', // Load on demand
               priority: 20,
+              enforce: true,
+              maxSize: 150000,
+            },
+            // Next-auth (load on demand if not needed immediately)
+            nextAuth: {
+              name: 'next-auth',
+              test: /[\\/]node_modules[\\/]next-auth[\\/]/,
+              chunks: 'async',
+              priority: 25,
               enforce: true,
             },
             // Common vendor chunk
@@ -165,6 +195,7 @@ module.exports = {
               priority: 10,
               minChunks: 2,
               reuseExistingChunk: true,
+              maxSize: 150000,
             },
             // Common chunk for shared code
             common: {
@@ -174,6 +205,7 @@ module.exports = {
               priority: 5,
               reuseExistingChunk: true,
               enforce: true,
+              maxSize: 150000,
             },
           },
         },
@@ -255,6 +287,15 @@ module.exports = {
       },
       {
         source: '/_next/image',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/api/image-proxy',
         headers: [
           {
             key: 'Cache-Control',

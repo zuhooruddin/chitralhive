@@ -15,6 +15,7 @@ import useScrollRestoration from "../src/utils/useScrollRestoration";
 import useSWR from 'swr'
 import axios from 'axios';
 import dynamic from 'next/dynamic';
+import GoogleAnalytics from "utils/GoogleAnalytics";
 // Loader removed - no popup on page load
 
 // Lazy load heavy components that aren't needed immediately
@@ -144,6 +145,9 @@ const imgbaseurl=process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL
       {typeof window !== 'undefined' && (
         <FloatingWhatsApp {...whatsappProps} />
       )}
+
+      {/* Load Google Analytics client-side only to improve initial page load */}
+      {typeof window !== 'undefined' && <GoogleAnalytics />}
 
       <SettingsProvider>
         <AppProvider>

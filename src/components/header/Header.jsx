@@ -223,6 +223,8 @@ const Header = ({ isFixed, headerdata, className, searchBoxType = "type2" }) => 
                   style={{ 
                     display: 'block',
                     transition: 'all 0.3s ease',
+                    maxWidth: '160px',
+                    height: 'auto',
                   }}
                   sizes="(max-width: 768px) 120px, 160px"
               />
