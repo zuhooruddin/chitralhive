@@ -1975,3 +1975,512 @@ input:focus-visible {
     scroll-behavior: auto !important;
   }
 }
+
+/* ========================================
+   MOBILE RESPONSIVE STYLES
+   Only applies to mobile devices - Desktop/Web unchanged
+   ======================================== */
+
+/* Mobile breakpoint: 768px and below */
+@media (max-width: 768px) {
+  /* Base Typography Adjustments */
+  body {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  h1 {
+    font-size: clamp(1.75rem, 6vw, 2.5rem) !important;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 5vw, 2rem) !important;
+    line-height: 1.3;
+    margin-bottom: 0.875rem;
+  }
+
+  h3 {
+    font-size: clamp(1.25rem, 4vw, 1.75rem) !important;
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
+  }
+
+  h4 {
+    font-size: clamp(1.125rem, 3.5vw, 1.5rem) !important;
+    line-height: 1.4;
+    margin-bottom: 0.625rem;
+  }
+
+  h5 {
+    font-size: 1rem !important;
+    line-height: 1.5;
+  }
+
+  h6 {
+    font-size: 0.875rem !important;
+    line-height: 1.5;
+  }
+
+  p {
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+
+  /* Container and Spacing */
+  .container-narrow {
+    padding: 0 16px;
+  }
+
+  /* Header Mobile Optimizations */
+  .header-modern {
+    padding: 0.5rem 0;
+  }
+
+  /* Navigation Links */
+  .nav-link {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+
+  /* Buttons Mobile Sizing */
+  .btn-primary,
+  .btn-secondary,
+  .btn-outline {
+    padding: 12px 20px;
+    font-size: 14px;
+    min-height: 44px; /* Touch-friendly */
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .btn-ghost {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+
+  /* Cards Mobile */
+  .card-modern,
+  .card-product {
+    border-radius: 12px;
+    margin-bottom: 1rem;
+  }
+
+  .product-card {
+    margin-bottom: 1.5rem;
+  }
+
+  .product-content {
+    padding: 16px;
+  }
+
+  .product-title {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 8px;
+    min-height: auto;
+  }
+
+  /* Product Grid Adjustments */
+  .MuiGrid-container {
+    margin: 0 -8px !important;
+  }
+
+  .MuiGrid-item {
+    padding: 0 8px !important;
+  }
+
+  /* Search Box Mobile */
+  .search-box-modern {
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .search-box-modern input {
+    padding: 14px 16px 14px 48px;
+    font-size: 14px;
+    border-radius: 24px;
+  }
+
+  /* Footer Mobile */
+  .footer-modern {
+    padding: 2rem 0 1rem;
+  }
+
+  .footer-link {
+    font-size: 13px;
+    padding: 6px 0;
+  }
+
+  .social-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* Section Titles */
+  .section-title {
+    font-size: clamp(1.5rem, 5vw, 2rem) !important;
+    margin-bottom: 1.5rem;
+  }
+
+  .section-subtitle {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* Product Detail Page Mobile */
+  .product-info {
+    padding: 20px 16px;
+  }
+
+  .product-detail-title {
+    font-size: clamp(1.5rem, 5vw, 2rem) !important;
+    margin-bottom: 16px;
+  }
+
+  .product-detail-price .price-current {
+    font-size: 2rem !important;
+  }
+
+  .quantity-selector {
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .quantity-btn {
+    width: 44px;
+    height: 44px;
+    font-size: 18px;
+  }
+
+  /* Product Gallery Mobile */
+  .product-gallery {
+    border-radius: 16px;
+    margin-bottom: 1.5rem;
+  }
+
+  .product-thumbnails {
+    padding: 12px;
+    gap: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .product-thumbnail {
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
+  }
+
+  /* Category Cards Mobile */
+  .category-card {
+    margin-bottom: 1rem;
+  }
+
+  .category-card-content {
+    padding: 16px;
+  }
+
+  .category-card-title {
+    font-size: 1rem;
+  }
+
+  /* Banner Mobile */
+  .banner-modern {
+    min-height: 200px;
+    border-radius: 16px;
+  }
+
+  .banner-content {
+    padding: 24px 20px;
+  }
+
+  .banner-title {
+    font-size: clamp(1.5rem, 6vw, 2.25rem) !important;
+    margin-bottom: 12px;
+  }
+
+  .banner-description {
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
+
+  /* Testimonial Mobile */
+  .testimonial-card {
+    padding: 20px 16px;
+    margin-bottom: 1rem;
+  }
+
+  .testimonial-content {
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
+
+  .testimonial-avatar {
+    width: 48px;
+    height: 48px;
+  }
+
+  /* Feature Box Mobile */
+  .feature-box {
+    padding: 20px 16px;
+    flex-direction: column;
+    text-align: center;
+    gap: 16px;
+  }
+
+  .feature-icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto;
+  }
+
+  .feature-title {
+    font-size: 15px;
+  }
+
+  .feature-description {
+    font-size: 13px;
+  }
+
+  /* Carousel Mobile */
+  .carousel-modern {
+    border-radius: 16px;
+  }
+
+  .carousel-arrow {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* Input Fields Mobile */
+  .input-modern {
+    padding: 14px 16px;
+    font-size: 14px;
+    border-radius: 12px;
+  }
+
+  /* Price Display Mobile */
+  .price-current {
+    font-size: 1.5rem !important;
+  }
+
+  .price-original {
+    font-size: 0.875rem;
+    margin-left: 8px;
+  }
+
+  .price-discount {
+    font-size: 11px;
+    padding: 3px 10px;
+    margin-left: 8px;
+  }
+
+  /* Badges Mobile */
+  .badge-sale,
+  .badge-new,
+  .badge-featured {
+    font-size: 10px;
+    padding: 4px 10px;
+  }
+
+  /* Pagination Mobile */
+  .MuiPagination-root {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .MuiPagination-ul {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* Tables Mobile (if any) */
+  table {
+    font-size: 13px;
+  }
+
+  /* Forms Mobile */
+  .MuiTextField-root {
+    width: 100%;
+  }
+
+  .MuiFormControl-root {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+
+  /* Dialog/Modal Mobile */
+  .MuiDialog-paper {
+    margin: 16px;
+    max-width: calc(100% - 32px) !important;
+    border-radius: 16px !important;
+  }
+
+  /* Drawer Mobile */
+  .MuiDrawer-paper {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Spacing Utilities Mobile */
+  .MuiBox-root {
+    /* Ensure proper spacing on mobile */
+  }
+
+  /* Image Optimization */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Prevent horizontal scroll */
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Touch-friendly targets */
+  button,
+  a,
+  input,
+  select,
+  textarea {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Smooth scrolling on mobile */
+  html {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Extra Small Mobile: 480px and below */
+@media (max-width: 480px) {
+  body {
+    font-size: 13px;
+  }
+
+  h1 {
+    font-size: clamp(1.5rem, 7vw, 2rem) !important;
+  }
+
+  h2 {
+    font-size: clamp(1.25rem, 6vw, 1.75rem) !important;
+  }
+
+  h3 {
+    font-size: clamp(1.125rem, 5vw, 1.5rem) !important;
+  }
+
+  .container-narrow {
+    padding: 0 12px;
+  }
+
+  .btn-primary,
+  .btn-secondary,
+  .btn-outline {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+
+  .product-content {
+    padding: 12px;
+  }
+
+  .product-title {
+    font-size: 13px;
+  }
+
+  .price-current {
+    font-size: 1.25rem !important;
+  }
+
+  .banner-content {
+    padding: 20px 16px;
+  }
+
+  .testimonial-card {
+    padding: 16px 12px;
+  }
+
+  .feature-box {
+    padding: 16px 12px;
+  }
+
+  .section-title {
+    font-size: clamp(1.25rem, 6vw, 1.75rem) !important;
+  }
+}
+
+/* Tablet Portrait: 768px to 1024px */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .container-narrow {
+    padding: 0 24px;
+  }
+
+  .product-card {
+    margin-bottom: 1.25rem;
+  }
+
+  .btn-primary,
+  .btn-secondary,
+  .btn-outline {
+    padding: 12px 24px;
+  }
+}
+
+/* Landscape Mobile: 568px to 768px */
+@media (min-width: 569px) and (max-width: 768px) and (orientation: landscape) {
+  .header-modern {
+    padding: 0.375rem 0;
+  }
+
+  .banner-modern {
+    min-height: 180px;
+  }
+}
+
+/* High DPI Mobile Displays */
+@media (max-width: 768px) and (-webkit-min-device-pixel-ratio: 2) {
+  /* Ensure crisp rendering on retina displays */
+  img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+/* Mobile-specific utility classes */
+@media (max-width: 768px) {
+  .mobile-full-width {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .mobile-center {
+    text-align: center !important;
+  }
+
+  .mobile-hide {
+    display: none !important;
+  }
+
+  .mobile-show {
+    display: block !important;
+  }
+
+  .mobile-stack {
+    flex-direction: column !important;
+  }
+
+  .mobile-padding {
+    padding: 16px !important;
+  }
+
+  .mobile-margin {
+    margin: 16px 0 !important;
+  }
+}

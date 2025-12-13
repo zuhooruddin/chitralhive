@@ -31,9 +31,9 @@ const MegaMenu1 = ({
   return categories ? (
     <StyledMegaMenu>
       {/* minWidth: "300px" */}
-      <Card elevation={2} sx={{ ml: "3rem", minWidth: "280px", maxWidth: "400px"  }}>
+      <Card elevation={2} sx={{ ml: "3rem", width: "max-content", minWidth: "280px" }}>
         <FlexBox px={2.5} py={1.75} alignItems="unset">
-          <Box sx={{ width: "100%", minWidth: 0 }}>
+          <Box>
             {displayCategories.map((item, ind) => (
               <Box
                 key={ind}
@@ -41,10 +41,11 @@ const MegaMenu1 = ({
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
-                  py: 0.75,
-                  px: 0,
+                  py: 0.5,
+                  px: 1,
                   borderRadius: 0,
                   cursor: "pointer",
+                  minWidth: "250px",
                   "&:hover": {
                     backgroundColor: "#f2f2f2",
                   },
@@ -58,10 +59,8 @@ const MegaMenu1 = ({
                     color: "text.primary",
                     fontSize: "0.9rem", 
                     width: '100%',
-                    minWidth: 0,
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
                     whiteSpace: "nowrap",
+                    overflow: "visible",
                     display: "block",
                   }}>
                     {item.title}
@@ -73,9 +72,8 @@ const MegaMenu1 = ({
                       color: "text.primary",
                       fontWeight: "bold",
                       fontSize: "1.2rem",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
                       whiteSpace: "nowrap",
+                      overflow: "visible",
                     }}
                   >
                     {item.title}

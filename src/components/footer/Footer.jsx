@@ -88,7 +88,7 @@ const SectionTitle = styled(Box)(({ theme }) => ({
   },
 }));
 
-// Premium Social Icon Button
+// Premium Social Icon Button - Mobile optimized
 const SocialButton = styled(BazaarIconButton)(({ theme }) => ({
   minWidth: "52px",
   minHeight: "52px",
@@ -98,6 +98,10 @@ const SocialButton = styled(BazaarIconButton)(({ theme }) => ({
   transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
   position: "relative",
   overflow: "hidden",
+  [theme.breakpoints.down("sm")]: {
+    minWidth: "44px",
+    minHeight: "44px",
+  },
   "&::before": {
     content: '""',
     position: "absolute",
@@ -123,6 +127,9 @@ const SocialButton = styled(BazaarIconButton)(({ theme }) => ({
     zIndex: 1,
     transition: "all 0.4s ease",
     color: "rgba(255, 255, 255, 0.7)",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "18px",
+    },
   },
 }));
 
@@ -207,14 +214,14 @@ const Footer = ({ footerData: initialFooterData }) => {
           
           <Container
             sx={{
-              p: "1rem",
+              p: { xs: "1rem", sm: "1.5rem", md: "1rem" },
               color: "white",
               position: "relative",
               zIndex: 1,
             }}
           >
-            <Box py={{ xs: 6, md: 10 }} overflow="hidden">
-              <Grid container spacing={4}>
+            <Box py={{ xs: 4, sm: 6, md: 10 }} overflow="hidden">
+              <Grid container spacing={{ xs: 3, sm: 4, md: 4 }}>
                 {/* Column 1: Logo and Description */}
                 <Grid item lg={4} md={6} sm={6} xs={12}>
                   <Link href="/" passHref>
@@ -241,12 +248,12 @@ const Footer = ({ footerData: initialFooterData }) => {
                   </Link>
 
                   <Paragraph 
-                    mb={3} 
+                    mb={{ xs: 2, md: 3 }} 
                     sx={{
                       color: "rgba(255, 255, 255, 0.6)",
-                      fontSize: "15px",
+                      fontSize: { xs: "13px", sm: "14px", md: "15px" },
                       lineHeight: 1.8,
-                      maxWidth: "320px",
+                      maxWidth: { xs: "100%", md: "320px" },
                     }}
                   >
                     {footerData?.footer_description || "Discover authentic Chitrali products. Quality craftsmanship delivered to your doorstep."}
@@ -256,9 +263,10 @@ const Footer = ({ footerData: initialFooterData }) => {
                   <Box
                     sx={{
                       display: "flex",
+                      flexDirection: { xs: "column", sm: "row" },
                       gap: 1,
-                      mt: 3,
-                      maxWidth: "320px",
+                      mt: { xs: 2, md: 3 },
+                      maxWidth: { xs: "100%", md: "320px" },
                     }}
                   >
                     <Box
@@ -266,14 +274,15 @@ const Footer = ({ footerData: initialFooterData }) => {
                       placeholder="Enter your email"
                       sx={{
                         flex: 1,
-                        padding: "14px 18px",
+                        padding: { xs: "12px 16px", md: "14px 18px" },
                         borderRadius: "12px",
                         border: "1px solid rgba(255, 255, 255, 0.1)",
                         background: "rgba(255, 255, 255, 0.05)",
                         color: "white",
-                        fontSize: "14px",
+                        fontSize: { xs: "13px", md: "14px" },
                         outline: "none",
                         transition: "all 0.3s ease",
+                        minHeight: "44px",
                         "&::placeholder": {
                           color: "rgba(255, 255, 255, 0.4)",
                         },
@@ -287,15 +296,17 @@ const Footer = ({ footerData: initialFooterData }) => {
                     <Box
                       component="button"
                       sx={{
-                        padding: "14px 20px",
+                        padding: { xs: "12px 16px", md: "14px 20px" },
                         borderRadius: "12px",
                         border: "none",
                         background: "linear-gradient(135deg, #D23F57 0%, #E94560 100%)",
                         color: "white",
                         fontWeight: 600,
-                        fontSize: "14px",
+                        fontSize: { xs: "13px", md: "14px" },
                         cursor: "pointer",
                         transition: "all 0.3s ease",
+                        minHeight: "44px",
+                        whiteSpace: "nowrap",
                         "&:hover": {
                           transform: "translateY(-2px)",
                           boxShadow: "0 8px 24px rgba(210, 63, 87, 0.4)",
@@ -310,11 +321,16 @@ const Footer = ({ footerData: initialFooterData }) => {
                 {/* Column 2: Links */}
                 {footerData?.column_two_heading && footerData?.column_two_links && (
                   <Grid item lg={2} md={6} sm={6} xs={12}>
-                    <SectionTitle>
+                    <SectionTitle
+                      sx={{
+                        fontSize: { xs: "16px", md: "18px" },
+                        marginBottom: { xs: "20px", md: "28px" },
+                      }}
+                    >
                       {footerData.column_two_heading}
                     </SectionTitle>
 
-                    <Box sx={{ mt: 4 }}>
+                    <Box sx={{ mt: { xs: 2, md: 4 } }}>
                       {footerData.column_two_links
                         .filter((item) => item.column === 2)
                         .map((item, ind) => (
@@ -329,11 +345,16 @@ const Footer = ({ footerData: initialFooterData }) => {
                 {/* Column 3: Links */}
                 {footerData?.column_three_heading && footerData?.column_three_links && (
                   <Grid item lg={3} md={6} sm={6} xs={12}>
-                    <SectionTitle>
+                    <SectionTitle
+                      sx={{
+                        fontSize: { xs: "16px", md: "18px" },
+                        marginBottom: { xs: "20px", md: "28px" },
+                      }}
+                    >
                       {footerData.column_three_heading}
                     </SectionTitle>
                     
-                    <Box sx={{ mt: 4 }}>
+                    <Box sx={{ mt: { xs: 2, md: 4 } }}>
                       {footerData.column_three_links
                         .filter((item) => item.column === 3)
                         .map((item, ind) => (
@@ -347,16 +368,21 @@ const Footer = ({ footerData: initialFooterData }) => {
                 
                 {/* Column 4: Contact & Social */}
                 <Grid item lg={3} md={6} sm={6} xs={12}>
-                  <SectionTitle>
+                  <SectionTitle
+                    sx={{
+                      fontSize: { xs: "16px", md: "18px" },
+                      marginBottom: { xs: "20px", md: "28px" },
+                    }}
+                  >
                     {footerData?.footer_fourth_column_heading || "Get in Touch"}
                   </SectionTitle>
                   
                   {footerData?.footer_fourth_column_content && (
                     <Box
                       sx={{
-                        mt: 4,
+                        mt: { xs: 2, md: 4 },
                         color: "rgba(255, 255, 255, 0.6)",
-                        fontSize: "14px",
+                        fontSize: { xs: "13px", md: "14px" },
                         lineHeight: 1.8,
                         "& p": {
                           marginBottom: "10px",
@@ -376,7 +402,7 @@ const Footer = ({ footerData: initialFooterData }) => {
                   )}
 
                   {/* Social Icons */}
-                  <FlexBox gap={1.5} mt={4}>
+                  <FlexBox gap={{ xs: 1, md: 1.5 }} mt={{ xs: 3, md: 4 }}>
                     {footerData?.facebook && (
                       <a
                         href={footerData.facebook}
@@ -435,33 +461,36 @@ const Footer = ({ footerData: initialFooterData }) => {
               {/* Bottom Bar */}
               <Box
                 sx={{
-                  mt: 8,
-                  pt: 4,
+                  mt: { xs: 4, md: 8 },
+                  pt: { xs: 3, md: 4 },
                   borderTop: "1px solid rgba(255, 255, 255, 0.08)",
                   display: "flex",
+                  flexDirection: { xs: "column", sm: "row" },
                   flexWrap: "wrap",
-                  gap: 2,
-                  justifyContent: "space-between",
+                  gap: { xs: 1.5, md: 2 },
+                  justifyContent: { xs: "center", sm: "space-between" },
                   alignItems: "center",
+                  textAlign: { xs: "center", sm: "left" },
                 }}
               >
                 <Paragraph
                   sx={{
                     color: "rgba(255, 255, 255, 0.5)",
-                    fontSize: "14px",
+                    fontSize: { xs: "12px", md: "14px" },
                   }}
                 >
                   © {new Date().getFullYear()} Chitral Hive. All rights reserved.
                 </Paragraph>
                 
-                <FlexBox gap={3}>
+                <FlexBox gap={{ xs: 2, md: 3 }} flexWrap="wrap" justifyContent="center">
                   <Link href="/privacy-policy" passHref>
                     <Box
                       component="a"
                       sx={{
                         color: "rgba(255, 255, 255, 0.5)",
-                        fontSize: "14px",
+                        fontSize: { xs: "12px", md: "14px" },
                         transition: "color 0.3s ease",
+                        padding: { xs: "4px 8px", md: "0" },
                         "&:hover": {
                           color: "#D23F57",
                         },
@@ -475,8 +504,9 @@ const Footer = ({ footerData: initialFooterData }) => {
                       component="a"
                       sx={{
                         color: "rgba(255, 255, 255, 0.5)",
-                        fontSize: "14px",
+                        fontSize: { xs: "12px", md: "14px" },
                         transition: "color 0.3s ease",
+                        padding: { xs: "4px 8px", md: "0" },
                         "&:hover": {
                           color: "#D23F57",
                         },

@@ -14,6 +14,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
   [theme.breakpoints.down("sm")]: {
     maxWidth: "100%",
+    height: 42,
+    fontSize: 13,
+    padding: "0 0.875rem",
   },
   "::placeholder": {
     color: theme.palette.text.disabled,
@@ -30,6 +33,7 @@ const SearchInput = (props) => {
             mr: 1,
           }}
         />
+        
       }
       {...props}
     />

@@ -18,7 +18,6 @@ const Wrapper = styled(Box)(({ theme }) => ({
       paddingLeft: "0.75rem",
       overflow: "hidden",
       textOverflow: "ellipsis",
-      whiteSpace: "nowrap",
     },
   },
   "&:hover": {
