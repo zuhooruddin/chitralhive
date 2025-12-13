@@ -9,13 +9,16 @@ const Wrapper = styled(Box)(({ theme }) => ({
     display: "flex",
     minWidth: "278px",
     cursor: "pointer",
-    whiteSpace: "pre",
+    whiteSpace: "nowrap",
     padding: "0px 1rem",
     alignItems: "center",
     transition: "all 250ms ease-in-out",
     "& .title": {
       flexGrow: 1,
       paddingLeft: "0.75rem",
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      whiteSpace: "nowrap",
     },
   },
   "&:hover": {

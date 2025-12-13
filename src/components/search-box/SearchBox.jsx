@@ -96,7 +96,7 @@ const SearchBox = () => {
       }
     >
       {data1.map((item) => (
-        <MenuItem key={item.href} onClick={handleCategoryChange(item.href)}>
+        <MenuItem key={item.href} onClick={handleCategoryChange(item.title)}>
           {item.title}
         </MenuItem>
       ))}
