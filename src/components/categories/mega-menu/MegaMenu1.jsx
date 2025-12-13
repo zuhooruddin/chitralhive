@@ -25,13 +25,15 @@ const MegaMenu1 = ({
   const handleShowAllClick = (slug) => {
     router.push({
       pathname: '/categories/'+slug
+
+      
     });
   };
 
   return categories ? (
     <StyledMegaMenu>
       {/* minWidth: "300px" */}
-      <Card elevation={2} sx={{ ml: "3rem", width: "max-content", minWidth: "280px" }}>
+      <Card elevation={2} sx={{ ml: "3rem", width: "max-content", minWidth: "320px" }}>
         <FlexBox px={2.5} py={1.75} alignItems="unset">
           <Box>
             {displayCategories.map((item, ind) => (
@@ -41,11 +43,11 @@ const MegaMenu1 = ({
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
-                  py: 0.5,
-                  px: 1,
+                  py: 0.4,
+                  px: 0,
                   borderRadius: 0,
                   cursor: "pointer",
-                  minWidth: "250px",
+                  minWidth: "300px",
                   "&:hover": {
                     backgroundColor: "#f2f2f2",
                   },
@@ -62,6 +64,7 @@ const MegaMenu1 = ({
                     whiteSpace: "nowrap",
                     overflow: "visible",
                     display: "block",
+                    paddingRight: "1rem",
                   }}>
                     {item.title}
                   </NavLink>
@@ -74,6 +77,7 @@ const MegaMenu1 = ({
                       fontSize: "1.2rem",
                       whiteSpace: "nowrap",
                       overflow: "visible",
+                      paddingRight: "1rem",
                     }}
                   >
                     {item.title}

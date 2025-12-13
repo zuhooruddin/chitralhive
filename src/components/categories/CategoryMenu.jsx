@@ -32,6 +32,17 @@ const CategoryMenu = ({ open: isOpen = false, children, navCategories }) => {
     e.preventDefault();
     // Always allow toggling, regardless of isOpen prop
     const newOpenState = !open;
+    
+    // Update position BEFORE setting state when opening
+    if (newOpenState && triggerRef.current) {
+      const rect = triggerRef.current.getBoundingClientRect();
+      setMenuPosition({
+        top: rect.bottom + 8,
+        left: rect.left,
+        width: rect.width,
+      });
+    }
+    
     setOpen(newOpenState);
     
     // Debug log in development
@@ -39,40 +50,43 @@ const CategoryMenu = ({ open: isOpen = false, children, navCategories }) => {
       console.log('CategoryMenu toggle:', { 
         currentState: open, 
         newState: newOpenState,
-        isOpenProp: isOpen 
+        isOpenProp: isOpen,
+        position: triggerRef.current ? triggerRef.current.getBoundingClientRect() : null
       });
     }
   };
 
-  const handleDocumentClick = (e) => {
-    // Don't close if clicking inside the menu
-    if (popoverRef.current && !isOpen) {
-      const target = e.target;
-      const menuElement = document.querySelector('.category-menu-card-wrapper');
-      if (menuElement && !menuElement.contains(target)) {
-        setOpen(false);
-      }
-    }
-  };
-
   useEffect(() => {
-    if (open) {
-      // Add click listener when menu is open
-      document.addEventListener("click", handleDocumentClick);
-      // Also close on scroll to prevent menu staying open
-      const handleScroll = () => {
-        if (popoverRef.current && !isOpen) {
+    const handleDocumentClick = (e) => {
+      // Don't close if clicking inside the menu or on the trigger
+      if (popoverRef.current) {
+        const target = e.target;
+        const menuElement = document.querySelector('.category-menu-card-wrapper');
+        const triggerElement = triggerRef.current;
+        
+        // Check if click is outside both menu and trigger
+        const isClickInsideMenu = menuElement && menuElement.contains(target);
+        const isClickOnTrigger = triggerElement && (triggerElement.contains(target) || triggerElement === target);
+        
+        if (!isClickInsideMenu && !isClickOnTrigger) {
           setOpen(false);
         }
-      };
-      window.addEventListener("scroll", handleScroll);
+      }
+    };
+
+    if (open) {
+      // Add click listener when menu is open
+      // Use setTimeout to ensure this runs after the click that opened it
+      const timeoutId = setTimeout(() => {
+        document.addEventListener("click", handleDocumentClick, true);
+      }, 0);
       
       return () => {
-        document.removeEventListener("click", handleDocumentClick);
-        window.removeEventListener("scroll", handleScroll);
+        clearTimeout(timeoutId);
+        document.removeEventListener("click", handleDocumentClick, true);
       };
     }
-  }, [open, isOpen]);
+  }, [open]);
 
   // Update state when isOpen prop changes
   useEffect(() => {
@@ -85,24 +99,43 @@ const CategoryMenu = ({ open: isOpen = false, children, navCategories }) => {
   useEffect(() => {
     if (open && triggerRef.current) {
       const updatePosition = () => {
-        const rect = triggerRef.current.getBoundingClientRect();
-        setMenuPosition({
-          top: rect.bottom + window.scrollY + 8,
-          left: rect.left + window.scrollX,
-          width: rect.width,
-        });
+        if (triggerRef.current) {
+          const rect = triggerRef.current.getBoundingClientRect();
+          // For fixed positioning, use viewport coordinates directly (no scroll offset needed)
+          const newPosition = {
+            top: rect.bottom + 8,
+            left: rect.left,
+            width: rect.width,
+          };
+          setMenuPosition(newPosition);
+          
+          if (process.env.NODE_ENV === 'development') {
+            console.log('Menu position updated:', newPosition);
+          }
+        }
       };
+      
+      // Initial position update
       updatePosition();
+      
+      // Update position on scroll and resize
       window.addEventListener('resize', updatePosition);
       window.addEventListener('scroll', updatePosition, true);
+      // Also update on any scroll event to keep menu aligned
+      document.addEventListener('scroll', updatePosition, true);
+      
       return () => {
         window.removeEventListener('resize', updatePosition);
         window.removeEventListener('scroll', updatePosition, true);
+        document.removeEventListener('scroll', updatePosition, true);
       };
+    } else if (!open) {
+      // Reset position when closed
+      setMenuPosition({ top: 0, left: 0, width: 0 });
     }
   }, [open]);
 
-  const menuCard = open && typeof window !== 'undefined' ? (
+  const menuCard = open && typeof window !== 'undefined' && triggerRef.current ? (
     createPortal(
       <CategoryMenuCard 
         open={open} 
@@ -112,7 +145,7 @@ const CategoryMenu = ({ open: isOpen = false, children, navCategories }) => {
           position: 'fixed',
           top: `${menuPosition.top}px`,
           left: `${menuPosition.left}px`,
-          width: `${Math.max(menuPosition.width, 300)}px`,
+          width: `${Math.max(menuPosition.width || 420, 420)}px`,
         }}
       />,
       document.body

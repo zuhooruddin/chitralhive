@@ -83,7 +83,7 @@ export const HeaderWrapper = styled(Box)(({ theme }) => ({
   },
 }));
 
-// Premium Icon Button Wrapper - Mobile optimized
+// Premium Icon Button Wrapper
 const IconButtonWrapper = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
@@ -100,13 +100,6 @@ const IconButtonWrapper = styled(Box)(({ theme }) => ({
     : "1px solid rgba(0, 0, 0, 0.04)",
   position: "relative",
   overflow: "hidden",
-  minWidth: "44px",
-  minHeight: "44px",
-  [theme.breakpoints.down("sm")]: {
-    padding: "10px",
-    minWidth: "40px",
-    minHeight: "40px",
-  },
   "&::before": {
     content: '""',
     position: "absolute",
@@ -135,9 +128,6 @@ const IconButtonWrapper = styled(Box)(({ theme }) => ({
   "& svg": {
     transition: "all 0.35s ease",
     color: theme.palette.mode === 'dark' ? "#94A3B8" : "#475569",
-    [theme.breakpoints.down("sm")]: {
-      fontSize: "20px",
-    },
   },
 }));
 
@@ -207,14 +197,14 @@ const Header = ({ isFixed, headerdata, className, searchBoxType = "type2" }) => 
           justifyContent: "space-between",
         }}
       >
-        {/* Logo Section - Mobile visible */}
+        {/* Logo Section */}
         <FlexBox
           mr={{ xs: 1, md: 2 }}
           minWidth={{ xs: "auto", md: "170px" }}
           alignItems="center"
           sx={{
             display: {
-              xs: "flex",
+              xs: "none",
               md: "flex",
             },
           }}
@@ -223,8 +213,8 @@ const Header = ({ isFixed, headerdata, className, searchBoxType = "type2" }) => 
             <a>
               <LogoContainer>
               <Image 
-                  height={{ xs: 36, md: 48 }} 
-                  width={{ xs: 120, md: 160 }}
+                  height={48} 
+                  width={160}
                   src={headerdata ? imgbaseurl + headerdata[0].site_logo : '/assets/images/logos/webpack.png'} 
                 alt={comopanyalt}
                   priority
@@ -265,28 +255,26 @@ const Header = ({ isFixed, headerdata, className, searchBoxType = "type2" }) => 
           )}
         </FlexBox>
 
-        {/* Search Section - Mobile optimized */}
+        {/* Search Section */}
         <FlexBox 
           justifyContent="center" 
           flex="1 1 0"
           sx={{
-            maxWidth: { xs: "100%", sm: "100%", md: "600px" },
-            mx: { xs: 1, sm: 2, md: 3 },
-            display: { xs: "flex", sm: "flex", md: "flex" },
+            maxWidth: { xs: "100%", md: "600px" },
+            mx: { xs: 0, md: 3 },
           }}
         >
           {searchBoxType === "type1" && <SearchBox />}
           {searchBoxType === "type2" && <GrocerySearchBox />}
         </FlexBox>
 
-        {/* Action Buttons Section - Mobile visible with adjusted spacing */}
+        {/* Action Buttons Section */}
         <FlexBox
           alignItems="center"
-          gap={{ xs: 0.5, sm: 1, md: 1.5 }}
+          gap={{ xs: 1, md: 1.5 }}
           sx={{
             display: {
-              xs: "flex",
-              sm: "flex",
+              xs: "none",
               md: "flex",
             },
           }}

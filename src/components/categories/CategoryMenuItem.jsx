@@ -7,17 +7,20 @@ const Wrapper = styled(Box)(({ theme }) => ({
   "& .category-dropdown-link": {
     height: 40,
     display: "flex",
-    minWidth: "278px",
+    minWidth: "100%",
+    width: "100%",
     cursor: "pointer",
     whiteSpace: "nowrap",
     padding: "0px 1rem",
     alignItems: "center",
+    
     transition: "all 250ms ease-in-out",
     "& .title": {
       flexGrow: 1,
       paddingLeft: "0.75rem",
-      overflow: "hidden",
-      textOverflow: "ellipsis",
+      overflow: "visible",
+      whiteSpace: "nowrap",
+      textOverflow: "clip",
     },
   },
   "&:hover": {

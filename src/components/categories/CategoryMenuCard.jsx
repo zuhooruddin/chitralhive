@@ -40,11 +40,11 @@ const Wrapper = styled(Box)(({ theme, position, open }) => ({
     : "#FFFFFF",
   backdropFilter: "blur(20px)",
   WebkitBackdropFilter: "blur(20px)",
-  minWidth: "300px",
-  maxWidth: "400px",
+  minWidth: "420px",
+  maxWidth: "450px",
   maxHeight: "80vh",
   overflowY: "auto",
-  overflowX: "hidden",
+  overflowX: "visible",
   
   // Use opacity and visibility instead of scaleY for better rendering
   opacity: open ? 1 : 0,

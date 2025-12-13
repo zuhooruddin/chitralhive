@@ -16,19 +16,15 @@ const pulse = keyframes`
   }
 `;
 
-// Premium Search Container - Mobile optimized
+// Premium Search Container
 const SearchContainer = styled(Box)(({ theme }) => ({
   position: "relative",
   flex: "1 1 0",
   maxWidth: "670px",
   margin: "0 auto",
-  width: "100%",
-  [theme.breakpoints.down("sm")]: {
-    maxWidth: "100%",
-  },
 }));
 
-// Premium Search Input - Mobile optimized
+// Premium Search Input
 const PremiumSearchField = styled(TextField)(({ theme }) => ({
   "& .MuiOutlinedInput-root": {
     height: "52px",
@@ -42,10 +38,6 @@ const PremiumSearchField = styled(TextField)(({ theme }) => ({
       : "2px solid rgba(0, 0, 0, 0.04)",
     transition: "all 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
     overflow: "hidden",
-    [theme.breakpoints.down("sm")]: {
-      height: "48px",
-      borderRadius: "24px",
-    },
     
     "& fieldset": {
       border: "none",
@@ -79,10 +71,6 @@ const PremiumSearchField = styled(TextField)(({ theme }) => ({
     fontSize: "15px",
     fontWeight: 500,
     color: theme.palette.mode === 'dark' ? "#F8FAFC" : "#1E293B",
-    [theme.breakpoints.down("sm")]: {
-      padding: "12px 14px",
-      fontSize: "14px",
-    },
     
     "&::placeholder": {
       color: theme.palette.mode === 'dark' ? "#94A3B8" : "#94A3B8",
@@ -91,7 +79,7 @@ const PremiumSearchField = styled(TextField)(({ theme }) => ({
   },
 }));
 
-// Premium Search Button - Mobile optimized
+// Premium Search Button
 const SearchButton = styled(BazaarButton)(({ theme }) => ({
   padding: "0 32px",
   height: "100%",
@@ -132,25 +120,19 @@ const SearchButton = styled(BazaarButton)(({ theme }) => ({
   },
   
   [theme.breakpoints.down("sm")]: {
-    padding: "0 16px",
-    minWidth: "70px",
-    fontSize: "13px",
-    borderRadius: "0 24px 24px 0",
+    padding: "0 20px",
+    minWidth: "80px",
+    fontSize: "14px",
   },
 }));
 
-// Premium Search Icon - Mobile optimized
+// Premium Search Icon
 const SearchIcon = styled(Search)(({ theme }) => ({
   color: theme.palette.mode === 'dark' ? "#94A3B8" : "#94A3B8",
   marginLeft: "16px",
   marginRight: "8px",
   transition: "all 0.35s ease",
   fontSize: "22px",
-  [theme.breakpoints.down("sm")]: {
-    marginLeft: "12px",
-    marginRight: "6px",
-    fontSize: "20px",
-  },
 }));
 
 // Premium Result Card
