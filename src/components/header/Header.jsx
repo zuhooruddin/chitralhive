@@ -203,15 +203,18 @@ const Header = ({ isFixed, headerdata, className, searchBoxType = "type2" }) => 
           minWidth={{ xs: "auto", md: "170px" }}
           alignItems="center"
           sx={{
-            display: "flex",
+            display: {
+              xs: "none",
+              md: "flex",
+            },
           }}
         >
           <Link href="/">
             <a>
               <LogoContainer>
               <Image 
-                  height={{ xs: 36, md: 48 }} 
-                  width={{ xs: 120, md: 160 }}
+                  height={48} 
+                  width={160}
                   src={headerdata ? imgbaseurl + headerdata[0].site_logo : '/assets/images/logos/webpack.png'} 
                 alt={comopanyalt}
                   priority
@@ -227,7 +230,7 @@ const Header = ({ isFixed, headerdata, className, searchBoxType = "type2" }) => 
             </a>
           </Link>
 
-          {isFixed && !downMd && (
+          {isFixed && (
             <CategoryMenu navCategories={null}>
               <FlexBox color="grey.600" alignItems="center" ml={2}>
                 <BazaarButton 
@@ -258,8 +261,7 @@ const Header = ({ isFixed, headerdata, className, searchBoxType = "type2" }) => 
           flex="1 1 0"
           sx={{
             maxWidth: { xs: "100%", md: "600px" },
-            mx: { xs: 1, md: 3 },
-            display: { xs: "none", sm: "flex" },
+            mx: { xs: 0, md: 3 },
           }}
         >
           {searchBoxType === "type1" && <SearchBox />}
