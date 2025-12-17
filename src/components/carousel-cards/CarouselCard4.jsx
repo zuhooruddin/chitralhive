@@ -1,9 +1,8 @@
 /* eslint-disable react/no-unescaped-entities */
 import { Box, styled } from "@mui/material";
-import React, { useState, useEffect } from "react";
-import Image from "next/image"; // custom styled components
+import React, { useState, useEffect } from "react"; // custom styled components
 
-const CardWrapper = styled(Box)(({ theme, mode, imageLoaded }) => ({
+const CardWrapper = styled(Box)(({ theme, mode, img, imageLoaded }) => ({
   minHeight: 500,
   position: "relative",
   display: "flex",
@@ -11,6 +10,10 @@ const CardWrapper = styled(Box)(({ theme, mode, imageLoaded }) => ({
   overflow: "hidden",
   backgroundColor: mode === "dark" ? "#000" : "#fff",
   color: mode === "light" ? theme.palette.dark.main : "#fff",
+  backgroundImage: img ? `url(${img})` : "none",
+  backgroundSize: "cover",
+  backgroundPosition: "center",
+  backgroundRepeat: "no-repeat",
   transition: "opacity 0.3s ease-in-out",
   opacity: imageLoaded ? 1 : 0,
   [theme.breakpoints.down("md")]: {
@@ -18,18 +21,6 @@ const CardWrapper = styled(Box)(({ theme, mode, imageLoaded }) => ({
     justifyContent: "center",
     padding: 106,
     textAlign: "center",
-  },
-}));
-
-const ImageWrapper = styled(Box)(() => ({
-  position: "absolute",
-  top: 0,
-  left: 0,
-  width: "100%",
-  height: "100%",
-  zIndex: 0,
-  "& img": {
-    objectFit: "cover",
   },
 }));
 
@@ -45,10 +36,7 @@ const CarouselCard4 = ({ bgImage, mode = "dark", content, priority = false, fetc
   const [imageLoaded, setImageLoaded] = useState(false);
   
   useEffect(() => {
-    if (!bgImage) {
-      setImageLoaded(true);
-      return;
-    }
+    if (!bgImage) return;
     
     // Preload image for better performance, especially for priority images
     const img = new window.Image();
@@ -68,52 +56,13 @@ const CarouselCard4 = ({ bgImage, mode = "dark", content, priority = false, fetc
       document.head.appendChild(link);
       
       return () => {
-        if (document.head.contains(link)) {
-          document.head.removeChild(link);
-        }
+        document.head.removeChild(link);
       };
     }
   }, [bgImage, priority, fetchPriority]);
   
-  // Use Next.js Image for optimization if it's an optimizable URL
-  const isExternal = bgImage && (bgImage.startsWith('http://') || bgImage.startsWith('https://'));
-  const canOptimize = isExternal && (
-    bgImage.includes('api.chitralhive.com') || 
-    bgImage.includes('chitralhive.com')
-  ) || (bgImage && bgImage.startsWith('/'));
-  
   return (
-    <CardWrapper mode={mode} imageLoaded={imageLoaded}>
-      <ImageWrapper>
-        {canOptimize ? (
-          <Image
-            src={bgImage}
-            alt="Carousel banner"
-            fill
-            priority={priority}
-            quality={85}
-            loading={priority ? "eager" : "lazy"}
-            fetchPriority={fetchPriority}
-            sizes="100vw"
-            style={{ objectFit: "cover" }}
-          />
-        ) : bgImage ? (
-          <img
-            src={bgImage}
-            alt="Carousel banner"
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              position: "absolute",
-              top: 0,
-              left: 0,
-            }}
-            loading={priority ? "eager" : "lazy"}
-            fetchPriority={fetchPriority}
-          />
-        ) : null}
-      </ImageWrapper>
+    <CardWrapper mode={mode} img={bgImage} imageLoaded={imageLoaded}>
       <ContentWrapper>
         {content}
       </ContentWrapper>

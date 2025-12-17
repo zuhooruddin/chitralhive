@@ -146,3 +146,13 @@ This document outlines the performance optimizations implemented to improve the 
 5. Optimize font loading further (subset fonts, use font-display: swap)
 6. Implement route-based code splitting for pages
 
+
+
+
+
+
+
+
+
+
+

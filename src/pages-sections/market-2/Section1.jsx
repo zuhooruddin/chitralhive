@@ -193,7 +193,6 @@ const Section1 = (data) => {
                       className="logo"
                       flex={1}
                       img={data.data1 && data.data1.image ? imgbaseurl + data.data1.image : '/assets/images/banners/default3.png'}
-                      priority={true}
                       sx={{
                         height: bannerHeight, // set the fixed height for the banner
                         width: bannerWidth, // set the fixed width for the banner
