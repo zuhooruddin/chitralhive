@@ -10,7 +10,7 @@ module.exports = {
   reactStrictMode: true,
   // Disable SWC minify if it causes bus errors - can fall back to Terser
   swcMinify: process.env.DISABLE_SWC !== 'true', // Can disable via env var if needed
-  compress: true, // Enable gzip compression
+  compress: true, // Enable gzip compression (Next.js handles this automatically)
   poweredByHeader: false, // Remove X-Powered-By header for security
   
   // SEO and Performance Headers - merged into single headers() function below
@@ -191,6 +191,10 @@ module.exports = {
           {
             key: 'Cache-Control',
             value: 'public, max-age=3600, stale-while-revalidate=86400',
+          },
+          {
+            key: 'Vary',
+            value: 'Accept-Encoding', // Tell CDN/proxy to vary on encoding (gzip/Brotli handled automatically by Next.js/server)
           },
           {
             key: 'X-Content-Type-Options',

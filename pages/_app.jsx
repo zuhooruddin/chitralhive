@@ -137,7 +137,7 @@ const imgbaseurl=process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL
         {/* Resource hints for faster loading - limit to most important origins only */}
         <link rel="preconnect" href={process.env.NEXT_PUBLIC_BACKEND_API_BASE} crossOrigin="anonymous" />
         <link rel="dns-prefetch" href={process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL} />
-        <link rel="canonical" href="https://chitralhive.com" />
+        {/* Canonical link is handled by SEO component - removed duplicate */}
       </Head>
       {/* Loader removed - no popup on page load */}
 

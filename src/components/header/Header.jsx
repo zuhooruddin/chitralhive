@@ -133,14 +133,19 @@ const IconButtonWrapper = styled(Box)(({ theme }) => ({
 
 // Logo Container with hover effect
 const LogoContainer = styled(Box)(({ theme }) => ({
-  display: "flex",
+  display: "block",
   alignItems: "center",
   transition: "all 0.3s ease",
+  position: "relative",
   "&:hover": {
     transform: "scale(1.02)",
     "& img": {
       filter: "brightness(1.05)",
     },
+  },
+  "& img": {
+    display: "block !important",
+    visibility: "visible !important",
   },
 }));
 
@@ -200,31 +205,41 @@ const Header = ({ isFixed, headerdata, className, searchBoxType = "type2" }) => 
         {/* Logo Section */}
         <FlexBox
           mr={{ xs: 1, md: 2 }}
-          minWidth={{ xs: "auto", md: "170px" }}
+          minWidth={{ xs: "120px", md: "170px" }}
           alignItems="center"
           sx={{
-            display: {
-              xs: "none",
-              md: "flex",
-            },
+            display: "flex",
+            flexShrink: 0,
           }}
         >
           <Link href="/">
             <a>
-              <LogoContainer>
+              <LogoContainer
+                sx={{
+                  maxWidth: { xs: '120px', md: '160px' },
+                  width: { xs: '120px', md: '160px' },
+                  minWidth: { xs: '120px', md: '160px' },
+                  display: 'block',
+                }}
+              >
               <Image 
                   height={48} 
                   width={160}
-                  src={headerdata ? imgbaseurl + headerdata[0].site_logo : '/assets/images/logos/webpack.png'} 
-                alt={comopanyalt}
+                  src={headerdata && headerdata.length > 0 && headerdata[0]?.site_logo 
+                    ? imgbaseurl + headerdata[0].site_logo 
+                    : '/assets/images/logos/webpack.png'} 
+                alt={comopanyalt || "Logo"}
                   priority
                   fetchPriority="high"
                   quality={85}
                   style={{ 
-                    display: 'block',
+                    display: 'block !important',
+                    visibility: 'visible !important',
+                    opacity: '1 !important',
                     transition: 'all 0.3s ease',
-                    maxWidth: '160px',
+                    width: '100%',
                     height: 'auto',
+                    maxWidth: '100%',
                   }}
                   sizes="(max-width: 768px) 120px, 160px"
               />

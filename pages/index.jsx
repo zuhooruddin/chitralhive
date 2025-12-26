@@ -151,7 +151,94 @@ const getHomePageStructuredData = (generalSetting) => {
             "urlTemplate": `${baseUrl}/search?q={search_term_string}`
           },
           "query-input": "required name=search_term_string"
-        }
+        },
+        "mainEntity": [
+          {
+            "@type": "WebPage",
+            "@id": `${baseUrl}/category/chitrali-honey#webpage`,
+            "url": `${baseUrl}/category/chitrali-honey`,
+            "name": "Chitrali Products - Shop All Products",
+            "description": "Browse our complete collection of authentic Chitrali products including dry fruits, honey, herbs, spices, and traditional items from Chitral, Pakistan."
+          },
+          {
+            "@type": "WebPage",
+            "@id": `${baseUrl}/category/chitrali-dry-fruits#webpage`,
+            "url": `${baseUrl}/category/chitrali-dry-fruits`,
+            "name": "Product Categories - Chitrali Products",
+            "description": "Explore all categories of Chitrali products including dry fruits, honey, herbs, spices, nuts, and more authentic items from Chitral."
+          },
+          {
+            "@type": "WebPage",
+            "@id": `${baseUrl}/brands#webpage`,
+            "url": `${baseUrl}/brands`,
+            "name": "Brands - Chitral Hive",
+            "description": "Discover trusted brands and authentic Chitrali product manufacturers available at Chitral Hive."
+          },
+          {
+            "@type": "WebPage",
+            "@id": `${baseUrl}/about-us#webpage`,
+            "url": `${baseUrl}/about-us`,
+            "name": "About Us - Chitral Hive",
+            "description": "Learn about Chitral Hive, your trusted source for authentic Chitrali products delivered across Pakistan."
+          },
+          {
+            "@type": "WebPage",
+            "@id": `${baseUrl}/contact-us#webpage`,
+            "url": `${baseUrl}/contact-us`,
+            "name": "Contact Us - Chitral Hive",
+            "description": "Get in touch with Chitral Hive for inquiries, orders, and customer support. We're here to help you find the best Chitrali products."
+          }
+        ]
+      },
+      {
+        "@type": "SiteNavigationElement",
+        "@id": `${baseUrl}/#navigation`,
+        "name": "Main Navigation",
+        "url": baseUrl,
+        "hasPart": [
+          {
+            "@type": "SiteNavigationElement",
+            "name": "Products",
+            "url": `${baseUrl}/products`,
+            "description": "Shop all Chitrali products"
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "name": "Categories",
+            "url": `${baseUrl}/categories`,
+            "description": "Browse product categories"
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "name": "Brands",
+            "url": `${baseUrl}/brands`,
+            "description": "View all brands"
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "name": "Chitrali Products",
+            "url": `${baseUrl}/category/chitrali-products`,
+            "description": "Authentic Chitrali products from Chitral, Pakistan"
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "name": "Dry Fruits",
+            "url": `${baseUrl}/category/dry-fruits`,
+            "description": "Premium Chitrali dry fruits and nuts"
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "name": "About Us",
+            "url": `${baseUrl}/about-us`,
+            "description": "Learn about Chitral Hive"
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "name": "Contact Us",
+            "url": `${baseUrl}/contact-us`,
+            "description": "Contact Chitral Hive"
+          }
+        ]
       },
       {
         "@type": "ItemList",
@@ -228,14 +315,33 @@ const IndexPage = (props) => {
       footerData={null} // Can be passed from props if available
     >
       <SEO
-        title={GeneralSettingMemo&&GeneralSettingMemo.length>0?GeneralSettingMemo[0].site_name:'Chitral Hive - Authentic Chitrali Products Online'}
-        description={GeneralSettingMemo&&GeneralSettingMemo.length>0?GeneralSettingMemo[0].site_description:'Shop authentic Chitrali products online at Chitral Hive. Discover traditional crafts, local specialties, handmade items, and unique products from Chitral. Buy Chitrali products online and get them delivered to your doorstep.'}
-        metaTitle={GeneralSettingMemo&&GeneralSettingMemo.length>0?GeneralSettingMemo[0].site_metatitle:'Chitral Hive - Authentic Chitrali Products Online Store'}
-        keywords="Chitrali products Pakistan, Chitral Hive, buy Chitrali products online Pakistan, authentic Chitrali crafts, traditional Chitrali items, Chitral specialties, handmade Chitrali products, Chitral online store Pakistan, Chitrali food Pakistan, Chitrali handicrafts, Chitral culture, Pakistan products, Chitral honey Pakistan, Chitrali dry fruits, Chitrali shawls Pakistan, KPK products, Khyber Pakhtunkhwa products, online shopping Pakistan, Chitral delivery Pakistan"
+        title={GeneralSettingMemo&&GeneralSettingMemo.length>0?GeneralSettingMemo[0].site_name:'Discover Authentic Chitrali Products - Chitral Hive'}
+        description={GeneralSettingMemo&&GeneralSettingMemo.length>0?GeneralSettingMemo[0].site_description:'Shop authentic Chitrali products online in Pakistan. Premium dry fruits, pure honey, traditional herbs, and handmade crafts from Chitral. Free delivery across Pakistan. Buy Chitrali almonds, apricots, walnuts, and more at best prices.'}
+        metaTitle={GeneralSettingMemo&&GeneralSettingMemo.length>0?GeneralSettingMemo[0].site_metatitle:'Chitral Hive - Authentic Chitrali Dry Fruits, Honey & Traditional Products Online Pakistan'}
+        keywords="buy Chitrali dry fruits online, Chitrali almonds Pakistan, Chitrali apricots online, Chitrali honey price, Chitrali walnuts, buy dry fruits online Pakistan, Chitrali products online, authentic Chitrali honey, Chitrali dry fruits delivery, Chitrali nuts online, Chitrali recipes, Chitrali culture, Chitrali traditional food, Chitrali herbs, Chitrali spices, Chitrali handicrafts, KPK dry fruits, online dry fruits Pakistan, premium dry fruits Pakistan, organic Chitrali products"
         canonical="https://chitralhive.com"
       />
       <StructuredData data={getHomePageStructuredData(GeneralSettingMemo)} />
       <Box bgcolor="#F6F6F6">
+        {/* Main H1 heading for SEO - visually hidden but accessible */}
+        <Box
+          component="h1"
+          sx={{
+            position: 'absolute',
+            width: '1px',
+            height: '1px',
+            padding: 0,
+            margin: '-1px',
+            overflow: 'hidden',
+            clip: 'rect(0, 0, 0, 0)',
+            whiteSpace: 'nowrap',
+            border: 0,
+          }}
+        >
+          {GeneralSettingMemo&&GeneralSettingMemo.length>0 
+            ? `${GeneralSettingMemo[0].site_name} - Discover Authentic Chitrali Products Online`
+            : 'Chitral Hive - Discover Authentic Chitrali Products Online in Pakistan'}
+        </Box>
         <Section1
           data1={props.Section1SequenceData}
           data2={props.Section1SequenceData2 || []}
@@ -264,7 +370,7 @@ const IndexPage = (props) => {
           </Box>
         </LazySection>
         <LazySection>
-          <Box sx={{ my: -12 }}>
+          <Box sx={{ my: 0 }}>
             <Section4
               data1={props.Section3SequenceData || []}
               data2={props.Section3SequenceData2 || []}
