@@ -3,22 +3,27 @@ import ShopLayout1 from "components/layouts/ShopLayout1";
 import SEO from "components/SEO";
 import { H1, H2, H3, Paragraph } from "components/Typography";
 import LazyImage from "components/LazyImage";
-import { blogPosts } from "../../src/data/blog-posts";
-import { useRouter } from "next/router";
 import { AccessTime, Person } from "@mui/icons-material";
 import format from "date-fns/format";
 import Link from "next/link";
 import StructuredData from "components/schema/StructuredData";
 
+// Import blog posts with error handling
+let blogPosts = [];
+try {
+  const blogData = require("../../src/data/blog-posts");
+  blogPosts = blogData.blogPosts || [];
+} catch (error) {
+  console.error("Error loading blog posts:", error);
+  blogPosts = [];
+}
 
-const BlogPostPage = () => {
-  const router = useRouter();
-  const { slug } = router.query;
-  const post = blogPosts.find((p) => p.slug === slug);
+
+const BlogPostPage = ({ post, allPosts }) => {
 
   if (!post) {
     return (
-      <ShopLayout1>
+      <ShopLayout1 navCategories={[]}>
         <Container sx={{ py: 4, textAlign: "center" }}>
           <H1>Post Not Found</H1>
           <Paragraph>The blog post you're looking for doesn't exist.</Paragraph>
@@ -59,7 +64,7 @@ const BlogPostPage = () => {
   };
 
   return (
-    <ShopLayout1>
+    <ShopLayout1 navCategories={[]}>
       <SEO
         title={post.title}
         description={post.description}
@@ -86,7 +91,9 @@ const BlogPostPage = () => {
               <Box sx={{ display: "flex", alignItems: "center", color: "text.secondary" }}>
                 <AccessTime sx={{ mr: 1, fontSize: "1rem" }} />
                 <Typography variant="body2">
-                  {format(new Date(post.publishedTime), "MMMM dd, yyyy")}
+                  {post.publishedTime 
+                    ? format(new Date(post.publishedTime), "MMMM dd, yyyy")
+                    : "N/A"}
                 </Typography>
               </Box>
               <Box sx={{ display: "flex", alignItems: "center", color: "text.secondary" }}>
@@ -165,7 +172,7 @@ const BlogPostPage = () => {
             </H2>
             <Stack spacing={2}>
               {post.relatedPosts.map((relatedSlug) => {
-                const relatedPost = blogPosts.find((p) => p.slug === relatedSlug);
+                const relatedPost = allPosts.find((p) => p.slug === relatedSlug);
                 if (!relatedPost) return null;
                 return (
                   <Link key={relatedSlug} href={`/blog/${relatedSlug}`} style={{ textDecoration: "none" }}>
@@ -198,6 +205,57 @@ const BlogPostPage = () => {
     </ShopLayout1>
   );
 };
+
+export async function getStaticPaths() {
+  try {
+    // Ensure blogPosts is an array and has valid slugs
+    const validPosts = Array.isArray(blogPosts) 
+      ? blogPosts.filter(post => post && post.slug)
+      : [];
+    
+    const paths = validPosts.map((post) => ({
+      params: { slug: post.slug },
+    }));
+
+    return {
+      paths,
+      fallback: false, // Return 404 for unknown slugs
+    };
+  } catch (error) {
+    console.error('Error in blog getStaticPaths:', error);
+    return {
+      paths: [],
+      fallback: false,
+    };
+  }
+}
+
+export async function getStaticProps({ params }) {
+  try {
+    // Ensure blogPosts is an array
+    const posts = Array.isArray(blogPosts) ? blogPosts : [];
+    const post = posts.find((p) => p && p.slug === params.slug);
+
+    if (!post) {
+      return {
+        notFound: true,
+      };
+    }
+
+    return {
+      props: {
+        post,
+        allPosts: posts,
+      },
+      // Note: revalidate is not supported in static export mode
+    };
+  } catch (error) {
+    console.error('Error in blog getStaticProps:', error);
+    return {
+      notFound: true,
+    };
+  }
+}
 
 export default BlogPostPage;
 

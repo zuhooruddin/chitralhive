@@ -3,12 +3,21 @@ import ShopLayout1 from "components/layouts/ShopLayout1";
 import SEO from "components/SEO";
 import { H1, H2, Paragraph } from "components/Typography";
 import BlogCard1 from "components/blog-cards/BlogCard1";
-import { blogPosts } from "../../src/data/blog-posts";
+
+// Import blog posts with error handling
+let blogPosts = [];
+try {
+  const blogData = require("../../src/data/blog-posts");
+  blogPosts = blogData.blogPosts || [];
+} catch (error) {
+  console.error("Error loading blog posts:", error);
+  blogPosts = [];
+}
 
 
-const BlogPage = () => {
+const BlogPage = ({ posts }) => {
   return (
-    <ShopLayout1>
+    <ShopLayout1 navCategories={[]}>
       <SEO
         title="Blog - Chitrali Products, Culture, Recipes & Guides"
         description="Discover authentic Chitrali culture, traditional recipes using dry fruits, product guides, and stories from Chitral. Learn about Chitrali honey, dry fruits, herbs, and traditional crafts."
@@ -28,16 +37,54 @@ const BlogPage = () => {
         </Box>
 
         <Grid container spacing={4}>
-          {blogPosts.map((post) => (
-            <Grid item xs={12} md={6} key={post.slug}>
-              <BlogCard1 blog={post} />
+          {posts && posts.length > 0 ? (
+            posts.map((post) => {
+              // Transform post data to match BlogCard1 expected format
+              const blogCardData = {
+                ...post,
+                createdAt: post.publishedTime || post.createdAt || new Date().toISOString(),
+                comments: post.comments || 0,
+                url: post.slug ? `/blog/${post.slug}` : '#',
+              };
+              // Only render if post has required fields
+              if (!post.slug || !post.title) return null;
+              return (
+                <Grid item xs={12} md={6} key={post.slug}>
+                  <BlogCard1 blog={blogCardData} />
+                </Grid>
+              );
+            }).filter(Boolean)
+          ) : (
+            <Grid item xs={12}>
+              <Paragraph>No blog posts available.</Paragraph>
             </Grid>
-          ))}
+          )}
         </Grid>
       </Container>
     </ShopLayout1>
   );
 };
+
+export async function getStaticProps() {
+  try {
+    // Ensure blogPosts is an array
+    const posts = Array.isArray(blogPosts) ? blogPosts : [];
+    
+    return {
+      props: {
+        posts,
+      },
+      // Note: revalidate is not supported in static export mode
+    };
+  } catch (error) {
+    console.error('Error in blog getStaticProps:', error);
+    return {
+      props: {
+        posts: [],
+      },
+    };
+  }
+}
 
 export default BlogPage;
 

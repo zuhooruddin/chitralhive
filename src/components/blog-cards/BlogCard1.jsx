@@ -38,13 +38,21 @@ const BlogCard1 = ({ blog }) => {
           <FlexBox alignItems="center" mr="1.5rem">
             <AccessTime sx={iconStyle} />
             <Paragraph>
-              {format(new Date(blog.createdAt), "dd MMMM, yyyy")}
+              {blog.createdAt 
+                ? (() => {
+                    try {
+                      return format(new Date(blog.createdAt), "dd MMMM, yyyy");
+                    } catch (e) {
+                      return blog.createdAt;
+                    }
+                  })()
+                : "N/A"}
             </Paragraph>
           </FlexBox>
 
           <FlexBox alignItems="center">
             <CommentOutlined sx={iconStyle} />
-            <Paragraph>{blog.comments} comments</Paragraph>
+            <Paragraph>{blog.comments || 0} comments</Paragraph>
           </FlexBox>
         </FlexBox>
 
