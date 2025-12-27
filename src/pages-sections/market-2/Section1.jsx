@@ -15,7 +15,7 @@ const Section1 = (data) => {
   const slugbaseurl = "category/";
 
   // custom css
-  const bannerHeight = "245.5px"; 
+  const bannerHeight = "350px"; 
   const bannerWidth = "100%"; 
   const defaultDummyImages = [
     { image: "assets/images/banners/s1.png" },
@@ -193,6 +193,7 @@ const Section1 = (data) => {
                       className="logo"
                       flex={1}
                       img={data.data1 && data.data1.image ? imgbaseurl + data.data1.image : '/assets/images/banners/default3.png'}
+                      priority={true}
                       sx={{
                         height: bannerHeight, // set the fixed height for the banner
                         width: bannerWidth, // set the fixed width for the banner

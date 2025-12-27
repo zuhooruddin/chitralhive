@@ -24,11 +24,12 @@ const BannerCard3 = ({ img, children, priority = false, ...props }) => {
       <BazaarImage 
         alt="category banner" 
         height={350} 
-        width={350} 
+        width={622} 
         src={img}
         priority={priority}
         quality={85}
         objectFit="cover"
+        sizes="(max-width: 960px) 100vw, 33vw"
         style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }}
       />
 

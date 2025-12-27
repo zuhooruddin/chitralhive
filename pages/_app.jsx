@@ -134,9 +134,12 @@ const imgbaseurl=process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL
         <meta name="language" content="English" />
         <meta name="geo.region" content="PK-KP" />
         <meta name="geo.placename" content="Chitral" />
-        {/* Resource hints for faster loading - limit to most important origins only */}
+        {/* Resource hints for faster loading - preconnect to critical origins */}
         <link rel="preconnect" href={process.env.NEXT_PUBLIC_BACKEND_API_BASE} crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://api.chitralhive.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href={process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL} />
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         {/* Canonical link is handled by SEO component - removed duplicate */}
       </Head>
       {/* Loader removed - no popup on page load */}

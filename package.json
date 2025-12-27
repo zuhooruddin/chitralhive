@@ -73,5 +73,21 @@
   },
   "optionalDependencies": {
     "@next/swc-win32-x64-msvc": "^12.2.5"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all",
+      "Chrome >= 84",
+      "Firefox >= 79",
+      "Safari >= 14",
+      "Edge >= 84"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

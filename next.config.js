@@ -60,6 +60,11 @@ module.exports = {
   
   // Webpack optimizations
   webpack: (config, { dev, isServer }) => {
+    // Target modern browsers to reduce legacy JavaScript polyfills
+    if (!isServer) {
+      config.target = ['web', 'es2020']; // Target ES2020+ browsers (Chrome 84+, Firefox 79+, Safari 14+)
+    }
+    
     // Optimize parallelism based on environment
     // Use more parallelism on Linux (production), less on Windows
     if (process.platform === 'win32') {
@@ -116,9 +121,10 @@ module.exports = {
         ...config.optimization,
         usedExports: true, // Enable tree-shaking
         sideEffects: false, // Mark as side-effect free for better tree-shaking
+        moduleIds: 'deterministic', // Use deterministic module IDs for better caching
         splitChunks: {
           chunks: 'all',
-          maxInitialRequests: 20, // Reduced to limit initial chunks
+          maxInitialRequests: 15, // Further reduced to limit initial chunks and unused JS
           minSize: 20000, // Only split chunks larger than 20KB
           maxSize: 200000, // Reduced max size for better code splitting
           cacheGroups: {
@@ -157,6 +163,14 @@ module.exports = {
               priority: 20,
               enforce: true,
             },
+            // Next.js framework code (separate chunk)
+            nextjs: {
+              name: 'nextjs',
+              test: /[\\/]node_modules[\\/](next)[\\/]/,
+              chunks: 'all',
+              priority: 25,
+              enforce: true,
+            },
             // Common vendor chunk
             vendor: {
               name: 'vendor',
@@ -166,10 +180,10 @@ module.exports = {
               minChunks: 2,
               reuseExistingChunk: true,
             },
-            // Common chunk for shared code
+            // Common chunk for shared code - only include if used in multiple places
             common: {
               name: 'common',
-              minChunks: 2,
+              minChunks: 3, // Increased from 2 to reduce unused common code
               chunks: 'all',
               priority: 5,
               reuseExistingChunk: true,
