@@ -15,7 +15,7 @@ const Section1 = (data) => {
   const slugbaseurl = "category/";
 
   // custom css
-  const bannerHeight = "350px"; 
+  const bannerHeight = "245.5px"; 
   const bannerWidth = "100%"; 
   const defaultDummyImages = [
     { image: "assets/images/banners/s1.png" },

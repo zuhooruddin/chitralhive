@@ -50,7 +50,12 @@ function DrawerComponent() {
                         </ListItem>
                     </List>
             </Drawer>
-            <IconButton onClick={() => setOpenDrawer(!openDrawer)}>
+            <IconButton 
+                onClick={() => setOpenDrawer(!openDrawer)}
+                aria-label={openDrawer ? "Close menu" : "Open menu"}
+                aria-expanded={openDrawer}
+                sx={{ minWidth: '44px', minHeight: '44px' }}
+            >
                 <MenuOutlinedIcon  style={{ color: "white" }} />
             </IconButton>
         </>

@@ -39,14 +39,16 @@ const CategoryCard2 = ({ image, title,url}) => {
     <Link  href={url}>
 
     <a>
-    <Wrapper position="relative">
+    <Wrapper position="relative" sx={{ aspectRatio: '1/1' }}>
       <Image
         src={image}
-        width={300}
-        height={300}
-        alt="category"
+        width={380}
+        height={380}
+        alt={`${title} category`}
         objectFit="cover"
         layout="responsive"
+        sizes="(max-width: 600px) 50vw, (max-width: 960px) 33vw, 16vw"
+        quality={85}
       />
 
       <CategoryTitle className="category-title">
