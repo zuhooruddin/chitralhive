@@ -4,7 +4,6 @@ import SettingsProvider from "contexts/SettingContext";
 import Head from "next/head";
 import Router from "next/router";
 import nProgress from "nprogress";
-import "nprogress/nprogress.css";
 import { Fragment, useEffect, useMemo } from "react";
 // Lazy load heavy CSS to improve initial load - only load when needed
 import MuiTheme from "theme/MuiTheme";
@@ -19,8 +18,15 @@ import GoogleAnalytics from "utils/GoogleAnalytics";
 // Loader removed - no popup on page load
 
 // Lazy load heavy components that aren't needed immediately
+// Load CSS only when component is actually rendered
 const ToastContainer = dynamic(
-  () => import('react-toastify').then(mod => mod.ToastContainer),
+  () => import('react-toastify').then(async (mod) => {
+    // Load CSS only when ToastContainer is needed
+    if (typeof window !== 'undefined' && !document.querySelector('link[href*="ReactToastify"]')) {
+      await import('react-toastify/dist/ReactToastify.css');
+    }
+    return mod.ToastContainer;
+  }),
   { ssr: false }
 );
 const FloatingWhatsApp = dynamic(
@@ -28,10 +34,7 @@ const FloatingWhatsApp = dynamic(
   { ssr: false }
 );
 
-// Lazy load CSS for toastify - only load when needed
-if (typeof window !== 'undefined') {
-  import('react-toastify/dist/ReactToastify.css');
-}
+// Toastify CSS will be loaded only when ToastContainer is rendered (via dynamic import)
 
 //Binding events.
 Router.events.on("routeChangeStart", () => nProgress.start());
@@ -55,6 +58,22 @@ const App = ({ router,Component, pageProps: { session, ...pageProps } }) => {
     if (jssStyles) {
       jssStyles.parentElement.removeChild(jssStyles);
     }
+
+    
+    // Load nprogress CSS asynchronously (needed for route transitions)
+    const loadNProgressCSS = () => {
+      if (!document.querySelector('link[href*="nprogress"]')) {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = 'https://unpkg.com/nprogress@0.2.0/nprogress.css';
+        link.media = 'print';
+        link.onload = () => { link.media = 'all'; };
+        document.head.appendChild(link);
+      }
+    };
+    
+    // Load nprogress CSS after initial render (non-blocking)
+    setTimeout(loadNProgressCSS, 100);
     
     // Lazy load heavy CSS only when needed (not on initial load)
     // These will be loaded on-demand when components that need them are rendered

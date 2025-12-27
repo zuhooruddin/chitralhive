@@ -35,13 +35,21 @@ export default class Bazaar extends Document {
             <link rel="preconnect" href={process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL.replace('/api/', '')} crossOrigin="anonymous" />
           )}
           
-          {/* Premium Fonts - Plus Jakarta Sans, DM Sans, and Outfit with font-display swap to prevent layout shifts */}
+          {/* Premium Fonts - Load asynchronously using media trick to prevent render blocking */}
           <link
             href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Outfit:wght@100..900&display=swap"
             rel="stylesheet"
+            media="print"
+            onLoad="this.media='all'"
           />
+          <noscript>
+            <link
+              href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Outfit:wght@100..900&display=swap"
+              rel="stylesheet"
+            />
+          </noscript>
           
-          {/* Material Icons */}
+          {/* Material Icons - Load asynchronously */}
           <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/icon?family=Material+Icons"

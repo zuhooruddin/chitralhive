@@ -32,7 +32,104 @@ const SEO = ({
   const defaultKeywords = "Chitrali products Pakistan, Chitral Hive, buy Chitrali products online Pakistan, authentic Chitrali crafts, traditional Chitrali items, Chitral specialties, handmade Chitrali products, Chitral online store Pakistan, Chitrali food Pakistan, Chitrali handicrafts, Chitral culture, Pakistan products, online shopping Pakistan, Chitral honey Pakistan, Chitrali dry fruits, Chitrali shawls Pakistan, KPK products, Khyber Pakhtunkhwa products, Chitral delivery Pakistan, online store Pakistan";
   
   sitename = process.env.NEXT_PUBLIC_COMPANY_NAME || "Chitral Hive";
-  const fullTitle = metaTitle ? `${metaTitle} | ${sitename}` : `${title} | ${sitename}`;
+  
+  // Helper function to clean duplicate site names from title
+  const cleanDuplicateSiteNames = (text) => {
+    if (!text) return text;
+    let cleaned = text;
+    
+    // Remove common duplicate patterns (order matters - most specific first)
+    const duplicatePatterns = [
+      /\s*ChitralHive\s*[-|]\s*Chitral\s+Hive\s*[-|]\s*ChitralHive/gi,
+      /\s*ChitralHive\s*[-|]\s*Chitral\s+Hive\s*[-|]\s*Chitral\s+Hive/gi,
+      /\s*Chitral\s+Hive\s*[-|]\s*ChitralHive\s*[-|]\s*ChitralHive/gi,
+    ];
+    
+    duplicatePatterns.forEach(pattern => {
+      cleaned = cleaned.replace(pattern, ' | ChitralHive');
+    });
+    
+    // Count occurrences of each site name variation
+    const variations = ['ChitralHive', 'Chitral Hive', sitename];
+    const counts = variations.map(v => (cleaned.match(new RegExp(v.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi')) || []).length);
+    const maxCount = Math.max(...counts);
+    
+    // If any variation appears more than once, keep only the first occurrence
+    if (maxCount > 1) {
+      variations.forEach((name, index) => {
+        if (counts[index] > 1) {
+          const regex = new RegExp(`(${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+          let first = true;
+          cleaned = cleaned.replace(regex, (match) => {
+            if (first) {
+              first = false;
+              return match;
+            }
+            return ''; // Remove subsequent occurrences
+          });
+        }
+      });
+    }
+    
+    
+    // Clean up multiple separators and extra spaces
+    cleaned = cleaned.replace(/\s*[-|]\s*[-|]\s*/g, ' | ');
+    cleaned = cleaned.replace(/\s*[-|]\s*[-|]\s*/g, ' | '); // Run twice to catch nested patterns
+    cleaned = cleaned.replace(/\s+/g, ' ').trim();
+    
+    // Ensure we end with a single site name if title contains site name
+    const hasSiteName = variations.some(v => cleaned.toLowerCase().includes(v.toLowerCase()));
+    if (hasSiteName) {
+      // Remove trailing site name variations and add one clean one
+      variations.forEach(name => {
+        const trailingRegex = new RegExp(`\\s*[-|]\\s*${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*$`, 'gi');
+        cleaned = cleaned.replace(trailingRegex, '');
+      });
+      // Add single site name at the end if not present
+      if (!variations.some(v => cleaned.toLowerCase().endsWith(v.toLowerCase()))) {
+        cleaned = `${cleaned} | ChitralHive`;
+      }
+    }
+    
+    return cleaned.trim();
+  };
+  
+  // Helper function to truncate title to 75 characters (SEO best practice)
+  const truncateTitle = (text, maxLength = 75) => {
+    if (!text || text.length <= maxLength) return text;
+    // Truncate at word boundary if possible
+    const truncated = text.substring(0, maxLength);
+    const lastSpace = truncated.lastIndexOf(' ');
+    if (lastSpace > maxLength * 0.8) {
+      return truncated.substring(0, lastSpace) + '...';
+    }
+    return truncated.substring(0, maxLength - 3) + '...';
+  };
+  
+  // Check if metaTitle already contains sitename to avoid duplication
+  const siteNameVariations = [sitename, 'ChitralHive', 'Chitral Hive', 'ChitralHive.com'];
+  const alreadyContainsSiteName = metaTitle && siteNameVariations.some(
+    name => metaTitle.toLowerCase().includes(name.toLowerCase())
+  );
+  
+  // Build title: metaTitle + sitename (only if not already present, max 75 chars for SEO)
+  let titleBase;
+  if (!metaTitle) {
+    titleBase = sitename;
+  } else if (alreadyContainsSiteName) {
+    // If metaTitle already has site name, clean duplicates and use (but truncate)
+    titleBase = cleanDuplicateSiteNames(metaTitle);
+    // If after cleaning it doesn't have a site name, add it
+    if (!siteNameVariations.some(name => titleBase.toLowerCase().includes(name.toLowerCase()))) {
+      titleBase = `${titleBase} | ChitralHive`;
+    }
+  } else {
+    // Add sitename with separator
+    titleBase = `${metaTitle} | ChitralHive`;
+  }
+  
+  const fullTitle = truncateTitle(titleBase, 75);
+  
   const metaDesc = description || defaultDescription;
   const metaKeywords = keywords || defaultKeywords;
   const canonicalUrl = canonical || `${baseUrl}${router.asPath}`;

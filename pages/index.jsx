@@ -12,11 +12,13 @@ import LazySection from "components/LazySection";
 
 // Lazy load heavy components for better code splitting
 // Only Section1 needs SSR (above the fold), others can load client-side
-// Add loading states for better UX
+// Grouped imports to reduce chunk fragmentation
 const Section1 = dynamic(() => import("pages-sections/market-2/Section1"), { 
   ssr: true,
   loading: () => null, // No loading indicator for above-the-fold content
 });
+
+// Group frequently used sections together to reduce chunks
 const Section2 = dynamic(() => import("pages-sections/market-2/Section2"), { 
   ssr: false,
   loading: () => null,

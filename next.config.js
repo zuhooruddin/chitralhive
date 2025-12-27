@@ -124,70 +124,67 @@ module.exports = {
         moduleIds: 'deterministic', // Use deterministic module IDs for better caching
         splitChunks: {
           chunks: 'all',
-          maxInitialRequests: 15, // Further reduced to limit initial chunks and unused JS
-          minSize: 20000, // Only split chunks larger than 20KB
-          maxSize: 200000, // Reduced max size for better code splitting
+          maxInitialRequests: 8, // Significantly reduced to limit initial chunks (was 15)
+          minSize: 50000, // Increased from 20KB to 50KB to prevent tiny chunks
+          maxSize: 300000, // Increased to allow larger chunks and reduce fragmentation
           cacheGroups: {
             default: false,
             vendors: false,
-            // React chunk (highest priority - most used)
+            // React chunk (highest priority - most used) - keep separate
             react: {
               name: 'react',
               test: /[\\/]node_modules[\\/](react|react-dom|scheduler)[\\/]/,
               chunks: 'all',
-              priority: 40,
+              priority: 50,
               enforce: true,
+              minSize: 0, // Always include React
             },
-            // MUI core (high priority)
+            // MUI core + icons combined to reduce chunks
             mui: {
               name: 'mui',
-              test: /[\\/]node_modules[\\/]@mui[\\/](?!icons-material)[\\/]/,
+              test: /[\\/]node_modules[\\/]@mui[\\/]/,
+              chunks: 'all',
+              priority: 40,
+              enforce: true,
+              minSize: 0,
+            },
+            // Next.js framework code - combine with common vendors
+            nextjs: {
+              name: 'nextjs',
+              test: /[\\/]node_modules[\\/](next|next-auth)[\\/]/,
               chunks: 'all',
               priority: 35,
               enforce: true,
+              minSize: 0,
             },
-            // MUI Icons (separate to reduce initial load and file handle pressure)
-            muiIcons: {
-              name: 'mui-icons',
-              test: /[\\/]node_modules[\\/]@mui[\\/]icons-material[\\/]/,
+            // Large third-party libraries - combine into single chunk
+            largeVendors: {
+              name: 'large-vendors',
+              test: /[\\/]node_modules[\\/](apexcharts|react-apexcharts|react-quill|simplebar|react-floating-whatsapp|react-toastify|swr|axios|formik|yup|date-fns|currency\.js|nprogress)[\\/]/,
               chunks: 'async', // Load on demand
               priority: 30,
               enforce: true,
-              maxSize: 200000, // Split if larger to reduce file processing
+              minSize: 0,
             },
-            // Large third-party libraries (load on demand)
-            largeVendors: {
-              name: 'large-vendors',
-              test: /[\\/]node_modules[\\/](apexcharts|react-apexcharts|react-quill|simplebar|react-floating-whatsapp|react-toastify)[\\/]/,
-              chunks: 'async', // Load on demand
-              priority: 20,
-              enforce: true,
-            },
-            // Next.js framework code (separate chunk)
-            nextjs: {
-              name: 'nextjs',
-              test: /[\\/]node_modules[\\/](next)[\\/]/,
-              chunks: 'all',
-              priority: 25,
-              enforce: true,
-            },
-            // Common vendor chunk
+            // All other vendors in one chunk to reduce fragmentation
             vendor: {
               name: 'vendor',
               chunks: 'all',
               test: /[\\/]node_modules[\\/]/,
-              priority: 10,
-              minChunks: 2,
+              priority: 20,
+              minChunks: 1, // Include all vendor code
               reuseExistingChunk: true,
+              minSize: 0,
             },
-            // Common chunk for shared code - only include if used in multiple places
+            // Common chunk for shared code - only if significantly shared
             common: {
               name: 'common',
-              minChunks: 3, // Increased from 2 to reduce unused common code
+              minChunks: 5, // Increased to reduce fragmentation
               chunks: 'all',
-              priority: 5,
+              priority: 10,
               reuseExistingChunk: true,
               enforce: true,
+              minSize: 50000, // Only create if substantial
             },
           },
         },
