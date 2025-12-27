@@ -7,11 +7,11 @@ const GoogleAnalytics = () => {
     if (typeof window !== 'undefined') {
       const loadAfterIdle = () => {
         if ('requestIdleCallback' in window) {
-          requestIdleCallback(() => {
-            loadGoogleAnalytics();
+      requestIdleCallback(() => {
+        loadGoogleAnalytics();
           }, { timeout: 3000 }); // Increased timeout to ensure page is fully loaded
-        } else {
-          // Fallback for browsers without requestIdleCallback
+    } else {
+      // Fallback for browsers without requestIdleCallback
           setTimeout(loadGoogleAnalytics, 3000);
         }
       };
