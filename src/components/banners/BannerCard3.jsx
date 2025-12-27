@@ -20,17 +20,16 @@ const CardContent = styled(Box)(() => ({
 // ========================================================
 const BannerCard3 = ({ img, children, priority = false, ...props }) => {
   return (
-    <CardWrapper {...props} sx={{ aspectRatio: '16/9', position: 'relative' }}>
+    <CardWrapper {...props}>
       <BazaarImage 
         alt="category banner" 
         height={400} 
-        width={622} 
+        width={600} 
         src={img}
         priority={priority}
         quality={85}
         objectFit="cover"
-        sizes="(max-width: 960px) 100vw, 33vw"
-        style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }}
+        style={{ width: '100%', height: '100%' }}
       />
 
       <CardContent>{children}</CardContent>
