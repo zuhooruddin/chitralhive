@@ -23,7 +23,7 @@ const BannerCard3 = ({ img, children, priority = false, ...props }) => {
     <CardWrapper {...props} sx={{ aspectRatio: '16/9', position: 'relative' }}>
       <BazaarImage 
         alt="category banner" 
-        height={350} 
+        height={400} 
         width={622} 
         src={img}
         priority={priority}

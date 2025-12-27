@@ -47,8 +47,7 @@ const CarouselCard4 = ({ bgImage, mode = "dark", content, priority = false, fetc
         <ImageWrapper>
           <Image
             src={bgImage}
-            alt="Carousel banner"
-            fill
+layout="fill"
             priority={priority}
             quality={85}
             sizes="100vw"
