@@ -72,6 +72,7 @@ const SEO = ({
     }
     
     
+    
     // Clean up multiple separators and extra spaces
     cleaned = cleaned.replace(/\s*[-|]\s*[-|]\s*/g, ' | ');
     cleaned = cleaned.replace(/\s*[-|]\s*[-|]\s*/g, ' | '); // Run twice to catch nested patterns
@@ -245,15 +246,12 @@ const SEO = ({
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       
-      {/* Preconnect to improve page speed */}
+      {/* Preconnect to improve page speed - Critical origins only */}
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       
-      {/* DNS Prefetch for external resources */}
-      <link rel="dns-prefetch" href="https://www.google-analytics.com" />
-      <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
-      <link rel="dns-prefetch" href="https://www.facebook.com" />
-      <link rel="dns-prefetch" href="https://www.instagram.com" />
+      {/* DNS Prefetch for external resources - Non-critical, load after page interactive */}
+      {/* These are deferred to reduce initial connection overhead */}
     </Head>
   );
 };

@@ -35,12 +35,12 @@ export default class Bazaar extends Document {
             <link rel="preconnect" href={process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL.replace('/api/', '')} crossOrigin="anonymous" />
           )}
           
-          {/* Premium Fonts - Load asynchronously using media trick to prevent render blocking */}
+          {/* Premium Fonts - Load asynchronously to prevent render blocking */}
+          {/* Using font-display=swap ensures text remains visible during font load */}
           <link
             href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Outfit:wght@100..900&display=swap"
             rel="stylesheet"
             media="print"
-            onLoad="this.media='all'"
           />
           <noscript>
             <link
@@ -48,20 +48,60 @@ export default class Bazaar extends Document {
               rel="stylesheet"
             />
           </noscript>
+          {/* Script to switch font media from print to all after load (prevents render blocking) */}
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                (function() {
+                  var fontLink = document.querySelector('link[href*="fonts.googleapis.com/css2"][media="print"]');
+                  if (fontLink) {
+                    fontLink.onload = function() {
+                      this.media = 'all';
+                    };
+                    // Fallback: switch after a short delay if onload doesn't fire
+                    setTimeout(function() {
+                      if (fontLink.media === 'print') {
+                        fontLink.media = 'all';
+                      }
+                    }, 100);
+                  }
+                })();
+              `,
+            }}
+          />
           
           {/* Material Icons - Load asynchronously */}
           <link
             rel="stylesheet"
-            href="https://fonts.googleapis.com/icon?family=Material+Icons"
+            href="https://fonts.googleapis.com/icon?family=Material+Icons&display=swap"
             media="print"
-            onLoad="this.media='all'"
           />
           <noscript>
             <link
               rel="stylesheet"
-              href="https://fonts.googleapis.com/icon?family=Material+Icons"
+              href="https://fonts.googleapis.com/icon?family=Material+Icons&display=swap"
             />
           </noscript>
+          {/* Script to switch Material Icons media from print to all after load */}
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                (function() {
+                  var iconLink = document.querySelector('link[href*="Material+Icons"][media="print"]');
+                  if (iconLink) {
+                    iconLink.onload = function() {
+                      this.media = 'all';
+                    };
+                    setTimeout(function() {
+                      if (iconLink.media === 'print') {
+                        iconLink.media = 'all';
+                      }
+                    }, 100);
+                  }
+                })();
+              `,
+            }}
+          />
           
           <OpenGraphTags />
           {/* GoogleAnalytics is now loaded client-side only to improve performance */}

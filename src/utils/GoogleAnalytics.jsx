@@ -31,21 +31,26 @@ const GoogleAnalytics = () => {
       return;
     }
     
-    // Load gtag script with defer attribute
+    // Load gtag script with defer attribute and low priority
     const script1 = document.createElement('script');
     script1.async = true;
     script1.defer = true;
     script1.src = 'https://www.googletagmanager.com/gtag/js?id=G-VVDHZDQQZC';
+    // Set fetchpriority to low to reduce impact on critical resources
+    if ('fetchPriority' in script1) {
+      script1.fetchPriority = 'low';
+    }
     document.head.appendChild(script1);
 
-    // Load gtag config
+    // Load gtag config - use textContent instead of innerHTML for better performance
     const script2 = document.createElement('script');
-    script2.innerHTML = `
+    script2.textContent = `
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-VVDHZDQQZC', {
-        'send_page_view': false
+        'send_page_view': false,
+        'transport_type': 'beacon'
       });
     `;
     document.head.appendChild(script2);
