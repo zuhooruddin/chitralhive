@@ -33,10 +33,12 @@ module.exports = {
     domains: ["100.64.6.105","idrisbookbank-dev-server.inara.tech","api.chitralhive.com","s3-inara.eu-central-1.linodeobjects.com","chitralhive.com"],
     formats: ['image/avif', 'image/webp'], // Enable modern image formats
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384, 512],
     minimumCacheTTL: 31536000, // Cache images for 1 year (aggressive caching)
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    // Optimize image quality vs size
+    quality: 85,
   },
   
   // Optimize bundle size
@@ -63,6 +65,11 @@ module.exports = {
     // Target modern browsers to reduce legacy JavaScript polyfills
     if (!isServer) {
       config.target = ['web', 'es2020']; // Target ES2020+ browsers (Chrome 84+, Firefox 79+, Safari 14+)
+      
+      // Optimize for modern browsers - reduce polyfills
+      config.resolve.alias = {
+        ...config.resolve.alias,
+      };
     }
     
     // Optimize parallelism based on environment

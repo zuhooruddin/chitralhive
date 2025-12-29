@@ -46,8 +46,9 @@ const CategoryCard1 = ({ image, title,url}) => {
         alt={`${title} category`}
         objectFit="cover"
         layout="responsive"
-        sizes="(max-width: 600px) 50vw, (max-width: 960px) 33vw, 16vw"
+        sizes="(max-width: 600px) 50vw, (max-width: 960px) 33vw, 380px"
         quality={85}
+        loading="lazy"
       />
 
         <H4 textAlign='center'>{title}</H4>

@@ -5,8 +5,8 @@ import Link from "next/link";
 //   ==========================================
 const NavLink3 = ({ color, href, text, hoverColor, ...props }) => {
   return (
-    <Link href={href}>
-      {/* <a> */}
+    <Link href={href || '#'}>
+      <a aria-label={text || 'Link'}>
         <Span
           sx={{
             color,
@@ -43,9 +43,10 @@ const NavLink3 = ({ color, href, text, hoverColor, ...props }) => {
               fontSize: 14,
               flexShrink: 0,
             }}
+            aria-hidden="true"
           />
         </Span>
-      {/* </a> */}
+      </a>
     </Link>
   );
 }; // set default props

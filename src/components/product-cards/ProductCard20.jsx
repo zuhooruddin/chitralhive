@@ -284,10 +284,15 @@ const total=Reviews.length;
           <AddToCartButton
             className="product-actions"
             onClick={() => setOpenDialog(true)}
+            aria-label={`View ${product.name} details`}
           >
             <RemoveRedEye color="disabled" fontSize="small" />
           </AddToCartButton>
-<FavouriteButton className="product-actions" onClick={() => addwishtlist()}>
+<FavouriteButton 
+            className="product-actions" 
+            onClick={() => addwishtlist()}
+            aria-label={isFavorite ? `Remove ${product.name} from wishlist` : `Add ${product.name} to wishlist`}
+          >
             {isFavorite ? (
               <Favorite color="primary" fontSize="small" />
             ) : (
@@ -580,6 +585,7 @@ const total=Reviews.length;
           <AddToCartButton
             className="product-actions"
             onClick={() => setOpenDialog(true)}
+            aria-label={`View ${product.name} details`}
           >
             <RemoveRedEye color="disabled" fontSize="small" />
           </AddToCartButton>
