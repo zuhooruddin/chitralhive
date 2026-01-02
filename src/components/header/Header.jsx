@@ -230,7 +230,6 @@ const Header = ({ isFixed, headerdata, className, searchBoxType = "type2" }) => 
                     : '/assets/images/logos/webpack.png'} 
                 alt={comopanyalt || "Logo"}
                   priority
-                  fetchPriority="high"
                   quality={85}
                   style={{ 
                     display: 'block !important',

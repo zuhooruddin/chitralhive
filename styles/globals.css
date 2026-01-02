@@ -1974,3 +1974,51 @@ input:focus-visible {
     scroll-behavior: auto !important;
   }
 }
+
+/* ========================================
+   ACCESSIBILITY FIXES
+   ======================================== */
+
+/* Fix WhatsApp widget aria-hidden accessibility issue */
+/* When chat box is closed (aria-hidden=true), prevent focus on internal elements */
+.styles-module_whatsappChatBox__MdQ5U[aria-hidden="true"] input,
+.styles-module_whatsappChatBox__MdQ5U[aria-hidden="true"] button,
+.styles-module_whatsappChatBox__MdQ5U[aria-hidden="true"] a,
+.styles-module_whatsappChatBox__MdQ5U[aria-hidden="true"] [tabindex] {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* Ensure minimum touch target size (44x44px) for interactive elements */
+.touch-target-fix {
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Improve link contrast and touch targets in footer */
+footer a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Fix color contrast for links - use darker shade for better accessibility */
+a[style*="color: rgb(216, 60, 84)"],
+a[style*="color:#d83c54"],
+a[style*="color: #d83c54"] {
+  color: #B72C42 !important; /* Darker shade with better contrast ratio (4.5:1+) */
+}
+
+/* Ensure all links have discernible names when they only contain icons */
+a:empty::after,
+a:has(> img:only-child)::after {
+  content: "";
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}

@@ -31,14 +31,13 @@ module.exports = {
   
   images: {
     domains: ["100.64.6.105","idrisbookbank-dev-server.inara.tech","api.chitralhive.com","s3-inara.eu-central-1.linodeobjects.com","chitralhive.com"],
-    formats: ['image/avif', 'image/webp'], // Enable modern image formats
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384, 512],
+    formats: ['image/avif', 'image/webp'], // Enable modern image formats - AVIF provides ~50% better compression than WebP
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920], // Removed large sizes to reduce image variants
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384], // Optimized image sizes for category icons
     minimumCacheTTL: 31536000, // Cache images for 1 year (aggressive caching)
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-    // Optimize image quality vs size
-    quality: 85,
+    // Note: Image quality is set per-image via the quality prop on <Image> components (default: 75)
   },
   
   // Optimize bundle size
@@ -69,6 +68,12 @@ module.exports = {
       // Optimize for modern browsers - reduce polyfills
       config.resolve.alias = {
         ...config.resolve.alias,
+      };
+      
+      // Exclude unnecessary polyfills for modern browsers
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        // These are already supported in modern browsers, no polyfills needed
       };
     }
     
@@ -277,6 +282,16 @@ module.exports = {
       },
       {
         source: '/_next/image',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      // Cache headers for API images via proxy
+      {
+        source: '/api/image-proxy',
         headers: [
           {
             key: 'Cache-Control',

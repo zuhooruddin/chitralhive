@@ -366,13 +366,11 @@ const server_ip=process.env.NEXT_PUBLIC_BACKEND_API_BASE
             <div className="logo">
               <Link href="/" passHref>
                 <Image
-                  display="block"
-                  height="28px"
+                  height={28}
                   width={120}
                   src={topbardata?imgbaseurl+topbardata[0].site_logo:'/assets/images/logos/webpack.png'}
                   alt="logo"
                   priority
-                  fetchPriority="high"
                   quality={85}
                   sizes="120px"
                 />
@@ -513,13 +511,11 @@ const server_ip=process.env.NEXT_PUBLIC_BACKEND_API_BASE
             <div className="logo">
               <Link href="/" passHref>
               <Image
-                  display="block"
-                  height="28px"
+                  height={28}
                   width={120}
-                  src={topbardata?imgbaseurl+topbardata[0].site_logo:''}
+                  src={topbardata?imgbaseurl+topbardata[0].site_logo:'/assets/images/logos/webpack.png'}
                   alt="logo"
                   priority
-                  fetchPriority="high"
                   quality={85}
                   sizes="120px"
                 />

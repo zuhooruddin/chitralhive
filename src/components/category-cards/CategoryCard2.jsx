@@ -34,29 +34,30 @@ const CategoryTitle = styled(Box)(() => ({
 })); // ============================================================
 
 // ============================================================
-const CategoryCard2 = ({ image, title,url}) => {
+const CategoryCard2 = ({ image, title, url }) => {
   return (
-    <Link  href={url}>
+    <Link href={url}>
+      <a aria-label={`Browse ${title} products`}>
+        <Wrapper position="relative" sx={{ aspectRatio: '1/1' }}>
+          <Image
+            src={image}
+            width={280}
+            height={280}
+            alt={`${title} - Shop authentic Chitrali products`}
+            objectFit="cover"
+            layout="responsive"
+            sizes="(max-width: 600px) 45vw, (max-width: 960px) 30vw, 200px"
+            quality={70}
+            loading="lazy"
+            placeholder="blur"
+            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAUH/8QAIhAAAgEDAwUBAAAAAAAAAAAAAQIDAAQRBRIhBhMiMUFR/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAZEQACAwEAAAAAAAAAAAAAAAABAgADESH/2gAMAwEAAhEDEEA/ANH6h1W5g1O4ihCRxxtsVVQAAADAA+UpV/NdyH5FKlSxAE6wWf/Z"
+          />
 
-    <a>
-    <Wrapper position="relative" sx={{ aspectRatio: '1/1' }}>
-      <Image
-        src={image}
-        width={380}
-        height={380}
-        alt={`${title} category`}
-        objectFit="cover"
-        layout="responsive"
-        sizes="(max-width: 600px) 50vw, (max-width: 960px) 33vw, 380px"
-        quality={85}
-        loading="lazy"
-      />
-
-      <CategoryTitle className="category-title">
-        <H4>{title}</H4>
-      </CategoryTitle>
-    </Wrapper>
-    </a>
+          <CategoryTitle className="category-title">
+            <H4>{title}</H4>
+          </CategoryTitle>
+        </Wrapper>
+      </a>
     </Link>
   );
 };

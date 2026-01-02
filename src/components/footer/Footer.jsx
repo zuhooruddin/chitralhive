@@ -41,7 +41,8 @@ const StyledLink = styled("a")(({ theme }) => ({
   borderRadius: 8,
   cursor: "pointer",
   position: "relative",
-  padding: "10px 0",
+  padding: "12px 0", // Increased padding for better touch targets
+  minHeight: "44px", // Minimum touch target height for accessibility
   color: "rgba(255, 255, 255, 0.6)",
   fontSize: "14px",
   fontWeight: 500,
@@ -218,7 +219,7 @@ const Footer = ({ footerData: initialFooterData }) => {
                 {/* Column 1: Logo and Description */}
                 <Grid item lg={4} md={6} sm={6} xs={12}>
                   <Link href="/" passHref>
-                    <a>
+                    <a aria-label="Chitral Hive - Go to homepage" style={{ minHeight: '48px', minWidth: '160px', display: 'inline-block' }}>
                       <Box
                         sx={{
                           transition: "all 0.3s ease",
