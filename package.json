@@ -11,7 +11,9 @@
     "start": "next start",
     "size": "node --max_old_space_size=4096",
     "fix:prettier": "prettier --write .",
-    "lint": "next lint"
+    "lint": "next lint",
+    "find-unused": "node scripts/find-unused-files.js",
+    "find-unused:delete": "node scripts/find-unused-files.js --delete"
   },
   "lint-staged": {
     "*.+(js|jsx)": [
