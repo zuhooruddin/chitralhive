@@ -5,12 +5,15 @@
   "scripts": {
     "dev": "cross-env NODE_OPTIONS='--inspect' next dev -p 4000",
     "build": "set NODE_OPTIONS=--max-old-space-size=4096 && next build",
+    "build:analyze": "set ANALYZE=true && set NODE_OPTIONS=--max-old-space-size=4096 && next build",
     "export": "NODE_OPTIONS='--max-old-space-size=4096' next build && next export",
     "build:local": "cross-env NODE_OPTIONS=--max-old-space-size=4096 next build",
     "start": "next start",
     "size": "node --max_old_space_size=4096",
     "fix:prettier": "prettier --write .",
-    "lint": "next lint"
+    "lint": "next lint",
+    "cleanup:check": "node script.js",
+    "cleanup:remove": "node script.js --delete"
   },
   "lint-staged": {
     "*.+(js|jsx)": [
@@ -60,6 +63,7 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^12.2.5",
     "@types/react": "^18.0.0",
     "critters": "^0.0.23",
     "eslint": "^8.23.0",
