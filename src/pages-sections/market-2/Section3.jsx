@@ -54,6 +54,7 @@ const AdTitle1 = styled(H3)(({ theme }) => ({
 }));
 
 const Section3 = (dataa) => {
+ console.log("Data3",dataa)
   const imgbaseurl=process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL+'/api/media/'
   const slugbaseurl='category/'
   const data = [

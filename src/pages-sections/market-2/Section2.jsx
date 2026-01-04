@@ -23,6 +23,9 @@ const slideX = keyframes`
 
 
 const Section2 = (data) => {
+
+console.log("byundle",data)
+
   const imgbaseurl=process.env.NEXT_PUBLIC_BACKEND_API_BASE
   const slugbaseurl='brand/'
   const width = useWindowSize();
