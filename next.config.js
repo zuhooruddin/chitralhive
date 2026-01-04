@@ -6,7 +6,12 @@
 
 // module.exports = nextConfig
 
-module.exports = {
+// Webpack Bundle Analyzer (optional)
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+})
+
+const nextConfig = {
   reactStrictMode: true,
   // Disable SWC minify if it causes bus errors - can fall back to Terser
   swcMinify: process.env.DISABLE_SWC !== 'true', // Can disable via env var if needed
@@ -340,4 +345,7 @@ module.exports = {
 
   },
 };
+
+// Export with bundle analyzer wrapper
+module.exports = withBundleAnalyzer(nextConfig);
 // '/product/:slug(\\{.*\.html$})',

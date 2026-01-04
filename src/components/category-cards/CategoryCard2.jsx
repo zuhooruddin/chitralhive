@@ -39,19 +39,23 @@ const CategoryCard2 = ({ image, title, url }) => {
     <Link href={url}>
       <a aria-label={`Browse ${title} products`}>
         <Wrapper position="relative" sx={{ aspectRatio: '1/1' }}>
-          <Image
-            src={image}
-            width={280}
-            height={280}
-            alt={`${title} - Shop authentic Chitrali products`}
-            objectFit="cover"
-            layout="responsive"
-            sizes="(max-width: 600px) 45vw, (max-width: 960px) 30vw, 200px"
-            quality={70}
-            loading="lazy"
-            placeholder="blur"
-            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAUH/8QAIhAAAgEDAwUBAAAAAAAAAAAAAQIDAAQRBRIhBhMiMUFR/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAZEQACAwEAAAAAAAAAAAAAAAABAgADESH/2gAMAwEAAhEDEEA/ANH6h1W5g1O4ihCRxxtsVVQAAADAA+UpV/NdyH5FKlSxAE6wWf/Z"
-          />
+          <Box
+            position="absolute"
+            top={0}
+            left={0}
+            width="100%"
+            height="100%"
+          >
+            <Image
+              src={image || '/assets/images/banners/default.png'}
+              alt={title ? `${title} - Shop authentic Chitrali products` : 'Category'}
+              layout="fill"
+              sizes="(max-width: 600px) 45vw, (max-width: 960px) 30vw, 200px"
+              style={{ objectFit: 'cover' }}
+              quality={70}
+              loading="lazy"
+            />
+          </Box>
 
           <CategoryTitle className="category-title">
             <H4>{title}</H4>
