@@ -79,10 +79,12 @@ const CarouselCard4 = ({ bgImage, mode = "dark", content, priority = false, fetc
             alt="Carousel banner"
             layout="fill"
             priority={priority}
-            quality={85}
-            sizes="100vw"
+            quality={60}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1920px"
             objectFit="cover"
             loading={priority ? "eager" : "lazy"}
+            placeholder="blur"
+            blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2YwZjBmMCIvPjwvc3ZnPg=="
           />
         </ImageWrapper>
       )}

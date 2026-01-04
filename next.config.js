@@ -37,12 +37,15 @@ const nextConfig = {
   images: {
     domains: ["100.64.6.105","idrisbookbank-dev-server.inara.tech","api.chitralhive.com","s3-inara.eu-central-1.linodeobjects.com","chitralhive.com"],
     formats: ['image/avif', 'image/webp'], // Enable modern image formats - AVIF provides ~50% better compression than WebP
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920], // Removed large sizes to reduce image variants
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920], // Optimized device sizes
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384], // Optimized image sizes for category icons
     minimumCacheTTL: 31536000, // Cache images for 1 year (aggressive caching)
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-    // Note: Image quality is set per-image via the quality prop on <Image> components (default: 75)
+    // Reduce default quality from 75 to 70 for better compression (still visually good)
+    // For hero images/sliders, use quality={60} in the component for maximum savings
+    // For product images, use quality={70-75} for balance
+    // For thumbnails, use quality={60-65} for small file sizes
   },
   
   // Optimize bundle size
@@ -174,14 +177,48 @@ const nextConfig = {
               enforce: true,
               minSize: 0,
             },
-            // Large third-party libraries - combine into single chunk
-            largeVendors: {
-              name: 'large-vendors',
-              test: /[\\/]node_modules[\\/](apexcharts|react-apexcharts|react-quill|simplebar|react-floating-whatsapp|react-toastify|swr|axios|formik|yup|date-fns|currency\.js|nprogress)[\\/]/,
-              chunks: 'async', // Load on demand
+            // Split large third-party libraries into smaller async chunks for better code splitting
+            // Load heavy libraries only when needed
+            charts: {
+              name: 'charts',
+              test: /[\\/]node_modules[\\/](apexcharts|react-apexcharts)[\\/]/,
+              chunks: 'async', // Load only on pages that use charts
+              priority: 31,
+              enforce: true,
+              reuseExistingChunk: true,
+            },
+            editor: {
+              name: 'editor',
+              test: /[\\/]node_modules[\\/](react-quill|quill)[\\/]/,
+              chunks: 'async', // Load only on pages with rich text editor
               priority: 30,
               enforce: true,
-              minSize: 0,
+              reuseExistingChunk: true,
+            },
+            // Keep commonly used libraries together but still async
+            utils: {
+              name: 'utils',
+              test: /[\\/]node_modules[\\/](simplebar|react-floating-whatsapp|react-toastify|nprogress)[\\/]/,
+              chunks: 'async',
+              priority: 29,
+              reuseExistingChunk: true,
+            },
+            // SWR and Axios should be in initial bundle as they're used on most pages
+            api: {
+              name: 'api',
+              test: /[\\/]node_modules[\\/](swr|axios)[\\/]/,
+              chunks: 'all', // Initial bundle - used on almost every page
+              priority: 32,
+              enforce: true,
+              reuseExistingChunk: true,
+            },
+            // Form libraries - async load
+            forms: {
+              name: 'forms',
+              test: /[\\/]node_modules[\\/](formik|yup)[\\/]/,
+              chunks: 'async',
+              priority: 28,
+              reuseExistingChunk: true,
             },
             // All other vendors in one chunk to reduce fragmentation
             vendor: {
@@ -189,19 +226,21 @@ const nextConfig = {
               chunks: 'all',
               test: /[\\/]node_modules[\\/]/,
               priority: 20,
-              minChunks: 1, // Include all vendor code
+              minChunks: 2, // Only include if used in 2+ places
               reuseExistingChunk: true,
-              minSize: 0,
+              minSize: 10000, // At least 10KB to avoid tiny chunks
+              maxSize: 200000, // Split large vendors into smaller chunks
             },
             // Common chunk for shared code - only if significantly shared
             common: {
               name: 'common',
-              minChunks: 5, // Increased to reduce fragmentation
+              minChunks: 6, // Increased to reduce fragmentation (must be shared by 6+ pages)
               chunks: 'all',
               priority: 10,
               reuseExistingChunk: true,
               enforce: true,
-              minSize: 50000, // Only create if substantial
+              minSize: 30000, // Reduced from 50KB to capture medium-sized shared code
+              maxSize: 150000, // Split if larger than 150KB
             },
           },
         },

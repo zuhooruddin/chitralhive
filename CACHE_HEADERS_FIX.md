@@ -6,6 +6,32 @@ Images loaded from `api.chitralhive.com` are showing "None" cache TTL in Lightho
 - Slower repeat visits
 - Higher bandwidth usage
 
+**Current Issue:**
+- `slider/Firefly_G….png` from `api.chitralhive.com`: **1,863 KiB** with **None** cache TTL
+- This large image is re-downloaded on every page visit
+
+## Quick Fix (Nginx - Apply This First)
+
+**Update your nginx configuration** to add cache headers to the `/media/` location:
+
+```nginx
+location /media/ {
+    alias /var/www/chitralhive/api/media/;
+    expires 1y;
+    add_header Cache-Control "public, max-age=31536000, immutable";
+    add_header X-Content-Type-Options "nosniff";
+    access_log off;
+}
+```
+
+**Steps:**
+1. Edit your nginx config file (usually `/etc/nginx/sites-available/chitralhive` or similar)
+2. Add the cache headers to the `/media/` location block as shown above
+3. Test: `sudo nginx -t`
+4. Reload: `sudo systemctl reload nginx`
+
+This will immediately fix the cache TTL issue for all media files.
+
 ## Solution
 
 ### Option 1: Backend Cache Headers (Recommended - Best Performance)
@@ -29,15 +55,45 @@ if not DEBUG:
 ```
 
 **Nginx Configuration (if using nginx):**
+
+Update your nginx configuration to add cache headers to the `/media/` location block:
+
 ```nginx
-location /api/media/ {
-    alias /path/to/media/;
+location /api {
+    proxy_pass http://unix:/var/www/chitralhive/api/gunicorn.sock;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+}
+
+location /static/ {
+    alias /var/www/chitralhive/api/staticfiles/;
     expires 1y;
     add_header Cache-Control "public, max-age=31536000, immutable";
     add_header X-Content-Type-Options "nosniff";
     access_log off;
 }
+
+location /media/ {
+    alias /var/www/chitralhive/api/media/;
+    expires 1y;
+    add_header Cache-Control "public, max-age=31536000, immutable";
+    add_header X-Content-Type-Options "nosniff";
+    access_log off;
+    
+    # Optional: Add specific cache headers for image files
+    location ~* \.(jpg|jpeg|png|gif|webp|avif|svg|ico)$ {
+        expires 1y;
+        add_header Cache-Control "public, max-age=31536000, immutable";
+        add_header X-Content-Type-Options "nosniff";
+    }
+}
 ```
+
+**After updating nginx config:**
+1. Test the configuration: `sudo nginx -t`
+2. Reload nginx: `sudo systemctl reload nginx` or `sudo nginx -s reload`
 
 **Apache Configuration (if using apache):**
 ```apache
@@ -83,9 +139,15 @@ The image proxy at `/api/image-proxy` adds cache headers, but it's not being use
 
 2. This adds cache headers but adds an extra hop (slightly slower)
 
-## Immediate Fix
+## Immediate Fix (Two Steps)
 
-**Run this command NOW:**
+### Step 1: Add Nginx Cache Headers (Fixes Cache TTL - Do This First)
+
+Update your nginx `/media/` location block with cache headers (see "Quick Fix" section above). This will immediately fix the "None" cache TTL issue.
+
+### Step 2: Optimize Images (Fixes File Size)
+
+**Run this command:**
 ```powershell
 cd E:\chitralhive\chitralhivedjango
 python manage.py optimize_images --path=media/slider --quality=85 --backup
@@ -95,6 +157,8 @@ This will:
 - Convert 1.8MB PNG → ~500KB WebP (73% reduction)
 - Next.js Image will then add cache headers automatically
 - Fix both the cache TTL and payload size issues
+
+**Note:** Step 1 fixes the cache TTL immediately. Step 2 reduces the file size but takes longer to process.
 
 ## Verification
 

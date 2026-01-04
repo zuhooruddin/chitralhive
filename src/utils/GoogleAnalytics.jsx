@@ -2,26 +2,47 @@ import React, { useEffect } from "react";
 
 const GoogleAnalytics = () => {
   // Defer Google Tag Manager loading to improve initial page load performance
+  // Load only after user interaction (click, scroll) or after 5 seconds
   useEffect(() => {
-    // Only load after page is interactive and browser is idle
     if (typeof window !== 'undefined') {
-      const loadAfterIdle = () => {
+      let loaded = false;
+      
+      const loadAfterInteraction = () => {
+        if (loaded) return;
+        loaded = true;
+        
+        // Remove event listeners after first load
+        window.removeEventListener('scroll', loadAfterInteraction);
+        window.removeEventListener('mousemove', loadAfterInteraction);
+        window.removeEventListener('touchstart', loadAfterInteraction);
+        window.removeEventListener('click', loadAfterInteraction);
+        
+        // Use requestIdleCallback for better performance
         if ('requestIdleCallback' in window) {
           requestIdleCallback(() => {
             loadGoogleAnalytics();
-          }, { timeout: 3000 }); // Increased timeout to ensure page is fully loaded
+          }, { timeout: 2000 });
         } else {
-          // Fallback for browsers without requestIdleCallback
-          setTimeout(loadGoogleAnalytics, 3000);
+          setTimeout(loadGoogleAnalytics, 100);
         }
       };
       
-      // Wait for page to be fully interactive
-      if (document.readyState === 'complete') {
-        loadAfterIdle();
-      } else {
-        window.addEventListener('load', loadAfterIdle, { once: true });
-      }
+      // Load on user interaction
+      window.addEventListener('scroll', loadAfterInteraction, { once: true, passive: true });
+      window.addEventListener('mousemove', loadAfterInteraction, { once: true, passive: true });
+      window.addEventListener('touchstart', loadAfterInteraction, { once: true, passive: true });
+      window.addEventListener('click', loadAfterInteraction, { once: true });
+      
+      // Fallback: Load after 5 seconds if no interaction
+      const timeout = setTimeout(loadAfterInteraction, 5000);
+      
+      return () => {
+        clearTimeout(timeout);
+        window.removeEventListener('scroll', loadAfterInteraction);
+        window.removeEventListener('mousemove', loadAfterInteraction);
+        window.removeEventListener('touchstart', loadAfterInteraction);
+        window.removeEventListener('click', loadAfterInteraction);
+      };
     }
   }, []);
 
