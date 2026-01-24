@@ -71,32 +71,36 @@ const ProductCard = styled(Box)(({ theme, isDark }) => ({
     borderRadius: "20px",
   },
 }));
-
 const ImageGalleryCard = styled(Box)(({ theme, isDark }) => ({
   background: isDark ? "#0F172A" : "#FFFFFF",
-  borderRadius: "24px",
-  padding: "24px",
+  borderRadius: "20px",
+  padding: "40px",
   position: "relative",
   cursor: "zoom-in",
-  border: `1px solid ${isDark ? "rgba(255, 255, 255, 0.08)" : "rgba(15, 23, 42, 0.06)"}`,
+  border: `1px solid ${isDark ? "rgba(255, 255, 255, 0.06)" : "rgba(15, 23, 42, 0.08)"}`,
   boxShadow: isDark
-    ? "0 12px 32px rgba(0, 0, 0, 0.45)"
-    : "0 12px 32px rgba(15, 23, 42, 0.08)",
-  transition: "box-shadow 0.3s ease",
+    ? "0 4px 20px rgba(0, 0, 0, 0.3)"
+    : "0 2px 16px rgba(15, 23, 42, 0.06)",
+  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
+  overflow: "hidden",
   "&:hover": {
     boxShadow: isDark
-      ? "0 16px 44px rgba(0, 0, 0, 0.6)"
-      : "0 16px 44px rgba(15, 23, 42, 0.12)",
+      ? "0 8px 28px rgba(0, 0, 0, 0.4)"
+      : "0 4px 20px rgba(15, 23, 42, 0.1)",
+    transform: "translateY(-2px)",
+  },
+  "&:focus-within": {
+    outline: `2px solid ${isDark ? "#3B82F6" : "#2563EB"}`,
+    outlineOffset: "2px",
   },
   [theme.breakpoints.down("sm")]: {
-    padding: "16px",
-    borderRadius: "18px",
+    padding: "24px",
+    borderRadius: "16px",
   },
 }));
-
 const ThumbnailButton = styled(Box)(({ theme, isSelected, isDark }) => ({
   width: 64,
   height: 64,
