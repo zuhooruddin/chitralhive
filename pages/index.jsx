@@ -366,11 +366,11 @@ const IndexPage = (props) => {
             />
           </Box>
         </LazySection>
-        <LazySection>
+        {/* <LazySection>
           <Box sx={{ mt: 3, display: "flex", justifyContent: "center" }}>
             <Section2 data={props.brandbundles || []} />
           </Box>
-        </LazySection>
+        </LazySection> */}
         <LazySection>
           <Box sx={{ my: 0 }}>
             <Section4

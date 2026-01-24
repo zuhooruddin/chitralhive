@@ -75,7 +75,7 @@ const ProductCard = styled(Box)(({ theme, isDark }) => ({
 const ImageGalleryCard = styled(Box)(({ theme, isDark }) => ({
   background: isDark ? "#0F172A" : "#FFFFFF",
   borderRadius: "24px",
-  padding: "24px",
+  padding: "16px",
   position: "relative",
   cursor: "zoom-in",
   border: `1px solid ${isDark ? "rgba(255, 255, 255, 0.08)" : "rgba(15, 23, 42, 0.06)"}`,
@@ -86,14 +86,18 @@ const ImageGalleryCard = styled(Box)(({ theme, isDark }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
+  width: "100%",
+  minHeight: "400px",
+  overflow: "hidden",
   "&:hover": {
     boxShadow: isDark
       ? "0 16px 44px rgba(0, 0, 0, 0.6)"
       : "0 16px 44px rgba(15, 23, 42, 0.12)",
   },
   [theme.breakpoints.down("sm")]: {
-    padding: "16px",
+    padding: "12px",
     borderRadius: "18px",
+    minHeight: "300px",
   },
 }));
 
@@ -452,7 +456,7 @@ const ProductIntro = ({ product, slug, total, average, category }) => {
             )}
 
             {/* Main Image */}
-            <FlexBox justifyContent="center" mb={3}>
+            <FlexBox justifyContent="center" mb={3} sx={{ width: "100%" }}>
               <ImageGalleryCard
                 isDark={isDark}
                 role="button"
@@ -465,20 +469,42 @@ const ProductIntro = ({ product, slug, total, average, category }) => {
                   }
                 }}
                 onClick={() => openImageViewer(imgGroup.indexOf(imgGroup[selectedImage]))}
+                sx={{
+                  width: "100%",
+                  maxWidth: "600px",
+                }}
               >
-                <LazyImage
-                  width={400}
-                  height={400}
-                  alt={name ? `${name} - Authentic Chitrali Product | Buy Online in Pakistan at Chitral Hive` : "Chitrali Product"}
-                  loading="eager"
-                  priority
-                  objectFit="contain"
-                  src={localimageurl + `${product.imgGroup[selectedImage]}`}
-                  title={name || "Chitrali Product"}
-                  style={{ borderRadius: "16px", aspectRatio: "1 / 1" }}
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  quality={85}
-                />
+                <Box
+                  sx={{
+                    width: "100%",
+                    height: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    position: "relative",
+                  }}
+                >
+                  <LazyImage
+                    width={600}
+                    height={600}
+                    alt={name ? `${name} - Authentic Chitrali Product | Buy Online in Pakistan at Chitral Hive` : "Chitrali Product"}
+                    loading="eager"
+                    priority
+                    objectFit="contain"
+                    src={localimageurl + `${product.imgGroup[selectedImage]}`}
+                    title={name || "Chitrali Product"}
+                    style={{ 
+                      borderRadius: "12px",
+                      width: "100%",
+                      height: "auto",
+                      maxWidth: "100%",
+                      maxHeight: "600px",
+                      objectFit: "contain",
+                    }}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    quality={90}
+                  />
+                </Box>
               </ImageGalleryCard>
             </FlexBox>
 
