@@ -354,23 +354,28 @@ const IndexPage = (props) => {
         <LazySection>
           <Section9 data={props.ProductReviews} />
         </LazySection>
-        <LazySection>
-          <Box sx={{ my: -7 }}>
-            <Section3
-              data1={props.Section2SequenceData || []}
-              data2={props.Section2SequenceData2 || []}
-              data3={props.Section2SequenceData3 || []}
-              data4={props.Section2SequenceData4 || []}
-              data5={props.Section2SequenceData5 || []}
-              data6={props.Section2SequenceData6 || []}
-            />
-          </Box>
-        </LazySection>
-        <LazySection>
-          <Box sx={{ mt: 3, display: "flex", justifyContent: "center" }}>
-            <Section2 data={props.brandbundles || []} />
-          </Box>
-        </LazySection>
+        {(props.Section2SequenceData || props.Section2SequenceData2 || props.Section2SequenceData3 || 
+          props.Section2SequenceData4 || props.Section2SequenceData5 || props.Section2SequenceData6) && (
+          <LazySection>
+            <Box sx={{ my: -7 }}>
+              <Section3
+                data1={props.Section2SequenceData || []}
+                data2={props.Section2SequenceData2 || []}
+                data3={props.Section2SequenceData3 || []}
+                data4={props.Section2SequenceData4 || []}
+                data5={props.Section2SequenceData5 || []}
+                data6={props.Section2SequenceData6 || []}
+              />
+            </Box>
+          </LazySection>
+        )}
+        {props.brandbundles && props.brandbundles.length > 0 && (
+          <LazySection>
+            <Box sx={{ mt: 3, display: "flex", justifyContent: "center" }}>
+              <Section2 data={props.brandbundles} />
+            </Box>
+          </LazySection>
+        )}
         <LazySection>
           <Box sx={{ my: 0 }}>
             <Section4
@@ -381,37 +386,43 @@ const IndexPage = (props) => {
             />
           </Box>
         </LazySection>
-        <LazySection>
-          <Box sx={{ mt: 5 }}>
-            <Section5
-              products={props.products || []}
-              data={props.SectionSequenceOrdera || []}
-              SectionName={props.Section1Name || ""}
-              slug={props.slug || ""}
+        {props.products && props.products.length > 0 && props.SectionSequenceOrdera && props.SectionSequenceOrdera.length > 0 && (
+          <LazySection>
+            <Box sx={{ mt: 5 }}>
+              <Section5
+                products={props.products}
+                data={props.SectionSequenceOrdera}
+                SectionName={props.Section1Name || ""}
+                slug={props.slug || ""}
+                productreviews={props.ProductReviews} 
+
+              />
+            </Box>
+          </LazySection>
+        )}
+        {props.Section4SequenceData && props.Section4SequenceData2 && (
+          <LazySection>
+            <Box sx={{ my: -7 }}>
+              <Section6
+                data1={props.Section4SequenceData}
+                data2={props.Section4SequenceData2}
+              />
+            </Box>
+          </LazySection>
+        )}
+        {props.product && props.product.length > 0 && props.SectionSequenceOrdera2 && props.SectionSequenceOrdera2.length > 0 && (
+          <LazySection>
+            <Section12
+              products={props.product}
+              data={props.SectionSequenceOrdera2}
+              Section2Name={props.Section2Name || ""}
+              slug={props.slug2 || ""}
               productreviews={props.ProductReviews} 
 
             />
-          </Box>
-        </LazySection>
-        <LazySection>
-          <Box sx={{ my: -7 }}>
-            <Section6
-              data1={props.Section4SequenceData || []}
-              data2={props.Section4SequenceData2 || []}
-            />
-          </Box>
-        </LazySection>
-        <LazySection>
-          <Section12
-            products={props.product || []}
-            data={props.SectionSequenceOrdera2 || []}
-            Section2Name={props.Section2Name || ""}
-            slug={props.slug2 || ""}
-            productreviews={props.ProductReviews} 
-
-          />
-        </LazySection>
-        {props.productbundles.length > 0 && (
+          </LazySection>
+        )}
+        {props.productbundles && props.productbundles.length > 0 && (
           <LazySection>
             <Box sx={{ mt: 3, display: "flex", justifyContent: "center" }}>
               <Section10 data={props.productbundles} />
@@ -419,11 +430,13 @@ const IndexPage = (props) => {
           </LazySection>
         )}
 
-        <LazySection>
-          <Box sx={{ my: -4 }}>
-            <Section7 data1={props.Section5SequenceData || []} />
-          </Box>
-        </LazySection>
+        {props.Section5SequenceData && (
+          <LazySection>
+            <Box sx={{ my: -4 }}>
+              <Section7 data1={props.Section5SequenceData} />
+            </Box>
+          </LazySection>
+        )}
         {/* <Section13 products={props.sect13products || []} /> */}
         {/* <Section8 /> */}
       </Box>

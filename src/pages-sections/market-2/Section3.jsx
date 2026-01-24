@@ -56,44 +56,23 @@ const AdTitle1 = styled(H3)(({ theme }) => ({
 const Section3 = (dataa) => {
   const imgbaseurl=process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL+'/api/media/'
   const slugbaseurl='category/'
-  const data = [
-    {
-      url: slugbaseurl+ dataa.data1.category_slug ,
-      title: dataa.data1.category_name && dataa.data1.category_name?dataa.data1.category_name:"Category3",
-      id: dataa.data1.id,
-      img:dataa.data1.image && +dataa.data1.image? imgbaseurl+dataa.data1.image:'/assets/images/banners/default.png',
-    },
-    {
-      url: slugbaseurl+ dataa.data2.category_slug,
-      title:dataa.data2.category_name &&dataa.data2.category_name?dataa.data2.category_name:"Category4",
-      id: dataa.data2.id,
-      img: dataa.data2.image &&dataa.data2.image?imgbaseurl+dataa.data2.image:'/assets/images/banners/default.png',
-    },
-    {
-      url:  slugbaseurl+ dataa.data3.category_slug,
-      title:dataa.data3.category_name && dataa.data3.category_name?dataa.data3.category_name:"Category5",
-      id: dataa.data3.id,
-      img: dataa.data3.image&&dataa.data3.image?imgbaseurl+dataa.data3.image:'/assets/images/banners/default.png',
-    },
-    {
-      url: slugbaseurl+ dataa.data4.category_slug,
-      title: dataa.data4.category_name&&dataa.data4.category_name?dataa.data4.category_name:"Category6",
-      id: dataa.data4.id,
-      img:dataa.data4.image && dataa.data4.image? imgbaseurl+dataa.data4.image:'/assets/images/banners/default.png',
-    },
-    {
-      url:  slugbaseurl+ dataa.data5.category_slug,
-      title:dataa.data5.category_name&&dataa.data5.category_name?dataa.data5.category_name:"Category7",
-      id: dataa.data5.id,
-      img: dataa.data5.image && dataa.data5.image?imgbaseurl+dataa.data5.image:'/assets/images/banners/default.png',
-    },
-    {
-      url: slugbaseurl+ dataa.data6.category_slug,
-      title:dataa.data6.category_name && dataa.data6.category_name?dataa.data6.category_name:'Category8',
-      id: dataa.data6.id,
-      img: dataa.data6.image&&dataa.data6.image?imgbaseurl+dataa.data6.image:'/assets/images/banners/default.png',
-    },
-  ];
+  
+  // Filter out null/undefined data and only include valid items
+  const dataItems = [dataa.data1, dataa.data2, dataa.data3, dataa.data4, dataa.data5, dataa.data6]
+    .filter(item => item && item.id && item.category_slug);
+  
+  // Don't render if no valid data
+  if (dataItems.length === 0) {
+    return null;
+  }
+  
+  const data = dataItems.map((item, index) => ({
+    url: slugbaseurl + item.category_slug,
+    title: item.category_name || `Category${index + 3}`,
+    id: item.id,
+    img: item.image && +item.image ? imgbaseurl + item.image : '/assets/images/banners/default.png',
+  }));
+  
   return (
     <Container
       sx={{
@@ -101,13 +80,11 @@ const Section3 = (dataa) => {
       }}
     >
       <Grid container spacing={3}>
-        {data.length>0?data.map((item) => (
+        {data.map((item) => (
           <Grid item lg={2} md={3} sm={4} xs={6} key={item.id}>
             <CategoryCard2 image={item.img} title={item.title} url={item.url} />
           </Grid>
-        )):"No Product Added"}
-
-      
+        ))}
       </Grid>
     </Container>
   );

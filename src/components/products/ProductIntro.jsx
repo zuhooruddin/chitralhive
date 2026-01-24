@@ -73,19 +73,23 @@ const ProductCard = styled(Box)(({ theme, isDark }) => ({
 }));
 
 const ImageGalleryCard = styled(Box)(({ theme, isDark }) => ({
-  background: isDark 
-    ? "linear-gradient(135deg, #0F172A 0%, #1E293B 100%)"
-    : "linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%)",
+  background: isDark ? "#0F172A" : "#FFFFFF",
   borderRadius: "24px",
   padding: "24px",
   position: "relative",
   cursor: "zoom-in",
-  transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+  border: `1px solid ${isDark ? "rgba(255, 255, 255, 0.08)" : "rgba(15, 23, 42, 0.06)"}`,
+  boxShadow: isDark
+    ? "0 12px 32px rgba(0, 0, 0, 0.45)"
+    : "0 12px 32px rgba(15, 23, 42, 0.08)",
+  transition: "box-shadow 0.3s ease",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
   "&:hover": {
-    transform: "scale(1.02)",
     boxShadow: isDark
-      ? "0 16px 48px rgba(0, 0, 0, 0.6)"
-      : "0 16px 48px rgba(0, 0, 0, 0.12)",
+      ? "0 16px 44px rgba(0, 0, 0, 0.6)"
+      : "0 16px 44px rgba(15, 23, 42, 0.12)",
   },
   [theme.breakpoints.down("sm")]: {
     padding: "16px",
@@ -94,34 +98,28 @@ const ImageGalleryCard = styled(Box)(({ theme, isDark }) => ({
 }));
 
 const ThumbnailButton = styled(Box)(({ theme, isSelected, isDark }) => ({
-  width: 72,
-  height: 72,
-  minWidth: 72,
-  borderRadius: "16px",
+  width: 64,
+  height: 64,
+  minWidth: 64,
+  borderRadius: "12px",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
   cursor: "pointer",
-  transition: "all 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
-  background: isSelected 
-    ? (isDark ? "rgba(210, 63, 87, 0.2)" : "rgba(210, 63, 87, 0.1)")
-    : (isDark ? "#0F172A" : "#F8FAFC"),
-  border: isSelected ? "3px solid #D23F57" : `2px solid ${isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.06)"}`,
-  boxShadow: isSelected 
-    ? "0 8px 24px rgba(210, 63, 87, 0.3)"
-    : (isDark ? "0 2px 8px rgba(0, 0, 0, 0.3)" : "0 2px 8px rgba(0, 0, 0, 0.04)"),
+  transition: "border-color 0.2s ease, box-shadow 0.2s ease",
+  background: isDark ? "#0B1220" : "#FFFFFF",
+  border: isSelected ? "2px solid #D23F57" : `1px solid ${isDark ? "rgba(255, 255, 255, 0.12)" : "rgba(15, 23, 42, 0.08)"}`,
+  boxShadow: isSelected
+    ? "0 6px 16px rgba(210, 63, 87, 0.25)"
+    : "none",
   "&:hover": {
-    transform: "translateY(-4px) scale(1.05)",
-    boxShadow: isDark 
-      ? "0 12px 32px rgba(0, 0, 0, 0.5)" 
-      : "0 12px 32px rgba(0, 0, 0, 0.1)",
     borderColor: "#D23F57",
   },
   [theme.breakpoints.down("sm")]: {
-    width: 60,
-    height: 60,
-    minWidth: 60,
-    borderRadius: "12px",
+    width: 56,
+    height: 56,
+    minWidth: 56,
+    borderRadius: "10px",
   },
 }));
 

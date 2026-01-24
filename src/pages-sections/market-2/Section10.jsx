@@ -38,6 +38,11 @@ const Section10 = (data) => {
     else setVisibleSlides(5);
   }, [width]);
 
+  // Don't render if no data
+  if (!data?.data || !Array.isArray(data.data) || data.data.length === 0) {
+    return null;
+  }
+
   return (
     <Container sx={{ mt: 8 }}>
       <FlexBetween mb={3}>
@@ -49,11 +54,11 @@ const Section10 = (data) => {
         visibleSlides={visibleSlides}
         sx={carouselStyled}
       >
-          {data.data.length>0?data.data.map((item) => (
+          {data.data.map((item) => (
             <Grid item lg={2} md={3} sm={4} xs={6} key={item.id}>
               <CategoryCard1 image={imgbaseurl+item.image} title={item.name} url={slugbaseurl+item.slug} />
             </Grid>
-          )):"No data"}
+          ))}
           </Carousel>
     </Container>
   );

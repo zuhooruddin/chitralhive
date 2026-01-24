@@ -135,3 +135,9 @@ echo ""
 echo "💡 Tip: You can safely delete the original files if the WebP versions look good"
 echo "   The original files are backed up in: $BACKUP_DIR"
 
+
+
+
+
+
+
