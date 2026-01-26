@@ -349,6 +349,11 @@ const ProductIntro = ({ product, slug, total, average, category }) => {
   const imageBaseUrl = localimageurl || imgurl;
   const safeImgGroup = Array.isArray(imgGroup) ? imgGroup : [];
   const selectedImageSrc = safeImgGroup[selectedImage];
+  const resolveImageSrc = (src) => {
+    if (!src) return "";
+    if (/^(https?:)?\/\//i.test(src) || src.startsWith("data:")) return src;
+    return imageBaseUrl + src;
+  };
 
   const router = useRouter();
   const routerId = router.query.id;
@@ -386,7 +391,7 @@ const ProductIntro = ({ product, slug, total, average, category }) => {
           price: priceToStore,
           qty: amount,
           name: name,
-          image: selectedImageSrc ? imageBaseUrl + selectedImageSrc : "",
+          image: resolveImageSrc(selectedImageSrc),
           id: id || routerId,
         },
       });
@@ -495,7 +500,7 @@ const ProductIntro = ({ product, slug, total, average, category }) => {
                   loading="eager"
                   priority
                   objectFit="contain"
-                  src={selectedImageSrc ? imageBaseUrl + selectedImageSrc : ""}
+                  src={resolveImageSrc(selectedImageSrc)}
                   title={name || "Chitrali Product"}
                     style={{ 
                       borderRadius: "12px",
@@ -515,7 +520,7 @@ const ProductIntro = ({ product, slug, total, average, category }) => {
             {/* Image Viewer Modal */}
             {isViewerOpen && (
               <ImageViewer
-                src={safeImgGroup.map((img) => imageBaseUrl + img)}
+                src={safeImgGroup.map((img) => resolveImageSrc(img))}
                 onClose={closeImageViewer}
                 currentIndex={currentImage}
                 backgroundStyle={{
@@ -562,7 +567,7 @@ const ProductIntro = ({ product, slug, total, average, category }) => {
                   }}
                 >
                   <BazaarAvatar
-                    src={imageBaseUrl + url}
+                    src={resolveImageSrc(url)}
                     variant="square"
                     height={48}
                     width={48}
