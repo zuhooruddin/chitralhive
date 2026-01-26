@@ -113,7 +113,7 @@ const ThumbnailButton = styled(Box)(({ theme, isSelected, isDark }) => ({
   transition: "border-color 0.2s ease, box-shadow 0.2s ease",
   background: isDark ? "#0B1220" : "#FFFFFF",
   border: isSelected ? "2px solid #D23F57" : `1px solid ${isDark ? "rgba(255, 255, 255, 0.12)" : "rgba(15, 23, 42, 0.08)"}`,
-  boxShadow: isSelected
+  boxShadow: isSelected 
     ? "0 6px 16px rgba(210, 63, 87, 0.25)"
     : "none",
   "&:hover": {
@@ -483,16 +483,16 @@ const ProductIntro = ({ product, slug, total, average, category }) => {
                     justifyContent: "center",
                     position: "relative",
                   }}
-                >
-                  <LazyImage
+              >
+                <LazyImage
                     width={600}
                     height={600}
-                    alt={name ? `${name} - Authentic Chitrali Product | Buy Online in Pakistan at Chitral Hive` : "Chitrali Product"}
-                    loading="eager"
-                    priority
-                    objectFit="contain"
-                    src={localimageurl + `${product.imgGroup[selectedImage]}`}
-                    title={name || "Chitrali Product"}
+                  alt={name ? `${name} - Authentic Chitrali Product | Buy Online in Pakistan at Chitral Hive` : "Chitrali Product"}
+                  loading="eager"
+                  priority
+                  objectFit="contain"
+                  src={localimageurl + `${product.imgGroup[selectedImage]}`}
+                  title={name || "Chitrali Product"}
                     style={{ 
                       borderRadius: "12px",
                       width: "100%",
@@ -501,9 +501,9 @@ const ProductIntro = ({ product, slug, total, average, category }) => {
                       maxHeight: "600px",
                       objectFit: "contain",
                     }}
-                    sizes="(max-width: 768px) 100vw, 50vw"
+                  sizes="(max-width: 768px) 100vw, 50vw"
                     quality={90}
-                  />
+                />
                 </Box>
               </ImageGalleryCard>
             </FlexBox>
