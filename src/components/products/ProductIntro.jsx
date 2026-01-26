@@ -343,8 +343,12 @@ const ProductIntro = ({ product, slug, total, average, category }) => {
     }
   }, []);
 
-  const imgurl = process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL;
-  const localimageurl = process.env.NEXT_PUBLIC_BACKEND_API_BASE + "media/";
+  const imgurl = process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL || "";
+  const backendBase = process.env.NEXT_PUBLIC_BACKEND_API_BASE || "";
+  const localimageurl = backendBase ? `${backendBase.replace(/\/?$/, "/")}media/` : "";
+  const imageBaseUrl = localimageurl || imgurl;
+  const safeImgGroup = Array.isArray(imgGroup) ? imgGroup : [];
+  const selectedImageSrc = safeImgGroup[selectedImage];
 
   const router = useRouter();
   const routerId = router.query.id;
@@ -382,7 +386,7 @@ const ProductIntro = ({ product, slug, total, average, category }) => {
           price: priceToStore,
           qty: amount,
           name: name,
-          image: localimageurl + imgGroup[0],
+          image: selectedImageSrc ? imageBaseUrl + selectedImageSrc : "",
           id: id || routerId,
         },
       });
@@ -465,10 +469,10 @@ const ProductIntro = ({ product, slug, total, average, category }) => {
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
-                    openImageViewer(imgGroup.indexOf(imgGroup[selectedImage]));
+                    openImageViewer(safeImgGroup.indexOf(selectedImageSrc));
                   }
                 }}
-                onClick={() => openImageViewer(imgGroup.indexOf(imgGroup[selectedImage]))}
+                onClick={() => openImageViewer(safeImgGroup.indexOf(selectedImageSrc))}
                 sx={{
                   width: "100%",
                   maxWidth: "600px",
@@ -491,7 +495,7 @@ const ProductIntro = ({ product, slug, total, average, category }) => {
                   loading="eager"
                   priority
                   objectFit="contain"
-                  src={localimageurl + `${product.imgGroup[selectedImage]}`}
+                  src={selectedImageSrc ? imageBaseUrl + selectedImageSrc : ""}
                   title={name || "Chitrali Product"}
                     style={{ 
                       borderRadius: "12px",
@@ -511,7 +515,7 @@ const ProductIntro = ({ product, slug, total, average, category }) => {
             {/* Image Viewer Modal */}
             {isViewerOpen && (
               <ImageViewer
-                src={imgGroup.map((img) => localimageurl + img)}
+                src={safeImgGroup.map((img) => imageBaseUrl + img)}
                 onClose={closeImageViewer}
                 currentIndex={currentImage}
                 backgroundStyle={{
@@ -540,7 +544,7 @@ const ProductIntro = ({ product, slug, total, average, category }) => {
                 },
               }}
             >
-              {imgGroup.map((url, ind) => (
+              {safeImgGroup.map((url, ind) => (
                 <ThumbnailButton
                   key={ind}
                   isSelected={selectedImage === ind}
@@ -558,7 +562,7 @@ const ProductIntro = ({ product, slug, total, average, category }) => {
                   }}
                 >
                   <BazaarAvatar
-                    src={localimageurl + `${url}`}
+                    src={imageBaseUrl + url}
                     variant="square"
                     height={48}
                     width={48}
