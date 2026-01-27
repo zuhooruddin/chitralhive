@@ -3,7 +3,7 @@ import { Add, Remove, LocalShipping, VerifiedUser, Autorenew, ShoppingCartOutlin
 import { Box, Grid, Chip, Divider, Tooltip, useTheme, IconButton, styled, keyframes } from "@mui/material";
 import BazaarAvatar from "components/BazaarAvatar";
 import BazaarButton from "components/BazaarButton";
-import LazyImage from "components/LazyImage";
+import BazaarImage from "components/BazaarImage";
 import { H1, H2, H3, H4, H5, H6, Span, Paragraph } from "components/Typography";
 import { useAppContext } from "contexts/AppContext";
 import useSettings from "hooks/useSettings";
@@ -354,6 +354,8 @@ const ProductIntro = ({ product, slug, total, average, category }) => {
     if (/^(https?:)?\/\//i.test(src) || src.startsWith("data:")) return src;
     return imageBaseUrl + src;
   };
+  const resolvedSelectedImageSrc = resolveImageSrc(selectedImageSrc);
+  const isRemoteSelectedImage = /^(https?:)?\/\//i.test(resolvedSelectedImageSrc);
 
   const router = useRouter();
   const routerId = router.query.id;
@@ -487,27 +489,23 @@ const ProductIntro = ({ product, slug, total, average, category }) => {
                   sx={{
                     width: "100%",
                     height: "100%",
+                    minHeight: { xs: 260, sm: 320, md: 400 },
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                     position: "relative",
                   }}
               >
-                <LazyImage
-                    width={600}
-                    height={600}
+                <BazaarImage
                   alt={name ? `${name} - Authentic Chitrali Product | Buy Online in Pakistan at Chitral Hive` : "Chitrali Product"}
                   loading="eager"
                   priority
                   objectFit="contain"
-                  src={resolveImageSrc(selectedImageSrc)}
+                  src={resolvedSelectedImageSrc}
+                  fill
                   title={name || "Chitrali Product"}
                     style={{ 
                       borderRadius: "12px",
-                      width: "100%",
-                      height: "auto",
-                      maxWidth: "100%",
-                      maxHeight: "600px",
                       objectFit: "contain",
                     }}
                   sizes="(max-width: 768px) 100vw, 50vw"
