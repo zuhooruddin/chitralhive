@@ -354,13 +354,21 @@ const IndexPage = (props) => {
         <LazySection>
           <Section9 data={props.ProductReviews} />
         </LazySection>
-        <LazySection>
-          <Box sx={{ my: -7 }}>
-            <Section3
-              allCategories={props.Section2AllCategories || []}
-            />
-          </Box>
-        </LazySection>
+        {(props.Section2SequenceData || props.Section2SequenceData2 || props.Section2SequenceData3 || 
+          props.Section2SequenceData4 || props.Section2SequenceData5 || props.Section2SequenceData6) && (
+          <LazySection>
+            <Box sx={{ my: -7 }}>
+              <Section3
+                data1={props.Section2SequenceData || []}
+                data2={props.Section2SequenceData2 || []}
+                data3={props.Section2SequenceData3 || []}
+                data4={props.Section2SequenceData4 || []}
+                data5={props.Section2SequenceData5 || []}
+                data6={props.Section2SequenceData6 || []}
+              />
+            </Box>
+          </LazySection>
+        )}
         {/* <LazySection>
           <Box sx={{ mt: 3, display: "flex", justifyContent: "center" }}>
             <Section2 data={props.brandbundles || []} />
