@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import Router from "next/router";
 
 const GoogleAnalytics = () => {
   // Defer Google Tag Manager loading to improve initial page load performance
@@ -46,6 +47,26 @@ const GoogleAnalytics = () => {
     }
   }, []);
 
+  // Track page views on route changes (Next.js SPA navigation)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const handleRouteChange = (url) => {
+      // Only track if gtag is loaded
+      if (window.gtag) {
+        window.gtag('config', 'G-VVDHZDQQZC', {
+          page_path: url,
+        });
+      }
+    };
+
+    Router.events.on('routeChangeComplete', handleRouteChange);
+    
+    return () => {
+      Router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, []);
+
   const loadGoogleAnalytics = () => {
     // Check if already loaded to prevent duplicate scripts
     if (document.querySelector('script[src*="googletagmanager.com"]')) {
@@ -68,9 +89,10 @@ const GoogleAnalytics = () => {
     script2.textContent = `
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
+      window.gtag = gtag; // Expose gtag globally for route tracking
       gtag('js', new Date());
       gtag('config', 'G-VVDHZDQQZC', {
-        'send_page_view': false,
+        'send_page_view': true,
         'transport_type': 'beacon'
       });
     `;

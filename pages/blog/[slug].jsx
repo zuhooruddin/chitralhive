@@ -7,6 +7,7 @@ import { AccessTime, Person } from "@mui/icons-material";
 import format from "date-fns/format";
 import Link from "next/link";
 import StructuredData from "components/schema/StructuredData";
+import { generateBlogBreadcrumb } from "utils/breadcrumbSchema";
 
 // Import blog posts with error handling
 let blogPosts = [];
@@ -33,6 +34,8 @@ const BlogPostPage = ({ post, allPosts }) => {
     );
   }
 
+  const baseUrl = "https://chitralhive.com";
+
   // Generate Article structured data
   const articleStructuredData = {
     "@context": "https://schema.org",
@@ -45,23 +48,32 @@ const BlogPostPage = ({ post, allPosts }) => {
     "author": {
       "@type": "Organization",
       "name": "Chitral Hive",
-      "url": "https://chitralhive.com"
+      "url": baseUrl
     },
     "publisher": {
       "@type": "Organization",
       "name": "Chitral Hive",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://chitralhive.com/images/logo.png"
+        "url": `${baseUrl}/images/logo.png`
       }
     },
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": `https://chitralhive.com/blog/${post.slug}`
+      "@id": `${baseUrl}/blog/${post.slug}`
     },
     "articleSection": post.section,
     "keywords": post.tags?.join(", ") || ""
   };
+
+  // Generate professional BreadcrumbList schema for Google Search Console
+  const breadcrumbSchema = generateBlogBreadcrumb(
+    {
+      title: post.title,
+      slug: post.slug
+    },
+    { baseUrl }
+  );
 
   return (
     <ShopLayout1 navCategories={[]}>
@@ -80,6 +92,7 @@ const BlogPostPage = ({ post, allPosts }) => {
         image={post.imgUrl}
       />
       <StructuredData data={articleStructuredData} />
+      <StructuredData data={breadcrumbSchema} />
       <Container sx={{ py: 4, maxWidth: "900px" }}>
         <Box component="article">
           {/* Header */}

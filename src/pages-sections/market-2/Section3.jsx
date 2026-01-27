@@ -76,9 +76,16 @@ const Section3 = (dataa) => {
     return normalized;
   };
   
-  // Filter out null/undefined data and only include valid items
-  const dataItems = [dataa.data1, dataa.data2, dataa.data3, dataa.data4, dataa.data5, dataa.data6]
-    .filter(item => item && item.id && item.category_slug);
+  // Use allCategories if provided, otherwise fall back to individual data props
+  let dataItems = [];
+  if (dataa.allCategories && Array.isArray(dataa.allCategories)) {
+    // Use the new allCategories prop
+    dataItems = dataa.allCategories.filter(item => item && item.id && item.category_slug);
+  } else {
+    // Fall back to individual data props for backward compatibility
+    dataItems = [dataa.data1, dataa.data2, dataa.data3, dataa.data4, dataa.data5, dataa.data6]
+      .filter(item => item && item.id && item.category_slug);
+  }
   
   // Don't render if no valid data
   if (dataItems.length === 0) {

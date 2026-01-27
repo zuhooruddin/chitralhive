@@ -18,6 +18,7 @@ import { useCallback, useState } from "react";
 import api from "utils/api/market-2";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import { generateCategoryBreadcrumb } from "utils/breadcrumbSchema";
 
 
 const ProductSearchResult = (props) => {
@@ -47,35 +48,23 @@ const ProductSearchResult = (props) => {
       "name": `${categoryDetail['name']} Products`,
       "description": `Browse our collection of ${categoryDetail['name']} products from Chitral Hive`,
       "numberOfItems": categoryDetail['products']?.length || 0
-    },
-    "breadcrumb": {
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Home",
-          "item": baseUrl
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "Categories",
-          "item": `${baseUrl}/categories`
-        },
-        {
-          "@type": "ListItem",
-          "position": 3,
-          "name": categoryDetail['name'],
-          "item": `${baseUrl}/category/${categoryDetail['slug'] || categoryDetail['id']}`
-        }
-      ]
     }
   };
+
+  // Generate professional BreadcrumbList schema for Google Search Console
+  const breadcrumbSchema = generateCategoryBreadcrumb(
+    {
+      name: categoryDetail['name'],
+      slug: categoryDetail['slug'],
+      id: categoryDetail['id']
+    },
+    { baseUrl }
+  );
 
   return (
     <ShopLayout1>
       <StructuredData data={categoryStructuredData} />
+      <StructuredData data={breadcrumbSchema} />
       <SEO 
         title={categoryDetail['name']}
         description={categoryDetail['metaDescription'] && categoryDetail['metaDescription'] != "undefined" ? categoryDetail['metaDescription'] : `Shop authentic ${categoryDetail['name']} from Chitral Hive in Pakistan. Browse our wide collection of Chitrali ${categoryDetail['name']} products. Order online and get delivered to your doorstep across all major cities in Pakistan including Karachi, Lahore, Islamabad, Rawalpindi, Peshawar, and more.`}

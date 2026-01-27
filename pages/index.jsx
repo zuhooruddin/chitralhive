@@ -357,12 +357,7 @@ const IndexPage = (props) => {
         <LazySection>
           <Box sx={{ my: -7 }}>
             <Section3
-              data1={props.Section2SequenceData || []}
-              data2={props.Section2SequenceData2 || []}
-              data3={props.Section2SequenceData3 || []}
-              data4={props.Section2SequenceData4 || []}
-              data5={props.Section2SequenceData5 || []}
-              data6={props.Section2SequenceData6 || []}
+              allCategories={props.Section2AllCategories || []}
             />
           </Box>
         </LazySection>
@@ -478,6 +473,12 @@ export async function getStaticProps(context) {
   );
 
   ////////////////////////Section 2/////////////////////////
+  // Get all categories for Section3 (sequenceNo >= 3 and type == "box")
+  const Section2AllCategories = individulorder.filter(
+    (obj) => obj.sequenceNo >= 3 && obj.sequenceNo <= 20 && obj.type == "box"
+  ).sort((a, b) => (a.sequenceNo || 0) - (b.sequenceNo || 0));
+
+  // Keep individual data for backward compatibility if needed
   const Section2SequenceData = individulorder.find(
     (obj) => obj.sequenceNo == 3 && obj.type == "box"
   );
@@ -581,6 +582,7 @@ export async function getStaticProps(context) {
       // featureProducts,
       Section1SequenceData: Section1SequenceData || null,
       Section1SequenceData2: Section1SequenceData2 || null,
+      Section2AllCategories: Section2AllCategories || [],
       Section2SequenceData: Section2SequenceData || null,
       Section2SequenceData2: Section2SequenceData2 || null,
       Section2SequenceData3: Section2SequenceData3 || null,

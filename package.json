@@ -13,7 +13,8 @@
     "fix:prettier": "prettier --write .",
     "lint": "next lint",
     "cleanup:check": "node script.js",
-    "cleanup:remove": "node script.js --delete"
+    "cleanup:remove": "node script.js --delete",
+    "generate:merchant-feed": "node generate-google-merchant-feed.js"
   },
   "lint-staged": {
     "*.+(js|jsx)": [
