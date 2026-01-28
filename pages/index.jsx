@@ -374,17 +374,7 @@ const IndexPage = (props) => {
             <Section2 data={props.brandbundles || []} />
           </Box>
         </LazySection> */}
-        <LazySection>
-          <Box sx={{ my: 0 }}>
-            <Section4
-              data1={props.Section3SequenceData || []}
-              data2={props.Section3SequenceData2 || []}
-              data3={props.Section3SequenceData3 || []}
-              userWishlist={Wishlistdata || []}
-            />
-          </Box>
-        </LazySection>
-        <LazySection>
+                <LazySection>
           <Box sx={{ mt: 5 }}>
             <Section5
               products={props.products || []}
@@ -397,10 +387,12 @@ const IndexPage = (props) => {
           </Box>
         </LazySection>
         <LazySection>
-          <Box sx={{ my: -7 }}>
-            <Section6
-              data1={props.Section4SequenceData || []}
-              data2={props.Section4SequenceData2 || []}
+          <Box sx={{ my: 0 }}>
+            <Section4
+              data1={props.Section3SequenceData || []}
+              data2={props.Section3SequenceData2 || []}
+              data3={props.Section3SequenceData3 || []}
+              userWishlist={Wishlistdata || []}
             />
           </Box>
         </LazySection>
@@ -414,6 +406,15 @@ const IndexPage = (props) => {
 
           />
         </LazySection>
+        <LazySection>
+          <Box sx={{ my: -7 }}>
+            <Section6
+              data1={props.Section4SequenceData || []}
+              data2={props.Section4SequenceData2 || []}
+            />
+          </Box>
+        </LazySection>
+     
         {props.productbundles.length > 0 && (
           <LazySection>
             <Box sx={{ mt: 3, display: "flex", justifyContent: "center" }}>

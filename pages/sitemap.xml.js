@@ -1,5 +1,18 @@
 // pages/sitemap.xml.js
 
+
+
+// Basic XML escape to avoid invalid entities like '&' in titles/captions/URLs
+function xmlEscape(value) {
+  if (!value && value !== 0) return '';
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
 function generateSiteMap(pages) {
   return `<?xml version="1.0" encoding="UTF-8"?>
    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
@@ -8,16 +21,28 @@ function generateSiteMap(pages) {
        .map(({ loc, lastmod, changefreq, priority, images }) => {
          return `
        <url>
-           <loc>${loc}</loc>
-           ${lastmod ? `<lastmod>${lastmod}</lastmod>` : ''}
-           ${changefreq ? `<changefreq>${changefreq}</changefreq>` : ''}
-           ${priority ? `<priority>${priority}</priority>` : ''}
-           ${images && images.length > 0 ? images.map(img => `
+           <loc>${xmlEscape(loc)}</loc>
+           ${lastmod ? `<lastmod>${xmlEscape(lastmod)}</lastmod>` : ''}
+           ${changefreq ? `<changefreq>${xmlEscape(changefreq)}</changefreq>` : ''}
+           ${priority ? `<priority>${xmlEscape(priority)}</priority>` : ''}
+           ${
+             images && images.length > 0
+               ? images
+                   .map(
+                     (img) => `
            <image:image>
-             <image:loc>${img.url}</image:loc>
-             ${img.title ? `<image:title>${img.title}</image:title>` : ''}
-             ${img.caption ? `<image:caption>${img.caption}</image:caption>` : ''}
-           </image:image>`).join('') : ''}
+             <image:loc>${xmlEscape(img.url)}</image:loc>
+             ${img.title ? `<image:title>${xmlEscape(img.title)}</image:title>` : ''}
+             ${
+               img.caption
+                 ? `<image:caption>${xmlEscape(img.caption)}</image:caption>`
+                 : ''
+             }
+           </image:image>`
+                   )
+                   .join('')
+               : ''
+           }
        </url>
      `;
        })
