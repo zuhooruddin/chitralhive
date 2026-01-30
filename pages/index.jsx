@@ -565,6 +565,10 @@ export async function getStaticProps(context) {
     slug2 ? api.getSectionProduct(slug2) : Promise.resolve(null)
   ]);
 
+  // Ensure products and product are arrays, not objects or null
+  const normalizedProducts = Array.isArray(products) ? products : (products ? [products] : []);
+  const normalizedProduct = Array.isArray(product) ? product : (product ? [product] : []);
+
   ////////////////////////Section Sequence Order 2/////////////////////////
 
   // const products=sect4products;
@@ -573,8 +577,8 @@ export async function getStaticProps(context) {
       // Add cache headers for API responses
       _cacheTime: Date.now(),
       navCategories,
-      products,
-      product,
+      products: normalizedProducts,
+      product: normalizedProduct,
       // latestproduct,
       SectionSequenceOrdera,
       Section1Name,
