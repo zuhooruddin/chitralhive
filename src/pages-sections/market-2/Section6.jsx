@@ -1,8 +1,5 @@
-import { Box, Container, Divider, Grid, styled } from "@mui/material";
-import { H4, Paragraph, Span } from "components/Typography"; // custom styled components
-import NavLink3 from "components/nav-link/NavLink3";
-import BannerCard4 from "components/banners/BannerCard4";
-
+import { Box, Container, Grid } from "@mui/material";
+import { H4, Span } from "components/Typography";
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -10,11 +7,17 @@ const Section6 = ({data1, data2}) => {
   const imgbaseurl = process.env.NEXT_PUBLIC_BACKEND_API_BASE + 'media/';
   const slugbaseurl = 'category/';
 
+  // Return null if no data provided
+  if (!data1 && !data2) {
+    return null;
+  }
+
   return (
     <Container sx={{ my: 8 }}>
       <Grid container spacing={3}>
-      <Grid item md={6} xs={12}>
-          <Link href={slugbaseurl + data1.category_slug}>
+      {data1 && (
+        <Grid item md={6} xs={12}>
+          <Link href={slugbaseurl + (data1.category_slug || '')}>
             <a href="">
               <Box sx={{
                 position: 'relative',
@@ -90,10 +93,12 @@ const Section6 = ({data1, data2}) => {
             </a>
           </Link>
         </Grid>
+      )}
         {/* sx={{ border: '2px solid #ccc' }} */}
 
+      {data2 && (
         <Grid item md={6} xs={12}>
-          <Link href={slugbaseurl + data2.category_slug}>
+          <Link href={slugbaseurl + (data2.category_slug || '')}>
             <a href="">
               <Box sx={{
                 position: 'relative',
@@ -171,6 +176,7 @@ const Section6 = ({data1, data2}) => {
             </a>
           </Link>
         </Grid>
+      )}
       </Grid>
     </Container>
   );
