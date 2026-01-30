@@ -20,6 +20,12 @@ const StyledListItem = styled(ListItem)(({ theme }) => ({
 
 // ======================================================================
 const Section12 = ({ products,data,Section2Name,slug,productreviews}) => {
+  // Debug logging
+  console.log('Section12 - products:', products, 'length:', products?.length);
+  
+  // Ensure products is always an array
+  const productsArray = Array.isArray(products) ? products : (products ? [products] : []);
+  
   const dummyCategories = [
     { category_name: "Sub-Category 1", category_slug: "category-1" },
     { category_name: "Sub-Category 2", category_slug: "category-2" },
@@ -87,11 +93,11 @@ const Section12 = ({ products,data,Section2Name,slug,productreviews}) => {
 
         <Grid item md={9} xs={12}>
           <Carousel
-            totalSlides={products.length}
+            totalSlides={productsArray.length}
             visibleSlides={visibleSlides}
             sx={carouselStyled}
           >
-            {products.length>0?products.map((product) => (
+            {productsArray.length>0?productsArray.map((product) => (
               <ProductCard20 product={product} key={product.id} data={productreviews} />
             )):"No Products Added"}
           </Carousel>

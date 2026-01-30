@@ -20,6 +20,11 @@ const StyledListItem = styled(ListItem)(({ theme }) => ({
 
 // ======================================================================
 const Section5 = ({ products,data,SectionName,slug,productreviews}) => {
+  // Debug logging
+  console.log('Section5 - products:', products, 'length:', products?.length);
+  
+  // Ensure products is always an array
+  const productsArray = Array.isArray(products) ? products : (products ? [products] : []);
 
   // const imgbaseurl='https://idrisbookbank-dev-server.inara.tech/media/'
   const slugbaseurl='category/'
@@ -89,11 +94,11 @@ const Section5 = ({ products,data,SectionName,slug,productreviews}) => {
 
         <Grid item md={9} xs={12}>
           <Carousel
-            totalSlides={products.length}
+            totalSlides={productsArray.length}
             visibleSlides={visibleSlides}
             sx={carouselStyled}
           >
-            {products.length>0?products.map((product) => (
+            {productsArray.length>0?productsArray.map((product) => (
               <ProductCard20 product={product} key={product.id} data={productreviews} />
             )):"No Products Added"}
           </Carousel>

@@ -69,7 +69,6 @@ const getHomePageStructuredData = (generalSetting) => {
         "@type": "Organization",
         "@id": `${baseUrl}/#organization`,
         "name": siteName,
-        "url": baseUrl,
         "logo": {
           "@type": "ImageObject",
           "url": `${baseUrl}/images/logo.png`,
