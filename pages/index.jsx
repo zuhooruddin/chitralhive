@@ -447,8 +447,6 @@ export async function getStaticProps(context) {
     // Parallelize all independent API calls for better performance
     const [
       navCategories,
-      sect4products,
-      inara,
       brandbundles,
       productbundles,
       individulorder,
@@ -459,8 +457,6 @@ export async function getStaticProps(context) {
       GeneralSetting
     ] = await Promise.all([
       apiNav.getNavCategories(),
-      api.getProducts(),
-      api.getProducts(),
       api.getBrandBundles(),
       api.getProductBundles(),
       api.getindvidualorderbox(),
@@ -579,8 +575,6 @@ export async function getStaticProps(context) {
       navCategories,
       products,
       product,
-      inara,
-      sect4products,
       // latestproduct,
       SectionSequenceOrdera,
       Section1Name,
@@ -615,9 +609,10 @@ export async function getStaticProps(context) {
       ProductReviews,
       GeneralSetting
     },
-    // Revalidate every 60 seconds - ISR (Incremental Static Regeneration)
-    // This means pages are cached and only regenerated every 60 seconds
-    revalidate: 60,
+    // Revalidate every 300 seconds (5 minutes) - ISR (Incremental Static Regeneration)
+    // This means pages are cached and only regenerated every 5 minutes
+    // Reduced from 60 seconds to improve performance and reduce server load
+    revalidate: 300,
   };
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -629,7 +624,7 @@ export async function getStaticProps(context) {
         product: null,
         GeneralSetting: [],
       },
-      revalidate: 60,
+      revalidate: 300,
     };
   }
 }

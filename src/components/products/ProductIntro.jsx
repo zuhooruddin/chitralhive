@@ -10,8 +10,14 @@ import useSettings from "hooks/useSettings";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import React, { useCallback, useState, useMemo, useEffect } from "react";
-import ImageViewer from "react-simple-image-viewer";
+import dynamic from "next/dynamic";
 import { FlexBox, FlexRowCenter } from "../flex-box";
+
+// Lazy load ImageViewer - it's a heavy component only needed when user clicks to view images
+const ImageViewer = dynamic(() => import("react-simple-image-viewer"), {
+  ssr: false,
+  loading: () => null,
+});
 import { toast } from "react-toastify";
 import BazaarRating from "components/BazaarRating";
 
