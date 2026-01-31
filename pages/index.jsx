@@ -558,15 +558,26 @@ export async function getStaticProps(context) {
   const slug = SectionSequenceOrder?.category_slug || "";
   const slug2 = SectionSequence?.category_slug || "";
 
+  // Debug logging
+  console.log('Section5 slug:', slug, 'SectionSequenceOrder:', SectionSequenceOrder);
+  console.log('Section12 slug2:', slug2, 'SectionSequence:', SectionSequence);
+
   // Parallelize product fetches if both slugs exist
   const [products, product] = await Promise.all([
     slug ? api.getProducts(slug) : Promise.resolve(null),
     slug2 ? api.getSectionProduct(slug2) : Promise.resolve(null)
   ]);
 
+  // Debug logging
+  console.log('Section5 products response:', products, 'type:', typeof products, 'isArray:', Array.isArray(products));
+  console.log('Section12 product response:', product, 'type:', typeof product, 'isArray:', Array.isArray(product));
+
   // Ensure products and product are arrays, not objects or null
   const normalizedProducts = Array.isArray(products) ? products : (products ? [products] : []);
   const normalizedProduct = Array.isArray(product) ? product : (product ? [product] : []);
+  
+  console.log('Section5 normalizedProducts:', normalizedProducts.length);
+  console.log('Section12 normalizedProduct:', normalizedProduct.length);
 
   ////////////////////////Section Sequence Order 2/////////////////////////
 
