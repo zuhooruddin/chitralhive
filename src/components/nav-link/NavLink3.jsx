@@ -5,48 +5,46 @@ import Link from "next/link";
 //   ==========================================
 const NavLink3 = ({ color, href, text, hoverColor, ...props }) => {
   return (
-    <Link href={href || '#'}>
-      <a aria-label={text || 'Link'}>
-        <Span
+    <Link href={href || '#'} aria-label={text || 'Link'} style={{ textDecoration: 'none' }}>
+      <Span
+        sx={{
+          color,
+          gap: 1,
+          lineHeight: 1,
+          fontWeight: 600,
+          alignItems: "center",
+          position: "relative",
+          paddingBottom: "4px",
+          display: "inline-flex",
+          ":after": {
+            left: 0,
+            bottom: 0,
+            width: "0%",
+            content: "''",
+            height: "2px",
+            transition: "0.3s",
+            position: "absolute",
+            backgroundColor: color,
+          },
+          ":hover": {
+            color: hoverColor,
+            "&::after": {
+              width: "100%",
+              backgroundColor: hoverColor,
+            },
+          },
+        }}
+        {...props}
+      >
+        {text}{" "}
+        <ArrowForward
           sx={{
-            color,
-            gap: 1,
-            lineHeight: 1,
-            fontWeight: 600,
-            alignItems: "center",
-            position: "relative",
-            paddingBottom: "4px",
-            display: "inline-flex",
-            ":after": {
-              left: 0,
-              bottom: 0,
-              width: "0%",
-              content: "''",
-              height: "2px",
-              transition: "0.3s",
-              position: "absolute",
-              backgroundColor: color,
-            },
-            ":hover": {
-              color: hoverColor,
-              "&::after": {
-                width: "100%",
-                backgroundColor: hoverColor,
-              },
-            },
+            fontSize: 14,
+            flexShrink: 0,
           }}
-          {...props}
-        >
-          {text}{" "}
-          <ArrowForward
-            sx={{
-              fontSize: 14,
-              flexShrink: 0,
-            }}
-            aria-hidden="true"
-          />
-        </Span>
-      </a>
+          aria-hidden="true"
+        />
+      </Span>
     </Link>
   );
 }; // set default props

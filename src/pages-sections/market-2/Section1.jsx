@@ -6,7 +6,6 @@ import NavLink3 from "components/nav-link/NavLink3";
 import { H1, H4, Paragraph, Span } from "components/Typography";
 
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
 
 // ======================================================
 const Section1 = (data) => {
@@ -186,76 +185,66 @@ const Section1 = (data) => {
                 spacing={1}
               >
                 {/* <BannerCard3 flex={1} img={imgbaseurl+data.data1.image}> */}
-                <Link href={data.data1 && data.data1.category_slug ? slugbaseurl + data.data1.category_slug : ''}>
-
-                  <a>
-                    <BannerCard3
-                      className="logo"
-                      flex={1}
-                      img={data.data1 && data.data1.image ? imgbaseurl + data.data1.image : '/assets/images/banners/default3.png'}
-                      sx={{
-                        height: bannerHeight, // set the fixed height for the banner
-                        width: bannerWidth, // set the fixed width for the banner
-                        position: "relative",
-                        overflow: "hidden",
-                        "&:hover img": {
-                          filter: "brightness(50%)",
-                          transition: "filter 0.5s ease-in-out",
-                        },
-                        "&:hover h4": {
-                          color: "#fff",
-                          transition: "color 0.5s ease-in-out",
-                        },
-                      }}
-                    >
-                      <H4 fontSize={20} lineHeight={1.2} mb={2} color="#fff">
-                        <br />
-                        {data.data1 && data.data1.category_name ? data.data1.category_name : 'Category1'}
-                      </H4>
-                      <NavLink3
-                        href={data.data1 && data.data1.category_slug ? slugbaseurl + data.data1.category_slug : ''}
-
-                        text="Shop Now"
-                        color="#fff"
-                      />
-                    </BannerCard3>
-                  </a>
-                </Link>
+                <BannerCard3
+                  className="logo"
+                  flex={1}
+                  img={data.data1 && data.data1.image ? imgbaseurl + data.data1.image : '/assets/images/banners/default3.png'}
+                  sx={{
+                    height: bannerHeight, // set the fixed height for the banner
+                    width: bannerWidth, // set the fixed width for the banner
+                    position: "relative",
+                    overflow: "hidden",
+                    "&:hover img": {
+                      filter: "brightness(50%)",
+                      transition: "filter 0.5s ease-in-out",
+                    },
+                    "&:hover h4": {
+                      color: "#fff",
+                      transition: "color 0.5s ease-in-out",
+                    },
+                  }}
+                >
+                  <H4 fontSize={20} lineHeight={1.2} mb={2} color="#fff">
+                    <br />
+                    {data.data1 && data.data1.category_name ? data.data1.category_name : 'Category1'}
+                  </H4>
+                  <NavLink3
+                    href={data.data1 && data.data1.category_slug ? slugbaseurl + data.data1.category_slug : ''}
+                    text="Shop Now"
+                    color="#fff"
+                  />
+                </BannerCard3>
 
                 {/* <BannerCard3 flex={1} img={imgbaseurl+data.data2.image}> */}
-                <Link href={slugbaseurl + data.data2.category_slug}>
-                  <a>
-                    <BannerCard3
-                      className="logo"
-                      flex={1}
-                      img={data.data2.image && data.data2.image?imgbaseurl + data.data2.image:'/assets/images/banners/default3.png'}
-                      sx={{
-                        height: bannerHeight, // set the fixed height for the banner
-                        width: bannerWidth, // set the fixed width for the banner
-                        position: "relative",
-                        overflow: "hidden",
-                        "&:hover img": {
-                          filter: "brightness(50%)",
-                          transition: "filter 0.5s ease-in-out",
-                        },
-                        "&:hover h4": {
-                          color: "#fff",
-                          transition: "color 0.5s ease-in-out",
-                        },
-                      }}
-                    >
-                      <H4 fontSize={20} lineHeight={1.2} mb={2} color="#fff">
-                        <br />
-                        {data.data2.category_name&&data.data2.category_name?data.data2.category_name:'Category2'}
-                      </H4>
-                      <NavLink3
-                        href={slugbaseurl + data.data2.category_slug}
-                        text="Shop Now"
-                        color="#fff"
-                      />
-                    </BannerCard3>
-                  </a>
-                </Link>
+                <BannerCard3
+                  className="logo"
+                  flex={1}
+                  img={data.data2.image && data.data2.image?imgbaseurl + data.data2.image:'/assets/images/banners/default3.png'}
+                  sx={{
+                    height: bannerHeight, // set the fixed height for the banner
+                    width: bannerWidth, // set the fixed width for the banner
+                    position: "relative",
+                    overflow: "hidden",
+                    "&:hover img": {
+                      filter: "brightness(50%)",
+                      transition: "filter 0.5s ease-in-out",
+                    },
+                    "&:hover h4": {
+                      color: "#fff",
+                      transition: "color 0.5s ease-in-out",
+                    },
+                  }}
+                >
+                  <H4 fontSize={20} lineHeight={1.2} mb={2} color="#fff">
+                    <br />
+                    {data.data2.category_name&&data.data2.category_name?data.data2.category_name:'Category2'}
+                  </H4>
+                  <NavLink3
+                    href={slugbaseurl + data.data2.category_slug}
+                    text="Shop Now"
+                    color="#fff"
+                  />
+                </BannerCard3>
               </Stack>
             </Grid>
           </Grid>

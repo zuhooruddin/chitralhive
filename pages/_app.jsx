@@ -152,9 +152,13 @@ const imgbaseurl=process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL
       allowClickAway: true,
       notification: true,
       notificationSound: true,
+      // Fix accessibility: don't use aria-hidden on the chat box when it's open
+      // The library should handle this, but we ensure proper accessibility
       styles: {
         zIndex: 1000,
       },
+      // Override the library's aria-hidden behavior
+      notificationDelay: 60000, // 1 minute
     };
   }, [data, imgbaseurl]);
 

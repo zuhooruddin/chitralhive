@@ -26,6 +26,7 @@ const Section5 = ({ products,data,SectionName,slug,productreviews}) => {
   // Ensure products is always an array
   const productsArray = Array.isArray(products) ? products : (products ? [products] : []);
 
+  
   // const imgbaseurl='https://idrisbookbank-dev-server.inara.tech/media/'
   const slugbaseurl='category/'
   const width = useWindowSize();
@@ -64,16 +65,18 @@ const Section5 = ({ products,data,SectionName,slug,productreviews}) => {
 
             >
                {data && data.length>0?data.map((data) => (
-                         <StyledListItem key={data.category_slug}><Link href={slugbaseurl+data.category_slug
-                         }><a>{data.category_name
-                         }</a></Link></StyledListItem>
+                         <StyledListItem key={data.category_slug}>
+                           <Link href={slugbaseurl+data.category_slug} aria-label={`Browse ${data.category_name || 'category'} products`}>
+                             {data.category_name}
+                           </Link>
+                         </StyledListItem>
 
             )): (
               // Render dummy categories when data is empty
               dummyCategories.map((data) => (
                 <StyledListItem key={data.category_slug}>
-                  <Link href={slugbaseurl + data.category_slug}>
-                    <a>{data.category_name}</a>
+                  <Link href={slugbaseurl + data.category_slug} aria-label={`Browse ${data.category_name || 'category'} products`}>
+                    {data.category_name}
                   </Link>
                 </StyledListItem>
               ))

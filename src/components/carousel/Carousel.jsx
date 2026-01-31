@@ -73,12 +73,17 @@ const Carousel = ({
         />
       )}
 
+
       {showArrow && (
         <Fragment>
           <StyledArrowBackButton
             id="backArrowButton"
+            aria-label="Previous slide"
             sx={{
               left: "10px",
+              minWidth: "44px",
+              minHeight: "44px",
+              padding: "8px",
             }}
             style={leftButtonStyle || {}}
             className={clsx(leftButtonClass, arrowButtonClass)}
@@ -92,8 +97,12 @@ const Carousel = ({
 
           <StyledArrowNextButton
             id="backForwardButton"
+            aria-label="Next slide"
             sx={{
               right: "10px",
+              minWidth: "44px",
+              minHeight: "44px",
+              padding: "8px",
             }}
             style={rightButtonStyle || {}}
             className={clsx(arrowButtonClass, rightButtonClass)}

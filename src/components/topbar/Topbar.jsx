@@ -509,16 +509,18 @@ const server_ip=process.env.NEXT_PUBLIC_BACKEND_API_BASE
         >
           <FlexBox className="topbarLeft">
             <div className="logo">
-              <Link href="/" passHref>
-              <Image
-                  height={28}
-                  width={120}
-                  src={topbardata?imgbaseurl+topbardata[0].site_logo:'/assets/images/logos/webpack.png'}
-                  alt="logo"
-                  priority
-                  quality={85}
-                  sizes="120px"
-                />
+              <Link href="/" style={{ display: 'inline-block' }} aria-label="Chitral Hive Home">
+                <span style={{ display: 'inline-block', lineHeight: 0 }}>
+                  <Image
+                    height={28}
+                    width={120}
+                    src={topbardata?imgbaseurl+topbardata[0].site_logo:'/assets/images/logos/webpack.png'}
+                    alt="Chitral Hive Logo"
+                    priority
+                    quality={85}
+                    sizes="120px"
+                  />
+                </span>
               </Link>
             </div>
             <FlexBox className="drawer">
