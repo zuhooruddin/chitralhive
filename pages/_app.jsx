@@ -45,11 +45,16 @@ nProgress.configure({
   showSpinner: false,
 });
 
-const App = ({ router,Component, pageProps: { session, ...pageProps } }) => {
-  const AnyComponent = Component;
+const App = ({ router, Component, pageProps: { session, ...pageProps } }) => {
   const idrisLogo = process.env.NEXT_PUBLIC_IDRIS_LOGO_API_URL
 
-  const getLayout = AnyComponent.getLayout ?? ((page) => page);
+  // Safely get layout function - ensure it always returns a valid React element
+  const getLayout = Component.getLayout ?? ((page) => page);
+  
+  // Ensure Component is valid before rendering
+  if (!Component) {
+    return null;
+  }
 
   useEffect(() => {
     // Remove the server-side injected CSS.
@@ -131,20 +136,27 @@ const imgbaseurl=process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL
   }, [data]);
 
   // Memoize FloatingWhatsApp props to prevent unnecessary re-renders
-  const whatsappProps = useMemo(() => ({
-    phoneNumber: data && data.length > 0 ? data[0].whatsapp : '+923239119309',
-    accountName: data && data.length > 0 ? data[0].site_name : 'Ecommerce',
-    avatar: data && data.length > 0 ? imgbaseurl + data[0].site_logo : '/assets/images/banners/banner-1.png',
-    allowEsc: true,
-    allowClickAway: true,
-    notification: true,
-    notificationSound: true,
-    // Fix accessibility: don't use aria-hidden on the chat box when it's open
-    // The library should handle this, but we ensure proper accessibility
-    styles: {
-      zIndex: 1000,
-    },
-  }), [data, imgbaseurl]);
+  // Ensure all values are valid to prevent React errors
+  const whatsappProps = useMemo(() => {
+    const phoneNumber = (data && data.length > 0 && data[0].whatsapp) ? data[0].whatsapp : '+923239119309';
+    const accountName = (data && data.length > 0 && data[0].site_name) ? data[0].site_name : 'Ecommerce';
+    const avatar = (data && data.length > 0 && data[0].site_logo && imgbaseurl) 
+      ? `${imgbaseurl}${data[0].site_logo}` 
+      : '/assets/images/banners/banner-1.png';
+    
+    return {
+      phoneNumber: phoneNumber || '+923239119309',
+      accountName: accountName || 'Ecommerce',
+      avatar: avatar || '/assets/images/banners/banner-1.png',
+      allowEsc: true,
+      allowClickAway: true,
+      notification: true,
+      notificationSound: true,
+      styles: {
+        zIndex: 1000,
+      },
+    };
+  }, [data, imgbaseurl]);
 
   return (
     <SessionProvider session={session}>
@@ -158,6 +170,7 @@ const imgbaseurl=process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL
         <meta name="language" content="English" />
         <meta name="geo.region" content="PK-KP" />
         <meta name="geo.placename" content="Chitral" />
+        <link rel="manifest" href="/site.webmanifest" />
         {/* Resource hints for faster loading - preconnect to critical origins */}
         <link rel="preconnect" href={process.env.NEXT_PUBLIC_BACKEND_API_BASE} crossOrigin="anonymous" />
         <link rel="preconnect" href="https://api.chitralhive.com" crossOrigin="anonymous" />
@@ -168,32 +181,43 @@ const imgbaseurl=process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL
       </Head>
       {/* Loader removed - no popup on page load */}
 
-      {/* Lazy load FloatingWhatsApp - only render after initial load */}
-      {typeof window !== 'undefined' && (
-        <FloatingWhatsApp {...whatsappProps} />
-      )}
+      {/* Lazy load FloatingWhatsApp - ssr: false ensures client-side only */}
+      {typeof window !== 'undefined' && <FloatingWhatsApp {...whatsappProps} />}
 
-      {/* Load Google Analytics client-side only to improve initial page load */}
+      {/* Load Google Analytics client-side only - component handles SSR check */}
       {typeof window !== 'undefined' && <GoogleAnalytics />}
 
       <SettingsProvider>
         <AppProvider>
           <MuiTheme>
-            <RTL>{getLayout(<AnyComponent {...pageProps} />)}
-            {/* Lazy load ToastContainer - only render when needed */}
-            {typeof window !== 'undefined' && (
-              <ToastContainer
-                  position="top-right"
-                  autoClose={5000}
-                  hideProgressBar={true}
-                  newestOnTop
-                  closeOnClick
-                  rtl={false}
-                  pauseOnFocusLoss={false}
-                  draggable
-                  pauseOnHover
-              />
-            )}
+            <RTL>
+              {(() => {
+                try {
+                  const layoutContent = getLayout(<Component {...pageProps} />);
+                  // Ensure layoutContent is a valid React element
+                  if (!layoutContent || (typeof layoutContent !== 'object' && typeof layoutContent !== 'function')) {
+                    return <Component {...pageProps} />;
+                  }
+                  return layoutContent;
+                } catch (error) {
+                  console.error('Error in getLayout:', error);
+                  return <Component {...pageProps} />;
+                }
+              })()}
+              {/* ToastContainer - ssr: false ensures client-side only */}
+              {typeof window !== 'undefined' && (
+                <ToastContainer
+                    position="top-right"
+                    autoClose={5000}
+                    hideProgressBar={true}
+                    newestOnTop
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss={false}
+                    draggable
+                    pauseOnHover
+                />
+              )}
             </RTL>
           </MuiTheme>
         </AppProvider>
