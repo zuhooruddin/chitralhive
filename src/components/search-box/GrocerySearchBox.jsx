@@ -22,10 +22,16 @@ const SearchContainer = styled(Box)(({ theme }) => ({
   flex: "1 1 0",
   maxWidth: "670px",
   margin: "0 auto",
+  minWidth: 0,
+  width: "100%",
+  [theme.breakpoints.down("sm")]: {
+    maxWidth: "100%",
+  },
 }));
 
 // Premium Search Input
 const PremiumSearchField = styled(TextField)(({ theme }) => ({
+  width: "100%",
   "& .MuiOutlinedInput-root": {
     height: "52px",
     paddingRight: 0,
@@ -38,6 +44,14 @@ const PremiumSearchField = styled(TextField)(({ theme }) => ({
       : "2px solid rgba(0, 0, 0, 0.04)",
     transition: "all 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
     overflow: "hidden",
+    [theme.breakpoints.down("sm")]: {
+      height: "44px",
+      borderRadius: "22px",
+    },
+    [theme.breakpoints.down("xs")]: {
+      height: "40px",
+      borderRadius: "20px",
+    },
     
     "& fieldset": {
       border: "none",
@@ -76,6 +90,14 @@ const PremiumSearchField = styled(TextField)(({ theme }) => ({
       color: theme.palette.mode === 'dark' ? "#94A3B8" : "#94A3B8",
       opacity: 1,
     },
+    [theme.breakpoints.down("sm")]: {
+      padding: "12px 14px",
+      fontSize: "14px",
+    },
+    [theme.breakpoints.down("xs")]: {
+      padding: "10px 12px",
+      fontSize: "13px",
+    },
   },
 }));
 
@@ -94,6 +116,18 @@ const SearchButton = styled(BazaarButton)(({ theme }) => ({
   position: "relative",
   overflow: "hidden",
   minWidth: "120px",
+  [theme.breakpoints.down("sm")]: {
+    padding: "0 24px",
+    minWidth: "80px",
+    fontSize: "14px",
+    borderRadius: "0 22px 22px 0",
+  },
+  [theme.breakpoints.down("xs")]: {
+    padding: "0 16px",
+    minWidth: "60px",
+    fontSize: "12px",
+    borderRadius: "0 20px 20px 0",
+  },
   
   "&::before": {
     content: '""',
@@ -117,12 +151,6 @@ const SearchButton = styled(BazaarButton)(({ theme }) => ({
   
   "&:active": {
     transform: "scale(0.98)",
-  },
-  
-  [theme.breakpoints.down("sm")]: {
-    padding: "0 20px",
-    minWidth: "80px",
-    fontSize: "14px",
   },
 }));
 

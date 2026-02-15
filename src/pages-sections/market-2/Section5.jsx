@@ -1,4 +1,4 @@
-import { Card, Container, Grid, List, ListItem, styled } from "@mui/material";
+import { Card, Container, Grid, List, ListItem, styled, Box} from "@mui/material";
 import Carousel from "components/carousel/Carousel";
 import { carouselStyled } from "components/carousel/CarouselStyled";
 import NavLink3 from "components/nav-link/NavLink3";
@@ -43,20 +43,20 @@ const Section5 = ({ products,data,SectionName,slug,productreviews}) => {
     else setVisibleSlides(4);
   }, [width]);
   return (
-    <Container>
-      <Grid container spacing={3}>
+    <Container sx={{ px: { xs: 1, sm: 2 } }}>
+      <Grid container spacing={{ xs: 2, sm: 3 }}>
         <Grid item md={3} xs={12}>
           <Card
             elevation={0}
             sx={{
-              px: 4,
+              px: { xs: 2, sm: 3, md: 4 },
               height: "100%",
-              py: 2,
+              py: { xs: 1.5, sm: 2 },
               borderRadius: "3px",
               border: 0,
             }}
           >
-            <H3>{SectionName&&SectionName?SectionName:"Category Name"}</H3>
+            <H3 fontSize={{ xs: 18, sm: 20, md: 24 }}>{SectionName&&SectionName?SectionName:"Category Name"}</H3>
 
             <List
               sx={{

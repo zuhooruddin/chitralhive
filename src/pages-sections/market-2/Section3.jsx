@@ -99,14 +99,15 @@ const Section3 = (dataa) => {
   return (
     <Container
       sx={{
-        mt: 8,
+        mt: { xs: 4, sm: 6, md: 8 },
+        px: { xs: 1, sm: 2 },
       }}
     >
-      <Grid container spacing={3}>
-        {data.map((item) => (
-          <Grid item lg={2} md={3} sm={4} xs={6} key={item.id}>
-            <CategoryCard2 image={item.img} title={item.title} url={item.url} />
-          </Grid>
+      <Grid container spacing={{ xs: 1.5, sm: 2, md: 3 }}>
+          {data.map((item) => (
+            <Grid item lg={2} md={3} sm={4} xs={6} key={item.id}>
+              <CategoryCard2 image={item.img} title={item.title} url={item.url} />
+            </Grid>
         ))}
       </Grid>
     </Container>

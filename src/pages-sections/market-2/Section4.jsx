@@ -4,7 +4,13 @@ import { memo } from "react";
 import BazaarImage from "components/BazaarImage";
 
 const BannerSection = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(8, 0),
+  padding: theme.spacing(4, 0),
+  [theme.breakpoints.up("sm")]: {
+    padding: theme.spacing(6, 0),
+  },
+  [theme.breakpoints.up("md")]: {
+    padding: theme.spacing(8, 0),
+  },
 }));
 
 const ImageWrapper = styled(Box)({
@@ -23,12 +29,18 @@ const ImageWrapper = styled(Box)({
 
 const ModernBanner = styled(Box)(({ theme }) => ({
   position: "relative",
-  height: "250px",
+  height: "180px",
   borderRadius: theme.spacing(1),
   overflow: "hidden",
   cursor: "pointer",
   transition: "all 0.3s ease-in-out",
   boxShadow: theme.shadows[2],
+  [theme.breakpoints.up("sm")]: {
+    height: "200px",
+  },
+  [theme.breakpoints.up("md")]: {
+    height: "250px",
+  },
   "&:hover": {
     transform: "translateY(-4px)",
     boxShadow: theme.shadows[6],
@@ -103,10 +115,10 @@ const Section4Modern = ({ data1, data2, data3 }) => {
 
   return (
     <BannerSection>
-      <Container maxWidth="lg">
-        <Grid container spacing={2}>
+      <Container maxWidth="lg" sx={{ px: { xs: 1, sm: 2 } }}>
+        <Grid container spacing={{ xs: 1.5, sm: 2 }}>
           {banners.map((banner) => (
-            <Grid item xs={12} md={4} key={banner.id}>
+            <Grid item xs={12} sm={6} md={4} key={banner.id}>
               <StyledLink href={`category/${banner.slug}`}>
                 <ModernBanner>
                   <ImageWrapper>
@@ -116,6 +128,7 @@ const Section4Modern = ({ data1, data2, data3 }) => {
                       width={400}
                       height={250}
                       objectFit="cover"
+                      style={{ width: "100%", height: "100%" }}
                     />
                   </ImageWrapper>
                   <OverlayGradient className="overlay-gradient" />

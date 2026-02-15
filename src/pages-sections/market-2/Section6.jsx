@@ -13,8 +13,8 @@ const Section6 = ({data1, data2}) => {
   }
 
   return (
-    <Container sx={{ my: 8 }}>
-      <Grid container spacing={3}>
+    <Container sx={{ my: { xs: 4, sm: 6, md: 8 }, px: { xs: 1, sm: 2 } }}>
+      <Grid container spacing={{ xs: 2, sm: 3 }}>
       {data1 && (
         <Grid item md={6} xs={12}>
           <Link href={slugbaseurl + (data1.category_slug || '')}>
@@ -22,7 +22,7 @@ const Section6 = ({data1, data2}) => {
               <Box sx={{
                 position: 'relative',
                 overflow: 'hidden',
-                paddingTop: '30%',
+                paddingTop: { xs: '50%', sm: '40%', md: '30%' },
                 cursor: 'pointer',
                 '& img': {
                   transition: 'transform 0.3s ease, opacity 0.3s ease',
@@ -51,12 +51,12 @@ const Section6 = ({data1, data2}) => {
                   backgroundColor: 'rgba(0, 0, 0, 0.2)',
                 },
                 '&:hover h4': {
-                  fontSize:18 ,
+                  fontSize: { xs: 16, sm: 17, md: 18 },
                   color: '#fff',
                   transition: 'color 0.3s ease',
                 },
                 '&:hover span': {
-                  fontSize:14 ,
+                  fontSize: { xs: 13, sm: 13.5, md: 14 },
                   color: '#fff',
                   transition: 'color 0.3s ease',
                 },
@@ -82,10 +82,10 @@ const Section6 = ({data1, data2}) => {
                   />
                 </Box>
                 <Box sx={{ position: 'absolute', top: 0, left: 0, zIndex: 1 }}>
-                  <H4 fontSize={18} lineHeight={1} sx={{ color: '#000000', mb: 1, ml: 10 }}>
+                  <H4 fontSize={{ xs: 14, sm: 16, md: 18 }} lineHeight={1} sx={{ color: '#000000', mb: 1, ml: { xs: 2, sm: 4, md: 10 } }}>
                     {data1.category_name&&data1.category_name?data1.category_name:'Category12'}
                   </H4>
-                  <Span fontSize={14} lineHeight={1} sx={{ color: '#000000', ml: 10 }}>
+                  <Span fontSize={{ xs: 12, sm: 13, md: 14 }} lineHeight={1} sx={{ color: '#000000', ml: { xs: 2, sm: 4, md: 10 } }}>
                     View all
                   </Span>
                 </Box>
@@ -103,7 +103,7 @@ const Section6 = ({data1, data2}) => {
               <Box sx={{
                 position: 'relative',
                 overflow: 'hidden',
-                paddingTop: '30%',
+                paddingTop: { xs: '50%', sm: '40%', md: '30%' },
                 cursor: 'pointer',
                 '& img': {
                   transition: 'transform 0.3s ease, opacity 0.3s ease',
@@ -132,12 +132,12 @@ const Section6 = ({data1, data2}) => {
                   backgroundColor: 'rgba(0, 0, 0, 0.2)',
                 },
                 '&:hover h4': {
-                  fontSize:18 ,
+                  fontSize: { xs: 16, sm: 17, md: 18 },
                   color: '#fff',
                   transition: 'color 0.3s ease',
                 },
                 '&:hover span': {
-                  fontSize:14 ,
+                  fontSize: { xs: 13, sm: 13.5, md: 14 },
                   color: '#fff',
                   transition: 'color 0.3s ease',
                 },
@@ -164,10 +164,10 @@ const Section6 = ({data1, data2}) => {
                 </Box>
                 <Box sx={{ position: 'absolute', top: 0, left: 0, zIndex: 1 }}>
                   <div>
-                    <H4 fontSize={18} lineHeight={1} sx={{ color: '#000000', mb: 1, ml: 10 }}>
+                    <H4 fontSize={{ xs: 14, sm: 16, md: 18 }} lineHeight={1} sx={{ color: '#000000', mb: 1, ml: { xs: 2, sm: 4, md: 10 } }}>
                       {data2.category_name&&data2.category_name?data2.category_name:'Category13'}
                     </H4>
-                    <Span fontSize={14} lineHeight={1} sx={{ color: '#000000', ml: 10 }}>
+                    <Span fontSize={{ xs: 12, sm: 13, md: 14 }} lineHeight={1} sx={{ color: '#000000', ml: { xs: 2, sm: 4, md: 10 } }}>
                       View all
                     </Span>
                   </div>

@@ -61,6 +61,11 @@ export const HeaderWrapper = styled(Box)(({ theme }) => ({
     : "1px solid rgba(0, 0, 0, 0.04)",
   [theme.breakpoints.down("sm")]: {
     height: layoutConstant.mobileHeaderHeight,
+    backdropFilter: "blur(16px) saturate(180%)",
+    WebkitBackdropFilter: "blur(16px) saturate(180%)",
+  },
+  [theme.breakpoints.down("xs")]: {
+    height: "56px",
   },
   "&::before": {
     content: '""',
@@ -80,6 +85,12 @@ export const HeaderWrapper = styled(Box)(({ theme }) => ({
     background: theme.palette.mode === 'dark' 
       ? "rgba(15, 23, 42, 0.98)" 
       : "rgba(255, 255, 255, 0.99)",
+    [theme.breakpoints.down("sm")]: {
+      height: "56px",
+    },
+    [theme.breakpoints.down("xs")]: {
+      height: "52px",
+    },
   },
 }));
 
@@ -194,37 +205,41 @@ const Header = ({ isFixed, headerdata, className, searchBoxType = "type2" }) => 
   return (
     <HeaderWrapper className={clsx(className, { scrolled })}>
       <Container
+        maxWidth={false}
         sx={{
-          gap: { xs: 1.5, md: 2.5 },
+          gap: { xs: 1, sm: 1.5, md: 2.5 },
           height: "100%",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
+          px: { xs: 1.5, sm: 2, md: 3 },
+          overflow: "hidden",
         }}
       >
         {/* Logo Section */}
         <FlexBox
-          mr={{ xs: 1, md: 2 }}
-          minWidth={{ xs: "120px", md: "170px" }}
+          mr={{ xs: 0.5, sm: 1, md: 2 }}
+          minWidth={{ xs: "100px", sm: "120px", md: "170px" }}
           alignItems="center"
           sx={{
             display: "flex",
             flexShrink: 0,
+            flex: { xs: "0 0 auto", md: "0 0 auto" },
           }}
         >
           <Link href="/">
-            <a>
+            <a style={{ display: "block", width: "100%" }}>
               <LogoContainer
                 sx={{
-                  maxWidth: { xs: '120px', md: '160px' },
-                  width: { xs: '120px', md: '160px' },
-                  minWidth: { xs: '120px', md: '160px' },
+                  maxWidth: { xs: '100px', sm: '120px', md: '160px' },
+                  width: { xs: '100px', sm: '120px', md: '160px' },
+                  minWidth: { xs: '100px', sm: '120px', md: '160px' },
                   display: 'block',
                 }}
               >
               <Image 
-                  height={48} 
-                  width={160}
+                  height={scrolled && isMobile ? 32 : 48} 
+                  width={scrolled && isMobile ? 100 : 160}
                   src={headerdata && headerdata.length > 0 && headerdata[0]?.site_logo 
                     ? imgbaseurl + headerdata[0].site_logo 
                     : '/assets/images/logos/webpack.png'} 
@@ -240,20 +255,20 @@ const Header = ({ isFixed, headerdata, className, searchBoxType = "type2" }) => 
                     height: 'auto',
                     maxWidth: '100%',
                   }}
-                  sizes="(max-width: 768px) 120px, 160px"
+                  sizes="(max-width: 600px) 100px, (max-width: 960px) 120px, 160px"
               />
               </LogoContainer>
             </a>
           </Link>
 
-          {isFixed && (
+          {isFixed && !isMobile && (
             <CategoryMenu navCategories={null}>
-              <FlexBox color="grey.600" alignItems="center" ml={2}>
+              <FlexBox color="grey.600" alignItems="center" ml={{ xs: 1, md: 2 }}>
                 <BazaarButton 
                   color="inherit"
                   sx={{
                     borderRadius: "12px",
-                    padding: "8px 14px",
+                    padding: { xs: "6px 10px", md: "8px 14px" },
                     transition: "all 0.3s ease",
                     "&:hover": {
                       backgroundColor: theme.palette.mode === 'dark' 
@@ -276,8 +291,10 @@ const Header = ({ isFixed, headerdata, className, searchBoxType = "type2" }) => 
           justifyContent="center" 
           flex="1 1 0"
           sx={{
-            maxWidth: { xs: "100%", md: "600px" },
-            mx: { xs: 0, md: 3 },
+            maxWidth: { xs: "100%", sm: "100%", md: "600px" },
+            mx: { xs: 0.5, sm: 1, md: 3 },
+            minWidth: 0,
+            display: { xs: scrolled ? "none" : "flex", sm: "flex" },
           }}
         >
           {searchBoxType === "type1" && <SearchBox />}

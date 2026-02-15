@@ -13,8 +13,8 @@ const Section1 = (data) => {
   const imgbaseurl = process.env.NEXT_PUBLIC_BACKEND_API_BASE + "media/";
   const slugbaseurl = "category/";
 
-  // custom css
-  const bannerHeight = "245.5px"; 
+  // custom css - responsive banner heights
+  const bannerHeight = { xs: "150px", sm: "180px", md: "245.5px" }; 
   const bannerWidth = "100%"; 
   const defaultDummyImages = [
     { image: "/assets/images/banners/s1.png" },
@@ -91,8 +91,8 @@ const Section1 = (data) => {
 
   return (
     <Footwrapper>
-      <Box pt={3}>
-        <Container>
+      <Box pt={{ xs: 2, sm: 3 }}>
+        <Container sx={{ px: { xs: 1, sm: 2 } }}>
           {/* {individualboxsequence.map((item) => (
                 <h4>{item.category_slug}</h4>
            ))}
@@ -107,8 +107,8 @@ const Section1 = (data) => {
 
 
 
-          <Grid container spacing={2}>
-            <Grid item md={9} xs={12}>
+          <Grid container spacing={{ xs: 1, sm: 2 }}>
+            <Grid item md={9} xs={12} sx={{ order: { xs: 1, md: 1 } }}>
               <Carousel
                 spacing="0px"
                 totalSlides={5}
@@ -116,7 +116,7 @@ const Section1 = (data) => {
                 showDots={true}
                 autoPlay={true}
                 visibleSlides={1}
-                showArrow={true}
+                showArrow={{ xs: false, sm: true }}
                 sx={carouselStyles}
               >
                 {/* {data.slidersListLocal.map((slider) => (
@@ -173,16 +173,16 @@ const Section1 = (data) => {
               </Carousel>
             </Grid>
 
-            <Grid item md={3} xs={12}>
+            <Grid item md={3} xs={12} sx={{ order: { xs: 2, md: 2 } }}>
               <Stack
                 height="100%"
                 width="100%"
                 direction={{
                   md: "column",
                   sm: "row",
-                  xs: "row",
+                  xs: "column",
                 }}
-                spacing={1}
+                spacing={{ xs: 1, sm: 1 }}
               >
                 {/* <BannerCard3 flex={1} img={imgbaseurl+data.data1.image}> */}
                 <BannerCard3
@@ -190,8 +190,8 @@ const Section1 = (data) => {
                   flex={1}
                   img={data.data1 && data.data1.image ? imgbaseurl + data.data1.image : '/assets/images/banners/default3.png'}
                   sx={{
-                    height: bannerHeight, // set the fixed height for the banner
-                    width: bannerWidth, // set the fixed width for the banner
+                    height: bannerHeight,
+                    width: bannerWidth,
                     position: "relative",
                     overflow: "hidden",
                     "&:hover img": {
@@ -204,8 +204,7 @@ const Section1 = (data) => {
                     },
                   }}
                 >
-                  <H4 fontSize={20} lineHeight={1.2} mb={2} color="#fff">
-                    <br />
+                  <H4 fontSize={{ xs: 16, sm: 18, md: 20 }} lineHeight={1.2} mb={{ xs: 1, md: 2 }} color="#fff">
                     {data.data1 && data.data1.category_name ? data.data1.category_name : 'Category1'}
                   </H4>
                   <NavLink3
@@ -221,8 +220,8 @@ const Section1 = (data) => {
                   flex={1}
                   img={data.data2.image && data.data2.image?imgbaseurl + data.data2.image:'/assets/images/banners/default3.png'}
                   sx={{
-                    height: bannerHeight, // set the fixed height for the banner
-                    width: bannerWidth, // set the fixed width for the banner
+                    height: bannerHeight,
+                    width: bannerWidth,
                     position: "relative",
                     overflow: "hidden",
                     "&:hover img": {
@@ -235,8 +234,7 @@ const Section1 = (data) => {
                     },
                   }}
                 >
-                  <H4 fontSize={20} lineHeight={1.2} mb={2} color="#fff">
-                    <br />
+                  <H4 fontSize={{ xs: 16, sm: 18, md: 20 }} lineHeight={1.2} mb={{ xs: 1, md: 2 }} color="#fff">
                     {data.data2.category_name&&data.data2.category_name?data.data2.category_name:'Category2'}
                   </H4>
                   <NavLink3

@@ -43,11 +43,12 @@ const Section10 = (data) => {
     return null;
   }
 
+
   return (
-    <Container sx={{ mt: 8 }}>
-      <FlexBetween mb={3}>
-        <H2 style={{ color: '#d83c54', fontSize: 20 }}>Product Bundles</H2>
-        <Link href="/products"><a style={{ color: '#d83c54', fontSize: 16 }}>View All</a></Link>
+    <Container sx={{ mt: { xs: 4, sm: 6, md: 8 }, px: { xs: 1, sm: 2 } }}>
+      <FlexBetween mb={{ xs: 2, sm: 2.5, md: 3 }}>
+        <H2 style={{ color: '#d83c54', fontSize: 'clamp(16px, 4vw, 20px)' }}>Product Bundles</H2>
+        <Link href="/products"><a style={{ color: '#d83c54', fontSize: 'clamp(13px, 3.5vw, 16px)' }}>View All</a></Link>
       </FlexBetween>
         <Carousel
         totalSlides={data.data.length}
@@ -62,6 +63,20 @@ const Section10 = (data) => {
           </Carousel>
     </Container>
   );
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 };
 
 export default Section10;
