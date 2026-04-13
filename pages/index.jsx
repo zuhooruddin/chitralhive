@@ -333,7 +333,7 @@ const IndexPage = (props) => {
       topbarBgColor={theme.palette.grey[900]}
       navCategories={navCategories}
       generalSetting={GeneralSettingMemo}
-      footerData={null} // Can be passed from props if available
+      footerData={props.footerData || null}
     >
       <SEO
         title={GeneralSettingMemo&&GeneralSettingMemo.length>0?GeneralSettingMemo[0].site_name:'Discover Authentic Chitrali Products - Chitral Hive'}

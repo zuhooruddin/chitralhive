@@ -188,6 +188,7 @@ const Section1 = (data) => {
                 <BannerCard3
                   className="logo"
                   flex={1}
+                  priority
                   img={data.data1 && data.data1.image ? imgbaseurl + data.data1.image : '/assets/images/banners/default3.png'}
                   sx={{
                     height: bannerHeight,

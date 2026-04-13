@@ -61,7 +61,9 @@ const Carousel = ({
     >
       <StyledSlider spacing={spacing}>
         {React.Children.map(children, (child, ind) => (
-          <Slide index={ind}>{child}</Slide>
+          <Slide index={ind} key={`slide-${ind}`}>
+            {child}
+          </Slide>
         ))}
       </StyledSlider>
 
@@ -130,6 +132,10 @@ const renderDots = ({
   const dots = [];
   const total = totalSlides - visibleSlides + 1; // handle dot button
 
+  if (total <= 0) {
+    return dots;
+  }
+
   const handleClick = (currentSlide, autoplay) => {
     carouselStore.setStoreState({
       autoPlay: autoplay,
@@ -143,7 +149,7 @@ const renderDots = ({
         dot_color={dotColor}
         onClick={() => handleClick(i, false)}
         dot_active={currentSlide === i ? i + 1 : 0}
-        key={(Math.random() * i + Date.now()).toString()}
+        key={`dot-${i}`}
       />
     );
 
@@ -152,7 +158,7 @@ const renderDots = ({
         <StyledDot
           dot_color={dotColor}
           dot_active={totalSlides - visibleSlides}
-          key={(Math.random() * i + Date.now()).toString()}
+          key={`dot-end-${i}`}
           onClick={() => handleClick(totalSlides - visibleSlides, false)}
         />
       );

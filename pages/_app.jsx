@@ -52,11 +52,6 @@ const App = ({ router, Component, pageProps: { session, ...pageProps } }) => {
 
   // Safely get layout function - ensure it always returns a valid React element
   const getLayout = Component.getLayout ?? ((page) => page);
-  
-  // Ensure Component is valid before rendering
-  if (!Component) {
-    return null;
-  }
 
   useEffect(() => {
     // Only enable mock API in development.
@@ -183,6 +178,11 @@ const App = ({ router, Component, pageProps: { session, ...pageProps } }) => {
     };
   }, [generalSettings, imgbaseurl]);
 
+  // Ensure Component is valid before rendering
+  if (!Component) {
+    return null;
+  }
+
   return (
     <SessionProvider session={session}>
             <AuthenticationProvider>
@@ -221,7 +221,7 @@ const App = ({ router, Component, pageProps: { session, ...pageProps } }) => {
                 }
               })()}
               {/* ToastContainer - ssr: false ensures client-side only */}
-              {typeof window !== 'undefined' && (
+              {typeof window !== 'undefined' && deferredUiReady && (
                 <ToastContainer
                     position="top-right"
                     autoClose={5000}

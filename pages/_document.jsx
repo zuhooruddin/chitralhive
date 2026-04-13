@@ -22,19 +22,14 @@ export default class Bazaar extends Document {
           <link rel="manifest" href="/site.webmanifest" />
           
           {/* Preconnect to critical origins for faster loading */}
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
           
           {/* Premium Fonts - Load asynchronously to prevent render blocking */}
           {/* Using font-display=swap ensures text remains visible during font load */}
           <link
-            href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Outfit:wght@100..900&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Outfit:wght@100..900&display=swap"
             rel="stylesheet"
-          />
-          
-          {/* Material Icons - Load asynchronously */}
-          <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/icon?family=Material+Icons&display=swap"
           />
           
           {/* Open Graph / Twitter: per-page via components/SEO.jsx (avoids duplicate/wrong og:url from document) */}
