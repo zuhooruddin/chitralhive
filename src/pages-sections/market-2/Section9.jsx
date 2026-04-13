@@ -5,44 +5,17 @@ import { FlexBetween, FlexBox } from "components/flex-box";
 import ProductCard20 from "components/product-cards/ProductCard20";
 import { H2, Paragraph } from "components/Typography";
 import useWindowSize from "hooks/useWindowSize";
-import shuffle from "lodash/shuffle";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useSession } from 'next-auth/react';
 
-const Section9 = ({data}) => {
+const Section9 = ({ data, products = [] }) => {
   const { data: session} = useSession()
 
   const width = useWindowSize();
   const [visibleSlides, setVisibleSlides] = useState(4);
   const [selected, setSelected] = useState("new");
-  const [newArrivalProducts, setNewArrivalProducts] = useState([]);
-  const [featuredProducts, setFeaturedProducts] = useState([]);
-  const server_ip = process.env.NEXT_PUBLIC_BACKEND_API_BASE;
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get(server_ip + "getFearuredProduct", {
-          params: {
-            type: selected,
-          },
-        });
-        const fetchedProducts = response.data;
-        const shuffledProducts = shuffle(fetchedProducts);
-        setNewArrivalProducts(
-          shuffledProducts.filter((product) => product.isNewArrival)
-        );
-        setFeaturedProducts(
-          shuffledProducts.filter((product) => product.isFeatured)
-        );
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
-
-    fetchProducts();
-  }, [selected]);
+  const newArrivalProducts = products.filter((product) => product?.isNewArrival);
+  const featuredProducts = products.filter((product) => product?.isFeatured);
 
   useEffect(() => {
     if (width < 426) setVisibleSlides(1);

@@ -43,7 +43,6 @@ const ShopLayout1 = ({
   const fetcher = async (url) => {
     try {
       const res = await axiosWithTimeout.get(url);
-      console.log('API Response from', url, ':', res.data);
       // Check if response is valid
       if (res.data && typeof res.data === 'object') {
         return res.data;
@@ -61,7 +60,7 @@ const ShopLayout1 = ({
   };
   
   const server_ip = process.env.NEXT_PUBLIC_BACKEND_API_BASE;
-  const { data: swrFooterData, error: footerError } = useSWR(
+  const { data: swrFooterData } = useSWR(
     !footerData ? server_ip + 'getFooterSettings' : null, 
     fetcher,
     { 
@@ -85,14 +84,6 @@ const ShopLayout1 = ({
   // Use props if available, otherwise use SWR data
   const data = footerData || swrFooterData;
   const data1 = generalSetting || swrGeneralSetting;
-
-  // Debug logging
-  if (process.env.NODE_ENV === 'development') {
-    console.log('Footer Data:', data);
-    console.log('Footer Error:', footerError);
-  }
-
-
 
   return (
     <Fragment>

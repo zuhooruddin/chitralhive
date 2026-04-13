@@ -371,7 +371,10 @@ const IndexPage = (props) => {
         />
 
         <LazySection>
-          <Section9 data={props.ProductReviews} />
+          <Section9
+            data={props.ProductReviews}
+            products={props.featuredCatalog || []}
+          />
         </LazySection>
         {(props.Section2SequenceData || props.Section2SequenceData2 || props.Section2SequenceData3 || 
           props.Section2SequenceData4 || props.Section2SequenceData5 || props.Section2SequenceData6) && (
@@ -468,22 +471,26 @@ export async function getStaticProps(context) {
       navCategories,
       brandbundles,
       productbundles,
+      featuredCatalog,
       individulorder,
       sectionsequenceorder,
       slidersList,
       slidersListLocal,
       ProductReviews,
-      GeneralSetting
+      GeneralSetting,
+      footerData
     ] = await Promise.all([
       apiNav.getNavCategories(),
       api.getBrandBundles(),
       api.getProductBundles(),
+      api.getLatestProducts(),
       api.getindvidualorderbox(),
       api.getSectionSequence(),
       api.getSlidersFromCloud(),
       api.getSlidersFromLocal(),
       apiNav.getReviews(),
-      api.getGeneralSetting()
+      api.getGeneralSetting(),
+      api.getFooterItem()
     ]);
 
   ////////////////////////Section 1/////////////////////////
@@ -598,6 +605,7 @@ export async function getStaticProps(context) {
       navCategories,
       products: normalizedProducts,
       product: normalizedProduct,
+      featuredCatalog: Array.isArray(featuredCatalog) ? featuredCatalog : [],
       // latestproduct,
       SectionSequenceOrdera,
       Section1Name,
@@ -627,6 +635,7 @@ export async function getStaticProps(context) {
       // bundles,
       brandbundles,
       productbundles,
+      footerData,
       slidersList,
       slidersListLocal,
       ProductReviews,
@@ -648,7 +657,9 @@ export async function getStaticProps(context) {
         navCategories: [],
         products: null,
         product: null,
+        featuredCatalog: [],
         GeneralSetting: [],
+        footerData: null,
       },
       revalidate: 300,
     };

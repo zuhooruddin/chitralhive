@@ -5,14 +5,12 @@ import Head from "next/head";
 import Router from "next/router";
 import nProgress from "nprogress";
 import "nprogress/nprogress.css";
-import { Fragment, useEffect, useMemo } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 // Lazy load heavy CSS to improve initial load - only load when needed
 import MuiTheme from "theme/MuiTheme";
 import {SessionProvider}  from "next-auth/react";
 import { AuthenticationProvider } from '../context/AuthenticationContext'
 import useScrollRestoration from "../src/utils/useScrollRestoration";
-import useSWR from 'swr'
-import axios from 'axios';
 import dynamic from 'next/dynamic';
 import GoogleAnalytics from "utils/GoogleAnalytics";
 import { sanitizeSiteName, SITE_NAME } from "utils/seoConstants";
@@ -47,7 +45,10 @@ nProgress.configure({
 });
 
 const App = ({ router, Component, pageProps: { session, ...pageProps } }) => {
-  const idrisLogo = process.env.NEXT_PUBLIC_IDRIS_LOGO_API_URL
+  const [generalSettings, setGeneralSettings] = useState(
+    Array.isArray(pageProps.GeneralSetting) ? pageProps.GeneralSetting : []
+  );
+  const [deferredUiReady, setDeferredUiReady] = useState(false);
 
   // Safely get layout function - ensure it always returns a valid React element
   const getLayout = Component.getLayout ?? ((page) => page);
@@ -70,55 +71,98 @@ const App = ({ router, Component, pageProps: { session, ...pageProps } }) => {
     if (jssStyles) {
       jssStyles.parentElement.removeChild(jssStyles);
     }
-
   }, []);
   // useScrollRestoration(router);
 
-const imgbaseurl=process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL
-  
-  // Create axios instance with timeout to prevent hanging
-  const axiosWithTimeout = axios.create({
-    timeout: 5000, // 5 second timeout for API calls
-  });
-  
-  const fetcher = async (url) => {
-    try {
-      const res = await axiosWithTimeout.get(url);
-      return res.data;
-    } catch (error) {
-      // Return empty array on error to prevent crashes
-      console.error('API Error:', error.message);
-      return [];
+  useEffect(() => {
+    if (Array.isArray(pageProps.GeneralSetting) && pageProps.GeneralSetting.length > 0) {
+      setGeneralSettings(pageProps.GeneralSetting);
     }
-  };
-  
-  const server_ip = process.env.NEXT_PUBLIC_BACKEND_API_BASE;
-  // Use SWR with revalidation to cache and share data across components
-  const { data, error } = useSWR(server_ip + 'getGeneralSetting', fetcher, {
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
-    dedupingInterval: 60000, // Cache for 1 minute
-    // Don't retry on error to prevent hanging
-    shouldRetryOnError: false,
-    // Use stale data if available
-    revalidateIfStale: false,
-  });
+  }, [pageProps.GeneralSetting]);
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.localStorage && data && data.length > 0) {
-      localStorage.setItem('currency', data[0].currency || 'PKR');
+    if (generalSettings.length > 0 || typeof window === "undefined") return;
+
+    let cancelled = false;
+    const controller = new AbortController();
+    const serverIp = process.env.NEXT_PUBLIC_BACKEND_API_BASE;
+
+    const loadSettings = () => {
+      window.setTimeout(async () => {
+        try {
+          const response = await fetch(`${serverIp}getGeneralSetting`, {
+            signal: controller.signal,
+          });
+          const data = await response.json();
+
+          if (!cancelled && Array.isArray(data)) {
+            setGeneralSettings(data);
+          }
+        } catch (error) {
+          if (error.name !== "AbortError") {
+            console.error("General settings fetch failed:", error.message);
+          }
+        }
+      }, 0);
+    };
+
+    if ("requestIdleCallback" in window) {
+      window.requestIdleCallback(loadSettings, { timeout: 3000 });
+    } else {
+      window.setTimeout(loadSettings, 1500);
     }
-  }, [data]);
+
+    return () => {
+      cancelled = true;
+      controller.abort();
+    };
+  }, [generalSettings]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return undefined;
+
+    let timeoutId;
+
+    const markReady = () => {
+      setDeferredUiReady(true);
+      window.removeEventListener("scroll", markReady);
+      window.removeEventListener("pointerdown", markReady);
+      window.removeEventListener("touchstart", markReady);
+      window.removeEventListener("keydown", markReady);
+    };
+
+    timeoutId = window.setTimeout(markReady, 4000);
+    window.addEventListener("scroll", markReady, { once: true, passive: true });
+    window.addEventListener("pointerdown", markReady, { once: true, passive: true });
+    window.addEventListener("touchstart", markReady, { once: true, passive: true });
+    window.addEventListener("keydown", markReady, { once: true });
+
+    return () => {
+      window.clearTimeout(timeoutId);
+      window.removeEventListener("scroll", markReady);
+      window.removeEventListener("pointerdown", markReady);
+      window.removeEventListener("touchstart", markReady);
+      window.removeEventListener("keydown", markReady);
+    };
+  }, []);
+
+  const imgbaseurl = process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL;
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.localStorage && generalSettings.length > 0) {
+      localStorage.setItem('currency', generalSettings[0].currency || 'PKR');
+    }
+  }, [generalSettings]);
 
   // Memoize FloatingWhatsApp props to prevent unnecessary re-renders
   // Ensure all values are valid to prevent React errors
   const whatsappProps = useMemo(() => {
-    const phoneNumber = (data && data.length > 0 && data[0].whatsapp) ? data[0].whatsapp : '+923239119309';
-    const accountName = (data && data.length > 0 && data[0].site_name)
-      ? sanitizeSiteName(data[0].site_name)
+    const phoneNumber = (generalSettings.length > 0 && generalSettings[0].whatsapp) ? generalSettings[0].whatsapp : '+923239119309';
+    const accountName = (generalSettings.length > 0 && generalSettings[0].site_name)
+      ? sanitizeSiteName(generalSettings[0].site_name)
       : SITE_NAME;
-    const avatar = (data && data.length > 0 && data[0].site_logo && imgbaseurl) 
-      ? `${imgbaseurl}${data[0].site_logo}` 
+    const avatar = (generalSettings.length > 0 && generalSettings[0].site_logo && imgbaseurl)
+      ? `${imgbaseurl}${generalSettings[0].site_logo}`
       : '/assets/images/banners/banner-1.png';
     
     return {
@@ -137,7 +181,7 @@ const imgbaseurl=process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL
       // Override the library's aria-hidden behavior
       notificationDelay: 60000, // 1 minute
     };
-  }, [data, imgbaseurl]);
+  }, [generalSettings, imgbaseurl]);
 
   return (
     <SessionProvider session={session}>
@@ -154,10 +198,10 @@ const imgbaseurl=process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL
       {/* Loader removed - no popup on page load */}
 
       {/* Lazy load FloatingWhatsApp - ssr: false ensures client-side only */}
-      {typeof window !== 'undefined' && <FloatingWhatsApp {...whatsappProps} />}
+      {typeof window !== 'undefined' && deferredUiReady && <FloatingWhatsApp {...whatsappProps} />}
 
       {/* Load Google Analytics client-side only - component handles SSR check */}
-      {typeof window !== 'undefined' && <GoogleAnalytics />}
+      {typeof window !== 'undefined' && deferredUiReady && <GoogleAnalytics />}
 
       <SettingsProvider>
         <AppProvider>

@@ -20,9 +20,6 @@ const StyledListItem = styled(ListItem)(({ theme }) => ({
 
 // ======================================================================
 const Section5 = ({ products,data,SectionName,slug,productreviews}) => {
-  // Debug logging
-  console.log('Section5 - products:', products, 'length:', products?.length);
-  
   // Ensure products is always an array
   const productsArray = Array.isArray(products) ? products : (products ? [products] : []);
 

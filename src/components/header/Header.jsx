@@ -228,7 +228,10 @@ const Header = ({ isFixed, headerdata, className, searchBoxType = "type2" }) => 
           }}
         >
           <Link href="/">
-            <a style={{ display: "block", width: "100%" }}>
+            <a
+              aria-label="Chitral Hive Home"
+              style={{ display: "block", width: "100%" }}
+            >
               <LogoContainer
                 sx={{
                   maxWidth: { xs: '100px', sm: '120px', md: '160px' },
@@ -251,6 +254,7 @@ const Header = ({ isFixed, headerdata, className, searchBoxType = "type2" }) => 
                     visibility: 'visible !important',
                     opacity: '1 !important',
                     transition: 'all 0.3s ease',
+                    objectFit: 'contain',
                     width: '100%',
                     height: 'auto',
                     maxWidth: '100%',

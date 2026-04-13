@@ -17,8 +17,8 @@ const Section6 = ({data1, data2}) => {
       <Grid container spacing={{ xs: 2, sm: 3 }}>
       {data1 && (
         <Grid item md={6} xs={12}>
-          <Link href={slugbaseurl + (data1.category_slug || '')}>
-            <a href="">
+          <Link href={slugbaseurl + (data1.category_slug || '')} passHref legacyBehavior>
+            <a aria-label={`Browse ${data1.category_name || "category"}`}>
               <Box sx={{
                 position: 'relative',
                 overflow: 'hidden',
@@ -98,8 +98,8 @@ const Section6 = ({data1, data2}) => {
 
       {data2 && (
         <Grid item md={6} xs={12}>
-          <Link href={slugbaseurl + (data2.category_slug || '')}>
-            <a href="">
+          <Link href={slugbaseurl + (data2.category_slug || '')} passHref legacyBehavior>
+            <a aria-label={`Browse ${data2.category_name || "category"}`}>
               <Box sx={{
                 position: 'relative',
                 overflow: 'hidden',

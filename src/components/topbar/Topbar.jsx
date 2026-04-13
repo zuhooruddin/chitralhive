@@ -172,10 +172,6 @@ const server_ip=process.env.NEXT_PUBLIC_BACKEND_API_BASE
 
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
-  const openPopup = () => {
-    setIsPopupOpen(true);
-  };
-
   const closePopup = () => {
     setIsPopupOpen(false);
   };
@@ -184,16 +180,23 @@ const server_ip=process.env.NEXT_PUBLIC_BACKEND_API_BASE
   const[coupon,setCoupon]=useState()
 
   useEffect(() => {
-    const server_ip = process.env.NEXT_PUBLIC_BACKEND_API_BASE;
-    fetch(server_ip+'getvoucher')
+    if (!isPopupOpen || coupon) return;
+
+    const controller = new AbortController();
+
+    fetch(server_ip + 'getvoucher', { signal: controller.signal })
       .then((res) => res.json())
       .then((data) => {
         setCoupon(data)
       })
       .catch((error) => {
-        console.error('Error fetching voucher:', error);
-      })
-  }, [])
+        if (error.name !== "AbortError") {
+          console.error('Error fetching voucher:', error);
+        }
+      });
+
+    return () => controller.abort();
+  }, [coupon, isPopupOpen, server_ip])
  
   const data = coupon?.voucher?.[0] || null
 

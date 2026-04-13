@@ -204,7 +204,7 @@ const Section1 = (data) => {
                     },
                   }}
                 >
-                  <H4 fontSize={{ xs: 16, sm: 18, md: 20 }} lineHeight={1.2} mb={{ xs: 1, md: 2 }} color="#fff">
+                  <H4 component="h2" fontSize={{ xs: 16, sm: 18, md: 20 }} lineHeight={1.2} mb={{ xs: 1, md: 2 }} color="#fff">
                     {data.data1 && data.data1.category_name ? data.data1.category_name : 'Category1'}
                   </H4>
                   <NavLink3
@@ -218,7 +218,7 @@ const Section1 = (data) => {
                 <BannerCard3
                   className="logo"
                   flex={1}
-                  img={data.data2.image && data.data2.image?imgbaseurl + data.data2.image:'/assets/images/banners/default3.png'}
+                  img={data.data2?.image ? imgbaseurl + data.data2.image : '/assets/images/banners/default3.png'}
                   sx={{
                     height: bannerHeight,
                     width: bannerWidth,
@@ -234,11 +234,11 @@ const Section1 = (data) => {
                     },
                   }}
                 >
-                  <H4 fontSize={{ xs: 16, sm: 18, md: 20 }} lineHeight={1.2} mb={{ xs: 1, md: 2 }} color="#fff">
-                    {data.data2.category_name&&data.data2.category_name?data.data2.category_name:'Category2'}
+                  <H4 component="h2" fontSize={{ xs: 16, sm: 18, md: 20 }} lineHeight={1.2} mb={{ xs: 1, md: 2 }} color="#fff">
+                    {data.data2?.category_name ? data.data2.category_name : 'Category2'}
                   </H4>
                   <NavLink3
-                    href={slugbaseurl + data.data2.category_slug}
+                    href={data.data2?.category_slug ? slugbaseurl + data.data2.category_slug : ""}
                     text="Shop Now"
                     color="#fff"
                   />
