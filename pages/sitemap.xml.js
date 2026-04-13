@@ -190,6 +190,35 @@ export async function getServerSideProps({ res }) {
   };
 
   try {
+    const blogsUrl = `${apiBase}getPublishedBlogs`;
+    const blogsData = await fetchWithTimeout(blogsUrl);
+
+    const blogs = Array.isArray(blogsData)
+      ? blogsData
+      : (blogsData?.data && Array.isArray(blogsData.data) ? blogsData.data : []);
+
+    if (blogs.length > 0) {
+      const blogPages = blogs
+        .filter((blog) => blog.slug)
+        .map((blog) => ({
+          loc: `${baseUrl}/blog/${blog.slug}`,
+          lastmod: blog.updated_at || blog.published_at || new Date().toISOString(),
+          changefreq: 'weekly',
+          priority: '0.7',
+          images: blog.featured_image_url ? [{
+            url: blog.featured_image_url,
+            title: blog.title || 'Chitral Hive Blog',
+            caption: blog.excerpt || blog.title || 'Chitral Hive Blog'
+          }] : []
+        }));
+
+      dynamicPages = [...dynamicPages, ...blogPages];
+    }
+  } catch (error) {
+    console.error('Error fetching blogs:', error.message);
+  }
+
+  try {
     // Fetch all categories - API pattern: baseUrl + endpoint (no slash)
     const categoriesUrl = `${apiBase}getNavCategories`;
     const categoriesData = await fetchWithTimeout(categoriesUrl);

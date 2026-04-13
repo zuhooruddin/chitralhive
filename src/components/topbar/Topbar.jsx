@@ -364,16 +364,18 @@ const server_ip=process.env.NEXT_PUBLIC_BACKEND_API_BASE
           }}>
           <FlexBox className="topbarLeft">
             <div className="logo">
-              <Link href="/" passHref>
-                <Image
-                  height={28}
-                  width={120}
-                  src={topbardata?imgbaseurl+topbardata[0].site_logo:'/assets/images/logos/webpack.png'}
-                  alt="logo"
-                  priority
-                  quality={85}
-                  sizes="120px"
-                />
+              <Link href="/" passHref legacyBehavior>
+                <a aria-label="Chitral Hive Home" style={{ display: "inline-block", lineHeight: 0 }}>
+                  <Image
+                    height={28}
+                    width={120}
+                    src={topbardata ? imgbaseurl + topbardata[0].site_logo : "/assets/images/logos/webpack.png"}
+                    alt="Chitral Hive Logo"
+                    priority
+                    quality={85}
+                    sizes="120px"
+                  />
+                </a>
               </Link>
             </div>
             <FlexBox className="drawer">
@@ -400,8 +402,15 @@ const server_ip=process.env.NEXT_PUBLIC_BACKEND_API_BASE
             </FlexBox>
           </FlexBox>
           <FlexBox className="topbarRight" alignItems="center" gap={2} style={{ cursor: 'pointer' }}>
-          <LogoutIcon fontSize="small" onClick={handleSignOut} sx={{ color: 'inherit' }} />
-          <Span sx={{ color: 'inherit', fontSize: '12px' }}> Sign Out</Span>
+            <IconButton
+              size="small"
+              aria-label="Sign out"
+              onClick={handleSignOut}
+              sx={{ color: "inherit" }}
+            >
+              <LogoutIcon fontSize="small" />
+            </IconButton>
+            <Span sx={{ color: 'inherit', fontSize: '12px' }}> Sign Out</Span>
                </FlexBox>
       </Container>
 
@@ -547,7 +556,14 @@ const server_ip=process.env.NEXT_PUBLIC_BACKEND_API_BASE
             </FlexBox>
           </FlexBox>
           <FlexBox className="topbarRight" alignItems="center" gap={2} style={{'cursor': 'pointer'}} >
-            <LoginIcon fontSize="small" onClick={signIn} sx={{ color: 'inherit' }} />
+            <IconButton
+              size="small"
+              aria-label="Sign in"
+              onClick={signIn}
+              sx={{ color: "inherit" }}
+            >
+              <LoginIcon fontSize="small" />
+            </IconButton>
             <Span sx={{ color: 'inherit', fontSize: '12px' }}> Sign In</Span>
           </FlexBox>
         </Container>

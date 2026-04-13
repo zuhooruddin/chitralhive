@@ -24,8 +24,6 @@ export default class Bazaar extends Document {
           {/* Preconnect to critical origins for faster loading */}
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-          <link rel="preconnect" href="https://api.chitralhive.com" crossOrigin="anonymous" />
-          <link rel="dns-prefetch" href="https://api.chitralhive.com" />
           {process.env.NEXT_PUBLIC_BACKEND_API_BASE && (
             <link rel="preconnect" href={process.env.NEXT_PUBLIC_BACKEND_API_BASE.replace('/api/', '')} crossOrigin="anonymous" />
           )}

@@ -4,6 +4,7 @@ import SettingsProvider from "contexts/SettingContext";
 import Head from "next/head";
 import Router from "next/router";
 import nProgress from "nprogress";
+import "nprogress/nprogress.css";
 import { Fragment, useEffect, useMemo } from "react";
 // Lazy load heavy CSS to improve initial load - only load when needed
 import MuiTheme from "theme/MuiTheme";
@@ -65,38 +66,6 @@ const App = ({ router, Component, pageProps: { session, ...pageProps } }) => {
       jssStyles.parentElement.removeChild(jssStyles);
     }
 
-    
-    // Load nprogress CSS asynchronously (needed for route transitions)
-    const loadNProgressCSS = () => {
-      if (!document.querySelector('link[href*="nprogress"]')) {
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = 'https://unpkg.com/nprogress@0.2.0/nprogress.css';
-        link.media = 'print';
-        link.onload = () => { link.media = 'all'; };
-        document.head.appendChild(link);
-      }
-    };
-    
-    // Load nprogress CSS after initial render (non-blocking)
-    setTimeout(loadNProgressCSS, 100);
-    
-    // Lazy load heavy CSS only when needed (not on initial load)
-    // These will be loaded on-demand when components that need them are rendered
-    const loadHeavyCSS = async () => {
-      // Only load if not already loaded
-      if (!document.querySelector('link[href*="quill"]')) {
-        const quillCSS = document.createElement('link');
-        quillCSS.rel = 'stylesheet';
-        quillCSS.href = 'https://cdn.quilljs.com/1.3.6/quill.snow.css';
-        quillCSS.media = 'print';
-        quillCSS.onload = () => { quillCSS.media = 'all'; };
-        document.head.appendChild(quillCSS);
-      }
-    };
-    
-    // Load after initial render to not block
-    setTimeout(loadHeavyCSS, 2000);
   }, []);
   // useScrollRestoration(router);
 
@@ -174,16 +143,7 @@ const imgbaseurl=process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="manifest" href="/site.webmanifest" />
-        {/* Resource hints for faster loading - preconnect to critical origins */}
-        {process.env.NEXT_PUBLIC_BACKEND_API_BASE && (
-          <link rel="preconnect" href={process.env.NEXT_PUBLIC_BACKEND_API_BASE} crossOrigin="anonymous" />
-        )}
-        <link rel="preconnect" href="https://api.chitralhive.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL && (
-          <link rel="dns-prefetch" href={process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL} />
-        )}
-        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+        {/* Resource hints live in `_document.jsx` to avoid duplicates */}
         {/* Canonical link is handled by SEO component - removed duplicate */}
       </Head>
       {/* Loader removed - no popup on page load */}

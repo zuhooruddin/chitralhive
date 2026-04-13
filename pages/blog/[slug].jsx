@@ -8,16 +8,7 @@ import format from "date-fns/format";
 import Link from "next/link";
 import StructuredData from "components/schema/StructuredData";
 import { generateBlogBreadcrumb } from "utils/breadcrumbSchema";
-
-// Import blog posts with error handling
-let blogPosts = [];
-try {
-  const blogData = require("../../src/data/blog-posts");
-  blogPosts = blogData.blogPosts || [];
-} catch (error) {
-  console.error("Error loading blog posts:", error);
-  blogPosts = [];
-}
+import { fetchPublishedBlog, fetchPublishedBlogs } from "utils/api/blog";
 
 
 const BlogPostPage = ({ post, allPosts }) => {
@@ -178,17 +169,15 @@ const BlogPostPage = ({ post, allPosts }) => {
         <Divider sx={{ my: 4 }} />
 
         {/* Related Posts */}
-        {post.relatedPosts && post.relatedPosts.length > 0 && (
+        {allPosts.length > 0 && (
           <Box>
             <H2 component="h2" sx={{ mb: 3 }}>
               Related Articles
             </H2>
             <Stack spacing={2}>
-              {post.relatedPosts.map((relatedSlug) => {
-                const relatedPost = allPosts.find((p) => p.slug === relatedSlug);
-                if (!relatedPost) return null;
+              {allPosts.map((relatedPost) => {
                 return (
-                  <Link key={relatedSlug} href={`/blog/${relatedSlug}`} style={{ textDecoration: "none" }}>
+                  <Link key={relatedPost.slug} href={`/blog/${relatedPost.slug}`} style={{ textDecoration: "none" }}>
                     <Box
                       sx={{
                         p: 2,
@@ -219,35 +208,9 @@ const BlogPostPage = ({ post, allPosts }) => {
   );
 };
 
-export async function getStaticPaths() {
+export async function getServerSideProps({ params }) {
   try {
-    // Ensure blogPosts is an array and has valid slugs
-    const validPosts = Array.isArray(blogPosts) 
-      ? blogPosts.filter(post => post && post.slug)
-      : [];
-    
-    const paths = validPosts.map((post) => ({
-      params: { slug: post.slug },
-    }));
-
-    return {
-      paths,
-      fallback: false, // Return 404 for unknown slugs
-    };
-  } catch (error) {
-    console.error('Error in blog getStaticPaths:', error);
-    return {
-      paths: [],
-      fallback: false,
-    };
-  }
-}
-
-export async function getStaticProps({ params }) {
-  try {
-    // Ensure blogPosts is an array
-    const posts = Array.isArray(blogPosts) ? blogPosts : [];
-    const post = posts.find((p) => p && p.slug === params.slug);
+    const post = await fetchPublishedBlog(params.slug);
 
     if (!post) {
       return {
@@ -255,15 +218,20 @@ export async function getStaticProps({ params }) {
       };
     }
 
+    const posts = await fetchPublishedBlogs();
+    const allPosts = posts
+      .filter((item) => item.slug !== post.slug)
+      .filter((item) => item.category === post.category || item.tags?.some((tag) => post.tags?.includes(tag)))
+      .slice(0, 3);
+
     return {
       props: {
         post,
-        allPosts: posts,
+        allPosts,
       },
-      // Note: revalidate is not supported in static export mode
     };
   } catch (error) {
-    console.error('Error in blog getStaticProps:', error);
+    console.error("Error in blog page:", error);
     return {
       notFound: true,
     };

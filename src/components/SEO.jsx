@@ -259,10 +259,6 @@ const SEO = ({
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       
-      {/* Preconnect to improve page speed - Critical origins only */}
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      
       {/* DNS Prefetch for external resources - Non-critical, load after page interactive */}
       {/* These are deferred to reduce initial connection overhead */}
     </Head>

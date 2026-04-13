@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import { Box, styled } from "@mui/material";
-import React, { useEffect } from "react";
+import React from "react";
 import Image from "next/image"; // custom styled components
 
 const CardWrapper = styled(Box)(({ theme, mode }) => ({
@@ -42,33 +42,6 @@ const ContentWrapper = styled(Box)(() => ({
 const CarouselCard4 = ({ bgImage, mode = "dark", content, priority = false, fetchPriority = "auto" }) => {
   // Use Next.js Image component for automatic optimization, WebP/AVIF conversion, and lazy loading
   // Note: fetchPriority is not available in Next.js 12, so we use link preload as a workaround
-  
-  // Add preload link for priority images (LCP optimization)
-  useEffect(() => {
-    if (priority && bgImage && typeof document !== 'undefined') {
-      // Check if link already exists to prevent duplicates
-      const existingLink = document.querySelector(`link[href="${bgImage}"]`);
-      if (!existingLink) {
-        const link = document.createElement('link');
-        link.rel = 'preload';
-        link.as = 'image';
-        link.href = bgImage;
-        // Add fetchpriority attribute if supported (Next.js 13+)
-        if (fetchPriority === 'high') {
-          link.setAttribute('fetchpriority', 'high');
-        }
-        document.head.appendChild(link);
-        
-        return () => {
-          // Cleanup on unmount
-          const linkToRemove = document.querySelector(`link[href="${bgImage}"]`);
-          if (linkToRemove) {
-            document.head.removeChild(linkToRemove);
-          }
-        };
-      }
-    }
-  }, [bgImage, priority, fetchPriority]);
   
   return (
     <CardWrapper mode={mode}>

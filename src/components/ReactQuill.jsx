@@ -1,5 +1,6 @@
 import { Box, FormHelperText, styled } from "@mui/material";
 import dynamic from "next/dynamic";
+import { useEffect } from "react";
 //react quill
 const CustomQuill = dynamic(() => import("react-quill"), {
   ssr: false,
@@ -22,6 +23,11 @@ const Container = styled(Box)(({ theme, box_height }) => ({
 
 // ===================================================
 const ReactQuill = ({ error, box_height, ...props }) => {
+  useEffect(() => {
+    // Load Quill's theme CSS only when editor is used (no global render-blocking CSS).
+    import("react-quill/dist/quill.snow.css");
+  }, []);
+
   return (
     <Container box_height={box_height}>
       <CustomQuill theme="snow" modules={modules} {...props} />

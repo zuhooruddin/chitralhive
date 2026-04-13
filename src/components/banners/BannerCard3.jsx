@@ -23,13 +23,11 @@ const BannerCard3 = ({ img, children, priority = false, ...props }) => {
     <CardWrapper {...props}>
       <BazaarImage 
         alt="category banner" 
-        height={400} 
-        width={600} 
         src={img}
+        fill
         priority={priority}
         quality={85}
         objectFit="cover"
-        style={{ width: '100%', height: '100%' }}
         sizes="(max-width: 600px) 100vw, (max-width: 960px) 50vw, 33vw"
       />
 
