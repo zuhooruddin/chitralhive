@@ -6,6 +6,8 @@ Allow: /
 Disallow: /api/
 Disallow: /admin/
 Disallow: /_next/
+Allow: /_next/static/
+Allow: /_next/image/
 Disallow: /checkout
 Disallow: /cart
 Disallow: /profile
@@ -36,6 +38,8 @@ Allow: /
 Disallow: /api/
 Disallow: /admin/
 Disallow: /_next/
+Allow: /_next/static/
+Allow: /_next/image/
 Disallow: /checkout
 Disallow: /cart
 Disallow: /profile
@@ -43,9 +47,10 @@ Disallow: /orders
 
 # Googlebot-Image - Allow image crawling
 User-agent: Googlebot-Image
+Allow: /
 Allow: /media/
 Allow: /assets/images/
-Disallow: /
+Allow: /_next/image/
 
 # Bingbot - Full access
 User-agent: Bingbot
@@ -53,6 +58,8 @@ Allow: /
 Disallow: /api/
 Disallow: /admin/
 Disallow: /_next/
+Allow: /_next/static/
+Allow: /_next/image/
 Disallow: /checkout
 Disallow: /cart
 Disallow: /profile
