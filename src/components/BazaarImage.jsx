@@ -3,9 +3,11 @@ import NextImage from "next/image";
 import React from "react";
 
 // Use Next.js Image component for automatic optimization, lazy loading, and caching
-const BazaarImage = styled(({ src, alt = "", width, height, objectFit = "cover", priority = false, quality = 85, fill, ...rest }) => {
+const BazaarImage = styled(
+  ({ src, alt, width, height, objectFit = "cover", priority = false, quality = 70, fill, ...rest }) => {
   // Normalize src to ensure consistency between server and client
   const normalizedSrc = src || '/assets/images/banners/default.png';
+  const resolvedAlt = alt === "" ? "" : (alt || "Chitral Hive image");
   
   // If it's an external URL that Next.js can optimize, use NextImage
   // Otherwise fall back to regular img tag for external images that can't be optimized
@@ -21,7 +23,7 @@ const BazaarImage = styled(({ src, alt = "", width, height, objectFit = "cover",
     return (
       <NextImage
         src={normalizedSrc}
-        alt={alt || 'Image'}
+        alt={resolvedAlt}
         layout="fill"
         style={{ objectFit, ...rest.style }}
         priority={priority}
@@ -38,7 +40,7 @@ const BazaarImage = styled(({ src, alt = "", width, height, objectFit = "cover",
     return (
       <NextImage
         src={normalizedSrc}
-        alt={alt || 'Image'}
+        alt={resolvedAlt}
         width={width}
         height={height}
         style={{ objectFit, ...rest.style }}
@@ -54,7 +56,7 @@ const BazaarImage = styled(({ src, alt = "", width, height, objectFit = "cover",
   return (
     <img
       src={normalizedSrc}
-      alt={alt || 'Image'}
+      alt={resolvedAlt}
       width={width}
       height={height}
       style={{ objectFit, display: 'block', ...rest.style }}
@@ -62,7 +64,8 @@ const BazaarImage = styled(({ src, alt = "", width, height, objectFit = "cover",
       {...rest}
     />
   );
-})(compose(spacing, display));
+  }
+)(compose(spacing, display));
 
 BazaarImage.defaultProps = {
   display: "block",
