@@ -168,10 +168,11 @@ const nextConfig = {
               enforce: true,
               minSize: 0,
             },
-            // Next.js framework code - combine with common vendors
-            nextjs: {
-              name: 'nextjs',
-              test: /[\\/]node_modules[\\/](next|next-auth)[\\/]/,
+            // next-auth only — do NOT split `next` into its own chunk; that breaks
+            // internal requires (e.g. next/image → match-remote-pattern → "hasMatch is not a function").
+            nextAuth: {
+              name: 'next-auth',
+              test: /[\\/]node_modules[\\/]next-auth[\\/]/,
               chunks: 'all',
               priority: 35,
               enforce: true,
@@ -359,14 +360,34 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        source: '/shilajit',
+        destination: '/shilajit-salajeet',
+        permanent: true,
+      },
+      {
+        source: '/salajeet',
+        destination: '/shilajit-salajeet',
+        permanent: true,
+      },
+      {
         source: '/Category/:slug',
         destination: '/categories/:slug',
-        permanent: false,
+        permanent: true,
       },
       {
         source: '/Cat/:slug',
         destination: '/categories/:slug',
-        permanent: false,
+        permanent: true,
+      },
+      {
+        source: '/category',
+        destination: '/categories',
+        permanent: true,
+      },
+      {
+        source: '/category/:slug',
+        destination: '/categories/:slug',
+        permanent: true,
       },
       
       // {

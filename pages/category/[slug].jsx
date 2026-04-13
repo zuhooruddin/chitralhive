@@ -31,18 +31,18 @@ const ProductSearchResult = (props) => {
   const handleGoBack = () => router.back();
 
   const baseUrl = process.env.NEXT_PUBLIC_URL || "https://chitralhive.com";
-  const imgbaseurl = process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL || "";
+  const categoryPath = `/categories/${categoryDetail['slug'] || categoryDetail['id']}`;
 
   // Generate structured data for category page
   const categoryStructuredData = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "@id": `${baseUrl}/category/${categoryDetail['slug'] || categoryDetail['id']}`,
+    "@id": `${baseUrl}${categoryPath}`,
     "name": categoryDetail['name'],
     "description": categoryDetail['metaDescription'] && categoryDetail['metaDescription'] != "undefined" 
       ? categoryDetail['metaDescription'] 
       : `Shop authentic ${categoryDetail['name']} from Chitral Hive in Pakistan. Browse our wide collection of Chitrali ${categoryDetail['name']} products available for delivery across Pakistan.`,
-    "url": `${baseUrl}/category/${categoryDetail['slug'] || categoryDetail['id']}`,
+    "url": `${baseUrl}${categoryPath}`,
     "mainEntity": {
       "@type": "ItemList",
       "name": `${categoryDetail['name']} Products`,
@@ -70,7 +70,7 @@ const ProductSearchResult = (props) => {
         description={categoryDetail['metaDescription'] && categoryDetail['metaDescription'] != "undefined" ? categoryDetail['metaDescription'] : `Shop authentic ${categoryDetail['name']} from Chitral Hive in Pakistan. Browse our wide collection of Chitrali ${categoryDetail['name']} products. Order online and get delivered to your doorstep across all major cities in Pakistan including Karachi, Lahore, Islamabad, Rawalpindi, Peshawar, and more.`}
         metaTitle={categoryDetail['metaTitle'] && categoryDetail['metaTitle'] != "undefined" ? categoryDetail['metaTitle'] : `Buy ${categoryDetail['name']} Online in Pakistan | Chitral Hive`}
         keywords={`${categoryDetail['name']} Pakistan, Chitrali ${categoryDetail['name']}, buy ${categoryDetail['name']} online Pakistan, Chitral Hive, authentic Chitrali products, ${categoryDetail['name']} price in Pakistan, ${categoryDetail['name']} Karachi, ${categoryDetail['name']} Lahore, ${categoryDetail['name']} Islamabad, KPK ${categoryDetail['name']}`}
-        canonical={`https://chitralhive.com/category/${categoryDetail['slug'] || categoryDetail['id']}`}
+        canonical={`${baseUrl}${categoryPath}`}
         type="website"
         category={categoryDetail['name']}
       />

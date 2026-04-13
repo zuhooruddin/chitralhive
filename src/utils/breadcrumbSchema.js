@@ -182,7 +182,7 @@ export const generateCategoryBreadcrumb = (category, options = {}) => {
   return generateBreadcrumbSchema([
     { name: 'Home', url: baseUrl },
     { name: 'Categories', url: `${baseUrl}/categories` },
-    { name: category.name, url: `${baseUrl}/category/${categorySlug}` }
+    { name: category.name, url: `${baseUrl}/categories/${categorySlug}` }
   ], { baseUrl });
 };
 

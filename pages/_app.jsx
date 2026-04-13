@@ -15,6 +15,7 @@ import useSWR from 'swr'
 import axios from 'axios';
 import dynamic from 'next/dynamic';
 import GoogleAnalytics from "utils/GoogleAnalytics";
+import { sanitizeSiteName, SITE_NAME } from "utils/seoConstants";
 // Loader removed - no popup on page load
 
 // Lazy load heavy components that aren't needed immediately
@@ -139,14 +140,16 @@ const imgbaseurl=process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL
   // Ensure all values are valid to prevent React errors
   const whatsappProps = useMemo(() => {
     const phoneNumber = (data && data.length > 0 && data[0].whatsapp) ? data[0].whatsapp : '+923239119309';
-    const accountName = (data && data.length > 0 && data[0].site_name) ? data[0].site_name : 'Ecommerce';
+    const accountName = (data && data.length > 0 && data[0].site_name)
+      ? sanitizeSiteName(data[0].site_name)
+      : SITE_NAME;
     const avatar = (data && data.length > 0 && data[0].site_logo && imgbaseurl) 
       ? `${imgbaseurl}${data[0].site_logo}` 
       : '/assets/images/banners/banner-1.png';
     
     return {
       phoneNumber: phoneNumber || '+923239119309',
-      accountName: accountName || 'Ecommerce',
+      accountName: accountName || SITE_NAME,
       avatar: avatar || '/assets/images/banners/banner-1.png',
       allowEsc: true,
       allowClickAway: true,
@@ -170,16 +173,16 @@ const imgbaseurl=process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL
       <Head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta name="language" content="English" />
-        <meta name="geo.region" content="PK-KP" />
-        <meta name="geo.placename" content="Chitral" />
         <link rel="manifest" href="/site.webmanifest" />
         {/* Resource hints for faster loading - preconnect to critical origins */}
-        <link rel="preconnect" href={process.env.NEXT_PUBLIC_BACKEND_API_BASE} crossOrigin="anonymous" />
+        {process.env.NEXT_PUBLIC_BACKEND_API_BASE && (
+          <link rel="preconnect" href={process.env.NEXT_PUBLIC_BACKEND_API_BASE} crossOrigin="anonymous" />
+        )}
         <link rel="preconnect" href="https://api.chitralhive.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href={process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL} />
+        {process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL && (
+          <link rel="dns-prefetch" href={process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL} />
+        )}
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         {/* Canonical link is handled by SEO component - removed duplicate */}
       </Head>

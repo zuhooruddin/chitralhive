@@ -61,12 +61,6 @@ const ErrorContainer = styled(Box)(({ theme }) => ({
 }));
 
 const ProductDetails = (props) => {
-
-
-  console.log("Propsssssss",props)
-
-
-
   const { productDetails,ProductReviews } = props;
 
   const imgbaseurl = process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL;
@@ -78,7 +72,9 @@ const ProductDetails = (props) => {
   const [frequentlyBought, setFrequentlyBought] = useState([]);
   const router = useRouter();
 
-  const filteredReviews = ProductReviews.Reviews.filter((item) => item.itemid_id === product.id);
+  const filteredReviews = (ProductReviews?.Reviews || []).filter(
+    (item) => item.itemid_id === product.id
+  );
 
   const totalRatings = filteredReviews.reduce((total, item) => total + item.rating, 0);
   const averageRating = filteredReviews.length > 0 ? totalRatings / filteredReviews.length : 0;
@@ -87,7 +83,9 @@ const ProductDetails = (props) => {
   // Ensure we always have a valid rating value (default to 0 if none exists)
   const finalRating = roundedAverageRating || productDetails[0]["rating"] || 0;
   const finalReviewCount = filteredReviews.length || productDetails[0]["reviewCount"] || 0;
-const companyname=process.env.NEXT_PUBLIC_COMPANY_NAME
+  const companyname = process.env.NEXT_PUBLIC_COMPANY_NAME;
+  const productName = productDetails[0]["name"] || companyname || "Chitrali Product";
+  const copyFriendlyProductName = productName.replace(/^buy\s+/i, "").trim();
   const handleGoBack = () => router.back();
   const searchWords =
     process.env.NEXT_PUBLIC_URL + "/search/" + productDetails[0]["slug"];
@@ -162,118 +160,113 @@ const companyname=process.env.NEXT_PUBLIC_COMPANY_NAME
     ? productImage 
     : (productImage.startsWith('/') ? baseurl + productImage : baseurl + '/' + productImage);
 
+  const skuForSchema =
+    productDetails[0]["sku"] || productDetails[0]["aliasCode"] || "";
+  const digitsOnlySku = String(skuForSchema).replace(/\D/g, "");
+  const hasValidGtin =
+    digitsOnlySku.length >= 8 && digitsOnlySku.length <= 14;
+
   const productschema = {
     "@context": "https://schema.org",
     "@type": "Product",
     "@id": productUrl,
-    "name": productDetails[0]["name"],
-    "image": [absoluteImageUrl],
-    "description": productDetails[0]["description"] || productDetails[0]["name"],
-    "sku": productDetails[0]["sku"] || productDetails[0]["aliasCode"] || "",
-    "mpn": productDetails[0]["sku"] || productDetails[0]["aliasCode"] || "",
-    "gtin": productDetails[0]["sku"] || productDetails[0]["aliasCode"] || "",
-    "brand": {
+    name: productDetails[0]["name"],
+    image: [absoluteImageUrl],
+    description: productDetails[0]["description"] || productDetails[0]["name"],
+    sku: skuForSchema || undefined,
+    brand: {
       "@type": "Brand",
-      "name": productDetails[0]["manufacturer"] || "Chitral Hive"
+      name: productDetails[0]["manufacturer"] || "Chitral Hive",
     },
-    "category": productDetails[0]["category"] || "Chitrali Products",
-    "offers": {
+    category: productDetails[0]["category"] || "Chitrali Products",
+    offers: {
       "@type": "Offer",
-      "url": productUrl,
-      "price": productPrice.toString(),
-      "priceCurrency": "PKR",
-      "availability": productDetails[0]["stock"] && parseFloat(productDetails[0]["stock"]) > 0 
-        ? "https://schema.org/InStock" 
-        : "https://schema.org/OutOfStock",
-      "priceValidUntil": new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-      "itemCondition": "https://schema.org/NewCondition",
-      "seller": {
+      url: productUrl,
+      price: productPrice.toString(),
+      priceCurrency: "PKR",
+      availability:
+        productDetails[0]["stock"] && parseFloat(productDetails[0]["stock"]) > 0
+          ? "https://schema.org/InStock"
+          : "https://schema.org/OutOfStock",
+      priceValidUntil: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)
+        .toISOString()
+        .split("T")[0],
+      itemCondition: "https://schema.org/NewCondition",
+      seller: {
         "@type": "Organization",
-        "name": "Chitral Hive",
-        "url": baseurl
+        name: "Chitral Hive",
+        url: baseurl,
       },
-      "shippingDetails": {
+      shippingDetails: {
         "@type": "OfferShippingDetails",
-        "shippingRate": {
+        shippingRate: {
           "@type": "MonetaryAmount",
-          "value": "0",
-          "currency": "PKR"
+          value: "0",
+          currency: "PKR",
         },
-        "shippingDestination": {
+        shippingDestination: {
           "@type": "DefinedRegion",
-          "addressCountry": "PK"
+          addressCountry: "PK",
         },
-        "deliveryTime": {
+        deliveryTime: {
           "@type": "ShippingDeliveryTime",
-          "businessDays": {
+          businessDays: {
             "@type": "OpeningHoursSpecification",
-            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+            dayOfWeek: [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+            ],
           },
-          "cutoffTime": "14:00",
-          "handlingTime": {
+          cutoffTime: "14:00",
+          handlingTime: {
             "@type": "QuantitativeValue",
-            "minValue": 1,
-            "maxValue": 3,
-            "unitCode": "DAY"
+            minValue: 1,
+            maxValue: 3,
+            unitCode: "DAY",
           },
-          "transitTime": {
+          transitTime: {
             "@type": "QuantitativeValue",
-            "minValue": 3,
-            "maxValue": 7,
-            "unitCode": "DAY"
-          }
-        }
-      }
-    },
-    // Always include aggregateRating - Google requires it for product snippets
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": finalRating,
-      "reviewCount": finalReviewCount,
-      "bestRating": "5",
-      "worstRating": "1"
-    },
-    // Always include reviews array - at least one review is recommended for Google Shopping
-    "review": filteredReviews && filteredReviews.length > 0 
-      ? filteredReviews.slice(0, 10).map(review => ({
-          "@type": "Review",
-          "author": {
-            "@type": "Person",
-            "name": review.user_name || "Customer"
+            minValue: 3,
+            maxValue: 7,
+            unitCode: "DAY",
           },
-          "datePublished": review.created_at || new Date().toISOString(),
-          "reviewBody": review.comment || "Great product!",
-          "reviewRating": {
-            "@type": "Rating",
-            "ratingValue": review.rating || 5,
-            "bestRating": "5",
-            "worstRating": "1"
-          }
-        }))
-      : [
-          // Provide a default review if none exist - Google prefers products with reviews
-          {
-            "@type": "Review",
-            "author": {
-              "@type": "Person",
-              "name": "Chitral Hive"
-            },
-            "datePublished": new Date().toISOString(),
-            "reviewBody": `Authentic ${productDetails[0]["name"]} from Chitral, Pakistan. Quality guaranteed.`,
-            "reviewRating": {
-              "@type": "Rating",
-              "ratingValue": finalRating || 5,
-              "bestRating": "5",
-              "worstRating": "1"
-            }
-          }
-        ],
+        },
+      },
+    },
   };
 
-  // Clean up undefined values from schema (remove any undefined properties)
-  const cleanProductSchema = Object.fromEntries(
-    Object.entries(productschema).filter(([_, value]) => value !== undefined)
-  );
+  if (hasValidGtin) {
+    productschema.gtin = digitsOnlySku;
+  }
+
+  if (filteredReviews.length > 0 && finalReviewCount > 0) {
+    productschema.aggregateRating = {
+      "@type": "AggregateRating",
+      ratingValue: String(finalRating),
+      reviewCount: String(finalReviewCount),
+      bestRating: "5",
+      worstRating: "1",
+    };
+    productschema.review = filteredReviews.slice(0, 10).map((review) => ({
+      "@type": "Review",
+      author: {
+        "@type": "Person",
+        name: review.user_name || "Customer",
+      },
+      datePublished: review.created_at || new Date().toISOString(),
+      reviewBody: review.comment || "Verified purchase review.",
+      reviewRating: {
+        "@type": "Rating",
+        ratingValue: review.rating || 5,
+        bestRating: "5",
+        worstRating: "1",
+      },
+    }));
+  }
 
   // const bookschema = {
 
@@ -327,6 +320,10 @@ const companyname=process.env.NEXT_PUBLIC_COMPANY_NAME
   if (productDetails[0]["sku"]) {
     productschema.sku = productDetails[0]["sku"];
   }
+
+  const cleanProductSchema = Object.fromEntries(
+    Object.entries(productschema).filter(([_, value]) => value !== undefined)
+  );
 
   // Generate professional BreadcrumbList schema for Google Search Console
   const breadcrumbSchema = generateProductBreadcrumb(
@@ -401,30 +398,24 @@ const companyname=process.env.NEXT_PUBLIC_COMPANY_NAME
       )} */}
 
       <SEO
-        title={
-          productDetails[0]["name"]
-            ? productDetails[0]["name"]
-            : companyname
-        }
+        title={productName}
         description={
           productDetails[0]["metaDescription"] &&
           productDetails[0]["metaDescription"] != "undefined"
             ? productDetails[0]["metaDescription"]
-            : productDetails[0]["name"]
-            ? "Buy authentic " +
-              productDetails[0]["name"] +
-              " online in Pakistan from Chitral Hive. Shop Chitrali products online and get it delivered to your doorstep across Pakistan."
+            : productName
+            ? `Buy authentic ${copyFriendlyProductName} online in Pakistan from Chitral Hive. Shop genuine Chitrali products with delivery across Pakistan.`
             : "Shop authentic Chitrali products online in Pakistan at Chitral Hive"
         }
         metaTitle={
           productDetails[0]["metaTitle"] &&
           productDetails[0]["metaTitle"] != "undefined"
             ? productDetails[0]["metaTitle"]
-            : productDetails[0]["name"]
-            ? "Buy " + productDetails[0]["name"] + " Online | Chitral Hive"
+            : productName
+            ? `${copyFriendlyProductName} in Pakistan | Chitral Hive`
             : companyname
         }
-        keywords={`${productDetails[0]["name"]} Pakistan, Chitrali products Pakistan, Chitral Hive, buy ${productDetails[0]["name"]} online Pakistan, authentic Chitrali products, Chitral specialties, ${productDetails[0]["name"]} price in Pakistan, buy ${productDetails[0]["name"]} in Karachi, buy ${productDetails[0]["name"]} in Lahore`}
+        keywords={`${copyFriendlyProductName} Pakistan, Chitrali products Pakistan, Chitral Hive, buy ${copyFriendlyProductName} online Pakistan, authentic Chitrali products, Chitral specialties, ${copyFriendlyProductName} price in Pakistan, buy ${copyFriendlyProductName} in Karachi, buy ${copyFriendlyProductName} in Lahore`}
         canonical={`${baseurl}${slugbaseurl}${productDetails[0]["slug"]}`}
         image={imgbaseurl + productDetails[0]["imgUrl"]}
         type="product"
@@ -487,12 +478,7 @@ export async function getServerSideProps(context) {
 
   const ProductReviews=await api.getReviews()
   if (!productDetails || !productDetails.length) {
-    return {
-      redirect: {
-        destination: "/search/" + slug,
-        permanent: false,
-      },
-    };
+    return { notFound: true };
   }
   return {
     props: { productDetails,ProductReviews },

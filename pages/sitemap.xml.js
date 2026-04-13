@@ -1,6 +1,6 @@
 // pages/sitemap.xml.js
 
-
+import { SHILAJIT_LANDING_PATH } from "../src/utils/seoConstants";
 
 // Basic XML escape to avoid invalid entities like '&' in titles/captions/URLs
 function xmlEscape(value) {
@@ -51,6 +51,33 @@ function generateSiteMap(pages) {
  `;
 }
 
+function buildImageUrl(rawImagePath, imageBaseUrl, apiBase) {
+  if (!rawImagePath) return null;
+
+  if (/^https?:\/\//i.test(rawImagePath)) {
+    return rawImagePath;
+  }
+
+  const cleanedPath = String(rawImagePath).replace(/^\/+/, "");
+  const normalizedImageBase = (imageBaseUrl || "").replace(/\/+$/, "");
+  const normalizedApiBase = (apiBase || "").replace(/\/+$/, "");
+
+  if (cleanedPath.startsWith("api/media/") || cleanedPath.startsWith("media/")) {
+    const relativePath = cleanedPath.replace(/^api\/media\//, "media/");
+    return `${normalizedApiBase}/${relativePath}`;
+  }
+
+  if (cleanedPath.startsWith("item_image/")) {
+    return `${normalizedApiBase}/media/${cleanedPath}`;
+  }
+
+  if (cleanedPath.startsWith("api/")) {
+    return `${normalizedImageBase}/${cleanedPath}`;
+  }
+
+  return `${normalizedImageBase}/${cleanedPath}`;
+}
+
 function SiteMap() {
   // getServerSideProps will do the heavy lifting
 }
@@ -77,6 +104,24 @@ export async function getServerSideProps({ res }) {
       lastmod: new Date().toISOString(),
       changefreq: 'daily',
       priority: '0.9',
+    },
+    {
+      loc: `${baseUrl}${SHILAJIT_LANDING_PATH}`,
+      lastmod: new Date().toISOString(),
+      changefreq: 'weekly',
+      priority: '0.95',
+    },
+    {
+      loc: `${baseUrl}/faq`,
+      lastmod: new Date().toISOString(),
+      changefreq: 'monthly',
+      priority: '0.75',
+    },
+    {
+      loc: `${baseUrl}/blog`,
+      lastmod: new Date().toISOString(),
+      changefreq: 'weekly',
+      priority: '0.75',
     },
     {
       loc: `${baseUrl}/brands`,
@@ -159,7 +204,7 @@ export async function getServerSideProps({ res }) {
     if (categories && categories.length > 0) {
       // Add category pages
       const categoryPages = categories.map((category) => ({
-        loc: `${baseUrl}/category/${category.slug || category.id}`,
+        loc: `${baseUrl}/categories/${category.slug || category.id}`,
         lastmod: category.updated_at || category.updatedAt || new Date().toISOString(),
         changefreq: 'weekly',
         priority: '0.8',
@@ -187,17 +232,17 @@ export async function getServerSideProps({ res }) {
               : []));
     
     if (items && items.length > 0) {
-      const imgBaseUrl = process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL || `${apiBase}/media/`;
+      const imgBaseUrl = process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL || apiBase;
       const allProductPages = items.map((item) => ({
         loc: `${baseUrl}/product/${item.slug || item.id}`,
         lastmod: item.updated_at || item.updatedAt || item.created_at || item.createdAt || new Date().toISOString(),
         changefreq: 'weekly',
         priority: '0.7',
         images: item.imgUrl || item.image ? [{
-          url: (imgBaseUrl + (item.imgUrl || item.image)).replace(/\/+/g, '/').replace(/^https?:\//, 'https://'),
+          url: buildImageUrl(item.imgUrl || item.image, imgBaseUrl, apiBase),
           title: item.name || 'Chitrali Product',
           caption: item.description || item.name ? `Buy ${item.name} from Chitral Hive - Authentic Chitrali Products` : 'Authentic Chitrali Products'
-        }] : []
+        }].filter((image) => image.url) : []
       }));
       
       dynamicPages = [...dynamicPages, ...allProductPages];
@@ -219,17 +264,17 @@ export async function getServerSideProps({ res }) {
           : []);
     
     if (products && products.length > 0) {
-      const imgBaseUrl = process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL || `${apiBase}/media/`;
+      const imgBaseUrl = process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL || apiBase;
       const productPages = products.map((product) => ({
         loc: `${baseUrl}/product/${product.slug || product.id}`,
         lastmod: product.updated_at || product.updatedAt || product.created_at || product.createdAt || new Date().toISOString(),
         changefreq: 'weekly',
         priority: '0.8',
         images: product.imgUrl || product.image ? [{
-          url: (imgBaseUrl + (product.imgUrl || product.image)).replace(/\/+/g, '/').replace(/^https?:\//, 'https://'),
+          url: buildImageUrl(product.imgUrl || product.image, imgBaseUrl, apiBase),
           title: product.name || 'Chitrali Product',
           caption: product.description || product.name ? `Buy ${product.name} from Chitral Hive` : 'Chitrali Product'
-        }] : []
+        }].filter((image) => image.url) : []
       }));
       
       // Only add if not already in dynamicPages (avoid duplicates)

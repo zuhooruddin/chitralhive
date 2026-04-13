@@ -1,6 +1,13 @@
 import Head from "next/head";
 import React from "react";
 import { useRouter } from "next/router";
+import {
+  DEFAULT_KEYWORD_SUFFIX,
+  DEFAULT_META_DESCRIPTION,
+  SITE_NAME,
+  SITE_URL,
+  sanitizeSiteName,
+} from "utils/seoConstants";
 
 const SEO = ({ 
   title, 
@@ -27,11 +34,13 @@ const SEO = ({
   reviewCount
 }) => {
   const router = useRouter();
-  const baseUrl = process.env.NEXT_PUBLIC_URL || "https://chitralhive.com";
-  const defaultDescription = "Shop authentic Chitrali products online in Pakistan at Chitral Hive. Discover traditional crafts, local specialties, handmade items, and unique products from Chitral, Khyber Pakhtunkhwa. Buy Chitrali products online in Pakistan and get them delivered to your doorstep across all major cities including Karachi, Lahore, Islamabad, Rawalpindi, Peshawar, and more.";
-  const defaultKeywords = "Chitrali products Pakistan, Chitral Hive, buy Chitrali products online Pakistan, authentic Chitrali crafts, traditional Chitrali items, Chitral specialties, handmade Chitrali products, Chitral online store Pakistan, Chitrali food Pakistan, Chitrali handicrafts, Chitral culture, Pakistan products, online shopping Pakistan, Chitral honey Pakistan, Chitrali dry fruits, Chitrali shawls Pakistan, KPK products, Khyber Pakhtunkhwa products, Chitral delivery Pakistan, online store Pakistan";
+  const baseUrl = SITE_URL;
+  const defaultDescription = DEFAULT_META_DESCRIPTION;
+  const defaultKeywords =
+    "Chitrali products Pakistan, Chitral Hive, buy Chitrali products online Pakistan, authentic Chitrali crafts, traditional Chitrali items, Chitral specialties, handmade Chitrali products, Chitral online store Pakistan, Chitrali food Pakistan, Chitrali handicrafts, Chitral culture, Pakistan products, online shopping Pakistan, Chitral honey Pakistan, Chitrali dry fruits, Chitrali shawls Pakistan, KPK products, Khyber Pakhtunkhwa products, Chitral delivery Pakistan, online store Pakistan" +
+    DEFAULT_KEYWORD_SUFFIX;
   
-  sitename = process.env.NEXT_PUBLIC_COMPANY_NAME || "Chitral Hive";
+  sitename = sanitizeSiteName(process.env.NEXT_PUBLIC_COMPANY_NAME) || SITE_NAME;
   
   // Helper function to clean duplicate site names from title
   const cleanDuplicateSiteNames = (text) => {
@@ -46,11 +55,11 @@ const SEO = ({
     ];
     
     duplicatePatterns.forEach(pattern => {
-      cleaned = cleaned.replace(pattern, ' | ChitralHive');
+      cleaned = cleaned.replace(pattern, ` | ${SITE_NAME}`);
     });
     
     // Count occurrences of each site name variation
-    const variations = ['ChitralHive', 'Chitral Hive', sitename];
+    const variations = ['ChitralHive', 'Chitral Hive', SITE_NAME, sitename];
     const counts = variations.map(v => (cleaned.match(new RegExp(v.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi')) || []).length);
     const maxCount = Math.max(...counts);
     
@@ -88,7 +97,7 @@ const SEO = ({
       });
       // Add single site name at the end if not present
       if (!variations.some(v => cleaned.toLowerCase().endsWith(v.toLowerCase()))) {
-        cleaned = `${cleaned} | ChitralHive`;
+        cleaned = `${cleaned} | ${SITE_NAME}`;
       }
     }
     
@@ -96,7 +105,7 @@ const SEO = ({
   };
   
   // Helper function to truncate title to 75 characters (SEO best practice)
-  const truncateTitle = (text, maxLength = 75) => {
+  const truncateTitle = (text, maxLength = 110) => {
     if (!text || text.length <= maxLength) return text;
     // Truncate at word boundary if possible
     const truncated = text.substring(0, maxLength);
@@ -108,7 +117,7 @@ const SEO = ({
   };
   
   // Check if metaTitle already contains sitename to avoid duplication
-  const siteNameVariations = [sitename, 'ChitralHive', 'Chitral Hive', 'ChitralHive.com'];
+  const siteNameVariations = [sitename, SITE_NAME, 'ChitralHive', 'Chitral Hive', 'ChitralHive.com'];
   const alreadyContainsSiteName = metaTitle && siteNameVariations.some(
     name => metaTitle.toLowerCase().includes(name.toLowerCase())
   );
@@ -122,18 +131,22 @@ const SEO = ({
     titleBase = cleanDuplicateSiteNames(metaTitle);
     // If after cleaning it doesn't have a site name, add it
     if (!siteNameVariations.some(name => titleBase.toLowerCase().includes(name.toLowerCase()))) {
-      titleBase = `${titleBase} | ChitralHive`;
+      titleBase = `${titleBase} | ${SITE_NAME}`;
     }
   } else {
     // Add sitename with separator
-    titleBase = `${metaTitle} | ChitralHive`;
+    titleBase = `${metaTitle} | ${SITE_NAME}`;
   }
   
-  const fullTitle = truncateTitle(titleBase, 75);
+  const fullTitle = truncateTitle(titleBase, 110);
+  const robotsContent = noindex
+    ? "noindex, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
   
   const metaDesc = description || defaultDescription;
   const metaKeywords = keywords || defaultKeywords;
-  const canonicalUrl = canonical || `${baseUrl}${router.asPath}`;
+  const pathOnly = router.asPath.split("?")[0].split("#")[0] || "/";
+  const canonicalUrl = canonical || `${baseUrl}${pathOnly === "/" ? "" : pathOnly}`;
   const ogImage = image || `${baseUrl}/images/og-image.jpg`;
 
   // Determine Open Graph type based on page type
@@ -146,12 +159,12 @@ const SEO = ({
       <meta name="title" content={fullTitle} />
       <meta name="description" content={metaDesc} />
       <meta name="keywords" content={metaKeywords} />
-      <meta name="author" content={author || "Chitral Hive"} />
-      <meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"} />
-      <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-      <meta name="bingbot" content="index, follow" />
-      <meta name="slurp" content="index, follow" />
-      <meta name="duckduckbot" content="index, follow" />
+      <meta name="author" content={author || SITE_NAME} />
+      <meta name="robots" content={robotsContent} />
+      <meta name="googlebot" content={robotsContent} />
+      <meta name="bingbot" content={noindex ? "noindex, follow" : "index, follow"} />
+      <meta name="slurp" content={noindex ? "noindex, follow" : "index, follow"} />
+      <meta name="duckduckbot" content={noindex ? "noindex, follow" : "index, follow"} />
       <meta name="language" content="English, Urdu" />
       <meta name="revisit-after" content="7 days" />
       <meta name="distribution" content="Pakistan" />

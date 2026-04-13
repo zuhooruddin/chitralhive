@@ -590,7 +590,7 @@ const ProductIntro = ({ product, slug, total, average, category }) => {
             {/* Category Badge */}
             {(categoryName || category || product.category) && (
               <Box mb={2}>
-                <Link href={`/category/${categorySlug || product.categorySlug || ''}`} passHref>
+                <Link href={`/categories/${categorySlug || product.categorySlug || ''}`} passHref>
                   <a style={{ textDecoration: 'none' }}>
                     <CategoryBadge
                       icon={<Category sx={{ fontSize: 16 }} />}

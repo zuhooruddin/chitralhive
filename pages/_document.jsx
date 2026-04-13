@@ -4,8 +4,6 @@ import createEmotionServer from "@emotion/server/create-instance";
 import Document, { Head, Html, Main, NextScript } from "next/document";
 import React from "react";
 import createEmotionCache from "../src/createEmotionCache";
-import OpenGraphTags from "utils/OpenGraphTags";
-import GoogleAnalytics from "utils/GoogleAnalytics";
 
 export default class Bazaar extends Document {
   render() {
@@ -103,7 +101,7 @@ export default class Bazaar extends Document {
             }}
           />
           
-          <OpenGraphTags />
+          {/* Open Graph / Twitter: per-page via components/SEO.jsx (avoids duplicate/wrong og:url from document) */}
           {/* GoogleAnalytics is now loaded client-side only to improve performance */}
         </Head>
 

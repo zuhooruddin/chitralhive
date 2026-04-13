@@ -62,9 +62,10 @@ const ProductBundles = (data) => {
   return data && data.productbundles ?  (
     <ShopLayout1>
       <SEO 
-        title="Schools" 
-        description={"Shop authentic Chitrali products online at Chitral Hive. Discover traditional crafts, local specialties, and unique items from Chitral. Order now and get it delivered to your doorstep."}
-        metaTitle="products"
+        title="Product Bundles"
+        description="Browse curated Chitrali product bundles on Chitral Hive, including authentic foods, wellness products, and specialty gift packs from Chitral."
+        metaTitle="Chitrali Product Bundles | Chitral Hive"
+        canonical="https://chitralhive.com/products"
       />
   
       <div style={{ margin: "50px 10px 20px 20px" }}>

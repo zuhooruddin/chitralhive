@@ -384,7 +384,7 @@ const server_ip=process.env.NEXT_PUBLIC_BACKEND_API_BASE
                 <CallOutlined className="icon" fontSize="small" sx={{ color: 'inherit' }} />
                 <Span className="title" sx={{ color: 'inherit' }}>
   <a href={`tel:${topbardata ? topbardata[0].top_bar_left_phone : ''}`} style={{ color: 'inherit', textDecoration: 'none' }}>
-    {topbardata ? topbardata[0].top_bar_left_phone : '+923'}
+    {topbardata ? topbardata[0].top_bar_left_phone : ''}
   </a>
 </Span>
               </FlexBox>
@@ -393,7 +393,7 @@ const server_ip=process.env.NEXT_PUBLIC_BACKEND_API_BASE
                 <MailOutline className="icon" fontSize="small" sx={{ color: 'inherit' }} />
                 <Span className="title" sx={{ color: 'inherit' }}>
                   <a href={`mailto:${topbardata?topbardata[0].top_bar_left_email:''}`} style={{ color: 'inherit', textDecoration: 'none' }}>
-                    {topbardata?topbardata[0].top_bar_left_email:'email@company.com'}
+                    {topbardata?topbardata[0].top_bar_left_email:''}
                   </a>
                 </Span>
               </FlexBox>
@@ -530,8 +530,8 @@ const server_ip=process.env.NEXT_PUBLIC_BACKEND_API_BASE
               <FlexBox alignItems="center">
                 <CallOutlined className="icon" fontSize="small" sx={{ color: 'inherit' }} />
                 <Span className="title" sx={{ color: 'inherit' }}>
-                  <a href={topbardata?topbardata[0].top_bar_left_phone:''} style={{ color: 'inherit', textDecoration: 'none' }}>
-                    {topbardata ? topbardata[0].top_bar_left_phone : '+923'}
+                  <a href={`tel:${topbardata?topbardata[0].top_bar_left_phone:''}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                    {topbardata ? topbardata[0].top_bar_left_phone : ''}
                   </a>
                 </Span>
               </FlexBox>
@@ -540,7 +540,7 @@ const server_ip=process.env.NEXT_PUBLIC_BACKEND_API_BASE
                 <MailOutline className="icon" fontSize="small" sx={{ color: 'inherit' }} />
                 <Span className="title" sx={{ color: 'inherit' }}>
                   <a href={`mailto:${topbardata?topbardata[0].top_bar_left_email:''}`} style={{ color: 'inherit', textDecoration: 'none' }}>
-                    {topbardata?topbardata[0].top_bar_left_email:'email@company.com'}
+                    {topbardata?topbardata[0].top_bar_left_email:''}
                   </a>
                 </Span>
               </FlexBox>

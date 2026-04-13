@@ -9,6 +9,12 @@ import React, { useState, useEffect, useMemo } from "react";
 import apiNav from "utils/api/market-2";
 import api from "utils/api/fashion-shop-2";
 import LazySection from "components/LazySection";
+import {
+  DEFAULT_META_DESCRIPTION,
+  SHILAJIT_KEYWORD_PHRASES,
+  SHILAJIT_LANDING_PATH,
+  SITE_URL,
+} from "utils/seoConstants";
 
 // Lazy load heavy components for better code splitting
 // Only Section1 needs SSR (above the fold), others can load client-side
@@ -58,7 +64,7 @@ const Section12 = dynamic(() => import("pages-sections/market-2/Section12"), {
 
 // Generate structured data for homepage
 const getHomePageStructuredData = (generalSetting) => {
-  const baseUrl = "https://chitralhive.com";
+  const baseUrl = SITE_URL.replace(/\/$/, "");
   const siteName = generalSetting && generalSetting.length > 0 ? generalSetting[0].site_name : "Chitral Hive";
   const siteDescription = generalSetting && generalSetting.length > 0 ? generalSetting[0].site_description : "Shop authentic Chitrali products online at Chitral Hive";
   
@@ -149,22 +155,22 @@ const getHomePageStructuredData = (generalSetting) => {
           "@type": "SearchAction",
           "target": {
             "@type": "EntryPoint",
-            "urlTemplate": `${baseUrl}/search?q={search_term_string}`
+            "urlTemplate": `${baseUrl}/search/{search_term_string}`
           },
           "query-input": "required name=search_term_string"
         },
         "mainEntity": [
           {
             "@type": "WebPage",
-            "@id": `${baseUrl}/category/chitrali-honey#webpage`,
-            "url": `${baseUrl}/category/chitrali-honey`,
+            "@id": `${baseUrl}/categories/chitrali-honey#webpage`,
+            "url": `${baseUrl}/categories/chitrali-honey`,
             "name": "Chitrali Products - Shop All Products",
             "description": "Browse our complete collection of authentic Chitrali products including dry fruits, honey, herbs, spices, and traditional items from Chitral, Pakistan."
           },
           {
             "@type": "WebPage",
-            "@id": `${baseUrl}/category/chitrali-dry-fruits#webpage`,
-            "url": `${baseUrl}/category/chitrali-dry-fruits`,
+            "@id": `${baseUrl}/categories/chitrali-dry-fruits#webpage`,
+            "url": `${baseUrl}/categories/chitrali-dry-fruits`,
             "name": "Product Categories - Chitrali Products",
             "description": "Explore all categories of Chitrali products including dry fruits, honey, herbs, spices, nuts, and more authentic items from Chitral."
           },
@@ -218,14 +224,20 @@ const getHomePageStructuredData = (generalSetting) => {
           {
             "@type": "SiteNavigationElement",
             "name": "Chitrali Products",
-            "url": `${baseUrl}/category/chitrali-products`,
+            "url": `${baseUrl}/categories/chitrali-products`,
             "description": "Authentic Chitrali products from Chitral, Pakistan"
           },
           {
             "@type": "SiteNavigationElement",
             "name": "Dry Fruits",
-            "url": `${baseUrl}/category/dry-fruits`,
+            "url": `${baseUrl}/categories/chitrali-dry-fruits`,
             "description": "Premium Chitrali dry fruits and nuts"
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "name": "Shilajit (Salajeet)",
+            "url": `${baseUrl}${SHILAJIT_LANDING_PATH}`,
+            "description": "Pure Himalayan Shilajit and Salajeet from Chitral — buy online in Pakistan"
           },
           {
             "@type": "SiteNavigationElement",
@@ -275,6 +287,14 @@ const getHomePageStructuredData = (generalSetting) => {
               "@type": "Answer",
               "text": "Yes, all products at Chitral Hive are 100% authentic and sourced directly from Chitral. We work with local artisans and suppliers to bring you genuine Chitrali products."
             }
+          },
+          {
+            "@type": "Question",
+            "name": "Where can I buy pure Shilajit (Salajeet) online in Pakistan?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Chitral Hive offers authentic Himalayan Shilajit — also called Salajeet (سلاجیت) in Urdu — sourced from the Chitral region. You can order online for delivery across Pakistan including Karachi, Lahore, Islamabad, Rawalpindi, and Peshawar. See our Shilajit guide and shop listings for current prices and purity details."
+            }
           }
         ]
       }
@@ -317,9 +337,9 @@ const IndexPage = (props) => {
     >
       <SEO
         title={GeneralSettingMemo&&GeneralSettingMemo.length>0?GeneralSettingMemo[0].site_name:'Discover Authentic Chitrali Products - Chitral Hive'}
-        description={GeneralSettingMemo&&GeneralSettingMemo.length>0?GeneralSettingMemo[0].site_description:'Shop authentic Chitrali products online in Pakistan. Premium dry fruits, pure honey, traditional herbs, and handmade crafts from Chitral. Free delivery across Pakistan. Buy Chitrali almonds, apricots, walnuts, and more at best prices.'}
+        description={GeneralSettingMemo&&GeneralSettingMemo.length>0?GeneralSettingMemo[0].site_description:DEFAULT_META_DESCRIPTION}
         metaTitle={GeneralSettingMemo&&GeneralSettingMemo.length>0?GeneralSettingMemo[0].site_metatitle:'Chitral Hive - Authentic Chitrali Dry Fruits, Honey & Traditional Products Online Pakistan'}
-        keywords="buy Chitrali dry fruits online, Chitrali almonds Pakistan, Chitrali apricots online, Chitrali honey price, Chitrali walnuts, buy dry fruits online Pakistan, Chitrali products online, authentic Chitrali honey, Chitrali dry fruits delivery, Chitrali nuts online, Chitrali recipes, Chitrali culture, Chitrali traditional food, Chitrali herbs, Chitrali spices, Chitrali handicrafts, KPK dry fruits, online dry fruits Pakistan, premium dry fruits Pakistan, organic Chitrali products"
+        keywords={`buy Chitrali dry fruits online, Chitrali almonds Pakistan, Chitrali apricots online, Chitrali honey price, Chitrali walnuts, buy dry fruits online Pakistan, Chitrali products online, authentic Chitrali honey, Chitrali dry fruits delivery, Chitrali nuts online, Chitrali recipes, Chitrali culture, Chitrali traditional food, Chitrali herbs, Chitrali spices, Chitrali handicrafts, KPK dry fruits, online dry fruits Pakistan, premium dry fruits Pakistan, organic Chitrali products, ${SHILAJIT_KEYWORD_PHRASES}`}
         canonical="https://chitralhive.com"
       />
       <StructuredData data={getHomePageStructuredData(GeneralSettingMemo)} />

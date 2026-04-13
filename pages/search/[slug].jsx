@@ -14,18 +14,42 @@ import { FlexBox } from "components/flex-box";
 import ShopLayout1 from "components/layouts/ShopLayout1";
 import SearchCard1List from "components/products/SearchCard1List";
 import SearchCard9List from "components/products/SearchCard9List";
-import { H5,H3, Paragraph } from "components/Typography";
+import { H1, Paragraph } from "components/Typography";
 import { useCallback, useState } from "react";
 import api from "utils/api/market-2";
+import { SHILAJIT_KEYWORD_PHRASES, SITE_URL } from "utils/seoConstants";
 
 const ProductSearchResult = (props) => {
   const {catSlug,ProductReviews} = props;
   const [view, setView] = useState("grid");
   const downMd = useMediaQuery((theme) => theme.breakpoints.down("md"));
   const toggleView = useCallback((v) => () => setView(v), []);
+
+  const base = SITE_URL.replace(/\/$/, "");
+  const slugLower = String(catSlug || "").toLowerCase();
+  const isShilajitCluster =
+    slugLower.includes("shilajit") || slugLower.includes("salajeet");
+  const canonicalSearch = `${base}/search/${encodeURIComponent(catSlug || "")}`;
+
   return (
     <ShopLayout1>
-    
+      <SEO
+        title={isShilajitCluster ? "Shilajit / Salajeet search" : "Search"}
+        metaTitle={
+          isShilajitCluster
+            ? `Buy Shilajit (Salajeet) Online — Search | Chitral Hive`
+            : `Search “${catSlug}” | Chitral Hive`
+        }
+        description={
+          isShilajitCluster
+            ? "Browse Shilajit and Salajeet products on Chitral Hive. Authentic Himalayan-associated resin, PKR pricing, delivery across Pakistan."
+            : `Search results for “${catSlug}” — authentic Chitrali products online at Chitral Hive, Pakistan.`
+        }
+        canonical={canonicalSearch}
+        keywords={isShilajitCluster ? SHILAJIT_KEYWORD_PHRASES : undefined}
+        noindex
+      />
+
       <Container
         sx={{
           mt: 4,
@@ -48,7 +72,9 @@ const ProductSearchResult = (props) => {
           }}
         >
           <Box>
-            <H5>Searching for “ {catSlug} ”</H5>
+            <H1 fontSize="16px" fontWeight={600} lineHeight={1.5}>
+              Searching for “ {catSlug} ”
+            </H1>
             {/* <Paragraph color="grey.600">{categoryDetail['title']?searchCategory.length:0} results found</Paragraph> */}
           </Box>
 
