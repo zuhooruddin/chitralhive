@@ -8,7 +8,6 @@ import "nprogress/nprogress.css";
 import { Fragment, useEffect, useMemo } from "react";
 // Lazy load heavy CSS to improve initial load - only load when needed
 import MuiTheme from "theme/MuiTheme";
-import "../src/fake-db";
 import {SessionProvider}  from "next-auth/react";
 import { AuthenticationProvider } from '../context/AuthenticationContext'
 import useScrollRestoration from "../src/utils/useScrollRestoration";
@@ -59,6 +58,12 @@ const App = ({ router, Component, pageProps: { session, ...pageProps } }) => {
   }
 
   useEffect(() => {
+    // Only enable mock API in development.
+    // In production, this adds significant JS and hurts TBT.
+    if (process.env.NODE_ENV !== "production") {
+      import("../src/fake-db");
+    }
+
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector("#jss-server-side");
 
