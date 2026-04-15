@@ -43,11 +43,30 @@ export const fetchPublishedBlogs = async () => {
 
 const DEFAULT_BLOG_PAGE_SIZE = 12;
 
-export const fetchPublishedBlogsPaged = async (page = 1, pageSize = DEFAULT_BLOG_PAGE_SIZE) => {
+export const fetchPublishedBlogMeta = async () => {
+  const response = await fetch(`${getBackendApiBase()}getPublishedBlogMeta`);
+
+  if (!response.ok) {
+    throw new Error(`Unable to load blog meta: ${response.status}`);
+  }
+
+  const data = await response.json();
+  return Array.isArray(data.categories) ? data.categories : [];
+};
+
+export const fetchPublishedBlogsPaged = async (
+  page = 1,
+  pageSize = DEFAULT_BLOG_PAGE_SIZE,
+  category = ""
+) => {
   const params = new URLSearchParams({
     page: String(Math.max(1, page)),
     page_size: String(pageSize),
   });
+  const cat = String(category || "").trim();
+  if (cat && cat.toLowerCase() !== "all") {
+    params.set("category", cat);
+  }
   const response = await fetch(`${getBackendApiBase()}getPublishedBlogs?${params.toString()}`);
 
   if (!response.ok) {
