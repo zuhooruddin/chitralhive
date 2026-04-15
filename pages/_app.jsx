@@ -1,6 +1,4 @@
-// Package root (index.css via "main") — avoids Webpack failing on `exports` subpaths like `/wght.css` on some servers
-import "@fontsource-variable/plus-jakarta-sans";
-import "@fontsource-variable/outfit";
+import "../styles/fonts.css";
 import RTL from "components/RTL";
 import { AppProvider } from "contexts/AppContext";
 import SettingsProvider from "contexts/SettingContext";

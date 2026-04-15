@@ -30,8 +30,6 @@
     "@emotion/react": "^11.5.0",
     "@emotion/server": "^11.4.0",
     "@emotion/styled": "^11.3.0",
-    "@fontsource-variable/outfit": "^5.2.8",
-    "@fontsource-variable/plus-jakarta-sans": "^5.2.8",
     "@mui/icons-material": "^5.0.4",
     "@mui/lab": "^5.0.0-alpha.51",
     "@mui/material": "^5.0.4",

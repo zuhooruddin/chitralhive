@@ -3,7 +3,7 @@
    A World-Class E-Commerce Experience
    ======================================== */
 
-/* Plus Jakarta Sans + Outfit: self-hosted via Fontsource in _app.jsx (immutable /_next/static cache) */
+/* Plus Jakarta Sans + Outfit: @font-face in styles/fonts.css (files in public/fonts), imported from _app.jsx */
 
 /* CSS Variables for Modern Design System */
 :root,
