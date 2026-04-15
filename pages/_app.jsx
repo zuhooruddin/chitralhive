@@ -1,3 +1,4 @@
+import "../styles/globals.css";
 import "../styles/fonts.css";
 import RTL from "components/RTL";
 import { AppProvider } from "contexts/AppContext";
@@ -17,7 +18,6 @@ import useScrollRestoration from "../src/utils/useScrollRestoration";
 import dynamic from 'next/dynamic';
 import GoogleAnalytics from "utils/GoogleAnalytics";
 import { sanitizeSiteName, SITE_NAME } from "utils/seoConstants";
-import Script from "next/script";
 // Loader removed - no popup on page load
 
 // Lazy load heavy components that aren't needed immediately
@@ -154,6 +154,22 @@ const App = ({
     };
   }, []);
 
+  // Load AdSense without Next/Script to avoid `data-nscript` warnings
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const client = process.env.NEXT_PUBLIC_ADSENSE_CLIENT;
+    if (!client) return;
+
+    const existing = document.querySelector('script[src*="pagead/js/adsbygoogle.js"]');
+    if (existing) return;
+
+    const s = document.createElement("script");
+    s.async = true;
+    s.crossOrigin = "anonymous";
+    s.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${client}`;
+    document.head.appendChild(s);
+  }, []);
+
   const imgbaseurl = (process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL || "").replace(/\/?$/, "/");
 
   useEffect(() => {
@@ -208,16 +224,6 @@ const App = ({
               {/* Resource hints live in `_document.jsx` to avoid duplicates */}
               {/* Canonical link is handled by SEO component - removed duplicate */}
             </Head>
-
-            {process.env.NEXT_PUBLIC_ADSENSE_CLIENT ? (
-              <Script
-                id="adsense-script"
-                strategy="afterInteractive"
-                async
-                crossOrigin="anonymous"
-                src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_CLIENT}`}
-              />
-            ) : null}
             {/* Loader removed - no popup on page load */}
 
             {/* Lazy load FloatingWhatsApp - ssr: false ensures client-side only */}
