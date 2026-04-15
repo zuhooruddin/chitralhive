@@ -12,17 +12,22 @@ const Section9 = ({ data, products = [] }) => {
   const { data: session} = useSession()
 
   const width = useWindowSize();
-  const [visibleSlides, setVisibleSlides] = useState(4);
+  const getVisibleSlides = (w) => {
+    if (w < 426) return 1;
+    if (w < 650) return 2;
+    if (w < 1024) return 3;
+    if (w < 1200) return 4;
+    return 5;
+  };
+
+  // Initialize from current width to avoid layout shift on mobile
+  const [visibleSlides, setVisibleSlides] = useState(() => getVisibleSlides(width));
   const [selected, setSelected] = useState("new");
   const newArrivalProducts = products.filter((product) => product?.isNewArrival);
   const featuredProducts = products.filter((product) => product?.isFeatured);
 
   useEffect(() => {
-    if (width < 426) setVisibleSlides(1);
-    else if (width < 650) setVisibleSlides(2);
-    else if (width < 1024) setVisibleSlides(3);
-    else if (width < 1200) setVisibleSlides(4);
-    else setVisibleSlides(5);
+    setVisibleSlides(getVisibleSlides(width));
   }, [width]);
 
   const handleSelected = (item) => () => setSelected(item);
@@ -70,8 +75,13 @@ const Section9 = ({ data, products = [] }) => {
           visibleSlides={visibleSlides}
           sx={carouselStyled}
         >
-          {newArrivalProducts.map((product) => (
-            <ProductCard20 product={product} key={product.id} data={data} wishList={session && session.wishlist &&  session.wishlist.length>0 ? session.wishlist : null}
+          {newArrivalProducts.map((product, index) => (
+            <ProductCard20
+              product={product}
+              key={product.id}
+              data={data}
+              wishList={session && session.wishlist &&  session.wishlist.length>0 ? session.wishlist : null}
+              priority={index === 0}
             />
           ))}
         </Carousel>
@@ -83,8 +93,13 @@ const Section9 = ({ data, products = [] }) => {
           visibleSlides={visibleSlides}
           sx={carouselStyled}
         >
-          {featuredProducts.map((product) => (
-            <ProductCard20 product={product} key={product.id} data={data} wishList={session && session.wishlist &&  session.wishlist.length>0 ? session.wishlist : null}
+          {featuredProducts.map((product, index) => (
+            <ProductCard20
+              product={product}
+              key={product.id}
+              data={data}
+              wishList={session && session.wishlist &&  session.wishlist.length>0 ? session.wishlist : null}
+              priority={index === 0}
             />
           ))}
         </Carousel>

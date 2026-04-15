@@ -32,12 +32,17 @@ const Section5 = ({ products,data,SectionName,slug,productreviews}) => {
     { category_name: "Sub-Category 2", category_slug: "category-2" },
     // Add more dummy categories as needed
   ];
-  const [visibleSlides, setVisibleSlides] = useState(4);
+  const getVisibleSlides = (w) => {
+    if (w < 426) return 1;
+    if (w < 650) return 2;
+    if (w < 1200) return 3;
+    return 4;
+  };
+
+  // Initialize from current width to avoid layout shift on mobile
+  const [visibleSlides, setVisibleSlides] = useState(() => getVisibleSlides(width));
   useEffect(() => {
-    if (width < 426) setVisibleSlides(1);
-    else if (width < 650) setVisibleSlides(2);
-    else if (width < 1200) setVisibleSlides(3);
-    else setVisibleSlides(4);
+    setVisibleSlides(getVisibleSlides(width));
   }, [width]);
   return (
     <Container sx={{ px: { xs: 1, sm: 2 } }}>
@@ -98,8 +103,13 @@ const Section5 = ({ products,data,SectionName,slug,productreviews}) => {
             visibleSlides={visibleSlides}
             sx={carouselStyled}
           >
-            {productsArray.length>0?productsArray.map((product) => (
-              <ProductCard20 product={product} key={product.id} data={productreviews} />
+            {productsArray.length>0?productsArray.map((product, index) => (
+              <ProductCard20
+                product={product}
+                key={product.id}
+                data={productreviews}
+                priority={index === 0}
+              />
             )):"No Products Added"}
           </Carousel>
         </Grid>

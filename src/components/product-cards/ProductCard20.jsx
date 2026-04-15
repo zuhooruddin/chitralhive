@@ -77,7 +77,7 @@ const FavouriteButton = styled(IconButton)(() => ({
 })); // ==============================================================
 
 // ==============================================================
-const ProductCard20 = ({ product, wishList,data}) => {
+const ProductCard20 = ({ product, wishList, data, priority = false }) => {
   
 
   
@@ -272,6 +272,7 @@ const total=Reviews.length;
                 sizes="(max-width: 600px) 55vw, (max-width: 1200px) 33vw, 300px"
                 quality={75}
                 className="product-img"
+                priority={priority}
               />
             </Box>
             </a>
@@ -567,6 +568,7 @@ const total=Reviews.length;
                 sizes="(max-width: 600px) 55vw, (max-width: 1200px) 33vw, 300px"
                 quality={75}
                 className="product-img"
+                priority={priority}
               />
             </Box>
 

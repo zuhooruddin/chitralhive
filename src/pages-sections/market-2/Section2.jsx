@@ -26,16 +26,21 @@ const Section2 = (data) => {
   const imgbaseurl=process.env.NEXT_PUBLIC_BACKEND_API_BASE
   const slugbaseurl='brand/'
   const width = useWindowSize();
-  const [visibleSlides, setVisibleSlides] = useState(4);
+  const getVisibleSlides = (w) => {
+    if (w < 426) return 1;
+    if (w < 650) return 2;
+    if (w < 1024) return 3;
+    if (w < 1200) return 4;
+    return 5;
+  };
+
+  // Initialize from current width to avoid layout shift on mobile
+  const [visibleSlides, setVisibleSlides] = useState(() => getVisibleSlides(width));
   const [selected, setSelected] = useState("new");
   const [filteredProducts, setFilteredProducts] = useState([]);
   useEffect(() => setFilteredProducts(shuffle(data)), [selected, data]);
   useEffect(() => {
-    if (width < 426) setVisibleSlides(1);
-    else if (width < 650) setVisibleSlides(2);
-    else if (width < 1024) setVisibleSlides(3);
-    else if (width < 1200) setVisibleSlides(4);
-    else setVisibleSlides(5);
+    setVisibleSlides(getVisibleSlides(width));
   }, [width]);
 
   // Don't render if no data
