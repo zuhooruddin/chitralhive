@@ -48,6 +48,7 @@ const BazaarImage = styled(
       height: _h,
       layout: _layout,
       objectFit: _objectFit,
+      fetchPriority: fetchPriorityProp,
       ...restProps
     } = rest;
 
@@ -66,6 +67,7 @@ const BazaarImage = styled(
         priority={priority}
         quality={quality}
         loading={priority ? "eager" : "lazy"}
+        fetchPriority={fetchPriorityProp || (priority ? "high" : "auto")}
         sizes={sizes || "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"}
         {...restProps}
       />
@@ -77,7 +79,13 @@ const BazaarImage = styled(
 
   // Use width/height layout if both are numeric
   if (canOptimize && numericWidth && numericHeight) {
-    const { style, layout: _layout, objectFit: _objectFit, ...restProps } = rest;
+    const {
+      style,
+      layout: _layout,
+      objectFit: _objectFit,
+      fetchPriority: fetchPriorityProp,
+      ...restProps
+    } = rest;
     delete restProps.width;
     delete restProps.height;
     delete restProps.layout;
@@ -93,6 +101,7 @@ const BazaarImage = styled(
         priority={priority}
         quality={quality}
         loading={priority ? "eager" : "lazy"}
+        fetchPriority={fetchPriorityProp || (priority ? "high" : "auto")}
         {...restProps}
       />
     );

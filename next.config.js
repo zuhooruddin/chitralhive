@@ -151,7 +151,7 @@ const nextConfig = {
           {
             key: "Content-Security-Policy",
             value:
-              "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://cdn.quilljs.com; style-src 'self' 'unsafe-inline' https://cdn.quilljs.com https://unpkg.com; font-src 'self' data:; img-src 'self' data: https: blob:; media-src 'self' data: https:; connect-src 'self' https://www.google-analytics.com https://api.chitralhive.com https://admin.chitralhive.com https://chitralhive.com; frame-ancestors 'none';",
+              "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://cdn.quilljs.com https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://googleads.g.doubleclick.net; style-src 'self' 'unsafe-inline' https://cdn.quilljs.com https://unpkg.com; font-src 'self' data:; img-src 'self' data: https: blob:; media-src 'self' data: https:; connect-src 'self' https://www.google-analytics.com https://api.chitralhive.com https://admin.chitralhive.com https://chitralhive.com https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://googleads.g.doubleclick.net; frame-src 'self' https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://googleads.g.doubleclick.net; frame-ancestors 'none';",
           },
           {
             key: "Strict-Transport-Security",
@@ -227,6 +227,11 @@ const nextConfig = {
 
   async redirects() {
     return [
+      {
+        source: "/assets/images/idris-logo.png",
+        destination: "/assets/images/logo.svg",
+        permanent: true,
+      },
       {
         source: "/shilajit",
         destination: "/shilajit-salajeet",

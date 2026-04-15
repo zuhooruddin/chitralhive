@@ -103,6 +103,9 @@
   --space-10: 40px;
   --space-12: 48px;
   --space-16: 64px;
+
+  /* Layout constants (keep in sync with src/utils/constants.js) */
+  --mobile-nav-height: 64px;
 }
 
 /* Dark Theme Variables - Premium Dark Mode */
@@ -212,6 +215,19 @@ a {
 
 a:hover {
   color: var(--primary-color);
+}
+
+/* ========================================
+   MUI FIRST-PAINT SAFETY NET
+   ======================================== */
+/* If JS is still loading, MUI's runtime-injected styles may not be there yet.
+   Without those styles, SvgIcon <svg> defaults to ~300x150 and looks "huge". */
+.MuiSvgIcon-root {
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  flex-shrink: 0;
+  user-select: none;
 }
 
 /* ========================================
@@ -1233,6 +1249,23 @@ p {
 @media (min-width: 769px) {
   .hide-desktop {
     display: none !important;
+  }
+}
+
+/* ========================================
+   MOBILE BOTTOM BAR + FLOATING WIDGETS
+   ======================================== */
+
+/* Prevent floating WhatsApp button from covering the mobile bottom nav */
+@media only screen and (max-width: 900px) {
+  [class*="whatsappButton"],
+  [class*="whatsapp-button"] {
+    bottom: calc(var(--mobile-nav-height) + env(safe-area-inset-bottom, 0px) + 12px) !important;
+  }
+
+  [class*="whatsappChatBox"],
+  [class*="whatsapp-chat-box"] {
+    bottom: calc(var(--mobile-nav-height) + env(safe-area-inset-bottom, 0px) + 12px) !important;
   }
 }
 

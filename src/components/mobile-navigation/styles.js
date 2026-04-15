@@ -10,7 +10,12 @@ const Wrapper = styled(Box)(({ theme }) => ({
   position: "fixed",
   justifyContent: "space-around",
   zIndex: theme.zIndex.drawer + 1,
-  height: layoutConstant.mobileNavHeight,
+
+
+
+  
+  height: `calc(${layoutConstant.mobileNavHeight}px + env(safe-area-inset-bottom, 0px))`,
+  paddingBottom: "env(safe-area-inset-bottom, 0px)",
   backgroundColor: theme.palette.background.paper,
   boxShadow: "0px 1px 4px 3px rgba(0, 0, 0, 0.1)",
   "@media only screen and (max-width: 900px)": {
@@ -25,6 +30,22 @@ const StyledNavLink = styled(NavLink)(() => ({
   alignItems: "center",
   flexDirection: "column",
   justifyContent: "center",
+  minWidth: 0,
+  gap: "2px",
+  paddingTop: "6px",
+  paddingBottom: "6px",
+  userSelect: "none",
+  WebkitTapHighlightColor: "transparent",
+  "& > span": {
+    display: "block",
+    lineHeight: 1.1,
+    fontSize: "11px",
+    fontWeight: 600,
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    maxWidth: "100%",
+  },
 }));
 const StyledBox = styled(Box)(({ theme }) => ({
   flex: "1 1 0",
@@ -35,6 +56,22 @@ const StyledBox = styled(Box)(({ theme }) => ({
   flexDirection: "column",
   justifyContent: "center",
   transition: "color 150ms ease-in-out",
+  minWidth: 0,
+  gap: "2px",
+  paddingTop: "6px",
+  paddingBottom: "6px",
+  userSelect: "none",
+  WebkitTapHighlightColor: "transparent",
+  "& > span": {
+    display: "block",
+    lineHeight: 1.1,
+    fontSize: "11px",
+    fontWeight: 600,
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    maxWidth: "100%",
+  },
   "&:hover": {
     color: `${theme.palette.primary.main} !important`,
   },

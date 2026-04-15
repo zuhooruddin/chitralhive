@@ -4,7 +4,6 @@ import ShopLayout1 from "components/layouts/ShopLayout1";
 import SEO from "components/SEO";
 import StructuredData from "components/schema/StructuredData";
 import dynamic from "next/dynamic";
-import { useSession, signIn, signOut } from "next-auth/react";
 import React, { useState, useEffect, useMemo } from "react";
 import apiNav from "utils/api/market-2";
 import api from "utils/api/fashion-shop-2";
@@ -306,23 +305,7 @@ const getHomePageStructuredData = (generalSetting) => {
 const IndexPage = (props) => {
   
 
-  // const { data: session } = useSession();
-  const { data: session, status } = useSession();
-  
   const { navCategories } = props;
-  const [Wishlistdata, setWishlistdata] = useState(undefined);
-
-  // Fix: Move conditional state update to useEffect to avoid React hook rules violation
-  useEffect(() => {
-    if (
-      session !== undefined &&
-      Wishlistdata === undefined &&
-      status === "authenticated"
-    ) {
-      const data = ["4783"];
-      setWishlistdata(data);
-    }
-  }, [session, status, Wishlistdata]);
 
   const theme = useTheme();
   
@@ -371,7 +354,21 @@ const IndexPage = (props) => {
           slidersListLocal={props.slidersListLocal}
         />
 
-        <LazySection>
+        <LazySection
+          fallback={
+            <Box
+              sx={{
+                mt: { xs: 2, sm: 3 },
+                mx: "auto",
+                maxWidth: 900,
+                width: "100%",
+                minHeight: { xs: 100, sm: 120, md: 250 },
+              }}
+              aria-hidden="true"
+            />
+          }
+          rootMargin="0px"
+        >
           <Box sx={{ mt: { xs: 2, sm: 3 }, display: "flex", justifyContent: "center" }}>
             <AdSenseAd
               slot={process.env.NEXT_PUBLIC_ADSENSE_FLUID_LAYOUTKEY_SLOT}
@@ -382,7 +379,18 @@ const IndexPage = (props) => {
           </Box>
         </LazySection>
 
-        <LazySection>
+        <LazySection
+          fallback={
+            <Box
+              sx={{
+                px: { xs: 1, sm: 2 },
+                minHeight: { xs: 420, sm: 480, md: 520 },
+              }}
+              aria-hidden="true"
+            />
+          }
+          rootMargin="0px"
+        >
           <Section9
             data={props.ProductReviews}
             products={props.featuredCatalog || []}
@@ -426,7 +434,7 @@ const IndexPage = (props) => {
               data1={props.Section3SequenceData || []}
               data2={props.Section3SequenceData2 || []}
               data3={props.Section3SequenceData3 || []}
-              userWishlist={Wishlistdata || []}
+              userWishlist={[]}
             />
           </Box>
         </LazySection>

@@ -19,6 +19,10 @@ const AdSenseAd = ({
   sx,
   hideIfNoFill = true,
   noFillCheckMs = 2500,
+  // Reserve space to prevent CLS when ads load / no-fill happens
+  reserveSpace = true,
+  // Typical responsive ad heights (tweak per placement if needed)
+  minHeight = { xs: 100, sm: 120, md: 250 },
 }) => {
   const insRef = useRef(null);
   const [visible, setVisible] = useState(true);
@@ -49,7 +53,8 @@ const AdSenseAd = ({
       if (!el) return;
 
       // "No fill" often results in an empty <ins> with near-zero height.
-      // If it never expands, hide the container to avoid blank space.
+      // If it never expands, hide the ad contents to avoid blank space.
+      // Keep reserved space (if enabled) to avoid CLS.
       const h = el.offsetHeight || 0;
       const hasChildNodes = el.childNodes && el.childNodes.length > 0;
 
@@ -61,13 +66,30 @@ const AdSenseAd = ({
     return () => window.clearTimeout(t);
   }, [enabled, hideIfNoFill, noFillCheckMs, slot, format, layout, layoutKey]);
 
-  if (!enabled || !visible) return null;
+  if (!enabled) return null;
+
+  if (!visible) {
+    if (!reserveSpace) return null;
+    return (
+      <Box
+        sx={{
+          width: "100%",
+          overflow: "hidden",
+          minHeight,
+          ...sx,
+        }}
+        style={style}
+        aria-hidden="true"
+      />
+    );
+  }
 
   return (
     <Box
       sx={{
         width: "100%",
         overflow: "hidden",
+        minHeight,
         ...sx,
       }}
       style={style}

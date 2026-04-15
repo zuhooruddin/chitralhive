@@ -28,7 +28,7 @@ const MobileNavigationBar = () => {
             <item.icon sx={iconStyle} fontSize="small" />
           )}
 
-          {item.title}
+          <span>{item.title}</span>
         </StyledNavLink>
       ))}
       
@@ -39,7 +39,7 @@ const MobileNavigationBar = () => {
         ) : (
           <DarkMode fontSize="small" sx={iconStyle} />
         )}
-        Theme
+        <span>Theme</span>
       </StyledBox>
     </Wrapper>
   ) : null;
