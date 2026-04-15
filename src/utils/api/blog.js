@@ -41,6 +41,31 @@ export const fetchPublishedBlogs = async () => {
   return Array.isArray(data) ? data.map(normalizeBlogPost).filter(Boolean) : [];
 };
 
+const DEFAULT_BLOG_PAGE_SIZE = 12;
+
+export const fetchPublishedBlogsPaged = async (page = 1, pageSize = DEFAULT_BLOG_PAGE_SIZE) => {
+  const params = new URLSearchParams({
+    page: String(Math.max(1, page)),
+    page_size: String(pageSize),
+  });
+  const response = await fetch(`${getBackendApiBase()}getPublishedBlogs?${params.toString()}`);
+
+  if (!response.ok) {
+    throw new Error(`Unable to load blogs: ${response.status}`);
+  }
+
+  const data = await response.json();
+  const results = Array.isArray(data.results)
+    ? data.results.map(normalizeBlogPost).filter(Boolean)
+    : [];
+  return {
+    count: typeof data.count === "number" ? data.count : 0,
+    results,
+    page: typeof data.page === "number" ? data.page : page,
+    pageSize: typeof data.page_size === "number" ? data.page_size : pageSize,
+  };
+};
+
 export const fetchPublishedBlog = async (slug) => {
   const response = await fetch(`${getBackendApiBase()}getPublishedBlog?slug=${encodeURIComponent(slug)}`);
 

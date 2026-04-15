@@ -14,6 +14,7 @@ import Link from "next/link";
 import StructuredData from "components/schema/StructuredData";
 import ProductReview from "components/products/ProductReview";
 import { generateProductBreadcrumb } from "utils/breadcrumbSchema";
+import { buildImageUrl, isLikelyValidHttpUrl } from "utils/buildImageUrl";
 
 import {
   getFrequentlyBought,
@@ -63,7 +64,13 @@ const ErrorContainer = styled(Box)(({ theme }) => ({
 const ProductDetails = (props) => {
   const { productDetails,ProductReviews } = props;
 
-  const imgbaseurl = process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL;
+  const apiBaseRaw = process.env.NEXT_PUBLIC_BACKEND_API_BASE || "";
+  const apiBase = apiBaseRaw.endsWith("/") ? apiBaseRaw : `${apiBaseRaw}/`;
+  const imgbaseurl =
+    process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL ||
+    (apiBaseRaw ? `${apiBaseRaw.replace(/\/?$/, "/")}media/` : "");
+  const imageBaseForSchema =
+    process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL || apiBase.replace(/\/?$/, "/");
   const baseurl = process.env.NEXT_PUBLIC_URL || "https://chitralhive.com";
   const currentDate = new Date().toLocaleDateString();
   const [product, setProduct] = useState(productDetails[0]);
@@ -152,13 +159,16 @@ const ProductDetails = (props) => {
 
   // Ensure price is a valid number or string
   const productPrice = parseFloat(productDetails[0]["salePrice"] || productDetails[0]["mrp"] || 0);
-  const productImage = imgbaseurl + productDetails[0]["imgUrl"];
-  const productUrl = baseurl + slugbaseurl + productDetails[0]["slug"];
-  
-  // Ensure image URL is absolute
-  const absoluteImageUrl = productImage.startsWith('http') 
-    ? productImage 
-    : (productImage.startsWith('/') ? baseurl + productImage : baseurl + '/' + productImage);
+  const productUrl = `${baseurl.replace(/\/$/, "")}${slugbaseurl}${productDetails[0]["slug"]}`;
+
+  let absoluteImageUrl = buildImageUrl(
+    productDetails[0]["imgUrl"],
+    imageBaseForSchema,
+    apiBase
+  );
+  if (absoluteImageUrl && /^http:\/\//i.test(absoluteImageUrl)) {
+    absoluteImageUrl = `https://${absoluteImageUrl.slice(7)}`;
+  }
 
   const skuForSchema =
     productDetails[0]["sku"] || productDetails[0]["aliasCode"] || "";
@@ -166,12 +176,16 @@ const ProductDetails = (props) => {
   const hasValidGtin =
     digitsOnlySku.length >= 8 && digitsOnlySku.length <= 14;
 
+  const returnPolicyPageUrl = `${baseurl.replace(/\/$/, "")}/return-policy`;
+
   const productschema = {
     "@context": "https://schema.org",
     "@type": "Product",
     "@id": productUrl,
     name: productDetails[0]["name"],
-    image: [absoluteImageUrl],
+    ...(absoluteImageUrl && isLikelyValidHttpUrl(absoluteImageUrl)
+      ? { image: [absoluteImageUrl] }
+      : {}),
     description: productDetails[0]["description"] || productDetails[0]["name"],
     sku: skuForSchema || undefined,
     brand: {
@@ -236,12 +250,30 @@ const ProductDetails = (props) => {
           },
         },
       },
+      hasMerchantReturnPolicy: {
+        "@type": "MerchantReturnPolicy",
+        applicableCountry: "PK",
+        returnPolicyCategory:
+          "https://schema.org/MerchantReturnFiniteReturnWindow",
+        merchantReturnDays: 14,
+        merchantReturnLink: returnPolicyPageUrl,
+      },
     },
   };
 
   if (hasValidGtin) {
     productschema.gtin = digitsOnlySku;
   }
+
+  const reviewCountFromProduct = Math.max(
+    0,
+    parseInt(String(productDetails[0]["reviewCount"] || ""), 10) || 0
+  );
+  const ratingFromProduct = parseFloat(productDetails[0]["rating"]) || 0;
+  const hasDbAggregate =
+    reviewCountFromProduct > 0 &&
+    ratingFromProduct > 0 &&
+    !Number.isNaN(ratingFromProduct);
 
   if (filteredReviews.length > 0 && finalReviewCount > 0) {
     productschema.aggregateRating = {
@@ -261,11 +293,20 @@ const ProductDetails = (props) => {
       reviewBody: review.comment || "Verified purchase review.",
       reviewRating: {
         "@type": "Rating",
-        ratingValue: review.rating || 5,
+        ratingValue: String(review.rating ?? 5),
         bestRating: "5",
         worstRating: "1",
       },
     }));
+  } else if (hasDbAggregate) {
+    const clamped = Math.min(5, Math.max(1, ratingFromProduct));
+    productschema.aggregateRating = {
+      "@type": "AggregateRating",
+      ratingValue: String(clamped),
+      reviewCount: String(reviewCountFromProduct),
+      bestRating: "5",
+      worstRating: "1",
+    };
   }
 
   // const bookschema = {
@@ -416,8 +457,18 @@ const ProductDetails = (props) => {
             : companyname
         }
         keywords={`${copyFriendlyProductName} Pakistan, Chitrali products Pakistan, Chitral Hive, buy ${copyFriendlyProductName} online Pakistan, authentic Chitrali products, Chitral specialties, ${copyFriendlyProductName} price in Pakistan, buy ${copyFriendlyProductName} in Karachi, buy ${copyFriendlyProductName} in Lahore`}
-        canonical={`${baseurl}${slugbaseurl}${productDetails[0]["slug"]}`}
-        image={imgbaseurl + productDetails[0]["imgUrl"]}
+        canonical={`${baseurl.replace(/\/$/, "")}${slugbaseurl}${productDetails[0]["slug"]}`}
+        image={
+          absoluteImageUrl && isLikelyValidHttpUrl(absoluteImageUrl)
+            ? absoluteImageUrl
+            : imgbaseurl && productDetails[0]["imgUrl"]
+              ? buildImageUrl(
+                  productDetails[0]["imgUrl"],
+                  imageBaseForSchema,
+                  apiBase
+                ) || ""
+              : ""
+        }
         type="product"
         price={productDetails[0]["salePrice"] || productDetails[0]["mrp"]}
         priceCurrency="PKR"

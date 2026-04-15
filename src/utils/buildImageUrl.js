@@ -1,0 +1,49 @@
+/**
+ * Build an absolute image URL for catalog media paths.
+ * Mirrors sitemap logic so product JSON-LD and sitemaps stay consistent.
+ *
+ * @param {string|null|undefined} rawImagePath
+ * @param {string|null|undefined} imageBaseUrl - e.g. NEXT_PUBLIC_IMAGE_BASE_API_URL or API base
+ * @param {string|null|undefined} apiBase - NEXT_PUBLIC_BACKEND_API_BASE (with or without trailing slash)
+ * @returns {string|null}
+ */
+export function buildImageUrl(rawImagePath, imageBaseUrl, apiBase) {
+  if (!rawImagePath) return null;
+
+  if (/^https?:\/\//i.test(rawImagePath)) {
+    return rawImagePath;
+  }
+
+  const cleanedPath = String(rawImagePath).replace(/^\/+/, "");
+  const normalizedImageBase = (imageBaseUrl || "").replace(/\/+$/, "");
+  const normalizedApiBase = (apiBase || "").replace(/\/+$/, "");
+
+  if (cleanedPath.startsWith("api/media/") || cleanedPath.startsWith("media/")) {
+    const relativePath = cleanedPath.replace(/^api\/media\//, "media/");
+    return `${normalizedApiBase}/${relativePath}`;
+  }
+
+  if (cleanedPath.startsWith("item_image/")) {
+    return `${normalizedApiBase}/media/${cleanedPath}`;
+  }
+
+  if (cleanedPath.startsWith("api/")) {
+    return `${normalizedImageBase}/${cleanedPath}`;
+  }
+
+  return `${normalizedImageBase}/${cleanedPath}`;
+}
+
+/**
+ * @param {string} url
+ * @returns {boolean}
+ */
+export function isLikelyValidHttpUrl(url) {
+  if (!url || typeof url !== "string") return false;
+  try {
+    const u = new URL(url.trim());
+    return u.protocol === "http:" || u.protocol === "https:";
+  } catch {
+    return false;
+  }
+}

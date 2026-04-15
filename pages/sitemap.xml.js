@@ -1,6 +1,7 @@
 // pages/sitemap.xml.js
 
 import { SHILAJIT_LANDING_PATH } from "../src/utils/seoConstants";
+import { buildImageUrl } from "../src/utils/buildImageUrl";
 
 // Basic XML escape to avoid invalid entities like '&' in titles/captions/URLs
 function xmlEscape(value) {
@@ -49,33 +50,6 @@ function generateSiteMap(pages) {
        .join('')}
    </urlset>
  `;
-}
-
-function buildImageUrl(rawImagePath, imageBaseUrl, apiBase) {
-  if (!rawImagePath) return null;
-
-  if (/^https?:\/\//i.test(rawImagePath)) {
-    return rawImagePath;
-  }
-
-  const cleanedPath = String(rawImagePath).replace(/^\/+/, "");
-  const normalizedImageBase = (imageBaseUrl || "").replace(/\/+$/, "");
-  const normalizedApiBase = (apiBase || "").replace(/\/+$/, "");
-
-  if (cleanedPath.startsWith("api/media/") || cleanedPath.startsWith("media/")) {
-    const relativePath = cleanedPath.replace(/^api\/media\//, "media/");
-    return `${normalizedApiBase}/${relativePath}`;
-  }
-
-  if (cleanedPath.startsWith("item_image/")) {
-    return `${normalizedApiBase}/media/${cleanedPath}`;
-  }
-
-  if (cleanedPath.startsWith("api/")) {
-    return `${normalizedImageBase}/${cleanedPath}`;
-  }
-
-  return `${normalizedImageBase}/${cleanedPath}`;
 }
 
 function SiteMap() {
