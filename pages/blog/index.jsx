@@ -127,8 +127,9 @@ const BlogPage = ({ posts, totalCount, page, categories, activeCategory }) => {
               <Paragraph color="text.secondary" sx={{ maxWidth: 640, lineHeight: 1.7 }}>
                 {activeCategory
                   ? `Articles in “${activeCategory}”. Browse guides, recipes, and stories from Chitral Hive.`
-                  : "Guides, recipes, and stories from the Hindu Kush — culture, wellness, and authentic Chitrali products."}
-              </Paragraph>
+                  : "Guides, recipes, and stories from Chitral Hive."
+                }
+                  </Paragraph>
             </Box>
 
             {categories.length > 0 && (

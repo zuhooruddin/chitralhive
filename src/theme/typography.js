@@ -4,20 +4,22 @@
 export const fontSize = 15;
 
 export const fontFamily = [
-  "Plus Jakarta Sans",
-  "DM Sans",
+  '"Plus Jakarta Sans Variable"',
+  '"Plus Jakarta Sans"',
+  '"DM Sans"',
   "-apple-system",
   "BlinkMacSystemFont",
-  "Segoe UI",
+  '"Segoe UI"',
   "Roboto",
-  "Helvetica Neue",
+  '"Helvetica Neue"',
   "sans-serif",
 ].join(",");
 
 export const displayFontFamily = [
-  "Outfit",
-  "Plus Jakarta Sans",
-  "DM Sans",
+  '"Outfit Variable"',
+  '"Outfit"',
+  '"Plus Jakarta Sans Variable"',
+  '"DM Sans"',
   "sans-serif",
 ].join(",");
 

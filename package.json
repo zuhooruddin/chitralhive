@@ -30,6 +30,8 @@
     "@emotion/react": "^11.5.0",
     "@emotion/server": "^11.4.0",
     "@emotion/styled": "^11.3.0",
+    "@fontsource-variable/outfit": "^5.2.8",
+    "@fontsource-variable/plus-jakarta-sans": "^5.2.8",
     "@mui/icons-material": "^5.0.4",
     "@mui/lab": "^5.0.0-alpha.51",
     "@mui/material": "^5.0.4",
@@ -82,10 +84,10 @@
   },
   "browserslist": {
     "production": [
-      "Chrome >= 90",
-      "Firefox >= 90",
-      "Safari >= 15",
-      "Edge >= 90",
+      "Chrome >= 107",
+      "Firefox >= 104",
+      "Safari >= 16",
+      "Edge >= 107",
       "not dead",
       "not op_mini all"
     ],

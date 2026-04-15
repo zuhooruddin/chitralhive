@@ -613,7 +613,7 @@ const ProductIntro = ({ product, slug, total, average, category }) => {
                 color: isDark ? "#F9FAFB" : "#0F172A",
                 lineHeight: 1.2,
                 letterSpacing: "-0.025em",
-                fontFamily: "'Outfit', sans-serif",
+                fontFamily: "'Outfit Variable', 'Outfit', sans-serif",
               }}
             >
               {name}
@@ -728,7 +728,7 @@ const ProductIntro = ({ product, slug, total, average, category }) => {
                     fontWeight: 900,
                     lineHeight: 1,
                     letterSpacing: "-0.03em",
-                    fontFamily: "'Outfit', sans-serif",
+                    fontFamily: "'Outfit Variable', 'Outfit', sans-serif",
                   }}
                 >
                   {currency} {salePrices?.toFixed(2) || '0.00'}
@@ -868,7 +868,7 @@ const ProductIntro = ({ product, slug, total, average, category }) => {
                     color: isDark ? "#F9FAFB" : "#0F172A",
                     minWidth: "60px",
                     textAlign: "center",
-                    fontFamily: "'Outfit', sans-serif",
+                    fontFamily: "'Outfit Variable', 'Outfit', sans-serif",
                   }}
                 >
                   {cartItem?.qty.toString().padStart(2, "0")}

@@ -555,7 +555,7 @@ const ProductCard1 = ({
                 justifyContent: "center",
                 alignItems: "center",
                 display: "flex",
-                fontFamily: "'Outfit', sans-serif",
+                fontFamily: "'Outfit Variable', 'Outfit', sans-serif",
                 letterSpacing: "-0.02em",
               }}
             >
@@ -669,7 +669,7 @@ const ProductCard1 = ({
                 sx={{
                   minWidth: "50px",
                   textAlign: "center",
-                  fontFamily: "'Outfit', sans-serif",
+                  fontFamily: "'Outfit Variable', 'Outfit', sans-serif",
                   fontSize: "1.25rem",
                 }}
               >

@@ -16,7 +16,9 @@ import React, { Fragment, useCallback, useState } from "react";
 const StyledBazaarCard = styled(BazaarCard)(({ theme }) => ({
   margin: "auto",
   height: "100%",
+
   display: "flex",
+  
   overflow: "hidden",
   position: "relative",
   flexDirection: "column",

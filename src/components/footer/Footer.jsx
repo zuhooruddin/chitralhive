@@ -75,7 +75,7 @@ const SectionTitle = styled(Box)(({ theme }) => ({
   color: "white",
   position: "relative",
   display: "inline-block",
-  fontFamily: "'Outfit', sans-serif",
+  fontFamily: "'Outfit Variable', 'Outfit', sans-serif",
   letterSpacing: "-0.02em",
   "&::after": {
     content: '""',

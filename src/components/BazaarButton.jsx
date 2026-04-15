@@ -5,7 +5,7 @@ import { styled } from "@mui/material/styles";
 const BazaarButton = styled(Button)(({ theme }) => ({
   minWidth: 0,
   minHeight: 0,
-  fontFamily: "'Plus Jakarta Sans', 'DM Sans', sans-serif",
+  fontFamily: "'Plus Jakarta Sans Variable', 'Plus Jakarta Sans', 'DM Sans', sans-serif",
   fontWeight: 600,
   textTransform: "none",
   borderRadius: "12px",

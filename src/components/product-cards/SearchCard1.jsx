@@ -306,34 +306,30 @@ const SearchCard1 = ({
                 ""
               )}
 
-              <div className="product-img-container">
+              <Box
+                className="product-img-container"
+                sx={{
+                  position: "relative",
+                  width: "100%",
+                  maxWidth: 300,
+                  mx: "auto",
+                  aspectRatio: "1 / 1",
+                  maxHeight: 300,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
                 <Image
-                  width={300}
-                  height={300}
-                  alt="category"
-                  objectFit="contain"
-                  layout="intrinsic"
-                  className="product-img"
                   src={imgbaseurl + image}
-                  media={{
-                    // Adjust image size for screens smaller than 600px wide
-                    "(max-width: 600px)": {
-                      width: "100%",
-                      height: "auto",
-                    },
-                  }}
+                  alt={name || "Product"}
+                  layout="fill"
+                  objectFit="contain"
+                  sizes="(max-width: 600px) 55vw, (max-width: 1200px) 33vw, 300px"
+                  quality={75}
+                  className="product-img"
                 />
-              </div>
-
-              <style>
-                {`
-.product-img-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-`}
-              </style>
+              </Box>
             </a>
           </Link>
 
@@ -559,34 +555,30 @@ const SearchCard1 = ({
                 ""
               )}
 
-              <div className="product-img-container">
+              <Box
+                className="product-img-container"
+                sx={{
+                  position: "relative",
+                  width: "100%",
+                  maxWidth: 300,
+                  mx: "auto",
+                  aspectRatio: "1 / 1",
+                  maxHeight: 300,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
                 <Image
-                  width={300}
-                  height={300}
-                  alt="category"
-                  objectFit="contain"
-                  layout="intrinsic"
-                  className="product-img"
                   src={imgbaseurl + image}
-                  media={{
-                    // Adjust image size for screens smaller than 600px wide
-                    "(max-width: 600px)": {
-                      width: "100%",
-                      height: "auto",
-                    },
-                  }}
+                  alt={name || "Product"}
+                  layout="fill"
+                  objectFit="contain"
+                  sizes="(max-width: 600px) 55vw, (max-width: 1200px) 33vw, 300px"
+                  quality={75}
+                  className="product-img"
                 />
-              </div>
-
-              <style>
-                {`
-  .product-img-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  `}
-              </style>
+              </Box>
             </a>
           </Link>
 

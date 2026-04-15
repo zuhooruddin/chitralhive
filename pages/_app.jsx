@@ -1,3 +1,5 @@
+import "@fontsource-variable/plus-jakarta-sans/wght.css";
+import "@fontsource-variable/outfit/wght.css";
 import RTL from "components/RTL";
 import { AppProvider } from "contexts/AppContext";
 import SettingsProvider from "contexts/SettingContext";
@@ -66,6 +68,8 @@ const App = ({ router, Component, pageProps: { session, ...pageProps } }) => {
     if (jssStyles) {
       jssStyles.parentElement.removeChild(jssStyles);
     }
+    
+
   }, []);
   // useScrollRestoration(router);
 

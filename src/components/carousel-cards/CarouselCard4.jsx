@@ -14,7 +14,7 @@ const CardWrapper = styled(Box)(({ theme, mode }) => ({
   [theme.breakpoints.down("md")]: {
     minHeight: 200,
     justifyContent: "center",
-    padding: 106,
+    padding: theme.spacing(2),
     textAlign: "center",
   },
 }));
