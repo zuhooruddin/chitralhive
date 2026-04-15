@@ -1,5 +1,6 @@
-import "@fontsource-variable/plus-jakarta-sans/wght.css";
-import "@fontsource-variable/outfit/wght.css";
+// Package root (index.css via "main") — avoids Webpack failing on `exports` subpaths like `/wght.css` on some servers
+import "@fontsource-variable/plus-jakarta-sans";
+import "@fontsource-variable/outfit";
 import RTL from "components/RTL";
 import { AppProvider } from "contexts/AppContext";
 import SettingsProvider from "contexts/SettingContext";
