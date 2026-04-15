@@ -11,8 +11,6 @@ const SocialButtons = (props) => {
   const { redirect = "/login", redirectText = "Login" } = props;
  
   return (
-
-    
     <Fragment>
       <Box mb={2} mt={3.3}>
         <Box width="200px" mx="auto">
@@ -41,7 +39,6 @@ const SocialButtons = (props) => {
           Continue with Facebook
         </Box>
       </BazaarButton> */}
-
       <BazaarButton
         onClick={()=>signIn("google")}
         className="googleButton"
@@ -56,18 +53,16 @@ const SocialButtons = (props) => {
           Continue with Google
         </Box>
       </BazaarButton>
-
       <FlexRowCenter my="1.25rem">
         <Box>Don&apos;t have account?</Box>
         <Link href={redirect}>
-          <a>
-            <H6 ml={1} borderBottom="1px solid" borderColor="grey.900">
-              {redirectText}
-            </H6>
-          </a>
+
+          <H6 ml={1} borderBottom="1px solid" borderColor="grey.900">
+            {redirectText}
+          </H6>
+
         </Link>
       </FlexRowCenter>
-
       <FlexBox
         justifyContent="center"
         bgcolor="grey.200"
@@ -76,11 +71,11 @@ const SocialButtons = (props) => {
       >
         Forgot your password?
         <Link href="/forgot-password">
-          <a>
-            <H6 ml={1} borderBottom="1px solid" borderColor="grey.900">
-              Reset It
-            </H6>
-          </a>
+
+          <H6 ml={1} borderBottom="1px solid" borderColor="grey.900">
+            Reset It
+          </H6>
+
         </Link>
       </FlexBox>
     </Fragment>

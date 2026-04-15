@@ -2,7 +2,10 @@ import { Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 // Premium styled button with enhanced interactions
-const BazaarButton = styled(Button)(({ theme }) => ({
+const BazaarButton = styled(Button, {
+  // Strip styling-only props so they don't leak to the DOM <button>
+  shouldForwardProp: (prop) => prop !== "isDark" && prop !== "isSelected",
+})(({ theme }) => ({
   minWidth: 0,
   minHeight: 0,
   fontFamily: "'Plus Jakarta Sans Variable', 'Plus Jakarta Sans', 'DM Sans', sans-serif",

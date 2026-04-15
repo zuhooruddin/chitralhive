@@ -70,16 +70,16 @@ const AboutUs = (props) => {
         <Grid container spacing={3}>
           <Grid item xs={12} md={4}>
             <Link href="/">
-              <a>
-                <LazyImage
-                  width={385}
-                  height={342}
-                  alt="banner"
-                  layout="responsive"
-                  objectFit="contain"
-                  src={imgbaseurl+"about_us.png"}
-                />
-              </a>
+
+              <LazyImage
+                width={385}
+                height={342}
+                alt="banner"
+                layout="responsive"
+                objectFit="contain"
+                src={imgbaseurl+"about_us.png"}
+              />
+
             </Link>
           </Grid>
 

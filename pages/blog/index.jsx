@@ -18,6 +18,7 @@ import ShopLayout1 from "components/layouts/ShopLayout1";
 import PaginationLinks from "components/PaginationLinks";
 import SEO from "components/SEO";
 import { H1, Paragraph } from "components/Typography";
+import AdSenseAd from "components/ads/AdSenseAd";
 import {
   fetchPublishedBlogMeta,
   fetchPublishedBlogsPaged,
@@ -90,7 +91,6 @@ const BlogPage = ({ posts, totalCount, page, categories, activeCategory }) => {
           baseUrl={paginationBase}
         />
       )}
-
       <Box
         component="section"
         sx={{
@@ -102,11 +102,9 @@ const BlogPage = ({ posts, totalCount, page, categories, activeCategory }) => {
       >
         <Container maxWidth="lg">
           <Breadcrumbs aria-label="breadcrumb" sx={{ color: "text.secondary" }}>
-            <Link href="/" passHref legacyBehavior>
-              <MuiLink underline="hover" color="inherit" component="a">
-                Home
-              </MuiLink>
-            </Link>
+            <MuiLink underline="hover" color="inherit" component={Link} href="/">
+              Home
+            </MuiLink>
             <Typography color="text.primary">Blog</Typography>
             {activeCategory ? (
               <Typography color="text.primary" noWrap sx={{ maxWidth: 220 }}>
@@ -116,7 +114,6 @@ const BlogPage = ({ posts, totalCount, page, categories, activeCategory }) => {
           </Breadcrumbs>
         </Container>
       </Box>
-
       <Container maxWidth="lg" sx={{ py: { xs: 3, md: 5 } }}>
         <Grid container spacing={{ xs: 3, md: 4 }}>
           <Grid item xs={12} md={8}>
@@ -231,6 +228,12 @@ const BlogPage = ({ posts, totalCount, page, categories, activeCategory }) => {
                   </ListItemButton>
                 ))}
               </List>
+
+              <AdSenseAd
+                slot={process.env.NEXT_PUBLIC_ADSENSE_BLOG_SIDEBAR_SLOT}
+                sx={{ mt: 2.5 }}
+              />
+
               <Box sx={{ mt: 3, pt: 2, borderTop: 1, borderColor: "divider" }}>
                 <Typography variant="body2" color="text.secondary" lineHeight={1.7}>
                   Filter by topic to find product guides, wellness tips, and Chitrali culture stories.

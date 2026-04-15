@@ -157,7 +157,6 @@ useEffect(()=>{
             <FavoriteBorder fontSize="small" color="disabled" />
           )}
         </IconButton>
-
         <Grid container spacing={1}>
           <Grid item sm={1.5} xs={10}>
             <Box position="relative">
@@ -194,11 +193,11 @@ useEffect(()=>{
               p={2}
             >
               <Link href={`/product/${slug}`}>
-                <a>
-                  <H5 fontWeight="600" my="0.5rem">
-                    {name}
-                  </H5>
-                </a>
+
+                <H5 fontWeight="600" my="0.5rem">
+                  {name}
+                </H5>
+
               </Link>
               <FlexBox>
                 <BazaarRating
@@ -340,7 +339,13 @@ useEffect(()=>{
                 />
               )}
 
-              <Image src={imgbaseurl + image} alt={name} width="100%" />
+              <Image
+                src={imgbaseurl + image}
+                alt={name}
+                width={120}
+                height={120}
+                style={{ width: "100%", height: "auto" }}
+              />
             </Box>
           </Grid>
 
@@ -352,11 +357,11 @@ useEffect(()=>{
               p={2}
             >
               <Link href={`/product/${slug}`}>
-                <a>
-                  <H5 fontWeight="600" my="0.5rem">
-                    {name}
-                  </H5>
-                </a>
+
+                <H5 fontWeight="600" my="0.5rem">
+                  {name}
+                </H5>
+
               </Link>
               <FlexBox>
                 <BazaarRating

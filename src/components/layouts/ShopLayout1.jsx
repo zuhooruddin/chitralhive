@@ -3,7 +3,8 @@ import Header from "components/header/Header";
 import MobileNavigationBar from "components/mobile-navigation/MobileNavigationBar";
 import Sticky from "components/sticky/Sticky";
 import Topbar from "components/topbar/Topbar";
-import React, { Fragment, useCallback, useState } from "react";
+import React, { Fragment, useCallback, useEffect, useState } from "react";
+import { Box } from "@mui/material";
 import Navbar from "components/navbar/Navbar";
 import useSWR from 'swr'
 import axios from 'axios';
@@ -32,7 +33,11 @@ const ShopLayout1 = ({
   generalSetting, // Pass from props to avoid duplicate API calls
 }) => {
   const [isFixed, setIsFixed] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const toggleIsFixed = useCallback((fixed) => setIsFixed(fixed), []);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   
   // Only fetch if not provided via props (fallback for pages that don't pass it)
   // Create axios instance with timeout to prevent hanging
@@ -82,8 +87,10 @@ const ShopLayout1 = ({
   );
   
   // Use props if available, otherwise use SWR data
-  const data = footerData || swrFooterData;
-  const data1 = generalSetting || swrGeneralSetting;
+  // Important: during hydration, SWR may already have fetched on the client,
+  // causing the first client render to differ from SSR. Gate SWR data until mounted.
+  const data = footerData || (mounted ? swrFooterData : null);
+  const data1 = generalSetting || (mounted ? swrGeneralSetting : null);
 
   return (
     <Fragment>
@@ -107,7 +114,13 @@ const ShopLayout1 = ({
 
       <MobileNavigationBar />
 
-      <Footer footerData={data || null} />
+      {/* Keep SSR and first client render stable to avoid hydration errors. */}
+      {mounted ? (
+        <Footer footerData={data || null} />
+      ) : (
+        // Use a plain element (no emotion-generated className) to keep SSR markup identical.
+        <footer />
+      )}
     </Fragment>
   );
 };

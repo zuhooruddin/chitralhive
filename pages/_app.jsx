@@ -7,6 +7,8 @@ import Router from "next/router";
 import nProgress from "nprogress";
 import "nprogress/nprogress.css";
 import { Fragment, useEffect, useMemo, useState } from "react";
+import { CacheProvider } from "@emotion/react";
+import createEmotionCache from "../src/createEmotionCache";
 // Lazy load heavy CSS to improve initial load - only load when needed
 import MuiTheme from "theme/MuiTheme";
 import {SessionProvider}  from "next-auth/react";
@@ -15,6 +17,7 @@ import useScrollRestoration from "../src/utils/useScrollRestoration";
 import dynamic from 'next/dynamic';
 import GoogleAnalytics from "utils/GoogleAnalytics";
 import { sanitizeSiteName, SITE_NAME } from "utils/seoConstants";
+import Script from "next/script";
 // Loader removed - no popup on page load
 
 // Lazy load heavy components that aren't needed immediately
@@ -45,7 +48,14 @@ nProgress.configure({
   showSpinner: false,
 });
 
-const App = ({ router, Component, pageProps: { session, ...pageProps } }) => {
+const clientSideEmotionCache = createEmotionCache();
+
+const App = ({
+  router,
+  Component,
+  emotionCache = clientSideEmotionCache,
+  pageProps: { session, ...pageProps },
+}) => {
   const [generalSettings, setGeneralSettings] = useState(
     Array.isArray(pageProps.GeneralSetting) ? pageProps.GeneralSetting : []
   );
@@ -144,7 +154,7 @@ const App = ({ router, Component, pageProps: { session, ...pageProps } }) => {
     };
   }, []);
 
-  const imgbaseurl = process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL;
+  const imgbaseurl = (process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL || "").replace(/\/?$/, "/");
 
   useEffect(() => {
     if (typeof window !== 'undefined' && window.localStorage && generalSettings.length > 0) {
@@ -160,7 +170,7 @@ const App = ({ router, Component, pageProps: { session, ...pageProps } }) => {
       ? sanitizeSiteName(generalSettings[0].site_name)
       : SITE_NAME;
     const avatar = (generalSettings.length > 0 && generalSettings[0].site_logo && imgbaseurl)
-      ? `${imgbaseurl}${generalSettings[0].site_logo}`
+      ? `${imgbaseurl}${String(generalSettings[0].site_logo).replace(/^\/+/, "")}`
       : '/assets/images/banners/banner-1.png';
     
     return {
@@ -187,64 +197,79 @@ const App = ({ router, Component, pageProps: { session, ...pageProps } }) => {
   }
 
   return (
-    <SessionProvider session={session}>
-            <AuthenticationProvider>
+    <CacheProvider value={emotionCache}>
+      <SessionProvider session={session}>
+        <AuthenticationProvider>
+          <Fragment>
+            <Head>
+              <meta charSet="utf-8" />
+              <meta name="viewport" content="width=device-width, initial-scale=1" />
+              <link rel="manifest" href="/site.webmanifest" />
+              {/* Resource hints live in `_document.jsx` to avoid duplicates */}
+              {/* Canonical link is handled by SEO component - removed duplicate */}
+            </Head>
 
-    <Fragment>
-      <Head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="manifest" href="/site.webmanifest" />
-        {/* Resource hints live in `_document.jsx` to avoid duplicates */}
-        {/* Canonical link is handled by SEO component - removed duplicate */}
-      </Head>
-      {/* Loader removed - no popup on page load */}
+            {process.env.NEXT_PUBLIC_ADSENSE_CLIENT ? (
+              <Script
+                id="adsense-script"
+                strategy="afterInteractive"
+                async
+                crossOrigin="anonymous"
+                src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_CLIENT}`}
+              />
+            ) : null}
+            {/* Loader removed - no popup on page load */}
 
-      {/* Lazy load FloatingWhatsApp - ssr: false ensures client-side only */}
-      {typeof window !== 'undefined' && deferredUiReady && <FloatingWhatsApp {...whatsappProps} />}
+            {/* Lazy load FloatingWhatsApp - ssr: false ensures client-side only */}
+            {typeof window !== "undefined" && deferredUiReady && (
+              <FloatingWhatsApp {...whatsappProps} />
+            )}
 
-      {/* Load Google Analytics client-side only - component handles SSR check */}
-      {typeof window !== 'undefined' && deferredUiReady && <GoogleAnalytics />}
+            {/* Load Google Analytics client-side only - component handles SSR check */}
+            {typeof window !== "undefined" && deferredUiReady && <GoogleAnalytics />}
 
-      <SettingsProvider>
-        <AppProvider>
-          <MuiTheme>
-            <RTL>
-              {(() => {
-                try {
-                  const layoutContent = getLayout(<Component {...pageProps} />);
-                  // Ensure layoutContent is a valid React element
-                  if (!layoutContent || (typeof layoutContent !== 'object' && typeof layoutContent !== 'function')) {
-                    return <Component {...pageProps} />;
-                  }
-                  return layoutContent;
-                } catch (error) {
-                  console.error('Error in getLayout:', error);
-                  return <Component {...pageProps} />;
-                }
-              })()}
-              {/* ToastContainer - ssr: false ensures client-side only */}
-              {typeof window !== 'undefined' && deferredUiReady && (
-                <ToastContainer
-                    position="top-right"
-                    autoClose={5000}
-                    hideProgressBar={true}
-                    newestOnTop
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss={false}
-                    draggable
-                    pauseOnHover
-                />
-              )}
-            </RTL>
-          </MuiTheme>
-        </AppProvider>
-      </SettingsProvider>
-    </Fragment>
-    </AuthenticationProvider>
-    </SessionProvider>
-
+            <SettingsProvider>
+              <AppProvider>
+                <MuiTheme>
+                  <RTL>
+                    {(() => {
+                      try {
+                        const layoutContent = getLayout(<Component {...pageProps} />);
+                        // Ensure layoutContent is a valid React element
+                        if (
+                          !layoutContent ||
+                          (typeof layoutContent !== "object" && typeof layoutContent !== "function")
+                        ) {
+                          return <Component {...pageProps} />;
+                        }
+                        return layoutContent;
+                      } catch (error) {
+                        console.error("Error in getLayout:", error);
+                        return <Component {...pageProps} />;
+                      }
+                    })()}
+                    {/* ToastContainer - ssr: false ensures client-side only */}
+                    {typeof window !== "undefined" && deferredUiReady && (
+                      <ToastContainer
+                        position="top-right"
+                        autoClose={5000}
+                        hideProgressBar={true}
+                        newestOnTop
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss={false}
+                        draggable
+                        pauseOnHover
+                      />
+                    )}
+                  </RTL>
+                </MuiTheme>
+              </AppProvider>
+            </SettingsProvider>
+          </Fragment>
+        </AuthenticationProvider>
+      </SessionProvider>
+    </CacheProvider>
   );
 }; // Only uncomment this method if you have blocking data requirements for
 // every single page in your application. This disables the ability to

@@ -244,93 +244,91 @@ const SearchCard1 = ({
       <Card height="100%">
         <CardMedia>
           <Link href={`/product/${slug}`}>
-            <a>
-              {/* {!!discount && (
-        <StyledChip color="primary" size="small" label='Sale' />
 
-    )}
-   {stock == "0.00" && isNewArrival == 1 ? (
-                <StyledChip color="secondary" size="small" label="Out of Stock | New Arrival" sx={{ml:1}} />
-              ) : (
-                isNewArrival == 1 && stock >"0.00"  ?(
-                  <StyledChip1 color="secondary"  size="small" label="New Arrival" />
+            {/* {!!discount && (
+      <StyledChip color="primary" size="small" label='Sale' />
 
-                ):(
-                  isNewArrival <1 && stock =="0.00"  ?(
-                    <StyledChip1 color="secondary"  size="small" label="Out of Stock" />
-  
-                  ):("")
-                )
-              
-              
-              )} */}
+  )}
+ {stock == "0.00" && isNewArrival == 1 ? (
+              <StyledChip color="secondary" size="small" label="Out of Stock | New Arrival" sx={{ml:1}} />
+            ) : (
+              isNewArrival == 1 && stock >"0.00"  ?(
+                <StyledChip1 color="secondary"  size="small" label="New Arrival" />
 
-              {stock === "0.00" && isNewArrival === 1 ? (
-                <StyledChip
+              ):(
+                isNewArrival <1 && stock =="0.00"  ?(
+                  <StyledChip1 color="secondary"  size="small" label="Out of Stock" />
+
+                ):("")
+              )
+            
+            
+            )} */}
+            {stock === "0.00" && isNewArrival === 1 ? (
+              <StyledChip
+                color="secondary"
+                size="small"
+                label="Out of Stock | New Arrival"
+                sx={{ ml: 1 }}
+              />
+            ) : isNewArrival === 1 && stock > "0.00" ? (
+              discount > 0 ? (
+                <StyledChip1
                   color="secondary"
                   size="small"
-                  label="Out of Stock | New Arrival"
-                  sx={{ ml: 1 }}
+                  label="New Arrival | Sale"
                 />
-              ) : isNewArrival === 1 && stock > "0.00" ? (
-                discount > 0 ? (
-                  <StyledChip1
-                    color="secondary"
-                    size="small"
-                    label="New Arrival | Sale"
-                  />
-                ) : (
-                  <StyledChip1
-                    color="secondary"
-                    size="small"
-                    label="New Arrival"
-                  />
-                )
-              ) : isNewArrival < 1 && stock === "0.00" ? (
-                discount > 0 ? (
-                  <StyledChip1
-                    color="secondary"
-                    size="small"
-                    label="Out of Stock | Sale"
-                  />
-                ) : (
-                  <StyledChip1
-                    color="secondary"
-                    size="small"
-                    label="Out of Stock"
-                  />
-                )
-              ) : discount > 0 ? (
-                <StyledChip1 color="secondary" size="small" label="Sale" />
               ) : (
-                ""
-              )}
-
-              <Box
-                className="product-img-container"
-                sx={{
-                  position: "relative",
-                  width: "100%",
-                  maxWidth: 300,
-                  mx: "auto",
-                  aspectRatio: "1 / 1",
-                  maxHeight: 300,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Image
-                  src={imgbaseurl + image}
-                  alt={name || "Product"}
-                  layout="fill"
-                  objectFit="contain"
-                  sizes="(max-width: 600px) 55vw, (max-width: 1200px) 33vw, 300px"
-                  quality={75}
-                  className="product-img"
+                <StyledChip1
+                  color="secondary"
+                  size="small"
+                  label="New Arrival"
                 />
-              </Box>
-            </a>
+              )
+            ) : isNewArrival < 1 && stock === "0.00" ? (
+              discount > 0 ? (
+                <StyledChip1
+                  color="secondary"
+                  size="small"
+                  label="Out of Stock | Sale"
+                />
+              ) : (
+                <StyledChip1
+                  color="secondary"
+                  size="small"
+                  label="Out of Stock"
+                />
+              )
+            ) : discount > 0 ? (
+              <StyledChip1 color="secondary" size="small" label="Sale" />
+            ) : (
+              ""
+            )}
+            <Box
+              className="product-img-container"
+              sx={{
+                position: "relative",
+                width: "100%",
+                maxWidth: 300,
+                mx: "auto",
+                aspectRatio: "1 / 1",
+                maxHeight: 300,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Image
+                src={imgbaseurl + image}
+                alt={name || "Product"}
+                layout="fill"
+                objectFit="contain"
+                sizes="(max-width: 600px) 55vw, (max-width: 1200px) 33vw, 300px"
+                quality={75}
+                className="product-img"
+              />
+            </Box>
+
           </Link>
 
           <AddToCartButton
@@ -350,7 +348,6 @@ const SearchCard1 = ({
             )}
           </FavouriteButton>
         </CardMedia>
-
         <ProductViewDialog
           openDialog={openDialog}
           handleCloseDialog={() => setOpenDialog(false)}
@@ -367,7 +364,6 @@ const SearchCard1 = ({
             imgGroup: [imgbaseurl + image, imgbaseurl + image],
           }}
         />
-
         <Box p={2} textAlign="center">
           <Paragraph
             style={{ lineHeight: "1.5em", height: "3em", overflow: "hidden" }}
@@ -493,93 +489,91 @@ const SearchCard1 = ({
       <Card height="100%">
         <CardMedia>
           <Link href={`/product/${slug}`}>
-            <a>
-              {/* {!!discount && (
-          <StyledChip color="primary" size="small" label='Sale' />
-  
-      )}
-     {stock == "0.00" && isNewArrival == 1 ? (
-                <StyledChip color="secondary" size="small" label="Out of Stock | New Arrival" sx={{ml:1}} />
-              ) : (
-                isNewArrival == 1 && stock >"0.00"  ?(
-                  <StyledChip1 color="secondary"  size="small" label="New Arrival" />
 
-                ):(
-                  isNewArrival <1 && stock =="0.00"  ?(
-                    <StyledChip1 color="secondary"  size="small" label="Out of Stock" />
-  
-                  ):("")
-                )
-              
-              
-              )} */}
+            {/* {!!discount && (
+        <StyledChip color="primary" size="small" label='Sale' />
 
-              {stock === "0.00" && isNewArrival === 1 ? (
-                <StyledChip
+    )}
+   {stock == "0.00" && isNewArrival == 1 ? (
+              <StyledChip color="secondary" size="small" label="Out of Stock | New Arrival" sx={{ml:1}} />
+            ) : (
+              isNewArrival == 1 && stock >"0.00"  ?(
+                <StyledChip1 color="secondary"  size="small" label="New Arrival" />
+
+              ):(
+                isNewArrival <1 && stock =="0.00"  ?(
+                  <StyledChip1 color="secondary"  size="small" label="Out of Stock" />
+
+                ):("")
+              )
+            
+            
+            )} */}
+            {stock === "0.00" && isNewArrival === 1 ? (
+              <StyledChip
+                color="secondary"
+                size="small"
+                label="Out of Stock | New Arrival"
+                sx={{ ml: 1 }}
+              />
+            ) : isNewArrival === 1 && stock > "0.00" ? (
+              discount > 0 ? (
+                <StyledChip1
                   color="secondary"
                   size="small"
-                  label="Out of Stock | New Arrival"
-                  sx={{ ml: 1 }}
+                  label="New Arrival | Sale"
                 />
-              ) : isNewArrival === 1 && stock > "0.00" ? (
-                discount > 0 ? (
-                  <StyledChip1
-                    color="secondary"
-                    size="small"
-                    label="New Arrival | Sale"
-                  />
-                ) : (
-                  <StyledChip1
-                    color="secondary"
-                    size="small"
-                    label="New Arrival"
-                  />
-                )
-              ) : isNewArrival < 1 && stock === "0.00" ? (
-                discount > 0 ? (
-                  <StyledChip1
-                    color="secondary"
-                    size="small"
-                    label="Out of Stock | Sale"
-                  />
-                ) : (
-                  <StyledChip1
-                    color="secondary"
-                    size="small"
-                    label="Out of Stock"
-                  />
-                )
-              ) : discount > 0 ? (
-                <StyledChip1 color="secondary" size="small" label="Sale" />
               ) : (
-                ""
-              )}
-
-              <Box
-                className="product-img-container"
-                sx={{
-                  position: "relative",
-                  width: "100%",
-                  maxWidth: 300,
-                  mx: "auto",
-                  aspectRatio: "1 / 1",
-                  maxHeight: 300,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Image
-                  src={imgbaseurl + image}
-                  alt={name || "Product"}
-                  layout="fill"
-                  objectFit="contain"
-                  sizes="(max-width: 600px) 55vw, (max-width: 1200px) 33vw, 300px"
-                  quality={75}
-                  className="product-img"
+                <StyledChip1
+                  color="secondary"
+                  size="small"
+                  label="New Arrival"
                 />
-              </Box>
-            </a>
+              )
+            ) : isNewArrival < 1 && stock === "0.00" ? (
+              discount > 0 ? (
+                <StyledChip1
+                  color="secondary"
+                  size="small"
+                  label="Out of Stock | Sale"
+                />
+              ) : (
+                <StyledChip1
+                  color="secondary"
+                  size="small"
+                  label="Out of Stock"
+                />
+              )
+            ) : discount > 0 ? (
+              <StyledChip1 color="secondary" size="small" label="Sale" />
+            ) : (
+              ""
+            )}
+            <Box
+              className="product-img-container"
+              sx={{
+                position: "relative",
+                width: "100%",
+                maxWidth: 300,
+                mx: "auto",
+                aspectRatio: "1 / 1",
+                maxHeight: 300,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Image
+                src={imgbaseurl + image}
+                alt={name || "Product"}
+                layout="fill"
+                objectFit="contain"
+                sizes="(max-width: 600px) 55vw, (max-width: 1200px) 33vw, 300px"
+                quality={75}
+                className="product-img"
+              />
+            </Box>
+
           </Link>
 
           <AddToCartButton
@@ -589,7 +583,6 @@ const SearchCard1 = ({
             <RemoveRedEye color="disabled" fontSize="small" />
           </AddToCartButton>
         </CardMedia>
-
         <ProductViewDialog
           openDialog={openDialog}
           handleCloseDialog={() => setOpenDialog(false)}
@@ -606,7 +599,6 @@ const SearchCard1 = ({
             imgGroup: [imgbaseurl + image, imgbaseurl + image],
           }}
         />
-
         <Box p={2} textAlign="center">
           <Paragraph
             style={{ lineHeight: "1.5em", height: "3em", overflow: "hidden" }}

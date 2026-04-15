@@ -208,19 +208,18 @@ useEffect(()=>{
           </HoverIconWrapper>
   
           <Link href={`/bundle/${slug}`}>
-            <a>
-              <LazyImage
-                src={`${image}`}
-                width={0}
-                height={0}
-                objectFit="contain"
-                layout="responsive"
-                alt={name}
-              />
-            </a>
+
+            <LazyImage
+              src={`${image}`}
+              width={0}
+              height={0}
+              objectFit="contain"
+              layout="responsive"
+              alt={name}
+            />
+
           </Link>
         </ImageWrapper>
-  
         <ProductViewDialog
           openDialog={openModal}
           handleCloseDialog={toggleDialog}
@@ -233,23 +232,22 @@ useEffect(()=>{
             imgGroup: [image, image],
           }}
         />
-  
         <ContentWrapper>
           <FlexBox>
             <Box flex="1 1 0" minWidth="0px" mr={1}>
               <Link href={`/bundle/${slug}`}>
-                <a>
-                  <H3
-                    mb={1}
-                    title={name}
-                    fontSize="14px"
-                    fontWeight="600"
-                    className="title"
-                    color="text.secondary"
-                  >
-                    {name}
-                  </H3>
-                </a>
+
+                <H3
+                  mb={1}
+                  title={name}
+                  fontSize="14px"
+                  fontWeight="600"
+                  className="title"
+                  color="text.secondary"
+                >
+                  {name}
+                </H3>
+
               </Link>
   
             
@@ -350,19 +348,18 @@ useEffect(()=>{
       
 
         <Link href={`/bundle/${slug}`}>
-          <a>
-            <LazyImage
-              src={`${image}`}
-              width={0}
-              height={0}
-              objectFit="contain"
-              layout="responsive"
-              alt={name}
-            />
-          </a>
+
+          <LazyImage
+            src={`${image}`}
+            width={0}
+            height={0}
+            objectFit="contain"
+            layout="responsive"
+            alt={name}
+          />
+
         </Link>
       </ImageWrapper>
-
       <ProductViewDialog
         openDialog={openModal}
         handleCloseDialog={toggleDialog}
@@ -376,23 +373,22 @@ useEffect(()=>{
           imgGroup: [image, image],
         }}
       />
-
       <ContentWrapper>
         <FlexBox>
           <Box flex="1 1 0" minWidth="0px" mr={1}>
             <Link href={`/bundle/${slug}`}>
-              <a>
-                <H3
-                  mb={1}
-                  title={name}
-                  fontSize="14px"
-                  fontWeight="600"
-                  className="title"
-                  color="text.secondary"
-                >
-                  {name}
-                </H3>
-              </a>
+
+              <H3
+                mb={1}
+                title={name}
+                fontSize="14px"
+                fontWeight="600"
+                className="title"
+                color="text.secondary"
+              >
+                {name}
+              </H3>
+
             </Link>
 
           

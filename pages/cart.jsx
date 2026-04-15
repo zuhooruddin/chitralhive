@@ -180,7 +180,7 @@ const Cart = () => {
             </Button> */}
 
             {getTotalPrice().toFixed(2) == 0.0 ? (
-              <Link href="" passHref>
+              <Link href="">
                 <Button
                   variant="contained"
                   color="primary"
@@ -191,7 +191,7 @@ const Cart = () => {
                 </Button>
               </Link>
             ) : (
-              <Link href="/checkout" passHref>
+              <Link href="/checkout">
                 <Button variant="contained" color="primary" fullWidth>
                   Checkout Now
                 </Button>
@@ -201,7 +201,7 @@ const Cart = () => {
             <br />
             <br />
             <div style={{ marginTop: "1%" }}>
-              <Link href="/" passHref>
+              <Link href="/">
                 <Button variant="outlined" color="primary" fullWidth>
                   Continue Shopping
                 </Button>

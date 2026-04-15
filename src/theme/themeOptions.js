@@ -131,25 +131,11 @@ const darkThemesOptions = {
   },
 };
 
-const themeOptions = (publicRuntimeConfig, pathname, isDark = false) => {
-  let themeOptions;
+const themeOptions = (pathname, isDark = false) => {
   const themeSource = isDark ? darkThemesOptions : themesOptions;
-  
-  /*
-    YOU CAN ALSO REMOVE updateTheme function
-    AND FOLLOWING ENTIRE switch case BLOCK.
-  */
-
-  const updateTheme = (themeName) => {
-    publicRuntimeConfig.theme = themeName;
-    themeOptions = themeSource[publicRuntimeConfig.theme];
-  };
+  let themeName = THEMES.DEFAULT;
 
   switch (pathname) {
-    // case "/":
-    //    ('case 1 /');
-    //   updateTheme(THEMES.DEFAULT);
-    //   break;
     case "/":
     case "/grocery1":
     case "/grocery2":
@@ -157,32 +143,30 @@ const themeOptions = (publicRuntimeConfig, pathname, isDark = false) => {
     case "/gadget-shop":
     case "/fashion-shop":
     case "/market-1":
-      updateTheme(THEMES.DEFAULT);
+      themeName = THEMES.DEFAULT;
       break;
 
     case "/furniture-shop":
-      updateTheme(THEMES.FURNITURE);
+      themeName = THEMES.FURNITURE;
       break;
 
     case "/healthbeauty-shop":
-      updateTheme(THEMES.HEALTH);
+      themeName = THEMES.HEALTH;
       break;
 
     case "/gift-shop":
-      updateTheme(THEMES.GIFT);
+      themeName = THEMES.GIFT;
       break;
 
     default:
-      themeOptions = themeSource[publicRuntimeConfig.theme];
+      themeName = THEMES.DEFAULT;
       break;
   }
   /*
         IF YOU REMOVE THE switch case, YOU NEED TO ASSIGN VALUE TO themeOptions
         E.G. themeOptions = themesOptions[THEMES.DEFAULT];
     */
-  // themeOptions = themesOptions[THEMES.DEFAULT];
-
-  return themeOptions;
+  return themeSource[themeName];
 };
 
 export default themeOptions;

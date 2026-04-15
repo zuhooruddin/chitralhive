@@ -40,7 +40,7 @@ const CategoryMenuItem = (props) => {
   const { settings } = useSettings();
   return (
     <Wrapper>
-      <Link href={href} passHref>
+      <Link href={href}>
         <MenuItem className="category-dropdown-link">
           {/* {rest.icon && <rest.icon fontSize="small" color="inherit" />} */}
           <span className="title">{title}</span>
@@ -52,7 +52,6 @@ const CategoryMenuItem = (props) => {
             ))}
         </MenuItem>
       </Link>
-
       {children}
     </Wrapper>
   );

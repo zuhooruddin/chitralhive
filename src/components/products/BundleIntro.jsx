@@ -281,18 +281,18 @@ useEffect(()=>{
                 </td>
 
                 <Link href={slugbaseurl + `${row.slug}`}>
-                  <a>
-                    <th
-                      style={{
-                        padding: "8px",
-                        color: "#444",
-                        fontWeight: "inherit",
-                        borderBottom: "1px solid #ddd",
-                      }}
-                    >
-                      {row.name}
-                    </th>
-                  </a>
+
+                  <th
+                    style={{
+                      padding: "8px",
+                      color: "#444",
+                      fontWeight: "inherit",
+                      borderBottom: "1px solid #ddd",
+                    }}
+                  >
+                    {row.name}
+                  </th>
+
                 </Link>
                 <td style={{ padding: "8px", borderBottom: "1px solid #ddd" }}>
                   <div style={{ display: "flex", alignItems: "center" }}>
@@ -387,11 +387,11 @@ useEffect(()=>{
                     />
                   </TableCell>
                   <Link href={slugbaseurl + `${row.slug}`}>
-                    <a>
-                      <TableCell component="th" scope="row">
-                        {row.name}
-                      </TableCell>
-                    </a>
+
+                    <TableCell component="th" scope="row">
+                      {row.name}
+                    </TableCell>
+
                   </Link>
 
                   <TableCell align="center">

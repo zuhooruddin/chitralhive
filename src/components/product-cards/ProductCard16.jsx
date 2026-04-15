@@ -120,15 +120,15 @@ const ProductCard16 = (props) => {
           <StyledChip color="primary" size="small" label={`${off}% off`} />
         )}
         <Link href={`/product/${id}`}>
-          <a>
-            <LazyImage
-              src={imgUrl}
-              width={100}
-              height={100}
-              layout="responsive"
-              objectFit="contain"
-            />
-          </a>
+
+          <LazyImage
+            src={imgUrl}
+            width={100}
+            height={100}
+            layout="responsive"
+            objectFit="contain"
+          />
+
         </Link>
 
         <ItemController className="controlBox">
@@ -157,7 +157,6 @@ const ProductCard16 = (props) => {
           </Span>
         </ItemController>
       </ImgBox>
-
       <ProductViewDialog
         openDialog={openModal}
         handleCloseDialog={toggleDialog}
@@ -168,7 +167,6 @@ const ProductCard16 = (props) => {
           imgGroup: [imgUrl, imgUrl],
         }}
       />
-
       <ContentWrapper>
         <FlexRowCenter>
           <Box pr={1} fontWeight="500" color="primary.main">
@@ -183,19 +181,19 @@ const ProductCard16 = (props) => {
         </FlexRowCenter>
 
         <Link href={`/product/${id}`}>
-          <a>
-            <H3
-              my="6px"
-              title={title}
-              fontSize="15px"
-              fontWeight="600"
-              className="title"
-              textAlign="center"
-              color="text.secondary"
-            >
-              {title}
-            </H3>
-          </a>
+
+          <H3
+            my="6px"
+            title={title}
+            fontSize="15px"
+            fontWeight="600"
+            className="title"
+            textAlign="center"
+            color="text.secondary"
+          >
+            {title}
+          </H3>
+
         </Link>
 
         {!hideRating && (

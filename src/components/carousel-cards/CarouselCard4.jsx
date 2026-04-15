@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import { Box, styled } from "@mui/material";
 import React from "react";
-import Image from "next/image"; // custom styled components
+import BazaarImage from "components/BazaarImage"; // custom styled components
 
 const CardWrapper = styled(Box)(({ theme, mode }) => ({
   minHeight: 500,
@@ -47,14 +47,14 @@ const CarouselCard4 = ({ bgImage, mode = "dark", content, priority = false, fetc
     <CardWrapper mode={mode}>
       {bgImage && (
         <ImageWrapper>
-          <Image
+          <BazaarImage
             src={bgImage}
             alt="Carousel banner"
-            layout="fill"
+            fill
             priority={priority}
             quality={60}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1920px"
-            objectFit="cover"
+            style={{ objectFit: "cover" }}
             loading={priority ? "eager" : "lazy"}
             placeholder="blur"
             blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2YwZjBmMCIvPjwvc3ZnPg=="

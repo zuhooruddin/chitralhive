@@ -265,7 +265,7 @@ const ProductCard1 = ({
   salePrice = calculatedDiscountedSubtotal;
 
   const imgbaseurl = process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL;
-  var image = image ? image : imageUrl;
+  const resolvedImage = image ? image : imageUrl;
   const categoryName = "";
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -333,7 +333,7 @@ const ProductCard1 = ({
           name: name,
           sku: sku,
           slug: slug,
-          image: imgbaseurl + image,
+          image: imgbaseurl + resolvedImage,
           id: id || routerId,
         },
       });
@@ -439,33 +439,32 @@ const ProductCard1 = ({
   const CardContent = ({ showWishlist = false }) => (
     <Card height="100%">
       <CardMedia>
-        <Link href={`/product/${slug}`}>
-          <a onClick={myFunction}>
-            {renderBadge()}
-            
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                padding: "16px",
+        <Link href={`/product/${slug}`} onClick={myFunction}>
+
+          {renderBadge()}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              padding: "16px",
+            }}
+          >
+            <Image
+              width={300}
+              height={300}
+              alt={name ? `${name} - Buy Authentic Chitrali Products Online at Chitral Hive` : "Chitrali Product"}
+              title={name || "Chitrali Product"}
+              objectFit="contain"
+              layout="intrinsic"
+              src={imgbaseurl + resolvedImage}
+              loading="lazy"
+              style={{
+                transition: "transform 600ms cubic-bezier(0.4, 0, 0.2, 1)",
               }}
-            >
-              <Image
-                width={300}
-                height={300}
-                alt={name ? `${name} - Buy Authentic Chitrali Products Online at Chitral Hive` : "Chitrali Product"}
-                title={name || "Chitrali Product"}
-                objectFit="contain"
-                layout="intrinsic"
-                src={imgbaseurl + image}
-                loading="lazy"
-                style={{
-                  transition: "transform 600ms cubic-bezier(0.4, 0, 0.2, 1)",
-                }}
-              />
-            </Box>
-          </a>
+            />
+          </Box>
+
         </Link>
 
         <ActionButton
@@ -508,7 +507,7 @@ const ProductCard1 = ({
           description,
           categoryName,
           stock,
-          imgGroup: [imgbaseurl + image, imgbaseurl + image],
+          imgGroup: [imgbaseurl + resolvedImage, imgbaseurl + resolvedImage],
         }}
       />
 

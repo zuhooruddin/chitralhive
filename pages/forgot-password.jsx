@@ -93,74 +93,73 @@ const Forget = (props) => {
     });
     
   return (
-   <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-       <Wrapper elevation={2}   >
-     
-
-     <form onSubmit={handleSubmit} >
-     
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <Wrapper elevation={2}   >
     
-       <H3 textAlign="center" mb={1}>
-         Welcome To Chitral Hive
-       </H3>
-       <Small
-         mb={4.5}
-         display="block"
-         fontSize="12px"
-         fontWeight="600"
-         color="grey.800"
-         textAlign="center"
-       >
-     Reset your password 
-       </Small>
 
-       <BazaarTextField
-         mb={1.5}
-         fullWidth
-         name="email"
-         size="small"
-         type="email"
-         variant="outlined"
-         onBlur={handleBlur}
-         value={values.email}
-         onChange={handleChange}
-         label="Enter Your Email "
-         placeholder="exmple@mail.com"
-         error={!!touched.email && !!errors.email}
-         helperText={touched.email && errors.email}
-       />
-
-     
-
-       <BazaarButton
-         fullWidth
-         type="submit"
-         color="primary"
-         variant="contained"
-         sx={{
-           mb: "1.65rem",
-           height: 44,
-         }}
-       >
-         Reset
-       </BazaarButton>
-       <FlexRowCenter my="1.25rem">
-        <Box>Back to account?</Box>
-        <Link href={redirect}>
-          <a>
-            <H6 ml={1} borderBottom="1px solid" borderColor="grey.900">
-              {redirectText}
-            </H6>
-          </a>
-        </Link>
-      </FlexRowCenter>
-
-     </form>
-
-     
-   </Wrapper>
-   </div>
+    <form onSubmit={handleSubmit} >
+    
    
+      <H3 textAlign="center" mb={1}>
+        Welcome To Chitral Hive
+      </H3>
+      <Small
+        mb={4.5}
+        display="block"
+        fontSize="12px"
+        fontWeight="600"
+        color="grey.800"
+        textAlign="center"
+      >
+    Reset your password 
+      </Small>
+
+      <BazaarTextField
+        mb={1.5}
+        fullWidth
+        name="email"
+        size="small"
+        type="email"
+        variant="outlined"
+        onBlur={handleBlur}
+        value={values.email}
+        onChange={handleChange}
+        label="Enter Your Email "
+        placeholder="exmple@mail.com"
+        error={!!touched.email && !!errors.email}
+        helperText={touched.email && errors.email}
+      />
+
+    
+
+      <BazaarButton
+        fullWidth
+        type="submit"
+        color="primary"
+        variant="contained"
+        sx={{
+          mb: "1.65rem",
+          height: 44,
+        }}
+      >
+        Reset
+      </BazaarButton>
+      <FlexRowCenter my="1.25rem">
+       <Box>Back to account?</Box>
+       <Link href={redirect}>
+
+         <H6 ml={1} borderBottom="1px solid" borderColor="grey.900">
+           {redirectText}
+         </H6>
+
+       </Link>
+     </FlexRowCenter>
+
+    </form>
+
+    
+  </Wrapper>
+    </div>
   );
 
  

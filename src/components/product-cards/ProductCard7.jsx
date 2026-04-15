@@ -85,7 +85,6 @@ useEffect(()=>{
         display="block"
         src={`${image}` || "/assets/images/products/iphone-xi.png"}
       />
-
       <IconButton
         size="small"
         onClick={handleCartAmountChange(0)}
@@ -97,21 +96,20 @@ useEffect(()=>{
       >
         <Close fontSize="small" />
       </IconButton>
-
       <FlexBox p={2} rowGap={2} width="100%" flexDirection="column">
         <Link href={`/product/${id}`}>
-          <a>
-            <H3
-              mb={1}
-              title={name}
-              fontSize="14px"
-              fontWeight="600"
-              className="title"
-              color="text.secondary"
-            >
-              {name}
-            </H3>
-          </a>
+
+          <H3
+            mb={1}
+            title={name}
+            fontSize="14px"
+            fontWeight="600"
+            className="title"
+            color="text.secondary"
+          >
+            {name}
+          </H3>
+
         </Link>
 
         <FlexBox gap={1} flexWrap="wrap" alignItems="center">

@@ -22,19 +22,18 @@ const ProductCard12 = ({
   return (
     <Box>
       <Link href={`/product/${id}`}>
-        <a>
-          <HoverBox>
-            <BazaarImage
-              src={imgUrl}
-              width="100%"
-              height="auto"
-              alt={title}
-              mx="auto"
-            />
-          </HoverBox>
-        </a>
-      </Link>
 
+        <HoverBox>
+          <BazaarImage
+            src={imgUrl}
+            width="100%"
+            height="auto"
+            alt={title}
+            mx="auto"
+          />
+        </HoverBox>
+
+      </Link>
       <FlexBetween>
         <Box mt="1rem">
           <H4 fontWeight="600" fontSize="14px" mb={0.5} title={title} ellipsis>

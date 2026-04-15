@@ -15,7 +15,8 @@ const MobileNavigationBar = () => {
   const { settings, toggleTheme } = useSettings();
   const isDark = settings.theme === "dark";
   
-  return width <= 900 ? (
+  // `useWindowSize()` is SSR-safe and returns `undefined` on first render.
+  return typeof width === "number" && width <= 900 ? (
     <Wrapper>
       {list.map((item) => (
         <StyledNavLink href={item.href} key={item.title}>

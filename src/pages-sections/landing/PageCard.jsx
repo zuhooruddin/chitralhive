@@ -100,25 +100,24 @@ const PageCard = (props) => {
         {status && <StatusChip>{status}</StatusChip>}
 
         {!disabled && (
-          <Link href={previewUrl}>
-            <a target="_blank" rel="noopener noreferrer">
-              <StyledFlex className="overlay">
-                <IconButton
-                  sx={{
+          <Link href={previewUrl} target="_blank" rel="noopener noreferrer">
+
+            <StyledFlex className="overlay">
+              <IconButton
+                sx={{
+                  bgcolor: "white",
+                  "&:hover": {
                     bgcolor: "white",
-                    "&:hover": {
-                      bgcolor: "white",
-                    },
-                  }}
-                >
-                  <Visibility fontSize="small" />
-                </IconButton>
-              </StyledFlex>
-            </a>
+                  },
+                }}
+              >
+                <Visibility fontSize="small" />
+              </IconButton>
+            </StyledFlex>
+
           </Link>
         )}
       </Wrapper>
-
       <H3 textAlign="center" lineHeight="1" fontSize="14px">
         {title}
       </H3>

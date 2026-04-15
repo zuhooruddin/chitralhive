@@ -80,17 +80,17 @@ const ProductCard18 = ({ product }) => {
     <Card>
       <CardMedia>
         <Link href={`/product/${product.id}`}>
-          <a>
-            <Image
-              width={300}
-              height={300}
-              alt="category"
-              objectFit="cover"
-              layout="responsive"
-              className="product-img"
-              src={product.img}
-            />
-          </a>
+
+          <Image
+            width={300}
+            height={300}
+            alt="category"
+            objectFit="cover"
+            layout="responsive"
+            className="product-img"
+            src={product.img}
+          />
+
         </Link>
 
         <AddToCartButton
@@ -119,7 +119,6 @@ const ProductCard18 = ({ product }) => {
           Quick View
         </QuickViewButton>
       </CardMedia>
-
       <ProductViewDialog
         openDialog={openDialog}
         handleCloseDialog={() => setOpenDialog(false)}
@@ -130,7 +129,6 @@ const ProductCard18 = ({ product }) => {
           imgGroup: [product.img, product.img],
         }}
       />
-
       <Box p={1} textAlign="center">
         <Small color="grey.500">{product.category}</Small>
         <Paragraph fontWeight="bold">{product.name}</Paragraph>

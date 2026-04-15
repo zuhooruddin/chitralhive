@@ -42,7 +42,6 @@ const MobileCategoryNav = (props) => {
   return (
     <MobileCategoryNavStyle>
       <Header className="header" />
-
       <Box className="main-category-holder">
         {navCategories.map((item) => (
           item.menuData.categories.length>0?
@@ -71,35 +70,34 @@ const MobileCategoryNav = (props) => {
           </Box>
           :
           <Link href={item.href} key={item.title} >
-            <a>
-              <Box
-                key={item.title}
-                className="main-category-box"
-                onClick={handleCategoryClick(item)}
-                borderLeft={`${category?.href === item.href ? "3" : "0"}px solid`}
+
+            <Box
+              key={item.title}
+              className="main-category-box"
+              onClick={handleCategoryClick(item)}
+              borderLeft={`${category?.href === item.href ? "3" : "0"}px solid`}
+            >
+              <Image
+                
+                src={imgbaseurl+item.icon}
+                alt="Picture of the author"
+                width={60}
+                height={40}
+              />
+              <Typography
+                className="ellipsis"
+                textAlign="center"
+                fontSize="11px"
+                sx={{fontWeight: 'bold'}}
+                lineHeight="2"
               >
-                <Image
-                  
-                  src={imgbaseurl+item.icon}
-                  alt="Picture of the author"
-                  width={60}
-                  height={40}
-                />
-                <Typography
-                  className="ellipsis"
-                  textAlign="center"
-                  fontSize="11px"
-                  sx={{fontWeight: 'bold'}}
-                  lineHeight="2"
-                >
-                  {item.title}
-                </Typography>
-              </Box>
-            </a>
+                {item.title}
+              </Typography>
+            </Box>
+
           </Link>
         ))}
       </Box>
-
       <Box className="container">
         {/* <Typography fontWeight="600" fontSize="15px" mb={2}>
           Recommended Categories
@@ -135,11 +133,11 @@ const MobileCategoryNav = (props) => {
               </Accordion> */}
               <List>
                 <Link href={item.href}>
-                  <a>
-                    <ListItem disablePadding >
-                        <ListItemText primary={item.title} />
-                    </ListItem>
-                  </a>
+
+                  <ListItem disablePadding >
+                      <ListItemText primary={item.title} />
+                  </ListItem>
+
                 </Link>
               </List>
             </Fragment>
@@ -151,9 +149,9 @@ const MobileCategoryNav = (props) => {
                 <Grid item lg={1} md={2} sm={3} xs={4} key={item.href}>
                   <a href={item.href}></a>
                   <Link href={item.href}>
-                    <a>
-                      <MobileCategoryImageBox {...item.icon} />
-                    </a>
+
+                    <MobileCategoryImageBox {...item.icon} />
+
                   </Link>
                 </Grid>
               ))}
@@ -161,7 +159,6 @@ const MobileCategoryNav = (props) => {
           </Box>
         )}
       </Box>
-
       <MobileNavigationBar />
     </MobileCategoryNavStyle>
   );

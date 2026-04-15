@@ -134,22 +134,16 @@ const SearchBox = () => {
           startAdornment: <SearchOutlinedIcon fontSize="small" />,
         }}
       />
-    
-
-
-
-
       {!!resultList.length && (
         <SearchResultCard elevation={2}>
           {data2.map((item) => (
-            <Link href={`product/${item.slug}`} key={item} passHref>
+            <Link href={`product/${item.slug}`} key={item}>
               <MenuItem key={item.slug}>{item.name}</MenuItem>
             </Link>
           ))}
         </SearchResultCard>
         
       )}
-      
     </Box>
   );
 };

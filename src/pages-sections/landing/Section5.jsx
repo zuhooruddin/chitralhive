@@ -65,9 +65,7 @@ const Section5 = () => {
               <b>are not charged</b> for.
             </Paragraph>
             <Link
-              href="https://material-ui.com/store/items/bazaar-pro-react-ecommerce-template/"
-              passHref={true}
-            >
+              href="https://material-ui.com/store/items/bazaar-pro-react-ecommerce-template/">
               <Button
                 variant="outlined"
                 color="secondary"

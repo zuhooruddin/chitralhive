@@ -17,80 +17,82 @@ const Section6 = ({data1, data2}) => {
       <Grid container spacing={{ xs: 2, sm: 3 }}>
       {data1 && (
         <Grid item md={6} xs={12}>
-          <Link href={slugbaseurl + (data1.category_slug || '')} passHref legacyBehavior>
-            <a aria-label={`Browse ${data1.category_name || "category"}`}>
+          <Link
+            href={slugbaseurl + (data1.category_slug || '')}
+            aria-label={`Browse ${data1.category_name || "category"}`}>
+
+            <Box sx={{
+              position: 'relative',
+              overflow: 'hidden',
+              paddingTop: { xs: '50%', sm: '40%', md: '30%' },
+              cursor: 'pointer',
+              '& img': {
+                transition: 'transform 0.3s ease, opacity 0.3s ease',
+                willChange: 'transform, opacity',
+              },
+              '&:hover img': {
+                transform: 'scale(1.05)',
+                opacity: 0.5,
+              },
+              '& > div:last-child': {
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                backgroundColor: 'rgba(0, 0, 0, 0.03)',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'left',
+                flexDirection: 'column',
+                transition: 'opacity 0.3s ease',
+                pointerEvents: 'none',
+                willChange: 'opacity',
+              },
+              '&:hover > div:last-child': {
+                backgroundColor: 'rgba(0, 0, 0, 0.2)',
+              },
+              '&:hover h4': {
+                fontSize: { xs: 16, sm: 17, md: 18 },
+                color: '#fff',
+                transition: 'color 0.3s ease',
+              },
+              '&:hover span': {
+                fontSize: { xs: 13, sm: 13.5, md: 14 },
+                color: '#fff',
+                transition: 'color 0.3s ease',
+              },
+            }}>
               <Box sx={{
-                position: 'relative',
-                overflow: 'hidden',
-                paddingTop: { xs: '50%', sm: '40%', md: '30%' },
-                cursor: 'pointer',
-                '& img': {
-                  transition: 'transform 0.3s ease, opacity 0.3s ease',
-                  willChange: 'transform, opacity',
-                },
-                '&:hover img': {
-                  transform: 'scale(1.05)',
-                  opacity: 0.5,
-                },
-                '& > div:last-child': {
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: '100%',
-                  backgroundColor: 'rgba(0, 0, 0, 0.03)',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'left',
-                  flexDirection: 'column',
-                  transition: 'opacity 0.3s ease',
-                  pointerEvents: 'none',
-                  willChange: 'opacity',
-                },
-                '&:hover > div:last-child': {
-                  backgroundColor: 'rgba(0, 0, 0, 0.2)',
-                },
-                '&:hover h4': {
-                  fontSize: { xs: 16, sm: 17, md: 18 },
-                  color: '#fff',
-                  transition: 'color 0.3s ease',
-                },
-                '&:hover span': {
-                  fontSize: { xs: 13, sm: 13.5, md: 14 },
-                  color: '#fff',
-                  transition: 'color 0.3s ease',
-                },
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
+                backgroundColor: '#fff'
               }}>
-                <Box sx={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: '100%',
-                  boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
-                  backgroundColor: '#fff'
-                }}>
-                  <Image
-                    src={data1.image && data1.image ? imgbaseurl + data1.image : '/assets/images/banners/banner-21.jpg'}
-                    alt={data1.category_name || 'Category'}
-                    layout="fill"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    style={{ objectFit: 'contain' }}
-                    quality={85}
-                    priority={false}
-                    loading="lazy"
-                  />
-                </Box>
-                <Box sx={{ position: 'absolute', top: 0, left: 0, zIndex: 1 }}>
-                  <H4 fontSize={{ xs: 14, sm: 16, md: 18 }} lineHeight={1} sx={{ color: '#000000', mb: 1, ml: { xs: 2, sm: 4, md: 10 } }}>
-                    {data1.category_name&&data1.category_name?data1.category_name:'Category12'}
-                  </H4>
-                  <Span fontSize={{ xs: 12, sm: 13, md: 14 }} lineHeight={1} sx={{ color: '#000000', ml: { xs: 2, sm: 4, md: 10 } }}>
-                    View all
-                  </Span>
-                </Box>
+                <Image
+                  src={data1.image && data1.image ? imgbaseurl + data1.image : '/assets/images/banners/banner-21.jpg'}
+                  alt={data1.category_name || 'Category'}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  style={{ objectFit: 'contain' }}
+                  quality={85}
+                  priority={false}
+                  loading="lazy"
+                />
               </Box>
-            </a>
+              <Box sx={{ position: 'absolute', top: 0, left: 0, zIndex: 1 }}>
+                <H4 fontSize={{ xs: 14, sm: 16, md: 18 }} lineHeight={1} sx={{ color: '#000000', mb: 1, ml: { xs: 2, sm: 4, md: 10 } }}>
+                  {data1.category_name&&data1.category_name?data1.category_name:'Category12'}
+                </H4>
+                <Span fontSize={{ xs: 12, sm: 13, md: 14 }} lineHeight={1} sx={{ color: '#000000', ml: { xs: 2, sm: 4, md: 10 } }}>
+                  View all
+                </Span>
+              </Box>
+            </Box>
+
           </Link>
         </Grid>
       )}
@@ -98,82 +100,84 @@ const Section6 = ({data1, data2}) => {
 
       {data2 && (
         <Grid item md={6} xs={12}>
-          <Link href={slugbaseurl + (data2.category_slug || '')} passHref legacyBehavior>
-            <a aria-label={`Browse ${data2.category_name || "category"}`}>
+          <Link
+            href={slugbaseurl + (data2.category_slug || '')}
+            aria-label={`Browse ${data2.category_name || "category"}`}>
+
+            <Box sx={{
+              position: 'relative',
+              overflow: 'hidden',
+              paddingTop: { xs: '50%', sm: '40%', md: '30%' },
+              cursor: 'pointer',
+              '& img': {
+                transition: 'transform 0.3s ease, opacity 0.3s ease',
+                willChange: 'transform, opacity',
+              },
+              '&:hover img': {
+                transform: 'scale(1.05)',
+                opacity: 0.5,
+              },
+              '& > div:last-child': {
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                backgroundColor: 'rgba(0, 0, 0, 0.03)',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'left',
+                flexDirection: 'column',
+                transition: 'opacity 0.3s ease',
+                pointerEvents: 'none',
+                willChange: 'opacity',
+              },
+              '&:hover > div:last-child': {
+                backgroundColor: 'rgba(0, 0, 0, 0.2)',
+              },
+              '&:hover h4': {
+                fontSize: { xs: 16, sm: 17, md: 18 },
+                color: '#fff',
+                transition: 'color 0.3s ease',
+              },
+              '&:hover span': {
+                fontSize: { xs: 13, sm: 13.5, md: 14 },
+                color: '#fff',
+                transition: 'color 0.3s ease',
+              },
+            }}>
               <Box sx={{
-                position: 'relative',
-                overflow: 'hidden',
-                paddingTop: { xs: '50%', sm: '40%', md: '30%' },
-                cursor: 'pointer',
-                '& img': {
-                  transition: 'transform 0.3s ease, opacity 0.3s ease',
-                  willChange: 'transform, opacity',
-                },
-                '&:hover img': {
-                  transform: 'scale(1.05)',
-                  opacity: 0.5,
-                },
-                '& > div:last-child': {
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: '100%',
-                  backgroundColor: 'rgba(0, 0, 0, 0.03)',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'left',
-                  flexDirection: 'column',
-                  transition: 'opacity 0.3s ease',
-                  pointerEvents: 'none',
-                  willChange: 'opacity',
-                },
-                '&:hover > div:last-child': {
-                  backgroundColor: 'rgba(0, 0, 0, 0.2)',
-                },
-                '&:hover h4': {
-                  fontSize: { xs: 16, sm: 17, md: 18 },
-                  color: '#fff',
-                  transition: 'color 0.3s ease',
-                },
-                '&:hover span': {
-                  fontSize: { xs: 13, sm: 13.5, md: 14 },
-                  color: '#fff',
-                  transition: 'color 0.3s ease',
-                },
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
+                backgroundColor: '#fff'
               }}>
-                <Box sx={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: '100%',
-                  boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
-                  backgroundColor: '#fff'
-                }}>
-                  <Image
-                    src={data2.image && data2.image ? imgbaseurl + data2.image : '/assets/images/banners/banner-22.jpg'}
-                    alt={data2.category_name || 'Category'}
-                    layout="fill"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    style={{ objectFit: 'contain' }}
-                    quality={85}
-                    priority={false}
-                    loading="lazy"
-                  />
-                </Box>
-                <Box sx={{ position: 'absolute', top: 0, left: 0, zIndex: 1 }}>
-                  <div>
-                    <H4 fontSize={{ xs: 14, sm: 16, md: 18 }} lineHeight={1} sx={{ color: '#000000', mb: 1, ml: { xs: 2, sm: 4, md: 10 } }}>
-                      {data2.category_name&&data2.category_name?data2.category_name:'Category13'}
-                    </H4>
-                    <Span fontSize={{ xs: 12, sm: 13, md: 14 }} lineHeight={1} sx={{ color: '#000000', ml: { xs: 2, sm: 4, md: 10 } }}>
-                      View all
-                    </Span>
-                  </div>
-                </Box>
+                <Image
+                  src={data2.image && data2.image ? imgbaseurl + data2.image : '/assets/images/banners/banner-22.jpg'}
+                  alt={data2.category_name || 'Category'}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  style={{ objectFit: 'contain' }}
+                  quality={85}
+                  priority={false}
+                  loading="lazy"
+                />
               </Box>
-            </a>
+              <Box sx={{ position: 'absolute', top: 0, left: 0, zIndex: 1 }}>
+                <div>
+                  <H4 fontSize={{ xs: 14, sm: 16, md: 18 }} lineHeight={1} sx={{ color: '#000000', mb: 1, ml: { xs: 2, sm: 4, md: 10 } }}>
+                    {data2.category_name&&data2.category_name?data2.category_name:'Category13'}
+                  </H4>
+                  <Span fontSize={{ xs: 12, sm: 13, md: 14 }} lineHeight={1} sx={{ color: '#000000', ml: { xs: 2, sm: 4, md: 10 } }}>
+                    View all
+                  </Span>
+                </div>
+              </Box>
+            </Box>
+
           </Link>
         </Grid>
       )}

@@ -54,18 +54,8 @@ const AdTitle1 = styled(H3)(({ theme }) => ({
 }));
 
 const Section3 = (dataa) => {
-  console.log(dataa);
-  // Construct correct base URL: https://api.meerabs.com/media/
-  // Since NEXT_PUBLIC_BACKEND_API_BASE = https://api.meerabs.com/api/
-  // We need to replace /api/ with /media/ to get: https://api.meerabs.com/media/
   const backendBase = process.env.NEXT_PUBLIC_BACKEND_API_BASE || '';
-  let imgbaseurl = backendBase.replace('/api/', '/media/');
-  // If replacement didn't work (no /api/ found), try without trailing slash
-  if (imgbaseurl === backendBase) {
-    imgbaseurl = backendBase.replace('/api', '/media');
-  }
-  // Ensure the base URL ends with exactly one /
-  imgbaseurl = imgbaseurl.replace(/\/+$/, '') + '/';
+  const imgbaseurl = `${backendBase.replace(/\/+$/, "")}/media/`;
   
   const slugbaseurl='category/'
   
@@ -94,7 +84,6 @@ const Section3 = (dataa) => {
     id: item.id,
     img: item.image && item.image.trim() !== '' ? imgbaseurl + item.image : '/assets/images/banners/default.png',
   }));
-  console.log(data);
 
   return (
     <Container

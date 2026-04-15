@@ -133,14 +133,14 @@ const MegaMenu1 = ({
           {rightImage && (
             <Box mt={1.5}>
               <Link href={rightImage.href}>
-                <a>
-                  <LazyImage
-                    src={rightImage.imgUrl}
-                    objectFit="contain"
-                    width={137}
-                    height={318}
-                  />
-                </a>
+
+                <LazyImage
+                  src={rightImage.imgUrl}
+                  objectFit="contain"
+                  width={137}
+                  height={318}
+                />
+
               </Link>
             </Box>
           )}
@@ -148,15 +148,15 @@ const MegaMenu1 = ({
 
         {bottomImage && (
           <Link href={bottomImage.href}>
-            <a>
-              <Box position="relative" height="170px">
-                <LazyImage
-                  src={bottomImage.imgUrl}
-                  layout="fill"
-                  objectFit="cover"
-                />
-              </Box>
-            </a>
+
+            <Box position="relative" height="170px">
+              <LazyImage
+                src={bottomImage.imgUrl}
+                layout="fill"
+                objectFit="cover"
+              />
+            </Box>
+
           </Link>
         )}
       </Card>

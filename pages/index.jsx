@@ -9,6 +9,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import apiNav from "utils/api/market-2";
 import api from "utils/api/fashion-shop-2";
 import LazySection from "components/LazySection";
+import AdSenseAd from "components/ads/AdSenseAd";
 import {
   DEFAULT_META_DESCRIPTION,
   SHILAJIT_KEYWORD_PHRASES,
@@ -369,6 +370,17 @@ const IndexPage = (props) => {
           slidersList={props.slidersList}
           slidersListLocal={props.slidersListLocal}
         />
+
+        <LazySection>
+          <Box sx={{ mt: { xs: 2, sm: 3 }, display: "flex", justifyContent: "center" }}>
+            <AdSenseAd
+              slot={process.env.NEXT_PUBLIC_ADSENSE_FLUID_LAYOUTKEY_SLOT}
+              format="fluid"
+              layoutKey="-eb-86+e7+go-17v"
+              sx={{ maxWidth: 900, mx: "auto" }}
+            />
+          </Box>
+        </LazySection>
 
         <LazySection>
           <Section9

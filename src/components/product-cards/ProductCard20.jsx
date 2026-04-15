@@ -200,8 +200,7 @@ const total=Reviews.length;
         <CardMedia>
        
           <Link href={slugbaseurl+`${product.slug}`}>
-      
-            <a>
+
             {/* {!!product.discount && (
             <StyledChip color="primary" size="small" label='Sale' />
 
@@ -221,61 +220,55 @@ const total=Reviews.length;
               
               
               )} */}
+            {product.stock === "0.00" && product.isNewArrival === 1 ? (
+              <StyledChip color="secondary" size="small" label="Out of Stock | New Arrival" sx={{ml:1}} />
+            ) : (
+              product.isNewArrival === 1 && product.stock > "0.00" ? (
+                product.discount > 0 ? (
+                  <StyledChip1 color="secondary" size="small" label="New Arrival | Sale" />
+                ) : (
+                  <StyledChip1 color="secondary" size="small" label="New Arrival" />
+                )
+              ) : (
+                product.isNewArrival < 1 && product.stock === "0.00" ? (
+                  product.discount > 0 ? (
+                    <StyledChip1 color="secondary" size="small" label="Out of Stock | Sale" />
+                  ) : (
+                    <StyledChip1 color="secondary" size="small" label="Out of Stock" />
+                  )
+                ) : (
+                  product.discount > 0 ? (
+                    <StyledChip1 color="secondary" size="small" label="Sale" />
+                  ) : ('')
+                )
+              )
+            )}
+            <Box
+                          className="product-img-container"
+                          sx={{
+                            position: "relative",
+                            width: "100%",
+                            maxWidth: 300,
+                            mx: "auto",
+                            aspectRatio: "1 / 1",
+                            maxHeight: 300,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <Image
+                            src={imgbaseurl + product.image}
+                            alt={product.name || "Product"}
+                            layout="fill"
+                            objectFit="contain"
+                            sizes="(max-width: 600px) 55vw, (max-width: 1200px) 33vw, 300px"
+                            quality={75}
+                            className="product-img"
+                            priority={priority}
+                          />
+                        </Box>
 
-
-
-
-{product.stock === "0.00" && product.isNewArrival === 1 ? (
-  <StyledChip color="secondary" size="small" label="Out of Stock | New Arrival" sx={{ml:1}} />
-) : (
-  product.isNewArrival === 1 && product.stock > "0.00" ? (
-    product.discount > 0 ? (
-      <StyledChip1 color="secondary" size="small" label="New Arrival | Sale" />
-    ) : (
-      <StyledChip1 color="secondary" size="small" label="New Arrival" />
-    )
-  ) : (
-    product.isNewArrival < 1 && product.stock === "0.00" ? (
-      product.discount > 0 ? (
-        <StyledChip1 color="secondary" size="small" label="Out of Stock | Sale" />
-      ) : (
-        <StyledChip1 color="secondary" size="small" label="Out of Stock" />
-      )
-    ) : (
-      product.discount > 0 ? (
-        <StyledChip1 color="secondary" size="small" label="Sale" />
-      ) : ('')
-    )
-  )
-)}
-
-
-<Box
-              className="product-img-container"
-              sx={{
-                position: "relative",
-                width: "100%",
-                maxWidth: 300,
-                mx: "auto",
-                aspectRatio: "1 / 1",
-                maxHeight: 300,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Image
-                src={imgbaseurl + product.image}
-                alt={product.name || "Product"}
-                layout="fill"
-                objectFit="contain"
-                sizes="(max-width: 600px) 55vw, (max-width: 1200px) 33vw, 300px"
-                quality={75}
-                className="product-img"
-                priority={priority}
-              />
-            </Box>
-            </a>
           </Link>
 
           <AddToCartButton
@@ -297,7 +290,6 @@ const total=Reviews.length;
             )}
           </FavouriteButton>
         </CardMedia>
-
         <ProductViewDialog
           openDialog={openDialog}
           handleCloseDialog={() => setOpenDialog(false)}
@@ -316,7 +308,6 @@ const total=Reviews.length;
             imgGroup: [imgbaseurl+product.image, imgbaseurl+product.image],
           }}
         />
-
         <Box p={2} textAlign="center">
 
           <Paragraph style={{ "lineHeight": "1.5em", "height": "3em", "overflow": "hidden" }}>{product.name}</Paragraph>
@@ -499,8 +490,7 @@ const total=Reviews.length;
         <CardMedia>
        
           <Link href={slugbaseurl+`${product.slug}`}>
-      
-            <a>
+
             {/* {!!product.discount && (
             <StyledChip color="primary" size="small" label='Sale' />
 
@@ -520,60 +510,55 @@ const total=Reviews.length;
               
               
               )} */}
-
-              {product.stock === "0.00" && product.isNewArrival === 1 ? (
-  <StyledChip color="secondary" size="small" label="Out of Stock | New Arrival" sx={{ml:1}} />
+            {product.stock === "0.00" && product.isNewArrival === 1 ? (
+<StyledChip color="secondary" size="small" label="Out of Stock | New Arrival" sx={{ml:1}} />
 ) : (
-  product.isNewArrival === 1 && product.stock > "0.00" ? (
+product.isNewArrival === 1 && product.stock > "0.00" ? (
+  product.discount > 0 ? (
+    <StyledChip1 color="secondary" size="small" label="New Arrival | Sale" />
+  ) : (
+    <StyledChip1 color="secondary" size="small" label="New Arrival" />
+  )
+) : (
+  product.isNewArrival < 1 && product.stock === "0.00" ? (
     product.discount > 0 ? (
-      <StyledChip1 color="secondary" size="small" label="New Arrival | Sale" />
+      <StyledChip1 color="secondary" size="small" label="Out of Stock | Sale" />
     ) : (
-      <StyledChip1 color="secondary" size="small" label="New Arrival" />
+      <StyledChip1 color="secondary" size="small" label="Out of Stock" />
     )
   ) : (
-    product.isNewArrival < 1 && product.stock === "0.00" ? (
-      product.discount > 0 ? (
-        <StyledChip1 color="secondary" size="small" label="Out of Stock | Sale" />
-      ) : (
-        <StyledChip1 color="secondary" size="small" label="Out of Stock" />
-      )
-    ) : (
-      product.discount > 0 ? (
-        <StyledChip1 color="secondary" size="small" label="Sale" />
-      ) : ('')
-    )
+    product.discount > 0 ? (
+      <StyledChip1 color="secondary" size="small" label="Sale" />
+    ) : ('')
   )
+)
 )}
+            <Box
+                          className="product-img-container"
+                          sx={{
+                            position: "relative",
+                            width: "100%",
+                            maxWidth: 300,
+                            mx: "auto",
+                            aspectRatio: "1 / 1",
+                            maxHeight: 300,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <Image
+                            src={imgbaseurl + product.image}
+                            alt={product.name || "Product"}
+                            layout="fill"
+                            objectFit="contain"
+                            sizes="(max-width: 600px) 55vw, (max-width: 1200px) 33vw, 300px"
+                            quality={75}
+                            className="product-img"
+                            priority={priority}
+                          />
+                        </Box>
 
-
-<Box
-              className="product-img-container"
-              sx={{
-                position: "relative",
-                width: "100%",
-                maxWidth: 300,
-                mx: "auto",
-                aspectRatio: "1 / 1",
-                maxHeight: 300,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Image
-                src={imgbaseurl + product.image}
-                alt={product.name || "Product"}
-                layout="fill"
-                objectFit="contain"
-                sizes="(max-width: 600px) 55vw, (max-width: 1200px) 33vw, 300px"
-                quality={75}
-                className="product-img"
-                priority={priority}
-              />
-            </Box>
-
-
-            </a>
           </Link>
 
           <AddToCartButton
@@ -585,7 +570,6 @@ const total=Reviews.length;
           </AddToCartButton>
 
         </CardMedia>
-
         <ProductViewDialog
           openDialog={openDialog}
           handleCloseDialog={() => setOpenDialog(false)}
@@ -604,7 +588,6 @@ const total=Reviews.length;
             imgGroup: [imgbaseurl+product.image, imgbaseurl+product.image],
           }}
         />
-
         <Box p={2} textAlign="center">
 
           <Paragraph style={{ "lineHeight": "1.5em", "height": "3em", "overflow": "hidden" }}>{product.name}</Paragraph>
@@ -684,7 +667,7 @@ const total=Reviews.length;
 
       // ==================================================================================
 
-      <FlexBox alignItems="center" mb={4.5} sx={{
+      (<FlexBox alignItems="center" mb={4.5} sx={{
         display: 'flex',
         justifyContent: 'center',
         }}>
@@ -699,11 +682,9 @@ const total=Reviews.length;
         >
           <Remove fontSize="small" />
         </BazaarButton>
-
         <H3 fontWeight="600" mx={2.5}>
           {cartItem?.qty.toString().padStart(2, "0")}
         </H3>
-
         <BazaarButton
           size="small"
           sx={{
@@ -715,7 +696,7 @@ const total=Reviews.length;
         >
           <Add fontSize="small" />
         </BazaarButton>
-      </FlexBox>
+      </FlexBox>)
     )
 
   )

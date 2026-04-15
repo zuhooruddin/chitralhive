@@ -151,24 +151,24 @@ const MiniCart = ({ toggleSidenav }) => {
             </FlexBox>
 
             <Link href={slugbaseurl + `${item.slug}`}>
-              <a>
-                <BazaarAvatar
-                  mx={2}
-                  width={76}
-                  height={76}
-                  alt={item.name}
-                  src={item.image || "/assets/images/products/iphone-x.png"}
-                />
-              </a>
+
+              <BazaarAvatar
+                mx={2}
+                width={76}
+                height={76}
+                alt={item.name}
+                src={item.image || "/assets/images/products/iphone-x.png"}
+              />
+
             </Link>
 
             <Box flex="1 1 0">
               <Link href="/product/[slug]" as={`/product/${item.slug}`}>
-                <a>
-                  <H5 className="title" fontSize="14px">
-                    {item.name}
-                  </H5>
-                </a>
+
+                <H5 className="title" fontSize="14px">
+                  {item.name}
+                </H5>
+
               </Link>
               {/* <Link href={slugbaseurl+`${item.slug}` }>
                 <a>
@@ -203,10 +203,9 @@ const MiniCart = ({ toggleSidenav }) => {
           </FlexBox>
         ))}
       </Box>
-
       {!!cartList.length && (
         <Box p={2.5}>
-          <Link href="/checkout" passHref>
+          <Link href="/checkout">
             <BazaarButton
               fullWidth
               color="primary"
@@ -221,7 +220,7 @@ const MiniCart = ({ toggleSidenav }) => {
             </BazaarButton>
           </Link>
 
-          <Link href="/cart" passHref>
+          <Link href="/cart">
             <BazaarButton
               fullWidth
               color="primary"

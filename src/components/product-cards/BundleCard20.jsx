@@ -184,18 +184,18 @@ const BundleCard20 = ({ product, wishList }) => {
       <Card height="100%">
         <CardMedia>
           <Link href={slugbaseurl+`${product.slug}`}>
-            <a>
-              <Image
-                width={300}
-                height={300}
-                alt="category"
-                objectFit="contain"
-                layout="responsive"
-                className="product-img"
-                // src="https://pictures.abebooks.com/isbn/9781338615036-us.jpg"
-                src={imgbaseurl+product.image}
-              />
-            </a>
+
+            <Image
+              width={300}
+              height={300}
+              alt="category"
+              objectFit="contain"
+              layout="responsive"
+              className="product-img"
+              // src="https://pictures.abebooks.com/isbn/9781338615036-us.jpg"
+              src={imgbaseurl+product.image}
+            />
+
           </Link>
 
           <AddToCartButton
@@ -206,7 +206,6 @@ const BundleCard20 = ({ product, wishList }) => {
           </AddToCartButton>
 
         </CardMedia>
-
         <ProductViewDialog
           openDialog={openDialog}
           handleCloseDialog={() => setOpenDialog(false)}
@@ -219,7 +218,6 @@ const BundleCard20 = ({ product, wishList }) => {
             imgGroup: [product.image, product.image],
           }}
         />
-
         <Box p={2} textAlign="center">
 
           <Paragraph style={{ "line-height": "1.5em", "height": "3em", "overflow": "hidden" }}>{product.name}</Paragraph>

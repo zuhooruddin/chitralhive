@@ -65,8 +65,7 @@ const BannerCard1 = ({
 }) => {
   return (
     <CardWrapper {...props}>
-      <BazaarImage alt="category" height="100%" width="100%" src={img} />
-
+      <BazaarImage alt="category" fill src={img} style={{ objectFit: "cover" }} />
       <CardContent contentAlign={contentPosition} className="content">
         <H2>{title}</H2>
         <Paragraph>{subTitle}</Paragraph>
@@ -79,9 +78,9 @@ const BannerCard1 = ({
         />
 
         <Link href={url}>
-          <a>
-            <CardLink>Shop Now</CardLink>
-          </a>
+
+          <CardLink>Shop Now</CardLink>
+
         </Link>
       </CardContent>
     </CardWrapper>

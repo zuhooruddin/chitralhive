@@ -78,35 +78,35 @@ const BrandBundles = (data) => {
                   <ImageWrapper>
                     <HoverIconWrapper className="hover-box"></HoverIconWrapper>
                     <Link href={slugbaseurl+item.slug}>
-                      <a>
-                        <LazyImage
-                          src={imgbaseurl+item.icon}
-                          width={300}
-                          height={300}
-                          objectFit="contain"
-                          layout="fixed"
-                          alt={item.name}
-                        />
-                      </a>
+
+                      <LazyImage
+                        src={imgbaseurl+item.icon}
+                        width={300}
+                        height={300}
+                        objectFit="contain"
+                        layout="fixed"
+                        alt={item.name}
+                      />
+
                     </Link>
                   </ImageWrapper>
                   <ContentWrapper>
                     <FlexBox>
                       <Box flex="1 1 0" minWidth="0px" mr={1}>
                         <Link href={slugbaseurl+item.slug}>
-                          <a>
-                            <H3
-                              mb={1}
-                              title={item.name}
-                              fontSize="14px"
-                              fontWeight="600"
-                              className="title"
-                              color="text.secondary"
-                              style={{ textAlign: "center" }}
-                            >
-                              {item.name}
-                            </H3>
-                          </a>
+
+                          <H3
+                            mb={1}
+                            title={item.name}
+                            fontSize="14px"
+                            fontWeight="600"
+                            className="title"
+                            color="text.secondary"
+                            style={{ textAlign: "center" }}
+                          >
+                            {item.name}
+                          </H3>
+
                         </Link>
                       </Box>
                     </FlexBox>

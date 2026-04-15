@@ -22,7 +22,6 @@ const Error404 = () => {
           mb: 3,
         }}
       />
-
       <FlexBox flexWrap="wrap">
         <Button
           variant="outlined"
@@ -35,7 +34,7 @@ const Error404 = () => {
           Go Back
         </Button>
 
-        <Link href="/" passHref>
+        <Link href="/">
           <Button
             variant="contained"
             color="primary"

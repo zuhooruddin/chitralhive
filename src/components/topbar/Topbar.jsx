@@ -3,7 +3,6 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
 import { Box, Container, MenuItem, styled } from "@mui/material";
 import BazaarImage from "components/BazaarImage";
-import Image from "next/image";
 import { FlexBox } from "components/flex-box";
 import { Span } from "components/Typography";
 // ThemeSwitcher removed from topbar
@@ -121,12 +120,28 @@ const TopbarWrapper = styled(Box, {
 
 
 const Topbar = ({ bgColor,topbardata, color }) => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  // Avoid SSR/client hydration mismatch:
+  // - SSR typically has no session, so it renders "logged-out".
+  // - Client may become authenticated during hydration.
+  // Keep the first client render consistent with SSR and only switch after mount.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+    // ReactModal relies on DOM; set app element on client only.
+    try {
+      ReactModal.setAppElement("body");
+    } catch {
+      // no-op (e.g. during tests)
+    }
+  }, []);
+
+  const isAuthenticated = mounted && status === "authenticated";
   async function tokenBlacklist(){
     const payload = {
       // refresh: session.refreshToken,
-      userId:session.user.id,
-      accessToken: session.accessToken
+      userId: session?.user?.id,
+      accessToken: session?.accessToken
     };
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_BASE}apiSignOut`, {
@@ -165,8 +180,10 @@ const Topbar = ({ bgColor,topbardata, color }) => {
     }
 
 
-    const imgbaseurl = process.env.NEXT_PUBLIC_BACKEND_API_BASE + "media/";
-const server_ip=process.env.NEXT_PUBLIC_BACKEND_API_BASE
+  const rawApiBase = process.env.NEXT_PUBLIC_BACKEND_API_BASE || "";
+  // Normalize to always have exactly one trailing slash for safe concatenation.
+  const server_ip = rawApiBase ? rawApiBase.replace(/\/?$/, "/") : "";
+  const imgbaseurl = server_ip + "media/";
     const handleSignOut = () => {tokenBlacklist()}
 
 
@@ -355,7 +372,7 @@ const server_ip=process.env.NEXT_PUBLIC_BACKEND_API_BASE
     }
   };
 
-  if (session) {
+  if (isAuthenticated) {
     return (
       <TopbarWrapper bgColor={bgColor}>
         <Container
@@ -367,18 +384,19 @@ const server_ip=process.env.NEXT_PUBLIC_BACKEND_API_BASE
           }}>
           <FlexBox className="topbarLeft">
             <div className="logo">
-              <Link href="/" passHref legacyBehavior>
-                <a aria-label="Chitral Hive Home" style={{ display: "inline-block", lineHeight: 0 }}>
-                  <Image
-                    height={28}
-                    width={120}
-                    src={topbardata ? imgbaseurl + topbardata[0].site_logo : "/assets/images/logos/webpack.png"}
-                    alt="Chitral Hive Logo"
-                    priority
-                    quality={85}
-                    sizes="120px"
-                  />
-                </a>
+              <Link href="/" aria-label="Chitral Hive Home" style={{ display: "inline-block", lineHeight: 0 }}>
+
+                <BazaarImage
+                  height={28}
+                  width={120}
+                  src={topbardata ? imgbaseurl + topbardata[0].site_logo : "/assets/images/logos/webpack.png"}
+                  alt="Chitral Hive Logo"
+                  style={{ objectFit: "contain" }}
+                  priority
+                  quality={85}
+                  sizes="120px"
+                />
+
               </Link>
             </div>
             <FlexBox className="drawer">
@@ -416,94 +434,94 @@ const server_ip=process.env.NEXT_PUBLIC_BACKEND_API_BASE
             <Span sx={{ color: 'inherit', fontSize: '12px' }}> Sign Out</Span>
                </FlexBox>
       </Container>
-
-      <ReactModal
-        isOpen={isPopupOpen}
-        onRequestClose={closePopup}
-        contentLabel="Voucher Popup"
-        style={modalContentStyle}
-
-      >
-       
-        <CloseIcon
-          style={{
-            position: 'absolute',
-            top: '16px',
-            right: '16px',
-            cursor: 'pointer',
-            color: '#666',
-            zIndex: 1,
-            transition: 'color 0.2s ease',
-          }}
-          onClick={closePopup}
-          onMouseEnter={(e) => e.target.style.color = '#000'}
-          onMouseLeave={(e) => e.target.style.color = '#666'}
-        />
-      <div className="voucher-content" style={couponContainerStyle}>
-          {data ? (
-            <>
-              {data.image && (
-                <Image
-                  src={imgbaseurl + data.image}
-                  alt={data.name || 'Voucher'}
-                  width={400}
-                  height={200}
-                  style={{
-                    width: '100%',
-                    height: 'auto',
-                    borderRadius: '12px',
-                    marginBottom: '24px',
-                    objectFit: 'cover',
-                    maxHeight: '200px',
-                  }}
-                  loading="lazy"
-                />
-              )}
-              <div style={discountBadgeStyle}>
-                {data.discount || 0}% OFF
-              </div>
-              <h2 style={couponTitleStyle}>{data.name || ''}</h2>
-              
-              <div style={couponCodeContainerStyle}>
-                <span style={couponCodeTextStyle}>{data.code || ''}</span>
-                <button
-                  onClick={() => handleCopyClick(data.code || '')}
-                  style={copyButtonStyle}
-                  onMouseEnter={(e) => {
-                    e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
-                    e.target.style.transform = 'scale(1.05)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
-                    e.target.style.transform = 'scale(1)';
-                  }}
-                >
-                  <FileCopyIcon style={{ fontSize: '18px' }} />
-                  Copy
-                </button>
-              </div>
-
-              <div style={dateContainerStyle}>
-                <div style={dateItemStyle}>
-                  <div style={dateLabelStyle}>Start Date</div>
-                  <div style={dateValueStyle}>{data.startdate || 'N/A'}</div>
+        {mounted && (
+          <ReactModal
+            isOpen={isPopupOpen}
+            onRequestClose={closePopup}
+            contentLabel="Voucher Popup"
+            style={modalContentStyle}
+          >
+         
+          <CloseIcon
+            style={{
+              position: 'absolute',
+              top: '16px',
+              right: '16px',
+              cursor: 'pointer',
+              color: '#666',
+              zIndex: 1,
+              transition: 'color 0.2s ease',
+            }}
+            onClick={closePopup}
+            onMouseEnter={(e) => e.target.style.color = '#000'}
+            onMouseLeave={(e) => e.target.style.color = '#666'}
+          />
+        <div className="voucher-content" style={couponContainerStyle}>
+            {data ? (
+              <>
+                {data.image && (
+                  <BazaarImage
+                    src={imgbaseurl + data.image}
+                    alt={data.name || 'Voucher'}
+                    width={400}
+                    height={200}
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '12px',
+                      marginBottom: '24px',
+                      objectFit: 'cover',
+                      maxHeight: '200px',
+                    }}
+                    loading="lazy"
+                  />
+                )}
+                <div style={discountBadgeStyle}>
+                  {data.discount || 0}% OFF
                 </div>
-                <div style={{ width: '1px', backgroundColor: '#ddd', margin: '0 16px' }}></div>
-                <div style={dateItemStyle}>
-                  <div style={dateLabelStyle}>End Date</div>
-                  <div style={dateValueStyle}>{data.enddate || 'N/A'}</div>
+                <h2 style={couponTitleStyle}>{data.name || ''}</h2>
+                
+                <div style={couponCodeContainerStyle}>
+                  <span style={couponCodeTextStyle}>{data.code || ''}</span>
+                  <button
+                    onClick={() => handleCopyClick(data.code || '')}
+                    style={copyButtonStyle}
+                    onMouseEnter={(e) => {
+                      e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
+                      e.target.style.transform = 'scale(1.05)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+                      e.target.style.transform = 'scale(1)';
+                    }}
+                  >
+                    <FileCopyIcon style={{ fontSize: '18px' }} />
+                    Copy
+                  </button>
                 </div>
+
+                <div style={dateContainerStyle}>
+                  <div style={dateItemStyle}>
+                    <div style={dateLabelStyle}>Start Date</div>
+                    <div style={dateValueStyle}>{data.startdate || 'N/A'}</div>
+                  </div>
+                  <div style={{ width: '1px', backgroundColor: '#ddd', margin: '0 16px' }}></div>
+                  <div style={dateItemStyle}>
+                    <div style={dateLabelStyle}>End Date</div>
+                    <div style={dateValueStyle}>{data.enddate || 'N/A'}</div>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div style={{ textAlign: 'center', padding: '40px 20px' }}>
+                <p style={{ ...couponInfoStyle, fontSize: '18px', color: '#999' }}>
+                  No voucher available at this time.
+                </p>
               </div>
-            </>
-          ) : (
-            <div style={{ textAlign: 'center', padding: '40px 20px' }}>
-              <p style={{ ...couponInfoStyle, fontSize: '18px', color: '#999' }}>
-                No voucher available at this time.
-              </p>
-            </div>
-          )}
-             </div>
-      </ReactModal>
+            )}
+               </div>
+          </ReactModal>
+        )}
       </TopbarWrapper>
     );
   }
@@ -523,11 +541,12 @@ const server_ip=process.env.NEXT_PUBLIC_BACKEND_API_BASE
             <div className="logo">
               <Link href="/" style={{ display: 'inline-block' }} aria-label="Chitral Hive Home">
                 <span style={{ display: 'inline-block', lineHeight: 0 }}>
-                  <Image
+                  <BazaarImage
                     height={28}
                     width={120}
                     src={topbardata?imgbaseurl+topbardata[0].site_logo:'/assets/images/logos/webpack.png'}
                     alt="Chitral Hive Logo"
+                    style={{ objectFit: "contain" }}
                     priority
                     quality={85}
                     sizes="120px"
@@ -570,13 +589,13 @@ const server_ip=process.env.NEXT_PUBLIC_BACKEND_API_BASE
             <Span sx={{ color: 'inherit', fontSize: '12px' }}> Sign In</Span>
           </FlexBox>
         </Container>
-        <ReactModal
-        isOpen={isPopupOpen}
-        onRequestClose={closePopup}
-        contentLabel="Voucher Popup"
-        style={modalContentStyle}
-
-      >
+        {mounted && (
+          <ReactModal
+            isOpen={isPopupOpen}
+            onRequestClose={closePopup}
+            contentLabel="Voucher Popup"
+            style={modalContentStyle}
+          >
        
         <CloseIcon
           style={{
@@ -596,7 +615,7 @@ const server_ip=process.env.NEXT_PUBLIC_BACKEND_API_BASE
           {data ? (
             <>
               {data.image && (
-                <Image
+                <BazaarImage
                   src={imgbaseurl + data.image}
                   alt={data.name || 'Voucher'}
                   width={400}
@@ -656,7 +675,8 @@ const server_ip=process.env.NEXT_PUBLIC_BACKEND_API_BASE
             </div>
           )}
              </div>
-      </ReactModal>
+          </ReactModal>
+        )}
       </TopbarWrapper>
     );
   }

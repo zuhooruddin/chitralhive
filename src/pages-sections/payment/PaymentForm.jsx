@@ -202,17 +202,16 @@ const PaymentForm = () => {
           }
         />
       </Card1>
-
       <Grid container spacing={7}>
         <Grid item sm={6} xs={12}>
-          <Link href="/checkout" passHref>
+          <Link href="/checkout">
             <Button variant="outlined" color="primary" type="button" fullWidth>
               Back to checkout details
             </Button>
           </Link>
         </Grid>
         <Grid item sm={6} xs={12}>
-          <Link href="/orders" passHref>
+          <Link href="/orders">
             <Button variant="contained" color="primary" type="submit" fullWidth>
               Review
             </Button>

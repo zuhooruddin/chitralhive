@@ -52,17 +52,17 @@ const BlogListingCard = ({ blog }) => {
           alignSelf: { sm: "stretch" },
         }}
       >
-        <Link href={blog.url} legacyBehavior passHref>
-          <Box
-            component="a"
-            sx={{
-              display: "block",
-              position: "relative",
-              height: { xs: 220, sm: "100%" },
-              minHeight: { sm: 200 },
-              overflow: "hidden",
-            }}
-          >
+        <Box
+          component={Link}
+          href={blog.url}
+          sx={{
+            display: "block",
+            position: "relative",
+            height: { xs: 220, sm: "100%" },
+            minHeight: { sm: 200 },
+            overflow: "hidden",
+          }}
+        >
             {blog.imgUrl ? (
               <LazyImage
                 width={640}
@@ -91,10 +91,8 @@ const BlogListingCard = ({ blog }) => {
                 <ArticleOutlined sx={{ fontSize: 56 }} />
               </Box>
             )}
-          </Box>
-        </Link>
+        </Box>
       </Box>
-
       <CardContent
         sx={{
           flex: 1,
@@ -119,9 +117,12 @@ const BlogListingCard = ({ blog }) => {
           />
         )}
 
-        <Link href={blog.url} legacyBehavior passHref>
+        <Box
+          component={Link}
+          href={blog.url}
+          sx={{ textDecoration: "none", display: "block" }}
+        >
           <H3
-            component="a"
             sx={{
               color: "text.primary",
               textDecoration: "none",
@@ -133,7 +134,7 @@ const BlogListingCard = ({ blog }) => {
           >
             {blog.title}
           </H3>
-        </Link>
+        </Box>
 
         <Box
           sx={{
@@ -169,21 +170,20 @@ const BlogListingCard = ({ blog }) => {
         )}
 
         <Box sx={{ mt: "auto" }}>
-          <Link href={blog.url} legacyBehavior passHref>
-            <Typography
-              component="a"
-              variant="subtitle2"
-              sx={{
-                fontWeight: 700,
-                color: "primary.main",
-                textDecoration: "none",
-                letterSpacing: 0.4,
-                "&:hover": { textDecoration: "underline" },
-              }}
-            >
-              Read article →
-            </Typography>
-          </Link>
+          <Typography
+            component={Link}
+            href={blog.url}
+            variant="subtitle2"
+            sx={{
+              fontWeight: 700,
+              color: "primary.main",
+              textDecoration: "none",
+              letterSpacing: 0.4,
+              "&:hover": { textDecoration: "underline" },
+            }}
+          >
+            Read article →
+          </Typography>
         </Box>
       </CardContent>
     </Card>

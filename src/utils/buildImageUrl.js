@@ -15,8 +15,11 @@ export function buildImageUrl(rawImagePath, imageBaseUrl, apiBase) {
   }
 
   const cleanedPath = String(rawImagePath).replace(/^\/+/, "");
-  const normalizedImageBase = (imageBaseUrl || "").replace(/\/+$/, "");
-  const normalizedApiBase = (apiBase || "").replace(/\/+$/, "");
+  const normalizedImageBase = normalizeBaseUrl(imageBaseUrl);
+  const normalizedApiBase = normalizeBaseUrl(apiBase);
+  const mediaBase = normalizedApiBase
+    ? normalizedApiBase.replace(/\/api$/i, "/api/media").replace(/\/api\/media$/i, "/api/media")
+    : "";
 
   if (cleanedPath.startsWith("api/media/") || cleanedPath.startsWith("media/")) {
     const relativePath = cleanedPath.replace(/^api\/media\//, "media/");
@@ -29,6 +32,10 @@ export function buildImageUrl(rawImagePath, imageBaseUrl, apiBase) {
 
   if (cleanedPath.startsWith("api/")) {
     return `${normalizedImageBase}/${cleanedPath}`;
+  }
+
+  if (/^(sitesetting|slider|category_icon|item_image|brand|blog|bundle)\//i.test(cleanedPath)) {
+    return mediaBase ? `${mediaBase}/${cleanedPath}` : `${normalizedImageBase}/${cleanedPath}`;
   }
 
   return `${normalizedImageBase}/${cleanedPath}`;
@@ -46,4 +53,14 @@ export function isLikelyValidHttpUrl(url) {
   } catch {
     return false;
   }
+}
+
+function normalizeBaseUrl(value) {
+  if (!value || typeof value !== "string") return "";
+
+  const trimmed = value.trim();
+  if (!trimmed) return "";
+
+  const withProtocol = /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
+  return withProtocol.replace(/\/+$/, "");
 }

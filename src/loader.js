@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import useSWR from 'swr'
 import axios from 'axios';
-import Image from 'next/image';
+import Image from "components/BazaarImage";
 
 // Create axios instance with timeout to prevent hanging
 const axiosWithTimeout = axios.create({
@@ -12,7 +12,7 @@ export default function Loader() {
   const [showLoader, setShowLoader] = useState(true);
   const [hasShown, setHasShown] = useState(false);
 
-  const imgbaseurl=process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL
+  const imgbaseurl = (process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL || "").replace(/\/?$/, "/");
   const fetcher = async (url) => {
     try {
       const res = await axiosWithTimeout.get(url);
@@ -124,7 +124,7 @@ export default function Loader() {
 
   // Use fallback image if data not loaded yet
   const splashImage = data && data.length > 0 && data[0].site_splash
-    ? imgbaseurl + data[0].site_splash
+    ? imgbaseurl + String(data[0].site_splash).replace(/^\/+/, "")
     : '/assets/images/banners/banner-1.png';
 
   return (
@@ -138,10 +138,6 @@ export default function Loader() {
             height={500}
             style={imageStyle}
             priority
-            onError={(e) => {
-              // Fallback if image fails to load
-              e.target.src = '/assets/images/banners/banner-1.png';
-            }}
           />
           <span
             style={closeStyle}

@@ -24,7 +24,7 @@ const AddressEditor = () => {
         title="Add New Address"
         navigation={<CustomerDashboardNavigation />}
         button={
-          <Link href="/address" passHref>
+          <Link href="/address">
             <Button
               color="primary"
               sx={{
@@ -37,7 +37,6 @@ const AddressEditor = () => {
           </Link>
         }
       />
-
       <Card1>
         <Formik
           onSubmit={handleFormSubmit}

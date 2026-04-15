@@ -1,6 +1,6 @@
 import { Box, styled } from "@mui/material";
 import { H4 } from "components/Typography";
-import Image from "next/image";
+import BazaarImage from "components/BazaarImage";
 import Link from "next/link";
 
 // Professional styled components
@@ -98,10 +98,10 @@ const CategoryCard2 = ({ image, title, url }) => {
             zIndex: 0,
           }}
         >
-          <Image
+          <BazaarImage
             src={image || '/assets/images/banners/default.png'}
             alt={title ? `${title} - Shop premium women's clothing` : 'Category'}
-            layout="fill"
+            fill
             sizes="(max-width: 600px) 45vw, (max-width: 960px) 30vw, 200px"
             style={{ objectFit: 'cover' }}
             quality={85}

@@ -6,7 +6,6 @@ import {
 } from "@mui/material/styles";
 import useSettings from "hooks/useSettings";
 import { merge } from "merge";
-import getConfig from "next/config";
 import { useRouter } from "next/router";
 import customThemeOptions from "./themeOptions"; // =======================================================
 
@@ -14,11 +13,9 @@ import customThemeOptions from "./themeOptions"; // ============================
 const MuiTheme = ({ children }) => {
   const { settings } = useSettings();
   const { pathname } = useRouter();
-  const { publicRuntimeConfig } = getConfig(); // Value is coming from next.config.js
-  
   const isDark = settings.theme === "dark";
 
-  const themeOptions = customThemeOptions(publicRuntimeConfig, pathname, isDark);
+  const themeOptions = customThemeOptions(pathname, isDark);
   let theme = createTheme(
     merge({}, { 
       ...themeOptions, 

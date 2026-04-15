@@ -152,16 +152,16 @@ const ProductCard13 = (props) => {
 
         <ImageBox className="hoverImgBox">
           <Link href={`/product/${id}`}>
-            <a>
-              <LazyImage
-                alt={title}
-                width={190}
-                height={190}
-                src={imgUrl}
-                layout="responsive"
-                objectFit="contain"
-              />
-            </a>
+
+            <LazyImage
+              alt={title}
+              width={190}
+              height={190}
+              src={imgUrl}
+              layout="responsive"
+              objectFit="contain"
+            />
+
           </Link>
         </ImageBox>
 
@@ -221,21 +221,20 @@ const ProductCard13 = (props) => {
           </Box>
         </HoverButtonBox>
       </ImageWrapper>
-
       <ContentWrapper>
         <Link href={`/product/${id}`}>
-          <a>
-            <H3
-              mb={1}
-              title={title}
-              fontSize="14px"
-              fontWeight="600"
-              className="title"
-              color="text.secondary"
-            >
-              {title}
-            </H3>
-          </a>
+
+          <H3
+            mb={1}
+            title={title}
+            fontSize="14px"
+            fontWeight="600"
+            className="title"
+            color="text.secondary"
+          >
+            {title}
+          </H3>
+
         </Link>
 
         {!hideRating && (

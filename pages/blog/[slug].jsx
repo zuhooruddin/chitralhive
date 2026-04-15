@@ -9,6 +9,8 @@ import Link from "next/link";
 import StructuredData from "components/schema/StructuredData";
 import { generateBlogBreadcrumb } from "utils/breadcrumbSchema";
 import { fetchPublishedBlog, fetchPublishedBlogs } from "utils/api/blog";
+import AdSenseAd from "components/ads/AdSenseAd";
+import StickyBottomAd from "components/ads/StickyBottomAd";
 
 
 const BlogPostPage = ({ post, allPosts }) => {
@@ -84,7 +86,7 @@ const BlogPostPage = ({ post, allPosts }) => {
       />
       <StructuredData data={articleStructuredData} />
       <StructuredData data={breadcrumbSchema} />
-      <Container sx={{ py: 4, maxWidth: "900px" }}>
+      <Container sx={{ py: 4, maxWidth: "900px", pb: { xs: 16, sm: 18 } }}>
         <Box component="article">
           {/* Header */}
           <Box component="header" sx={{ mb: 4 }}>
@@ -133,6 +135,15 @@ const BlogPostPage = ({ post, allPosts }) => {
 
           <Divider sx={{ mb: 4 }} />
 
+          {/* In-article ad (fluid) */}
+          <AdSenseAd
+            slot={process.env.NEXT_PUBLIC_ADSENSE_IN_ARTICLE_SLOT}
+            format="fluid"
+            layout="in-article"
+            insStyle={{ textAlign: "center" }}
+            sx={{ mb: 4 }}
+          />
+
           {/* Content */}
           <Box
             component="div"
@@ -163,6 +174,21 @@ const BlogPostPage = ({ post, allPosts }) => {
               },
             }}
             dangerouslySetInnerHTML={{ __html: post.content }}
+          />
+
+          {/* Fluid ad with layout-key */}
+          <AdSenseAd
+            slot={process.env.NEXT_PUBLIC_ADSENSE_FLUID_LAYOUTKEY_SLOT}
+            format="fluid"
+            layoutKey="-eb-86+e7+go-17v"
+            sx={{ mt: 4 }}
+          />
+
+          {/* Autorelaxed ad (typically below content) */}
+          <AdSenseAd
+            slot={process.env.NEXT_PUBLIC_ADSENSE_AUTORELAXED_SLOT}
+            format="autorelaxed"
+            sx={{ mt: 4 }}
           />
         </Box>
 
@@ -204,6 +230,14 @@ const BlogPostPage = ({ post, allPosts }) => {
           </Box>
         )}
       </Container>
+
+      {/* Sticky bottom ad */}
+      <StickyBottomAd
+        slot={process.env.NEXT_PUBLIC_ADSENSE_FLUID_LAYOUTKEY_SLOT}
+        format="fluid"
+        layoutKey="-eb-86+e7+go-17v"
+        minHeight={100}
+      />
     </ShopLayout1>
   );
 };

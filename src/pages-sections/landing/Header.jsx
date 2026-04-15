@@ -134,7 +134,7 @@ const Header = () => {
                     Demos
                   </Typography>
                 </Scroll>
-                <Link passHref={true} href="https://bazaar-doc.netlify.app/">
+                <Link href="https://bazaar-doc.netlify.app/">
                   <Typography
                     className="link"
                     color="grey.600"
@@ -146,7 +146,7 @@ const Header = () => {
               </FlexBox>
 
               {!downSM && (
-                <Link passHref={true} href="https://tinyurl.com/get-bazaar">
+                <Link href="https://tinyurl.com/get-bazaar">
                   <Button variant="outlined">Purchase Now</Button>
                 </Link>
               )}
@@ -223,9 +223,7 @@ const Header = () => {
                     </Scroll>
 
                     <Link
-                      href="https://material-ui.com/store/items/bazaar-pro-react-ecommerce-template/"
-                      passHref={true}
-                    >
+                      href="https://material-ui.com/store/items/bazaar-pro-react-ecommerce-template/">
                       <Button variant="outlined" color="primary">
                         Purchase Now
                       </Button>
@@ -237,7 +235,6 @@ const Header = () => {
           </Container>
         </Box>
       </HeaderWrapper>
-
       {isFixed && <Box height={headerHeight} />}
     </Fragment>
   );

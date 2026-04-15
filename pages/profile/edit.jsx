@@ -25,7 +25,7 @@ const ProfileEditor = () => {
         title="Edit Profile"
         navigation={<CustomerDashboardNavigation />}
         button={
-          <Link href="/profile" passHref>
+          <Link href="/profile">
             <Button
               color="primary"
               sx={{
@@ -38,7 +38,6 @@ const ProfileEditor = () => {
           </Link>
         }
       />
-
       <Card1>
         <FlexBox alignItems="flex-end" mb={3}>
           <Avatar

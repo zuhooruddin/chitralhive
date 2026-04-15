@@ -24,7 +24,7 @@ const NavLink = ({ href, children, style, className, ...props }) => {
 
   const currentRoute = checkRouteMatch();
   return (
-    <Link href={href} passHref>
+    <Link href={href}>
       <StyledLink
         href={href}
         style={style}

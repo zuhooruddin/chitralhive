@@ -15,6 +15,7 @@ import StructuredData from "components/schema/StructuredData";
 import ProductReview from "components/products/ProductReview";
 import { generateProductBreadcrumb } from "utils/breadcrumbSchema";
 import { buildImageUrl, isLikelyValidHttpUrl } from "utils/buildImageUrl";
+import AdSenseAd from "components/ads/AdSenseAd";
 
 import {
   getFrequentlyBought,
@@ -99,8 +100,13 @@ const ProductDetails = (props) => {
   const slugbaseurl = "/product/";
 
   useEffect(() => {
-    getRelatedProducts().then((data) => setRelatedProducts(data));
-    getFrequentlyBought().then((data) => setFrequentlyBought(data));
+    getRelatedProducts()
+      .then((data) => setRelatedProducts(Array.isArray(data) ? data : []))
+      .catch(() => setRelatedProducts([]));
+
+    getFrequentlyBought()
+      .then((data) => setFrequentlyBought(Array.isArray(data) ? data : []))
+      .catch(() => setFrequentlyBought([]));
   }, []);
 
   const handleOptionClick = (_, value) => setSelectedOption(value);
@@ -493,6 +499,16 @@ const ProductDetails = (props) => {
           <H2>Loading...</H2>
         )}
 
+        {/* Product intro ad */}
+        <Box sx={{ mt: 2, mb: 2, display: "flex", justifyContent: "center" }}>
+          <AdSenseAd
+            slot={process.env.NEXT_PUBLIC_ADSENSE_FLUID_LAYOUTKEY_SLOT}
+            format="fluid"
+            layoutKey="-eb-86+e7+go-17v"
+            sx={{ maxWidth: 900, width: "100%" }}
+          />
+        </Box>
+
 <StyledTabs
           textColor="primary"
           value={selectedOption}
@@ -510,10 +526,13 @@ const ProductDetails = (props) => {
           {selectedOption === 0 && <ProductDescription product={product} />}
           {selectedOption === 1 && <ProductInstruction product={product} />}
           
-          {selectedOption === 2 && <ProductReview itemid={product.id} itemname={product.name}   
-          reviews={ProductReviews && ProductReviews.Reviews.filter((item) => item.itemid_id === product.id)}
-
- />}
+          {selectedOption === 2 && (
+            <ProductReview
+              itemid={product.id}
+              itemname={product.name}
+              reviews={filteredReviews}
+            />
+          )}
 
         </Box>
       </Container>

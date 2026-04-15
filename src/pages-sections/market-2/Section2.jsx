@@ -52,36 +52,36 @@ const Section2 = (data) => {
     <Container sx={{ mt: 8 }}>
       <FlexBetween mb={3}>
         <H2 style={{ color: '#B72C42', fontSize: 20 }}>Brand Bundles</H2>
-        <Link href="/brands">
-          <a 
-            style={{ 
-              color: '#B72C42', 
-              fontSize: 16, 
-              fontWeight: 600,
-              textDecoration: 'underline',
-              padding: '8px 12px',
-              display: 'inline-block',
-              minHeight: '44px',
-              minWidth: '44px',
-              lineHeight: '28px'
-            }}
-            aria-label="View all brand bundles"
-          >
+        <Link
+          href="/brands"
+          style={{ 
+            color: '#B72C42', 
+            fontSize: 16, 
+            fontWeight: 600,
+            textDecoration: 'underline',
+            padding: '8px 12px',
+            display: 'inline-block',
+            minHeight: '44px',
+            minWidth: '44px',
+            lineHeight: '28px'
+          }}
+          aria-label="View all brand bundles">
+          
             View All
-          </a>
+          
         </Link>
       </FlexBetween>
-        <Carousel
-        totalSlides={data.data.length}
-        visibleSlides={visibleSlides}
-        sx={carouselStyled}
-      >
-          {data.data.map((item) => (
-            <Grid item lg={2} md={3} sm={4} xs={6} key={item.id}>
-              <CategoryCard1 image={imgbaseurl+item.icon} title={item.name} url={slugbaseurl+item.slug} />
-            </Grid>
-          ))}
-          </Carousel>
+      <Carousel
+      totalSlides={data.data.length}
+      visibleSlides={visibleSlides}
+      sx={carouselStyled}
+    >
+        {data.data.map((item) => (
+          <Grid item lg={2} md={3} sm={4} xs={6} key={item.id}>
+            <CategoryCard1 image={imgbaseurl+item.icon} title={item.name} url={slugbaseurl+item.slug} />
+          </Grid>
+        ))}
+        </Carousel>
     </Container>
   );
 };

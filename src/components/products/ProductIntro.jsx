@@ -49,7 +49,9 @@ const fadeInUp = keyframes`
 `;
 
 // Premium Styled Components
-const ProductCard = styled(Box)(({ theme, isDark }) => ({
+const ProductCard = styled(Box, {
+  shouldForwardProp: (prop) => prop !== "isDark",
+})(({ theme, isDark }) => ({
   background: isDark 
     ? "linear-gradient(135deg, #1E293B 0%, #0F172A 100%)"
     : "linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%)",
@@ -78,7 +80,9 @@ const ProductCard = styled(Box)(({ theme, isDark }) => ({
   },
 }));
 
-const ImageGalleryCard = styled(Box)(({ theme, isDark }) => ({
+const ImageGalleryCard = styled(Box, {
+  shouldForwardProp: (prop) => prop !== "isDark",
+})(({ theme, isDark }) => ({
   background: isDark ? "#0F172A" : "#FFFFFF",
   borderRadius: "24px",
   padding: "16px",
@@ -107,7 +111,9 @@ const ImageGalleryCard = styled(Box)(({ theme, isDark }) => ({
   },
 }));
 
-const ThumbnailButton = styled(Box)(({ theme, isSelected, isDark }) => ({
+const ThumbnailButton = styled(Box, {
+  shouldForwardProp: (prop) => prop !== "isDark" && prop !== "isSelected",
+})(({ theme, isSelected, isDark }) => ({
   width: 64,
   height: 64,
   minWidth: 64,
@@ -133,7 +139,9 @@ const ThumbnailButton = styled(Box)(({ theme, isSelected, isDark }) => ({
   },
 }));
 
-const PriceCard = styled(Box)(({ theme, isDark }) => ({
+const PriceCard = styled(Box, {
+  shouldForwardProp: (prop) => prop !== "isDark",
+})(({ theme, isDark }) => ({
   background: isDark
     ? "linear-gradient(135deg, #450A0A 0%, #7F1D1D 50%, #991B1B 100%)"
     : "linear-gradient(135deg, #FFF1F2 0%, #FCE7E8 50%, #FECDD3 100%)",
@@ -163,7 +171,11 @@ const PriceCard = styled(Box)(({ theme, isDark }) => ({
   },
 }));
 
-const AddToCartButton = styled(BazaarButton)(({ theme, isDark }) => ({
+const AddToCartButton = styled(BazaarButton, {
+  shouldForwardProp: (prop) => prop !== "isDark",
+})(({ theme }) => {
+  const isDark = theme.palette.mode === "dark";
+  return ({
   height: 60,
   borderRadius: "18px",
   fontSize: "17px",
@@ -204,9 +216,14 @@ const AddToCartButton = styled(BazaarButton)(({ theme, isDark }) => ({
     fontSize: "15px",
     borderRadius: "14px",
   },
-}));
+});
+});
 
-const QuantityButton = styled(BazaarButton)(({ theme, isDark, variant }) => ({
+const QuantityButton = styled(BazaarButton, {
+  shouldForwardProp: (prop) => prop !== "isDark" && prop !== "variant",
+})(({ theme, variant }) => {
+  const isDark = theme.palette.mode === "dark";
+  return ({
   padding: "14px",
   minWidth: 52,
   minHeight: 52,
@@ -243,7 +260,8 @@ const QuantityButton = styled(BazaarButton)(({ theme, isDark, variant }) => ({
     minHeight: 44,
     padding: "10px",
   },
-}));
+});
+});
 
 const DetailRow = styled(FlexBox)(({ theme, isDark }) => ({
   alignItems: "center",
@@ -273,7 +291,9 @@ const FeatureCard = styled(FlexBox)(({ theme, isDark, color }) => ({
   },
 }));
 
-const CategoryBadge = styled(Chip)(({ theme, isDark }) => ({
+const CategoryBadge = styled(Chip, {
+  shouldForwardProp: (prop) => prop !== "isDark",
+})(({ theme, isDark }) => ({
   background: isDark
     ? "linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)"
     : "linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%)",
@@ -442,7 +462,7 @@ const ProductIntro = ({ product, slug, total, average, category }) => {
 
   return (
     <Box 
-      width="100%" 
+      width="100%"
       sx={{ 
         px: { xs: 1, sm: 2, md: 0 },
       }}
@@ -590,15 +610,15 @@ const ProductIntro = ({ product, slug, total, average, category }) => {
             {/* Category Badge */}
             {(categoryName || category || product.category) && (
               <Box mb={2}>
-                <Link href={`/categories/${categorySlug || product.categorySlug || ''}`} passHref>
-                  <a style={{ textDecoration: 'none' }}>
-                    <CategoryBadge
-                      icon={<Category sx={{ fontSize: 16 }} />}
-                      label={categoryName || category || product.category || 'Category'}
-                      isDark={isDark}
-                      clickable
-                    />
-                  </a>
+                <Link href={`/categories/${categorySlug || product.categorySlug || ''}`} style={{ textDecoration: 'none' }}>
+
+                  <CategoryBadge
+                    icon={<Category sx={{ fontSize: 16 }} />}
+                    label={categoryName || category || product.category || 'Category'}
+                    isDark={isDark}
+                    clickable
+                  />
+
                 </Link>
               </Box>
             )}
@@ -808,7 +828,6 @@ const ProductIntro = ({ product, slug, total, average, category }) => {
               <AddToCartButton
                 disabled
                 fullWidth
-                isDark={isDark}
                 sx={{
                   mb: 3,
                   background: isDark ? "#374151" : "#E5E7EB",
@@ -827,7 +846,6 @@ const ProductIntro = ({ product, slug, total, average, category }) => {
               <AddToCartButton
                 fullWidth
                 variant="contained"
-                isDark={isDark}
                 onClick={handleCartAmountChange(1, true)}
                 aria-label={`Add ${name} to cart`}
                 sx={{ mb: 3 }}
@@ -854,7 +872,6 @@ const ProductIntro = ({ product, slug, total, average, category }) => {
               >
                 <QuantityButton
                   variant="decrease"
-                  isDark={isDark}
                   onClick={handleCartAmountChange(cartItem?.qty - 1, false)}
                   aria-label={`Decrease quantity of ${name}`}
                 >
@@ -876,7 +893,6 @@ const ProductIntro = ({ product, slug, total, average, category }) => {
 
                 <QuantityButton
                   variant="increase"
-                  isDark={isDark}
                   onClick={handleCartAmountChange(cartItem?.qty + 1, true)}
                   aria-label={`Increase quantity of ${name}`}
                 >

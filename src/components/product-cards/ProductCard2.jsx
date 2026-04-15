@@ -9,23 +9,23 @@ const ProductCard2 = (props) => {
   const { imgUrl, title, price, id } = props;
   return (
     <Link href={`/product/${id}`}>
-      <a>
-        <HoverBox borderRadius="8px" mb={1}>
-          <LazyImage
-            src={imgUrl}
-            width={0}
-            height={0}
-            layout="responsive"
-            alt={title}
-          />
-        </HoverBox>
-        <H4 fontSize={14} mb={0.5}>
-          {title}
-        </H4>
-        <H4 fontSize={14} color="primary.main">
-          ${Math.ceil(price).toLocaleString()}
-        </H4>
-      </a>
+
+      <HoverBox borderRadius="8px" mb={1}>
+        <LazyImage
+          src={imgUrl}
+          width={0}
+          height={0}
+          layout="responsive"
+          alt={title}
+        />
+      </HoverBox>
+      <H4 fontSize={14} mb={0.5}>
+        {title}
+      </H4>
+      <H4 fontSize={14} color="primary.main">
+        ${Math.ceil(price).toLocaleString()}
+      </H4>
+
     </Link>
   );
 };

@@ -2,9 +2,9 @@ import debounce from "lodash/debounce";
 import { useEffect, useMemo, useState } from "react";
 
 const useWindowSize = () => {
-  const [width, setWidth] = useState(() =>
-    typeof window === "undefined" ? 390 : window.innerWidth
-  );
+  // SSR-safe: keep initial value the same on server and client to avoid hydration mismatch.
+  // We populate the real width after mount.
+  const [width, setWidth] = useState(undefined);
   const windowListener = useMemo(
     () =>
       debounce(() => {

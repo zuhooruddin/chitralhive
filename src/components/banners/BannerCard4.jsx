@@ -26,8 +26,7 @@ const BannerCard4 = ({ img, children, ...props }) => {
     <CardWrapper {...props}>
       <BazaarImage
         alt="category"
-        height="100%"
-        width="100%"
+        fill
         src={img}
         style={{ objectFit: "cover" }} // use objectFit: "cover"
       />

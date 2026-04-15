@@ -127,16 +127,16 @@ const ProductCard13 = (props) => {
         )}
 
         <Link href={`/product/${id}`}>
-          <a>
-            <LazyImage
-              alt={title}
-              width={190}
-              src={imgUrl}
-              height={190}
-              layout="responsive"
-              objectFit="contain"
-            />
-          </a>
+
+          <LazyImage
+            alt={title}
+            width={190}
+            src={imgUrl}
+            height={190}
+            layout="responsive"
+            objectFit="contain"
+          />
+
         </Link>
 
         <HoverWrapper className="controller">
@@ -164,7 +164,6 @@ const ProductCard13 = (props) => {
           </Span>
         </HoverWrapper>
       </ImageWrapper>
-
       <ProductViewDialog
         openDialog={openModal}
         handleCloseDialog={toggleDialog}
@@ -175,23 +174,22 @@ const ProductCard13 = (props) => {
           imgGroup: [imgUrl, imgUrl],
         }}
       />
-
       <ContentWrapper>
         <Box flex="1 1 0" minWidth="0px" mr={1}>
           <Link href={`/product/${id}`}>
-            <a>
-              <H3
-                mb={1}
-                title={title}
-                fontSize="14px"
-                textAlign="left"
-                fontWeight="600"
-                className="title"
-                color="text.secondary"
-              >
-                {title}
-              </H3>
-            </a>
+
+            <H3
+              mb={1}
+              title={title}
+              fontSize="14px"
+              textAlign="left"
+              fontWeight="600"
+              className="title"
+              color="text.secondary"
+            >
+              {title}
+            </H3>
+
           </Link>
 
           {!hideRating && (

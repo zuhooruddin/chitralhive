@@ -1,4 +1,4 @@
-import { styled } from "@mui/material";
+import { Box, styled } from "@mui/material";
 import BazaarCard from "components/BazaarCard";
 import BazaarImage from "components/BazaarImage";
 import { FlexBox } from "components/flex-box";
@@ -36,13 +36,14 @@ const CarouselCard3 = ({ carouselData }) => {
         </Paragraph>
 
         <Link href={`/product/${carouselData.id}`}>
-          <a>
-            <StyledShopButton>{carouselData.buttonText}</StyledShopButton>
-          </a>
+
+          <StyledShopButton>{carouselData.buttonText}</StyledShopButton>
+
         </Link>
       </StyledFlexBox>
-
-      <BazaarImage width="100%" src={carouselData.imgUrl} alt="shoes" />
+      <Box sx={{ position: "relative", width: "100%", aspectRatio: "1 / 1" }}>
+        <BazaarImage fill src={carouselData.imgUrl} alt="shoes" style={{ objectFit: "contain" }} />
+      </Box>
     </ContentWrapper>
   );
 };

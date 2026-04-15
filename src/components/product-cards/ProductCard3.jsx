@@ -24,25 +24,24 @@ const ProductCard3 = ({
   return (
     <Box>
       <Link href={`/product/${id}`}>
-        <a>
-          <HoverBox
-            sx={{
-              borderRadius: "8px",
-              overflow: "hidden",
-            }}
-          >
-            <LazyImage
-              width={0}
-              mx="auto"
-              height={0}
-              alt={title}
-              src={imgUrl}
-              layout="responsive"
-            />
-          </HoverBox>
-        </a>
-      </Link>
 
+        <HoverBox
+          sx={{
+            borderRadius: "8px",
+            overflow: "hidden",
+          }}
+        >
+          <LazyImage
+            width={0}
+            mx="auto"
+            height={0}
+            alt={title}
+            src={imgUrl}
+            layout="responsive"
+          />
+        </HoverBox>
+
+      </Link>
       <FlexBetween mt={2}>
         <Box>
           <H4 fontWeight="600" fontSize="14px" mb={0.5} title={title} ellipsis>

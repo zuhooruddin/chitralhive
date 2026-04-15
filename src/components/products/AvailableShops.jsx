@@ -9,24 +9,23 @@ const AvailableShops = () => {
   return (
     <Box mb={7.5}>
       <H3 mb={3}>Also Available at</H3>
-
       <Grid container spacing={4}>
         {shopList.map((item) => (
           <Grid item lg={2} md={3} sm={4} xs={12} key={item.name}>
             <Link href="/shops/53324">
-              <a>
-                <FlexRowCenter
-                  p={3.25}
-                  width="100%"
-                  component={Card}
-                  flexDirection="column"
-                >
-                  <BazaarAvatar height={48} width={48} src={item.imgUrl} />
-                  <H4 mt={1.5} color="grey.800">
-                    {item.name}
-                  </H4>
-                </FlexRowCenter>
-              </a>
+
+              <FlexRowCenter
+                p={3.25}
+                width="100%"
+                component={Card}
+                flexDirection="column"
+              >
+                <BazaarAvatar height={48} width={48} src={item.imgUrl} />
+                <H4 mt={1.5} color="grey.800">
+                  {item.name}
+                </H4>
+              </FlexRowCenter>
+
             </Link>
           </Grid>
         ))}

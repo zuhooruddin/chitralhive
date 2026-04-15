@@ -1,33 +1,27 @@
 import { Box, Divider } from "@mui/material";
 import { FlexBetween } from "components/flex-box";
 import { Paragraph, Span } from "components/Typography";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useAppContext } from "contexts/AppContext";
 
 const CheckoutSummary2 = ({ DeliveryFee, couponData, setTotalPrice }) => {
   const { state } = useAppContext();
   const cartList = state.cart;
-
-
-
-
-
-  const getTotalPrice = () => {
+  const subtotal = useMemo(() => {
     return cartList.reduce(
       (accum, item) => accum + item.salePrice * item.qty,
       0
     );
-  };
-  
-const[currency,setCurrency]=useState('')
+  }, [cartList]);
 
-useEffect(()=>{
-  if (typeof window !== 'undefined' && window.localStorage) {
-    const storedCurrency = localStorage.getItem('currency');
+  const [currency, setCurrency] = useState("");
 
-    setCurrency(storedCurrency);
-  }
-},[])
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.localStorage) {
+      const storedCurrency = localStorage.getItem("currency");
+      setCurrency(storedCurrency);
+    }
+  }, []);
 
 
 
@@ -39,31 +33,25 @@ useEffect(()=>{
     if (couponData === null || !couponData) {
       const discountPercentage = 0;
       const calculatedDiscountAmount =
-        (getTotalPrice().toFixed(2) * discountPercentage) / 100;
+        (subtotal.toFixed(2) * discountPercentage) / 100;
       const calculatedDiscountedSubtotal =
-        getTotalPrice().toFixed(2) - calculatedDiscountAmount;
+        subtotal.toFixed(2) - calculatedDiscountAmount;
       setDiscountAmount(calculatedDiscountAmount);
       setDiscountedSubtotal(calculatedDiscountedSubtotal);
     } else {
       const discountPercentage = parseFloat(couponData.discount);
       const calculatedDiscountAmount =
-        (getTotalPrice().toFixed(2) * discountPercentage) / 100;
+        (subtotal.toFixed(2) * discountPercentage) / 100;
       const calculatedDiscountedSubtotal =
-        getTotalPrice().toFixed(2) - calculatedDiscountAmount;
+        subtotal.toFixed(2) - calculatedDiscountAmount;
       setDiscountAmount(calculatedDiscountAmount);
       setDiscountedSubtotal(calculatedDiscountedSubtotal);
     }
-  }, [couponData]);
-
-  // const getBillingPrice = () => {
-  //   if (getTotalPrice() !== 0) return discountedSubtotal + DeliveryFee;
-  //   else return 0;
-  // };
-  setTotalPrice(discountedSubtotal + DeliveryFee);
+  }, [couponData, subtotal]);
 
   useEffect(() => {
-    setTotalPrice(discountedSubtotal + DeliveryFee);
-  }, [getTotalPrice, discountedSubtotal, DeliveryFee]);
+    setTotalPrice(Number(discountedSubtotal) + Number(DeliveryFee));
+  }, [discountedSubtotal, DeliveryFee, setTotalPrice]);
   
 
   return (
@@ -93,7 +81,7 @@ useEffect(()=>{
 
       <FlexBetween mb={0.5}>
         <Paragraph color="grey.600">Subtotal:</Paragraph>
-        <Paragraph fontWeight="700">{currency}. {getTotalPrice().toFixed(2)}</Paragraph>
+        <Paragraph fontWeight="700">{currency}. {subtotal.toFixed(2)}</Paragraph>
       </FlexBetween>
 
       <FlexBetween mb={0.5}>
@@ -120,9 +108,7 @@ useEffect(()=>{
       <FlexBetween fontWeight="700" mb={1}>
         <Paragraph>Total:</Paragraph>
         <Paragraph fontWeight="700">
-         
-  {currency}. {getTotalPrice() + parseFloat(DeliveryFee) - parseFloat(discountAmount)}
-
+          {currency}. {subtotal + parseFloat(DeliveryFee) - parseFloat(discountAmount)}
         </Paragraph>
       </FlexBetween>
     </Box>

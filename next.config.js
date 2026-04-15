@@ -13,7 +13,6 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 
 const nextConfig = {
   reactStrictMode: true,
-  swcMinify: process.env.DISABLE_SWC !== "true",
   compress: true,
   poweredByHeader: false,
 
@@ -21,23 +20,22 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
 
-  devIndicators: {
-    buildActivity: false,
-  },
-
-  publicRuntimeConfig: {
-    theme: "DEFAULT",
-  },
-
   images: {
-    domains: [
-      "100.64.6.105",
-      "idrisbookbank-dev-server.inara.tech",
-      "api.chitralhive.com",
-      "s3-inara.eu-central-1.linodeobjects.com",
-      "chitralhive.com",
+    unoptimized: process.env.NODE_ENV !== "production",
+    remotePatterns: [
+      { protocol: "http", hostname: "100.64.6.105", pathname: "/**" },
+      { protocol: "https", hostname: "100.64.6.105", pathname: "/**" },
+      { protocol: "http", hostname: "idrisbookbank-dev-server.inara.tech", pathname: "/**" },
+      { protocol: "https", hostname: "idrisbookbank-dev-server.inara.tech", pathname: "/**" },
+      { protocol: "http", hostname: "api.chitralhive.com", pathname: "/**" },
+      { protocol: "https", hostname: "api.chitralhive.com", pathname: "/**" },
+      { protocol: "http", hostname: "s3-inara.eu-central-1.linodeobjects.com", pathname: "/**" },
+      { protocol: "https", hostname: "s3-inara.eu-central-1.linodeobjects.com", pathname: "/**" },
+      { protocol: "http", hostname: "chitralhive.com", pathname: "/**" },
+      { protocol: "https", hostname: "chitralhive.com", pathname: "/**" },
     ],
     formats: ["image/avif", "image/webp"],
+    qualities: [60, 70, 75, 85, 90],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 31536000,
@@ -51,8 +49,6 @@ const nextConfig = {
 
   productionBrowserSourceMaps:
     process.env.NODE_ENV === "production" ? false : true,
-
-  optimizeFonts: true,
 
   compiler: {
     removeConsole:

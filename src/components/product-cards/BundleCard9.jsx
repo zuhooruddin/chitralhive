@@ -133,24 +133,23 @@ const BundleCard9 = ({
   if(session){
     return (
       <Wrapper>
-         <IconButton
-        onClick={() => addwishtlist()}
-          size="small"
-          sx={{
-            position: "absolute",
-            top: 15,
-            right: 15,
-          }}
-        >
-        
-            {isFavorite ? (
-              <Favorite color="primary" fontSize="small" />
-            ) : (
-              <FavoriteBorder fontSize="small" color="disabled" />
-            )}
+        <IconButton
+       onClick={() => addwishtlist()}
+         size="small"
+         sx={{
+           position: "absolute",
+           top: 15,
+           right: 15,
+         }}
+       >
        
-        </IconButton>
-  
+           {isFavorite ? (
+             <Favorite color="primary" fontSize="small" />
+           ) : (
+             <FavoriteBorder fontSize="small" color="disabled" />
+           )}
+      
+       </IconButton>
         <Grid container spacing={1} sx={{
           justifyContent:"center",
           alignItems:"center",
@@ -173,7 +172,13 @@ const BundleCard9 = ({
                 />
               )}
   
-              <Image src={`${image}`} alt={name} width="100%"/>
+              <Image
+                src={`${image}`}
+                alt={name}
+                width={120}
+                height={120}
+                style={{ width: "100%", height: "auto" }}
+              />
             </Box>
           </Grid>
   
@@ -198,11 +203,11 @@ const BundleCard9 = ({
               p={2}
             >
               <Link href={`/bundle/${slug}`}>
-                <a>
-                  <H5 fontWeight="600" my="0.5rem">
-                    {name}
-                  </H5>
-                </a>
+
+                <H5 fontWeight="600" my="0.5rem">
+                  {name}
+                </H5>
+
               </Link>
   
   
@@ -300,8 +305,6 @@ const BundleCard9 = ({
   }
   return (
     <Wrapper>
-    
-
       <Grid container spacing={1} sx={{
         justifyContent:"center",
         alignItems:"center",
@@ -324,7 +327,13 @@ const BundleCard9 = ({
               />
             )}
 
-            <Image src={`${image}`} alt={name} width="100%"/>
+            <Image
+              src={`${image}`}
+              alt={name}
+              width={120}
+              height={120}
+              style={{ width: "100%", height: "auto" }}
+            />
           </Box>
         </Grid>
 
@@ -349,11 +358,11 @@ const BundleCard9 = ({
             p={2}
           >
             <Link href={`/bundle/${slug}`}>
-              <a>
-                <H5 fontWeight="600" my="0.5rem">
-                  {name}
-                </H5>
-              </a>
+
+              <H5 fontWeight="600" my="0.5rem">
+                {name}
+              </H5>
+
             </Link>
 
 

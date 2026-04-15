@@ -21,6 +21,7 @@ import Login from "pages-sections/sessions/Login";
 import { useState, useEffect } from "react";
 import { layoutConstant } from "utils/constants";
 import SearchBox from "../search-box/SearchBox";
+import { buildImageUrl } from "utils/buildImageUrl";
 
 // Shimmer animation for premium effect
 const shimmer = keyframes`
@@ -183,8 +184,10 @@ const Header = ({ isFixed, headerdata, className, searchBoxType = "type2" }) => 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [sidenavOpen, setSidenavOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
-  const downMd = useMediaQuery(theme.breakpoints.down(1150));
+  // Important: avoid SSR/client mismatch. Without `noSsr`, MUI can't evaluate media
+  // queries during SSR and the header can hydrate into a different layout.
+  const isMobile = useMediaQuery(theme.breakpoints.down("xs"), { noSsr: true });
+  const downMd = useMediaQuery(theme.breakpoints.down(1150), { noSsr: true });
 
   // Handle scroll effect
   useEffect(() => {
@@ -200,7 +203,8 @@ const Header = ({ isFixed, headerdata, className, searchBoxType = "type2" }) => 
 
   const companyLogo = process.env.NEXT_PUBLIC_LOGO_API_URL;
   const comopanyalt = process.env.NEXT_PUBLIC_LOGO_ALT_TEXT;
-  const imgbaseurl = process.env.NEXT_PUBLIC_BACKEND_API_BASE + "media/";
+  const imageBaseUrl = process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL || "";
+  const apiBase = process.env.NEXT_PUBLIC_BACKEND_API_BASE || "";
 
   return (
     <HeaderWrapper className={clsx(className, { scrolled })}>
@@ -227,42 +231,45 @@ const Header = ({ isFixed, headerdata, className, searchBoxType = "type2" }) => 
             flex: { xs: "0 0 auto", md: "0 0 auto" },
           }}
         >
-          <Link href="/">
-            <a
-              aria-label="Chitral Hive Home"
-              style={{ display: "block", width: "100%" }}
+          <Link
+            href="/"
+            aria-label="Chitral Hive Home"
+            style={{ display: "block", width: "100%" }}>
+
+            <LogoContainer
+              sx={{
+                maxWidth: { xs: '100px', sm: '120px', md: '160px' },
+                width: { xs: '100px', sm: '120px', md: '160px' },
+                minWidth: { xs: '100px', sm: '120px', md: '160px' },
+                display: 'block',
+              }}
             >
-              <LogoContainer
-                sx={{
-                  maxWidth: { xs: '100px', sm: '120px', md: '160px' },
-                  width: { xs: '100px', sm: '120px', md: '160px' },
-                  minWidth: { xs: '100px', sm: '120px', md: '160px' },
-                  display: 'block',
+            <Image 
+                height={scrolled && isMobile ? 32 : 48} 
+                width={scrolled && isMobile ? 100 : 160}
+                src={
+                  headerdata && headerdata.length > 0 && headerdata[0]?.site_logo
+                    ? buildImageUrl(headerdata[0].site_logo, imageBaseUrl, apiBase) ||
+                      "/assets/images/logos/webpack.png"
+                    : "/assets/images/logos/webpack.png"
+                }
+              alt={comopanyalt || "Logo"}
+                priority
+                quality={85}
+                style={{ 
+                  display: 'block !important',
+                  visibility: 'visible !important',
+                  opacity: '1 !important',
+                  transition: 'all 0.3s ease',
+                  objectFit: 'contain',
+                  width: '100%',
+                  height: 'auto',
+                  maxWidth: '100%',
                 }}
-              >
-              <Image 
-                  height={scrolled && isMobile ? 32 : 48} 
-                  width={scrolled && isMobile ? 100 : 160}
-                  src={headerdata && headerdata.length > 0 && headerdata[0]?.site_logo 
-                    ? imgbaseurl + headerdata[0].site_logo 
-                    : '/assets/images/logos/webpack.png'} 
-                alt={comopanyalt || "Logo"}
-                  priority
-                  quality={85}
-                  style={{ 
-                    display: 'block !important',
-                    visibility: 'visible !important',
-                    opacity: '1 !important',
-                    transition: 'all 0.3s ease',
-                    objectFit: 'contain',
-                    width: '100%',
-                    height: 'auto',
-                    maxWidth: '100%',
-                  }}
-                  sizes="(max-width: 600px) 100px, (max-width: 960px) 120px, 160px"
-              />
-              </LogoContainer>
-            </a>
+                sizes="(max-width: 600px) 100px, (max-width: 960px) 120px, 160px"
+            />
+            </LogoContainer>
+
           </Link>
 
           {isFixed && !isMobile && (

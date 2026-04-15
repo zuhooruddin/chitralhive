@@ -258,11 +258,10 @@ const GrocerySearchBox = () => {
           ),
         }}
       />
-
       {typeof resultList !== "undefined" && !!resultList.length && (
         <PremiumResultCard elevation={3}>
           {resultList.map((item) => (
-            <Link href={`/product/search/${item.name}`} key={item.name} passHref>
+            <Link href={`/product/search/${item.name}`} key={item.name}>
               <MenuItem>{item.name}</MenuItem>
             </Link>
           ))}

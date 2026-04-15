@@ -20,7 +20,7 @@ const CardContent = styled(Box)(() => ({
 const BannerCard5 = ({ img, children, ...props }) => {
   return (
     <CardWrapper {...props}>
-      <BazaarImage alt="category" height="100%" width="100%" src={img}  />
+      <BazaarImage alt="category" fill src={img} style={{ objectFit: "cover" }} />
 
       <CardContent>{children}</CardContent>
     </CardWrapper>

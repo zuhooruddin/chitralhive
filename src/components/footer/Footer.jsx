@@ -8,7 +8,8 @@ import Instagram from "components/icons/Instagram";
 import Twitter from "components/icons/Twitter";
 import { Paragraph, H6 } from "components/Typography";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { buildImageUrl } from "utils/buildImageUrl";
 
 // Gradient animation
 const gradientShift = keyframes`
@@ -33,19 +34,21 @@ const float = keyframes`
   }
 `;
 
-// Styled link with premium hover effect
-const StyledLink = styled("a")(({ theme }) => ({
+// NOTE: We intentionally avoid `styled(next/link)` here because it can lead to
+// nested <a> tags in some setups, which breaks hydration.
+const footerLinkSx = {
   display: "flex",
   alignItems: "center",
   gap: "10px",
-  borderRadius: 8,
+  borderRadius: 2,
   cursor: "pointer",
   position: "relative",
-  padding: "12px 0", // Increased padding for better touch targets
-  minHeight: "44px", // Minimum touch target height for accessibility
+  padding: "12px 0",
+  minHeight: "44px",
   color: "rgba(255, 255, 255, 0.6)",
   fontSize: "14px",
   fontWeight: 500,
+  textDecoration: "none",
   transition: "all 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
   "&::before": {
     content: '""',
@@ -64,7 +67,7 @@ const StyledLink = styled("a")(({ theme }) => ({
       width: "30px",
     },
   },
-}));
+};
 
 // Section title with gradient underline
 const SectionTitle = styled(Box)(({ theme }) => ({
@@ -160,24 +163,33 @@ const DecorativeCircle = styled(Box)(({ size = 200, top, left, right, bottom }) 
 }));
 
 const Footer = ({ footerData: initialFooterData }) => {
-  const [mounted, setMounted] = useState(false);
   const [footerData, setFooterData] = useState(initialFooterData);
 
   useEffect(() => {
-    setMounted(true);
     if (initialFooterData) {
       setFooterData(initialFooterData);
     }
   }, [initialFooterData]);
 
-  const imgbaseurl = process.env.NEXT_PUBLIC_BACKEND_API_BASE + "media/";
+  const imageBaseUrl = process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL || "";
+  const apiBase = process.env.NEXT_PUBLIC_BACKEND_API_BASE || "";
   const defaultLogo = "/assets/images/logos/webpack.png";
 
-  useEffect(() => {
-    if (process.env.NODE_ENV === 'development') {
-      console.log('Footer component - footerData:', footerData);
-    }
-  }, [footerData]);
+  // Defensive: CMS content sometimes contains invalid nested <a> tags which can
+  // break hydration (`<a>` cannot be a descendant of `<a>`). We strip anchor tags
+  // but keep the text content to keep markup valid and SSR-safe.
+  const safeFourthColumnHtml =
+    footerData?.footer_fourth_column_content
+      ? String(footerData.footer_fourth_column_content)
+          .replace(/<\s*a\b[^>]*>/gi, "")
+          .replace(/<\s*\/\s*a\s*>/gi, "")
+      : "";
+
+  const footerLogoSrc = useMemo(() => {
+    return footerData?.footer_logo
+      ? buildImageUrl(footerData.footer_logo, imageBaseUrl, apiBase) || defaultLogo
+      : defaultLogo;
+  }, [apiBase, defaultLogo, footerData?.footer_logo, imageBaseUrl]);
 
   return (
     <Footwrapper>
@@ -218,29 +230,31 @@ const Footer = ({ footerData: initialFooterData }) => {
               <Grid container spacing={4}>
                 {/* Column 1: Logo and Description */}
                 <Grid item lg={4} md={6} sm={6} xs={12}>
-                  <Link href="/" passHref>
-                    <a aria-label="Chitral Hive - Go to homepage" style={{ minHeight: '48px', minWidth: '160px', display: 'inline-block' }}>
-                      <Box
-                        sx={{
-                          transition: "all 0.3s ease",
-                          "&:hover": {
-                            transform: "scale(1.03)",
-                            filter: "brightness(1.1)",
-                          },
-                        }}
-                      >
+                  <Link
+                    href="/"
+                    aria-label="Chitral Hive - Go to homepage"
+                    style={{ minHeight: "48px", minWidth: "160px", display: "inline-block" }}
+                  >
+                    <Box
+                      sx={{
+                        transition: "all 0.3s ease",
+                        "&:hover": {
+                          transform: "scale(1.03)",
+                          filter: "brightness(1.1)",
+                        },
+                      }}
+                    >
                       <Image
-                          mb={3}
-                          width={160}
-                          height={48}
-                        src={footerData?.footer_logo ? imgbaseurl + footerData.footer_logo : defaultLogo}
-                          alt="Chitral Hive Logo"
-                        style={{ display: 'block', maxWidth: '160px', height: 'auto' }}
+                        mb={3}
+                        width={160}
+                        height={48}
+                        src={footerLogoSrc}
+                        alt="Chitral Hive Logo"
+                        style={{ display: "block", maxWidth: "160px", height: "auto" }}
                         quality={85}
                         loading="lazy"
                       />
-                      </Box>
-                    </a>
+                    </Box>
                   </Link>
 
                   <Paragraph 
@@ -321,8 +335,10 @@ const Footer = ({ footerData: initialFooterData }) => {
                       {footerData.column_two_links
                         .filter((item) => item.column === 2)
                         .map((item, ind) => (
-                          <Link href={item.link} key={ind} passHref>
-                            <StyledLink>{item.name}</StyledLink>
+                          <Link key={ind} href={item.link} style={{ textDecoration: "none" }}>
+                            <Box component="span" sx={footerLinkSx}>
+                              {item.name}
+                            </Box>
                           </Link>
                         ))}
                     </Box>
@@ -340,8 +356,10 @@ const Footer = ({ footerData: initialFooterData }) => {
                       {footerData.column_three_links
                         .filter((item) => item.column === 3)
                         .map((item, ind) => (
-                          <Link href={item.link} key={ind} passHref>
-                            <StyledLink>{item.name}</StyledLink>
+                          <Link key={ind} href={item.link} style={{ textDecoration: "none" }}>
+                            <Box component="span" sx={footerLinkSx}>
+                              {item.name}
+                            </Box>
                           </Link>
                         ))}
                     </Box>
@@ -373,7 +391,7 @@ const Footer = ({ footerData: initialFooterData }) => {
                         },
                       }}
                       dangerouslySetInnerHTML={{
-                        __html: footerData.footer_fourth_column_content,
+                        __html: safeFourthColumnHtml,
                       }}
                     />
                   )}
@@ -381,55 +399,51 @@ const Footer = ({ footerData: initialFooterData }) => {
                   {/* Social Icons */}
                   <FlexBox gap={1.5} mt={4}>
                     {footerData?.facebook && (
-                      <a
+                      <SocialButton
+                        component="a"
                         href={footerData.facebook}
                         target="_blank"
                         rel="noreferrer noopener"
                         aria-label="Visit our Facebook page"
                       >
-                        <SocialButton aria-label="Facebook">
-                          <Facebook fontSize="small" />
-                        </SocialButton>
-                      </a>
+                        <Facebook fontSize="small" />
+                      </SocialButton>
                     )}
 
                     {footerData?.instagram && (
-                      <a
+                      <SocialButton
+                        component="a"
                         href={footerData.instagram}
                         target="_blank"
                         rel="noreferrer noopener"
                         aria-label="Visit our Instagram page"
                       >
-                        <SocialButton aria-label="Instagram">
-                          <Instagram fontSize="small" />
-                        </SocialButton>
-                      </a>
+                        <Instagram fontSize="small" />
+                      </SocialButton>
                     )}
 
                     {footerData?.youtube && (
-                      <a
+                      <SocialButton
+                        component="a"
                         href={footerData.youtube}
                         target="_blank"
                         rel="noreferrer noopener"
                         aria-label="Visit our YouTube channel"
                       >
-                        <SocialButton aria-label="YouTube">
-                          <Youtube fontSize="small" />
-                        </SocialButton>
-                      </a>
+                        <Youtube fontSize="small" />
+                      </SocialButton>
                     )}
 
                     {footerData?.twitter && (
-                      <a
+                      <SocialButton
+                        component="a"
                         href={footerData.twitter}
                         target="_blank"
                         rel="noreferrer noopener"
                         aria-label="Visit our Twitter page"
                       >
-                        <SocialButton aria-label="Twitter">
-                          <Twitter fontSize="small" />
-                        </SocialButton>
-                      </a>
+                        <Twitter fontSize="small" />
+                      </SocialButton>
                     )}
                   </FlexBox>
                 </Grid>
@@ -458,31 +472,27 @@ const Footer = ({ footerData: initialFooterData }) => {
                 </Paragraph>
                 
                 <FlexBox gap={3}>
-                  <Link href="/privacy-policy" passHref>
+                  <Link href="/privacy-policy" style={{ textDecoration: "none" }}>
                     <Box
-                      component="a"
+                      component="span"
                       sx={{
                         color: "rgba(255, 255, 255, 0.5)",
                         fontSize: "14px",
                         transition: "color 0.3s ease",
-                        "&:hover": {
-                          color: "#D23F57",
-                        },
+                        "&:hover": { color: "#D23F57" },
                       }}
                     >
                       Privacy Policy
                     </Box>
                   </Link>
-                  <Link href="/return-policy" passHref>
+                  <Link href="/return-policy" style={{ textDecoration: "none" }}>
                     <Box
-                      component="a"
+                      component="span"
                       sx={{
                         color: "rgba(255, 255, 255, 0.5)",
                         fontSize: "14px",
                         transition: "color 0.3s ease",
-                        "&:hover": {
-                          color: "#D23F57",
-                        },
+                        "&:hover": { color: "#D23F57" },
                       }}
                     >
                       Return Policy

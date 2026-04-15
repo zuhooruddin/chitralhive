@@ -91,11 +91,12 @@ const CategoryTitle = styled(Typography)(({ theme }) => ({
   },
 }));
 
-const StyledLink = styled(Link)({
+// Avoid `styled(next/link)` to prevent potential nested <a> hydration issues.
+const linkSx = {
   textDecoration: "none",
   display: "block",
   height: "100%",
-});
+};
 
 const Section4Modern = ({ data1, data2, data3 }) => {
   const imgbaseurl = process.env.NEXT_PUBLIC_BACKEND_API_BASE + "media/";
@@ -119,26 +120,28 @@ const Section4Modern = ({ data1, data2, data3 }) => {
         <Grid container spacing={{ xs: 1.5, sm: 2 }}>
           {banners.map((banner) => (
             <Grid item xs={12} sm={6} md={4} key={banner.id}>
-              <StyledLink href={`category/${banner.slug}`}>
-                <ModernBanner>
-                  <ImageWrapper>
-                    <BazaarImage
-                      src={banner.image}
-                      alt={banner.name}
-                      width={400}
-                      height={250}
-                      objectFit="cover"
-                      style={{ width: "100%", height: "100%" }}
-                    />
-                  </ImageWrapper>
-                  <OverlayGradient className="overlay-gradient" />
-                  <BannerContent className="banner-content">
-                    <CategoryTitle variant="h3" component="h2">
-                      {banner.name}
-                    </CategoryTitle>
-                  </BannerContent>
-                </ModernBanner>
-              </StyledLink>
+              <Link href={`category/${banner.slug}`} style={{ textDecoration: "none" }}>
+                <Box component="span" sx={linkSx}>
+                  <ModernBanner>
+                    <ImageWrapper>
+                      <BazaarImage
+                        src={banner.image}
+                        alt={banner.name}
+                        width={400}
+                        height={250}
+                        objectFit="cover"
+                        style={{ width: "100%", height: "100%" }}
+                      />
+                    </ImageWrapper>
+                    <OverlayGradient className="overlay-gradient" />
+                    <BannerContent className="banner-content">
+                      <CategoryTitle variant="h3" component="h2">
+                        {banner.name}
+                      </CategoryTitle>
+                    </BannerContent>
+                  </ModernBanner>
+                </Box>
+              </Link>
             </Grid>
           ))}
         </Grid>

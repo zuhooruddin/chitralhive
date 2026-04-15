@@ -18,6 +18,7 @@ import { H1, Paragraph } from "components/Typography";
 import { useCallback, useState } from "react";
 import api from "utils/api/market-2";
 import { SHILAJIT_KEYWORD_PHRASES, SITE_URL } from "utils/seoConstants";
+import AdSenseAd from "components/ads/AdSenseAd";
 
 const ProductSearchResult = (props) => {
   const {catSlug,ProductReviews} = props;
@@ -142,6 +143,15 @@ const ProductSearchResult = (props) => {
             </FlexBox>
           </FlexBox>
         </Card>
+
+        <Box sx={{ mb: 3, display: "flex", justifyContent: "center" }}>
+          <AdSenseAd
+            slot={process.env.NEXT_PUBLIC_ADSENSE_FLUID_LAYOUTKEY_SLOT}
+            format="fluid"
+            layoutKey="-eb-86+e7+go-17v"
+            sx={{ maxWidth: 900, width: "100%" }}
+          />
+        </Box>
 
         <Grid container spacing={3}>
           {/* <Grid

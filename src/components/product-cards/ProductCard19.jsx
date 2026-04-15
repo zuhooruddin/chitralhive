@@ -31,13 +31,16 @@ const ProductCard19 = ({ image, title, price, id }) => {
       }}
     >
       <Link href={`/product/${id}`}>
-        <a>
-          <Box maxWidth={100} bgcolor="grey.300">
-            <BazaarImage width="100%" alt="product" src={image} />
-          </Box>
-        </a>
-      </Link>
 
+        <Box
+          maxWidth={100}
+          bgcolor="grey.300"
+          sx={{ position: "relative", width: 100, height: 100, overflow: "hidden" }}
+        >
+          <BazaarImage fill alt="product" src={image} style={{ objectFit: "contain" }} />
+        </Box>
+
+      </Link>
       <Box>
         <NavLink href="#">
           <Paragraph fontSize={16}>{title}</Paragraph>

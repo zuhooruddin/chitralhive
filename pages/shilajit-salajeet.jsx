@@ -113,7 +113,6 @@ export default function ShilajitSalajeetPage({
       {breadcrumb && <StructuredData data={breadcrumb} />}
       <StructuredData data={webPageSchema} />
       <StructuredData data={faqSchema} />
-
       <Box component="article" bgcolor="#F6F6F6" py={{ xs: 3, md: 5 }}>
         <Container maxWidth="lg">
           <H1 mb={2} fontSize={{ xs: 26, md: 34 }} lineHeight={1.2}>
@@ -127,16 +126,24 @@ export default function ShilajitSalajeetPage({
             nationwide delivery and PKR pricing on product pages.
           </Paragraph>
           <Box display="flex" flexWrap="wrap" gap={2} mb={4}>
-            <Link href="/search/shilajit" passHref legacyBehavior>
-              <Button component="a" variant="contained" color="primary" size="large">
-                Shop Shilajit listings
-              </Button>
-            </Link>
-            <Link href="/products" passHref legacyBehavior>
-              <Button component="a" variant="outlined" color="primary" size="large">
-                All products
-              </Button>
-            </Link>
+            <Button
+              component={Link}
+              href="/search/shilajit"
+              variant="contained"
+              color="primary"
+              size="large"
+            >
+              Shop Shilajit listings
+            </Button>
+            <Button
+              component={Link}
+              href="/products"
+              variant="outlined"
+              color="primary"
+              size="large"
+            >
+              All products
+            </Button>
           </Box>
 
           <H2 mb={2} fontSize={22}>
@@ -165,8 +172,8 @@ export default function ShilajitSalajeetPage({
           <Paragraph color="grey.600" mb={2}>
             Live results load below (search term: <strong>shilajit</strong>).
             Try{" "}
-            <Link href="/search/salajeet" passHref legacyBehavior>
-              <a>Salajeet search</a>
+            <Link href="/search/salajeet">
+              Salajeet search
             </Link>{" "}
             if you use the Urdu-market spelling.
           </Paragraph>

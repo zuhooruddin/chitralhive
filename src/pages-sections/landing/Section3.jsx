@@ -114,21 +114,21 @@ const Section3 = ({ filterDemo, setFilterDemo }) => {
           ))}
         </Grid>
 
-        <Link href="https://tinyurl.com/get-bazaar" passHref>
-          <a>
-            <Button
-              color="primary"
-              variant="contained"
-              sx={{
-                mx: "auto",
-                mt: "2.25rem",
-                display: "block",
-                minWidth: "125px",
-              }}
-            >
-              Purchase Now
-            </Button>
-          </a>
+        <Link href="https://tinyurl.com/get-bazaar">
+
+          <Button
+            color="primary"
+            variant="contained"
+            sx={{
+              mx: "auto",
+              mt: "2.25rem",
+              display: "block",
+              minWidth: "125px",
+            }}
+          >
+            Purchase Now
+          </Button>
+
         </Link>
       </Container>
     </Box>

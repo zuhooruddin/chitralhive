@@ -51,7 +51,6 @@ const CategoriesIndexPage = ({ categories }) => {
         description="Browse all Chitrali product categories on Chitral Hive, including dry fruits, honey, shilajit, spices, oils, and traditional foods."
         canonical="https://chitralhive.com/categories"
       />
-
       <Container sx={{ py: 5 }}>
         <H1 component="h1" sx={{ mb: 2 }}>
           Chitrali Product Categories
@@ -73,43 +72,44 @@ const CategoriesIndexPage = ({ categories }) => {
             return (
               <Grid item xs={12} sm={6} md={4} lg={3} key={categorySlug}>
                 <StyledBazaarCard>
-                  <Link href={`/categories/${categorySlug}`} passHref legacyBehavior>
-                    <a style={{ textDecoration: "none", color: "inherit", height: "100%" }}>
-                      <ImageWrapper>
-                        {categoryImage ? (
-                          <LazyImage
-                            src={categoryImage}
-                            width={240}
-                            height={240}
-                            objectFit="contain"
-                            layout="fixed"
-                            alt={categoryName}
-                          />
-                        ) : (
-                          <Box sx={{ height: 240, display: "grid", placeItems: "center" }}>
-                            <Paragraph color="grey.600">No image</Paragraph>
-                          </Box>
-                        )}
-                      </ImageWrapper>
+                  <Link
+                    href={`/categories/${categorySlug}`}
+                    style={{ textDecoration: "none", color: "inherit", height: "100%" }}>
 
-                      <ContentWrapper>
-                        <FlexBox>
-                          <Box flex="1 1 0" minWidth="0px" mr={1}>
-                            <H3
-                              mb={1}
-                              title={categoryName}
-                              fontSize="14px"
-                              fontWeight="600"
-                              className="title"
-                              color="text.secondary"
-                              style={{ textAlign: "center" }}
-                            >
-                              {categoryName}
-                            </H3>
-                          </Box>
-                        </FlexBox>
-                      </ContentWrapper>
-                    </a>
+                    <ImageWrapper>
+                      {categoryImage ? (
+                        <LazyImage
+                          src={categoryImage}
+                          width={240}
+                          height={240}
+                          objectFit="contain"
+                          layout="fixed"
+                          alt={categoryName}
+                        />
+                      ) : (
+                        <Box sx={{ height: 240, display: "grid", placeItems: "center" }}>
+                          <Paragraph color="grey.600">No image</Paragraph>
+                        </Box>
+                      )}
+                    </ImageWrapper>
+                    <ContentWrapper>
+                      <FlexBox>
+                        <Box flex="1 1 0" minWidth="0px" mr={1}>
+                          <H3
+                            mb={1}
+                            title={categoryName}
+                            fontSize="14px"
+                            fontWeight="600"
+                            className="title"
+                            color="text.secondary"
+                            style={{ textAlign: "center" }}
+                          >
+                            {categoryName}
+                          </H3>
+                        </Box>
+                      </FlexBox>
+                    </ContentWrapper>
+
                   </Link>
                 </StyledBazaarCard>
               </Grid>

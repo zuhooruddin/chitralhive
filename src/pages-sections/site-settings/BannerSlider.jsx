@@ -55,9 +55,9 @@ const BannerSlider = () => {
                 <NextImage
                   width={240}
                   height={100}
-                  objectFit="cover"
                   src={file.preview}
-                  layout="responsive"
+                  alt={file.name || "Slide preview"}
+                  style={{ width: "100%", height: "auto", objectFit: "cover" }}
                 />
                 <StyledClear onClick={() => deleteNewImage(file.name)} />
               </UploadBox>
