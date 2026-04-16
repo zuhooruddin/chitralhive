@@ -48,8 +48,6 @@ Router.events.on("routeChangeError", () => nProgress.done()); // small change
 nProgress.configure({
   showSpinner: false,
 });
-
-
 const clientSideEmotionCache = createEmotionCache();
 
 const App = ({
