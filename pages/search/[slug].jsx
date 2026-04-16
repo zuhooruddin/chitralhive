@@ -148,9 +148,11 @@ const ProductSearchResult = (props) => {
         </Card>
 
         {showFluidAd && (
-          <Box sx={{ mb: 3, display: "flex", justifyContent: "center" }}>
-            <AdSenseAd slot={fluidSlot} format="fluid" sx={{ maxWidth: 900, width: "100%" }} />
-          </Box>
+          <AdSenseAd
+            slot={fluidSlot}
+            format="fluid"
+            sx={{ maxWidth: 900, width: "100%", mx: "auto", mb: 3 }}
+          />
         )}
 
         <Grid container spacing={3}>

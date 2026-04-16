@@ -374,9 +374,11 @@ const IndexPage = (props) => {
             }
             rootMargin="0px"
           >
-            <Box sx={{ mt: { xs: 2, sm: 3 }, display: "flex", justifyContent: "center" }}>
-              <AdSenseAd slot={fluidSlot} format="fluid" sx={{ maxWidth: 900, mx: "auto" }} />
-            </Box>
+            <AdSenseAd
+              slot={fluidSlot}
+              format="fluid"
+              sx={{ maxWidth: 900, mx: "auto", mt: { xs: 2, sm: 3 } }}
+            />
           </LazySection>
         )}
 

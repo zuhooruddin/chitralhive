@@ -504,9 +504,11 @@ const ProductDetails = (props) => {
 
         {/* Product intro ad */}
         {showFluidAd && (
-          <Box sx={{ mt: 2, mb: 2, display: "flex", justifyContent: "center" }}>
-            <AdSenseAd slot={fluidSlot} format="fluid" sx={{ maxWidth: 900, width: "100%" }} />
-          </Box>
+          <AdSenseAd
+            slot={fluidSlot}
+            format="fluid"
+            sx={{ maxWidth: 900, width: "100%", mx: "auto", mt: 2, mb: 2 }}
+          />
         )}
 
 <StyledTabs
