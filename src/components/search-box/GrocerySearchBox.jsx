@@ -231,6 +231,7 @@ const GrocerySearchBox = () => {
   return (
     <SearchContainer ref={parentRef}>
       <PremiumSearchField
+        id="grocery-search"
         fullWidth
         name="name"
         variant="outlined"
@@ -241,6 +242,7 @@ const GrocerySearchBox = () => {
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         error={messageError}
+        inputProps={{ id: "grocery-search" }}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
