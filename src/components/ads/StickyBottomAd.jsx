@@ -10,15 +10,23 @@ const StickyBottomAd = ({
   layout,
   fullWidthResponsive = true,
   minHeight = 90,
+  onVisibilityChange,
 }) => {
   const [mounted, setMounted] = useState(false);
   const [dismissed, setDismissed] = useState(false);
+  const [adVisible, setAdVisible] = useState(true);
   const client = process.env.NEXT_PUBLIC_ADSENSE_CLIENT;
   const enabled = Boolean(client && slot);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (typeof onVisibilityChange === "function") {
+      onVisibilityChange(mounted && enabled && !dismissed && adVisible);
+    }
+  }, [adVisible, dismissed, enabled, mounted, onVisibilityChange]);
 
   if (!enabled || !mounted || dismissed) return null;
 
@@ -44,9 +52,7 @@ const StickyBottomAd = ({
           overflow: "hidden",
           position: "relative",
           pointerEvents: "auto",
-          // Only reserve space if the ad actually fills.
-          // If there's no fill, we dismiss the whole sticky unit.
-          minHeight,
+          ...(adVisible ? { minHeight } : {}),
         }}
       >
         <IconButton
@@ -75,7 +81,11 @@ const StickyBottomAd = ({
             layout={layout}
             fullWidthResponsive={fullWidthResponsive}
             reserveSpace={false}
-            onNoFill={() => setDismissed(true)}
+            onNoFill={() => {
+              setAdVisible(false);
+              setDismissed(true);
+            }}
+            onVisibilityChange={setAdVisible}
           />
         </Box>
       </Paper>

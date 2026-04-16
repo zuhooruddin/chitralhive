@@ -12,6 +12,7 @@ import { fetchPublishedBlog, fetchPublishedBlogs } from "utils/api/blog";
 import AdSenseAd from "components/ads/AdSenseAd";
 import StickyBottomAd from "components/ads/StickyBottomAd";
 
+import { useState } from "react";
 
 const BlogPostPage = ({ post, allPosts }) => {
   const adsenseClient = process.env.NEXT_PUBLIC_ADSENSE_CLIENT;
@@ -21,6 +22,7 @@ const BlogPostPage = ({ post, allPosts }) => {
   const showInArticle = Boolean(adsenseClient && inArticleSlot);
   const showAutoRelaxed = Boolean(adsenseClient && autoRelaxedSlot);
   const showSticky = Boolean(adsenseClient && stickySlot);
+  const [stickyVisible, setStickyVisible] = useState(showSticky);
 
   if (!post) {
     return (
@@ -93,7 +95,13 @@ const BlogPostPage = ({ post, allPosts }) => {
       />
       <StructuredData data={articleStructuredData} />
       <StructuredData data={breadcrumbSchema} />
-      <Container sx={{ py: 4, maxWidth: "900px", pb: { xs: 16, sm: 18 } }}>
+      <Container
+        sx={{
+          py: 4,
+          maxWidth: "900px",
+          pb: stickyVisible ? { xs: 16, sm: 18 } : 4,
+        }}
+      >
         <Box component="article">
           {/* Header */}
           <Box component="header" sx={{ mb: 4 }}>
@@ -236,7 +244,12 @@ const BlogPostPage = ({ post, allPosts }) => {
 
       {/* Sticky bottom ad - uses format="auto" for standard display in sticky context */}
       {showSticky && (
-        <StickyBottomAd slot={stickySlot} format="auto" minHeight={100} />
+        <StickyBottomAd
+          slot={stickySlot}
+          format="auto"
+          minHeight={100}
+          onVisibilityChange={setStickyVisible}
+        />
       )}
     </ShopLayout1>
   );

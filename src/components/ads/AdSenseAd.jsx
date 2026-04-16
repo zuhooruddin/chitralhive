@@ -1,6 +1,20 @@
 import { Box } from "@mui/material";
 import { useEffect, useMemo, useRef, useState } from "react";
 
+const MAX_REQUEST_RETRIES = 40;
+const REQUEST_RETRY_MS = 250;
+
+const isPendingAdSlot = (element) => {
+  if (!element) return false;
+  if (!element.isConnected) return false;
+  if (element.hasAttribute("data-adsbygoogle-status")) return false;
+  if (element.dataset.adsbygoogleRequested === "true") return false;
+  return element.childElementCount === 0 && element.innerHTML.trim() === "";
+};
+
+const getNextPendingAdSlot = () =>
+  document.querySelector('ins.adsbygoogle:not([data-adsbygoogle-status]):not([data-adsbygoogle-requested="true"])');
+
 /**
  * Reusable Google AdSense unit.
  *
@@ -20,6 +34,7 @@ const AdSenseAd = ({
   hideIfNoFill = true,
   noFillCheckMs = 2500,
   onNoFill,
+  onVisibilityChange,
   // Reserve space to prevent CLS when ads load / no-fill happens.
   // Default to false so missing/blocked ads don't leave empty sections.
   reserveSpace = false,
@@ -35,37 +50,50 @@ const AdSenseAd = ({
     const ins = insRef.current;
     if (!ins) return;
 
-    // Prevent "All 'ins' elements ... already have ads" by not re-pushing
-    // for an <ins> that AdSense already filled or already requested.
-    //
-    // Note: In Next/React, multiple ad units can mount close together and race
-    // before AdSense sets `data-adsbygoogle-status="done"`. We mark the element
-    // as requested to avoid a second push targeting an already-queued slot.
-    // AdSense sets `data-adsbygoogle-status` when it has processed the slot.
-    // Value can vary; treat presence of the attribute as "already handled".
-    if (ins.hasAttribute("data-adsbygoogle-status")) return;
-    if (ins.dataset.adsbygoogleRequested === "true") return;
+    let cancelled = false;
+    let retryTimeoutId;
+    let retryCount = 0;
 
-    // Only push if there's at least one unfilled slot on the page.
-    // This avoids pushing when everything is already filled (TagError).
-    const hasUnfilled = Boolean(
-      document.querySelector('ins.adsbygoogle:not([data-adsbygoogle-status]):not([data-adsbygoogle-requested="true"])')
-    );
-    if (!hasUnfilled) return;
+    const requestAd = () => {
+      if (cancelled) return;
+      if (!isPendingAdSlot(ins)) return;
 
-    ins.dataset.adsbygoogleRequested = "true";
-    try {
-      window.adsbygoogle = window.adsbygoogle || [];
-      window.adsbygoogle.push({});
-    } catch {
-      delete ins.dataset.adsbygoogleRequested;
-      // Ad blockers / script not loaded yet
-      if (hideIfNoFill) {
-        setVisible(false);
-        if (typeof onNoFill === "function") onNoFill();
+      const nextPending = getNextPendingAdSlot();
+      if (nextPending !== ins) {
+        if (retryCount >= MAX_REQUEST_RETRIES) return;
+        retryCount += 1;
+        retryTimeoutId = window.setTimeout(requestAd, REQUEST_RETRY_MS);
+        return;
       }
-    }
-  }, [slot]);
+
+      ins.dataset.adsbygoogleRequested = "true";
+      try {
+        window.adsbygoogle = window.adsbygoogle || [];
+        window.adsbygoogle.push({});
+      } catch {
+        delete ins.dataset.adsbygoogleRequested;
+
+        if (retryCount < MAX_REQUEST_RETRIES) {
+          retryCount += 1;
+          retryTimeoutId = window.setTimeout(requestAd, REQUEST_RETRY_MS);
+          return;
+        }
+
+        // Script blocked or never became ready.
+        if (hideIfNoFill) {
+          setVisible(false);
+          if (typeof onNoFill === "function") onNoFill();
+        }
+      }
+    };
+
+    requestAd();
+
+    return () => {
+      cancelled = true;
+      if (retryTimeoutId) window.clearTimeout(retryTimeoutId);
+    };
+  }, [hideIfNoFill, onNoFill, slot]);
 
   const client = process.env.NEXT_PUBLIC_ADSENSE_CLIENT;
   const defaultLayoutKey = process.env.NEXT_PUBLIC_ADSENSE_FLUID_LAYOUT_KEY;
@@ -74,6 +102,12 @@ const AdSenseAd = ({
   const activeLayoutKey = layoutKey || (format === "fluid" ? defaultLayoutKey : undefined);
 
   const enabled = useMemo(() => Boolean(client && slot), [client, slot]);
+
+  useEffect(() => {
+    if (typeof onVisibilityChange === "function") {
+      onVisibilityChange(visible);
+    }
+  }, [onVisibilityChange, visible]);
 
   useEffect(() => {
     if (!enabled) return;
