@@ -2,6 +2,7 @@ import { Box, Drawer, styled } from "@mui/material";
 import NavLink from "components/nav-link/NavLink";
 import { layoutConstant } from "utils/constants"; // styled components
 
+
 const Wrapper = styled(Box)(({ theme }) => ({
   left: 0,
   right: 0,
@@ -13,7 +14,7 @@ const Wrapper = styled(Box)(({ theme }) => ({
 
 
 
-  
+
   height: `calc(${layoutConstant.mobileNavHeight}px + env(safe-area-inset-bottom, 0px))`,
   paddingBottom: "env(safe-area-inset-bottom, 0px)",
   backgroundColor: theme.palette.background.paper,
@@ -21,6 +22,7 @@ const Wrapper = styled(Box)(({ theme }) => ({
   "@media only screen and (max-width: 900px)": {
     display: "flex",
     width: "100vw",
+
   },
 }));
 const StyledNavLink = styled(NavLink)(() => ({

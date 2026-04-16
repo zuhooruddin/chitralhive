@@ -18,6 +18,8 @@ const StyledBazaarCard = styled(BazaarCard)(({ theme }) => ({
   height: "100%",
 
   display: "flex",
+
+
   
 
   overflow: "hidden",
