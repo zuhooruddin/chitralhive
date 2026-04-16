@@ -399,7 +399,7 @@ const IndexPage = (props) => {
         </LazySection>
         {(props.Section2SequenceData || props.Section2SequenceData2 || props.Section2SequenceData3 || 
           props.Section2SequenceData4 || props.Section2SequenceData5 || props.Section2SequenceData6) && (
-          <LazySection>
+          <LazySection minHeight={380}>
             <Box sx={{ my: { xs: -2, sm: -4, md: -7 } }}>
               <Section3
                 data1={props.Section2SequenceData || []}
@@ -417,7 +417,7 @@ const IndexPage = (props) => {
             <Section2 data={props.brandbundles || []} />
           </Box>
         </LazySection> */}
-                <LazySection>
+                <LazySection minHeight={520}>
           <Box sx={{ mt: { xs: 2, sm: 3, md: 5 } }}>
             <Section5
               products={props.products || []}
@@ -429,7 +429,7 @@ const IndexPage = (props) => {
             />
           </Box>
         </LazySection>
-        <LazySection>
+        <LazySection minHeight={420}>
           <Box sx={{ my: 0 }}>
             <Section4
               data1={props.Section3SequenceData || []}
@@ -439,7 +439,7 @@ const IndexPage = (props) => {
             />
           </Box>
         </LazySection>
-        <LazySection>
+        <LazySection minHeight={520}>
           <Section12
             products={props.product || []}
             data={props.SectionSequenceOrdera2 || []}
@@ -449,7 +449,7 @@ const IndexPage = (props) => {
 
           />
         </LazySection>
-        <LazySection>
+        <LazySection minHeight={320}>
           <Box sx={{ my: { xs: -2, sm: -4, md: -7 } }}>
             <Section6
               data1={props.Section4SequenceData || []}
@@ -459,14 +459,14 @@ const IndexPage = (props) => {
         </LazySection>
      
         {props.productbundles.length > 0 && (
-          <LazySection>
+          <LazySection minHeight={260}>
             <Box sx={{ mt: { xs: 2, sm: 2.5, md: 3 }, display: "flex", justifyContent: "center" }}>
               <Section10 data={props.productbundles} />
             </Box>
           </LazySection>
         )}
 
-        <LazySection>
+        <LazySection minHeight={320}>
           <Box sx={{ my: { xs: -2, sm: -3, md: -4 } }}>
             <Section7 data1={props.Section5SequenceData || []} />
           </Box>

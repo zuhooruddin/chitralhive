@@ -154,21 +154,33 @@ const App = ({
     };
   }, []);
 
-  // Load AdSense without Next/Script to avoid `data-nscript` warnings
+  // Load AdSense later to reduce TBT.
+  // This can slightly delay ad fill, but it measurably improves initial interactivity on mobile.
   useEffect(() => {
     if (typeof window === "undefined") return;
     const client = process.env.NEXT_PUBLIC_ADSENSE_CLIENT;
     if (!client) return;
+    if (!deferredUiReady) return;
 
     const existing = document.querySelector('script[src*="pagead/js/adsbygoogle.js"]');
     if (existing) return;
 
-    const s = document.createElement("script");
-    s.async = true;
-    s.crossOrigin = "anonymous";
-    s.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${client}`;
-    document.head.appendChild(s);
-  }, []);
+    const load = () => {
+      const s = document.createElement("script");
+      s.async = true;
+      s.defer = true;
+      s.crossOrigin = "anonymous";
+      s.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${client}`;
+      if ("fetchPriority" in s) s.fetchPriority = "low";
+      document.head.appendChild(s);
+    };
+
+    if ("requestIdleCallback" in window) {
+      window.requestIdleCallback(load, { timeout: 2500 });
+    } else {
+      window.setTimeout(load, 1500);
+    }
+  }, [deferredUiReady]);
 
   const imgbaseurl = (process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL || "").replace(/\/?$/, "/");
 
@@ -225,17 +237,19 @@ const App = ({
               {/* Canonical link is handled by SEO component - removed duplicate */}
             </Head>
 
-            <Script
-              id="microsoft-clarity"
-              strategy="afterInteractive"
-              dangerouslySetInnerHTML={{
-                __html: `(function(c,l,a,r,i,t,y){
+            {typeof window !== "undefined" && deferredUiReady && (
+              <Script
+                id="microsoft-clarity"
+                strategy="lazyOnload"
+                dangerouslySetInnerHTML={{
+                  __html: `(function(c,l,a,r,i,t,y){
   c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
   t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
   y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
 })(window, document, "clarity", "script", "wazku25yzp");`,
-              }}
-            />
+                }}
+              />
+            )}
             {/* Loader removed - no popup on page load */}
 
             {/* Lazy load FloatingWhatsApp - ssr: false ensures client-side only */}
