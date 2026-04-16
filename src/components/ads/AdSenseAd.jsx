@@ -31,6 +31,12 @@ const AdSenseAd = ({
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (!slot) return;
+    const ins = insRef.current;
+    if (!ins) return;
+
+    // Prevent "All 'ins' elements ... already have ads" by not re-pushing
+    // for an <ins> that AdSense already filled.
+    if (ins.getAttribute("data-adsbygoogle-status") === "done") return;
     try {
       window.adsbygoogle = window.adsbygoogle || [];
       window.adsbygoogle.push({});
