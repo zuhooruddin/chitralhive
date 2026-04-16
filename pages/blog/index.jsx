@@ -68,11 +68,14 @@ const clamp3 = {
   overflow: "hidden",
 };
 
-const FeaturedTile = ({ post, variant }) => {
+const FeaturedTile = ({ post, variant, fixedHeight }) => {
   if (!post) return null;
   const dateLabel = formatDateLabel(post.publishedTime || post.createdAt);
   const category = post.section && post.section !== "Blog" ? post.section : null;
   const isMain = variant === "main";
+  const ratio = isMain ? "16 / 9" : "16 / 10";
+  const useFixedHeight = Boolean(fixedHeight);
+  const aspectRatioValue = useFixedHeight ? { xs: ratio, md: undefined } : ratio;
 
   return (
     <Card
@@ -90,20 +93,25 @@ const FeaturedTile = ({ post, variant }) => {
       }}
     >
       <CardActionArea component={Link} href={`/blog/${post.slug}`} sx={{ height: "100%" }}>
-        <Box sx={{ position: "relative", height: "100%" }}>
+        <Box
+          sx={{
+            position: "relative",
+            width: "100%",
+            aspectRatio: aspectRatioValue,
+            ...(useFixedHeight ? { height: fixedHeight } : null),
+            overflow: "hidden",
+            bgcolor: "grey.100",
+          }}
+        >
           {post.imgUrl ? (
             <LazyImage
-              width={1200}
-              height={720}
+              fill
               src={post.imgUrl}
               alt={post.title || "Blog post"}
-              layout="responsive"
               objectFit="cover"
-              sx={{ height: "100%" }}
+              sizes={isMain ? "(max-width: 900px) 100vw, 66vw" : "(max-width: 900px) 100vw, 33vw"}
             />
-          ) : (
-            <Box sx={{ width: "100%", height: "100%", aspectRatio: isMain ? "16 / 9" : "16 / 10" }} />
-          )}
+          ) : null}
 
           <Box
             sx={{
@@ -190,18 +198,17 @@ const BlogGridCard = ({ post }) => {
       }}
     >
       <CardActionArea component={Link} href={`/blog/${post.slug}`} sx={{ height: "100%", alignItems: "stretch" }}>
-        <Box sx={{ bgcolor: "grey.100" }}>
+        <Box sx={{ position: "relative", width: "100%", aspectRatio: "16 / 10", overflow: "hidden", bgcolor: "grey.100" }}>
           {post.imgUrl ? (
             <LazyImage
-              width={900}
-              height={560}
               src={post.imgUrl}
               alt={post.title || "Blog post"}
-              layout="responsive"
+              fill
               objectFit="cover"
+              sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw"
             />
           ) : (
-            <Box sx={{ width: "100%", aspectRatio: "16 / 10" }} />
+            null
           )}
         </Box>
         <CardContent sx={{ p: 2.5 }}>
@@ -342,7 +349,7 @@ const BlogPage = ({ posts, totalCount, page, categories, activeCategory, initial
         </Breadcrumbs>
 
         <H1 component="h1" sx={{ mb: 0.75, fontWeight: 950, letterSpacing: -0.8 }}>
-          {activeCategory || "Auto News, Reviews, Advice & Guides"}
+          {activeCategory || "Chitral Hive Blog - News, Reviews, Travels & Guides"}
         </H1>
         <Paragraph color="text.secondary" sx={{ maxWidth: 820, lineHeight: 1.8, mb: 3 }}>
           {activeCategory
@@ -350,25 +357,39 @@ const BlogPage = ({ posts, totalCount, page, categories, activeCategory, initial
             : "Latest articles — product guides, wellness tips, and Chitrali culture stories from the heart of Chitral."}
         </Paragraph>
 
-        {featured.length > 0 ? (
-          <Grid container spacing={2.5} sx={{ mb: 3 }}>
-            <Grid item xs={12} md={8}>
-              <FeaturedTile post={featured[0]} variant="main" />
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <Grid container spacing={2.5}>
-                <Grid item xs={12}>
-                  <FeaturedTile post={featured[1]} variant="side" />
-                </Grid>
-                <Grid item xs={12} sm={6} md={12}>
-                  <FeaturedTile post={featured[2]} variant="side" />
-                </Grid>
-                <Grid item xs={12} sm={6} md={12}>
-                  <FeaturedTile post={featured[3]} variant="side" />
-                </Grid>
-              </Grid>
-            </Grid>
-          </Grid>
+        {featured.length > 0 && featured[0] ? (
+          <Box
+            sx={{
+              mb: 3,
+              display: "grid",
+              gap: 2.5,
+              gridTemplateColumns: { xs: "1fr", md: featured.length > 1 ? "2fr 1fr" : "1fr" },
+              // Fixed row heights so the left tile can span rows without leaving a gap.
+              gridTemplateRows: {
+                md: featured.length > 1 ? "repeat(3, 168px)" : "auto",
+                lg: featured.length > 1 ? "repeat(3, 184px)" : "auto",
+              },
+              alignItems: "stretch",
+            }}
+          >
+            <Box sx={{ gridColumn: { xs: "1 / -1", md: "1 / 2" }, gridRow: { md: featured.length > 1 ? "1 / 4" : "auto" } }}>
+              <FeaturedTile post={featured[0]} variant="main" fixedHeight={{ xs: undefined, md: "100%" }} />
+            </Box>
+
+            {featured.length > 1
+              ? featured.slice(1, 4).map((p, idx) => (
+                  <Box
+                    key={p?.slug || idx}
+                    sx={{
+                      gridColumn: { xs: "1 / -1", md: "2 / 3" },
+                      gridRow: { md: `${idx + 1} / ${idx + 2}` },
+                    }}
+                  >
+                    <FeaturedTile post={p} variant="side" fixedHeight={{ xs: undefined, md: "100%" }} />
+                  </Box>
+                ))
+              : null}
+          </Box>
         ) : null}
 
         <Paper
@@ -454,7 +475,7 @@ const BlogPage = ({ posts, totalCount, page, categories, activeCategory, initial
         {filteredPosts.length > 0 ? (
           <Grid container spacing={2.5}>
             {filteredPosts.slice(featured.length > 0 ? featured.length : 0).map((post) => (
-              <Grid key={post.slug} item xs={12} sm={6} md={4} lg={3}>
+              <Grid key={post.slug} item xs={12} sm={6} md={4}>
                 <BlogGridCard post={post} />
               </Grid>
             ))}

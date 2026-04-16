@@ -2,6 +2,14 @@ import { compose, display, spacing, styled } from "@mui/system";
 import NextImage from "next/image";
 import React from "react";
 
+const normalizeStyleObject = (style) => {
+  if (!style || typeof style !== "object") return undefined;
+  const keys = Object.keys(style).sort();
+  const out = {};
+  for (const k of keys) out[k] = style[k];
+  return out;
+};
+
 // Use Next.js Image component for automatic optimization, lazy loading, and caching
 const BazaarImage = styled(
   ({
@@ -13,7 +21,7 @@ const BazaarImage = styled(
     priority = false,
     quality = 70,
     fill,
-    layout, // legacy next/image prop (Next 12)
+    layout, // legacy next/image prop (Next 12) - supported for backwards compatibility
     ...rest
   }) => {
   const normalizedSrc =
@@ -53,14 +61,20 @@ const BazaarImage = styled(
 
     const computedObjectFit = style?.objectFit || objectFit;
     const fetchPriority = fetchPriorityProp ?? (priority ? "high" : undefined);
+    const normalizedStyle = normalizeStyleObject({
+      ...(style || {}),
+      objectFit: computedObjectFit,
+      // Keep SSR/client inline styles stable across branches.
+      height: "auto",
+      maxWidth: "100%",
+    });
     
     return (
       <NextImage
         src={normalizedSrc}
         alt={resolvedAlt}
-        layout="fill"
-        objectFit={computedObjectFit}
-        style={style}
+        fill
+        style={normalizedStyle}
         priority={priority}
         fetchPriority={fetchPriority}
         quality={quality}
@@ -86,6 +100,14 @@ const BazaarImage = styled(
     
     const computedObjectFit = style?.objectFit || objectFit;
     const fetchPriority = fetchPriorityProp ?? (priority ? "high" : undefined);
+    const normalizedStyle = normalizeStyleObject({
+      ...(style || {}),
+      objectFit: computedObjectFit,
+      // Keep SSR/client inline styles stable:
+      // Next/Image may include these on SSR for intrinsic sizing.
+      height: "auto",
+      maxWidth: "100%",
+    });
     
     return (
       <NextImage
@@ -93,9 +115,7 @@ const BazaarImage = styled(
         alt={resolvedAlt}
         width={numericWidth}
         height={numericHeight}
-        layout="intrinsic"
-        objectFit={computedObjectFit}
-        style={style}
+        style={normalizedStyle}
         priority={priority}
         fetchPriority={fetchPriority}
         quality={quality}

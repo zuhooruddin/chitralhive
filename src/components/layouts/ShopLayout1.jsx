@@ -97,18 +97,27 @@ const ShopLayout1 = ({
       {/* TOPBAR */}
       {showTopbar && <Topbar bgColor={topbarBgColor} topbardata={data1 && data1.length > 0 ? data1 : null} />}
 
-      {/* HEADER */}
-      <Sticky fixedOn={0} onSticky={toggleIsFixed} scrollDistance={300}>
-      <Header isFixed={isFixed} headerdata={data1 && data1.length > 0 ? data1 : null} />
-      </Sticky>
+      {/* HEADER
+          Avoid SSR/client hydration mismatches from media queries + scroll effects by
+          rendering a stable placeholder on SSR + first client render, then mounting
+          the real header after mount. */}
+      {mounted ? (
+        <Sticky fixedOn={0} onSticky={toggleIsFixed} scrollDistance={300}>
+          <Header isFixed={isFixed} headerdata={data1 && data1.length > 0 ? data1 : null} />
+        </Sticky>
+      ) : (
+        <div style={{ height: 88 }} aria-hidden="true" />
+      )}
 
       <div className="section-after-sticky">
         {/* NAVIGATION BAR */}
-        {showNavbar && <Navbar elevation={0} border={1} navCategories={navCategories} />}
+        {showNavbar && (mounted ? <Navbar elevation={0} border={1} navCategories={navCategories} /> : <div style={{ height: 48 }} aria-hidden="true" />)}
 
         {/* BODY CONTENT */}
         <main id="main-content" role="main">
-          {children}
+          <Box component="section" sx={{ width: "100%" }}>
+            {children}
+          </Box>
         </main>
       </div>
 
