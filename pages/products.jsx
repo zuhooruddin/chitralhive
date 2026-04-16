@@ -15,6 +15,7 @@ const StyledBazaarCard = styled(BazaarCard)(() => ({
   display: "flex",
   overflow: "hidden",
   borderRadius: "8px",
+  
   position: "relative",
   flexDirection: "column",
   justifyContent: "space-between",
