@@ -93,7 +93,7 @@ const AdSenseAd = ({
       sx={{
         width: "100%",
         overflow: "hidden",
-        minHeight,
+        ...(reserveSpace ? { minHeight } : {}),
         ...sx,
       }}
       style={style}
