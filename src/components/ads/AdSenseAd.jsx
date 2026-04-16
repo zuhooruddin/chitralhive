@@ -19,6 +19,7 @@ const AdSenseAd = ({
   sx,
   hideIfNoFill = true,
   noFillCheckMs = 2500,
+  onNoFill,
   // Reserve space to prevent CLS when ads load / no-fill happens.
   // Default to false so missing/blocked ads don't leave empty sections.
   reserveSpace = false,
@@ -35,14 +36,32 @@ const AdSenseAd = ({
     if (!ins) return;
 
     // Prevent "All 'ins' elements ... already have ads" by not re-pushing
-    // for an <ins> that AdSense already filled.
+    // for an <ins> that AdSense already filled or already requested.
+    //
+    // Note: In Next/React, multiple ad units can mount close together and race
+    // before AdSense sets `data-adsbygoogle-status="done"`. We mark the element
+    // as requested to avoid a second push targeting an already-queued slot.
     if (ins.getAttribute("data-adsbygoogle-status") === "done") return;
+    if (ins.dataset.adsbygoogleRequested === "true") return;
+
+    // Only push if there's at least one unfilled slot on the page.
+    // This avoids pushing when everything is already filled (TagError).
+    const hasUnfilled = Boolean(
+      document.querySelector('ins.adsbygoogle:not([data-adsbygoogle-status="done"]):not([data-adsbygoogle-requested="true"])')
+    );
+    if (!hasUnfilled) return;
+
+    ins.dataset.adsbygoogleRequested = "true";
     try {
       window.adsbygoogle = window.adsbygoogle || [];
       window.adsbygoogle.push({});
     } catch {
+      delete ins.dataset.adsbygoogleRequested;
       // Ad blockers / script not loaded yet
-      if (hideIfNoFill) setVisible(false);
+      if (hideIfNoFill) {
+        setVisible(false);
+        if (typeof onNoFill === "function") onNoFill();
+      }
     }
   }, [slot]);
 
@@ -70,6 +89,7 @@ const AdSenseAd = ({
 
       if (h <= 1 && !hasChildNodes) {
         setVisible(false);
+        if (typeof onNoFill === "function") onNoFill();
       }
     }, noFillCheckMs);
 

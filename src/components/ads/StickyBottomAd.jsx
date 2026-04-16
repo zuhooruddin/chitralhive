@@ -44,6 +44,8 @@ const StickyBottomAd = ({
           overflow: "hidden",
           position: "relative",
           pointerEvents: "auto",
+          // Only reserve space if the ad actually fills.
+          // If there's no fill, we dismiss the whole sticky unit.
           minHeight,
         }}
       >
@@ -72,6 +74,8 @@ const StickyBottomAd = ({
             layoutKey={layoutKey}
             layout={layout}
             fullWidthResponsive={fullWidthResponsive}
+            reserveSpace={false}
+            onNoFill={() => setDismissed(true)}
           />
         </Box>
       </Paper>

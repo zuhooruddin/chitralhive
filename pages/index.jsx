@@ -367,7 +367,6 @@ const IndexPage = (props) => {
                   mx: "auto",
                   maxWidth: 900,
                   width: "100%",
-                  minHeight: { xs: 100, sm: 120, md: 250 },
                 }}
                 aria-hidden="true"
               />
