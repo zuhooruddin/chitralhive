@@ -49,6 +49,7 @@ nProgress.configure({
   showSpinner: false,
 });
 
+
 const clientSideEmotionCache = createEmotionCache();
 
 const App = ({

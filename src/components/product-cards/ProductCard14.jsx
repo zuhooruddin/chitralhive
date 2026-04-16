@@ -21,6 +21,7 @@ const StyledBazaarCard = styled(BazaarCard)(({ theme }) => ({
 
 
   overflow: "hidden",
+
   position: "relative",
   flexDirection: "column",
   justifyContent: "space-between",
@@ -32,6 +33,11 @@ const StyledBazaarCard = styled(BazaarCard)(({ theme }) => ({
       right: 1,
     },
   },
+
+
+
+
+  
 }));
 const ImageWrapper = styled(Box)(({ theme }) => ({
   textAlign: "center",
