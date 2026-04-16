@@ -22,6 +22,7 @@ const StyledBazaarCard = styled(BazaarCard)(({ theme }) => ({
 
   
 
+
   overflow: "hidden",
   position: "relative",
   flexDirection: "column",
