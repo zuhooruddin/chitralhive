@@ -44,11 +44,7 @@ Bazaar.getInitialProps = async (ctx) => {
   ctx.renderPage = () =>
     originalRenderPage({
       enhanceApp: (App) => (props) =>
-        (
-          <CacheProvider value={cache}>
-            <App {...props} />
-          </CacheProvider>
-        ),
+        <App emotionCache={cache} {...props} />,
     });
 
   const initialProps = await Document.getInitialProps(ctx);

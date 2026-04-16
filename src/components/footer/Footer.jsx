@@ -44,6 +44,7 @@ const footerLinkSx = {
   cursor: "pointer",
   position: "relative",
   padding: "12px 0",
+  width: "100%",
   minHeight: "44px",
   color: "rgba(255, 255, 255, 0.6)",
   fontSize: "14px",
@@ -164,6 +165,17 @@ const DecorativeCircle = styled(Box)(({ size = 200, top, left, right, bottom }) 
 
 const Footer = ({ footerData: initialFooterData }) => {
   const [footerData, setFooterData] = useState(initialFooterData);
+
+  const formatLinkLabel = (value) => {
+    if (value == null) return "";
+    const s = String(value).trim();
+    // Add spaces between "wordWord" boundaries (e.g. "UsContact" -> "Us Contact")
+    // and between acronym/word boundaries (e.g. "FAQSHelp" -> "FAQS Help").
+    return s
+      .replace(/([a-z])([A-Z])/g, "$1 $2")
+      .replace(/([A-Z])([A-Z][a-z])/g, "$1 $2")
+      .replace(/\s+/g, " ");
+  };
 
   useEffect(() => {
     if (initialFooterData) {
@@ -331,15 +343,17 @@ const Footer = ({ footerData: initialFooterData }) => {
                       {footerData.column_two_heading}
                     </SectionTitle>
 
-                    <Box sx={{ mt: 4 }}>
+                    <Box sx={{ mt: 4, display: "flex", flexDirection: "column" }}>
                       {footerData.column_two_links
                         .filter((item) => item.column === 2)
                         .map((item, ind) => (
-                          <Link key={ind} href={item.link} style={{ textDecoration: "none" }}>
-                            <Box component="span" sx={footerLinkSx}>
-                              {item.name}
-                            </Box>
-                          </Link>
+                          <Box key={ind} sx={{ display: "block", width: "100%" }}>
+                            <Link href={item.link} passHref legacyBehavior>
+                              <Box component="a" sx={footerLinkSx} style={{ display: "flex", width: "100%" }}>
+                                {formatLinkLabel(item.name)}
+                              </Box>
+                            </Link>
+                          </Box>
                         ))}
                     </Box>
                   </Grid>
@@ -352,15 +366,17 @@ const Footer = ({ footerData: initialFooterData }) => {
                       {footerData.column_three_heading}
                     </SectionTitle>
                     
-                    <Box sx={{ mt: 4 }}>
+                    <Box sx={{ mt: 4, display: "flex", flexDirection: "column" }}>
                       {footerData.column_three_links
                         .filter((item) => item.column === 3)
                         .map((item, ind) => (
-                          <Link key={ind} href={item.link} style={{ textDecoration: "none" }}>
-                            <Box component="span" sx={footerLinkSx}>
-                              {item.name}
-                            </Box>
-                          </Link>
+                          <Box key={ind} sx={{ display: "block", width: "100%" }}>
+                            <Link href={item.link} passHref legacyBehavior>
+                              <Box component="a" sx={footerLinkSx} style={{ display: "flex", width: "100%" }}>
+                                {formatLinkLabel(item.name)}
+                              </Box>
+                            </Link>
+                          </Box>
                         ))}
                     </Box>
                   </Grid>
