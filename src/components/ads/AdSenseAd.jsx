@@ -3,6 +3,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 const MAX_REQUEST_RETRIES = 40;
 const REQUEST_RETRY_MS = 250;
+const REQUEST_SETTLE_MS = 1500;
+let adRequestOwnerId = 0;
 
 const isPendingAdSlot = (element) => {
   if (!element) return false;
@@ -14,6 +16,20 @@ const isPendingAdSlot = (element) => {
 
 const getNextPendingAdSlot = () =>
   document.querySelector('ins.adsbygoogle:not([data-adsbygoogle-status]):not([data-adsbygoogle-requested="true"])');
+
+const getAdsPushLock = () =>
+  typeof window !== "undefined" ? window.__adsensePushInFlight === true : false;
+
+const setAdsPushLock = (locked) => {
+  if (typeof window !== "undefined") {
+    window.__adsensePushInFlight = locked;
+  }
+};
+
+const getNextOwnerId = () => {
+  adRequestOwnerId += 1;
+  return `adsense-slot-${adRequestOwnerId}`;
+};
 
 /**
  * Reusable Google AdSense unit.
@@ -42,6 +58,7 @@ const AdSenseAd = ({
   minHeight = { xs: 100, sm: 120, md: 250 },
 }) => {
   const insRef = useRef(null);
+  const ownerIdRef = useRef(getNextOwnerId());
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
@@ -52,11 +69,18 @@ const AdSenseAd = ({
 
     let cancelled = false;
     let retryTimeoutId;
+    let settleTimeoutId;
     let retryCount = 0;
 
     const requestAd = () => {
       if (cancelled) return;
       if (!isPendingAdSlot(ins)) return;
+      if (getAdsPushLock()) {
+        if (retryCount >= MAX_REQUEST_RETRIES) return;
+        retryCount += 1;
+        retryTimeoutId = window.setTimeout(requestAd, REQUEST_RETRY_MS);
+        return;
+      }
 
       const nextPending = getNextPendingAdSlot();
       if (nextPending !== ins) {
@@ -67,11 +91,22 @@ const AdSenseAd = ({
       }
 
       ins.dataset.adsbygoogleRequested = "true";
+      window.__adsensePushOwner = ownerIdRef.current;
+      setAdsPushLock(true);
       try {
         window.adsbygoogle = window.adsbygoogle || [];
         window.adsbygoogle.push({});
-      } catch {
+      } catch (error) {
+        if (window.__adsensePushOwner === ownerIdRef.current) {
+          window.__adsensePushOwner = undefined;
+          setAdsPushLock(false);
+        }
         delete ins.dataset.adsbygoogleRequested;
+
+        const message = String(error?.message || error || "");
+        if (message.includes("already have ads in them")) {
+          return;
+        }
 
         if (retryCount < MAX_REQUEST_RETRIES) {
           retryCount += 1;
@@ -84,7 +119,19 @@ const AdSenseAd = ({
           setVisible(false);
           if (typeof onNoFill === "function") onNoFill();
         }
+        return;
       }
+
+      settleTimeoutId = window.setTimeout(() => {
+        if (window.__adsensePushOwner === ownerIdRef.current) {
+          window.__adsensePushOwner = undefined;
+          setAdsPushLock(false);
+        }
+        if (!cancelled && isPendingAdSlot(ins) && retryCount < MAX_REQUEST_RETRIES) {
+          retryCount += 1;
+          requestAd();
+        }
+      }, REQUEST_SETTLE_MS);
     };
 
     requestAd();
@@ -92,6 +139,11 @@ const AdSenseAd = ({
     return () => {
       cancelled = true;
       if (retryTimeoutId) window.clearTimeout(retryTimeoutId);
+      if (settleTimeoutId) window.clearTimeout(settleTimeoutId);
+      if (window.__adsensePushOwner === ownerIdRef.current) {
+        window.__adsensePushOwner = undefined;
+        setAdsPushLock(false);
+      }
     };
   }, [hideIfNoFill, onNoFill, slot]);
 
