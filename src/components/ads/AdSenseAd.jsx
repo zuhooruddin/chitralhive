@@ -6,6 +6,26 @@ const REQUEST_RETRY_MS = 250;
 const REQUEST_SETTLE_MS = 1500;
 let adRequestOwnerId = 0;
 
+const isUnfilledAd = (ins) => {
+  if (!ins) return false;
+
+  // AdSense commonly sets this when there is no fill.
+  // In this state the slot may still have a non-zero height, which would
+  // otherwise leave a visible empty gap in the layout.
+  const adStatus = ins.getAttribute("data-ad-status");
+  if (adStatus && adStatus.toLowerCase() === "unfilled") return true;
+
+  const adsByGoogleStatus = ins.getAttribute("data-adsbygoogle-status");
+  // Some implementations end up with status="done" but no iframe rendered.
+  if (adsByGoogleStatus && adsByGoogleStatus.toLowerCase() === "done") {
+    const hasIframe = Boolean(ins.querySelector("iframe"));
+    const hasAnyContent = ins.childElementCount > 0 || ins.innerHTML.trim() !== "";
+    if (!hasIframe && !hasAnyContent) return true;
+  }
+
+  return false;
+};
+
 const isPendingAdSlot = (element) => {
   if (!element) return false;
   if (!element.isConnected) return false;
@@ -59,13 +79,20 @@ const AdSenseAd = ({
 }) => {
   const insRef = useRef(null);
   const ownerIdRef = useRef(getNextOwnerId());
+  const hasPushedRef = useRef(false);
   const [visible, setVisible] = useState(true);
+  const onNoFillRef = useRef(onNoFill);
+
+  useEffect(() => {
+    onNoFillRef.current = onNoFill;
+  }, [onNoFill]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (!slot) return;
     const ins = insRef.current;
     if (!ins) return;
+    if (hasPushedRef.current) return;
 
     let cancelled = false;
     let retryTimeoutId;
@@ -74,6 +101,7 @@ const AdSenseAd = ({
 
     const requestAd = () => {
       if (cancelled) return;
+      if (hasPushedRef.current) return;
       if (!isPendingAdSlot(ins)) return;
       if (getAdsPushLock()) {
         if (retryCount >= MAX_REQUEST_RETRIES) return;
@@ -96,6 +124,7 @@ const AdSenseAd = ({
       try {
         window.adsbygoogle = window.adsbygoogle || [];
         window.adsbygoogle.push({});
+        hasPushedRef.current = true;
       } catch (error) {
         if (window.__adsensePushOwner === ownerIdRef.current) {
           window.__adsensePushOwner = undefined;
@@ -105,6 +134,8 @@ const AdSenseAd = ({
 
         const message = String(error?.message || error || "");
         if (message.includes("already have ads in them")) {
+          // Slot got filled (or AdSense thinks it did). Don't try to push again.
+          hasPushedRef.current = true;
           return;
         }
 
@@ -117,7 +148,7 @@ const AdSenseAd = ({
         // Script blocked or never became ready.
         if (hideIfNoFill) {
           setVisible(false);
-          if (typeof onNoFill === "function") onNoFill();
+          if (typeof onNoFillRef.current === "function") onNoFillRef.current();
         }
         return;
       }
@@ -145,7 +176,7 @@ const AdSenseAd = ({
         setAdsPushLock(false);
       }
     };
-  }, [hideIfNoFill, onNoFill, slot]);
+  }, [hideIfNoFill, slot]);
 
   const client = process.env.NEXT_PUBLIC_ADSENSE_CLIENT;
   const defaultLayoutKey = process.env.NEXT_PUBLIC_ADSENSE_FLUID_LAYOUT_KEY;
@@ -175,7 +206,7 @@ const AdSenseAd = ({
       const h = el.offsetHeight || 0;
       const hasChildNodes = el.childNodes && el.childNodes.length > 0;
 
-      if (h <= 1 && !hasChildNodes) {
+      if (isUnfilledAd(el) || (h <= 1 && !hasChildNodes)) {
         setVisible(false);
         if (typeof onNoFill === "function") onNoFill();
       }
@@ -183,6 +214,47 @@ const AdSenseAd = ({
 
     return () => window.clearTimeout(t);
   }, [enabled, hideIfNoFill, noFillCheckMs, slot, format, layout, activeLayoutKey]);
+
+  useEffect(() => {
+    if (!enabled) return;
+    if (!hideIfNoFill) return;
+    if (typeof window === "undefined") return;
+
+    const el = insRef.current;
+    if (!el) return;
+
+    if (isUnfilledAd(el)) {
+      setVisible(false);
+      if (typeof onNoFill === "function") onNoFill();
+      return;
+    }
+
+    let rafId = 0;
+    const observer = new MutationObserver(() => {
+      if (rafId) return;
+      rafId = window.requestAnimationFrame(() => {
+        rafId = 0;
+        const current = insRef.current;
+        if (!current) return;
+        if (isUnfilledAd(current)) {
+          setVisible(false);
+          if (typeof onNoFill === "function") onNoFill();
+        }
+      });
+    });
+
+    observer.observe(el, {
+      attributes: true,
+      attributeFilter: ["data-ad-status", "data-adsbygoogle-status", "style"],
+      childList: true,
+      subtree: true,
+    });
+
+    return () => {
+      observer.disconnect();
+      if (rafId) window.cancelAnimationFrame(rafId);
+    };
+  }, [enabled, hideIfNoFill, onNoFill]);
 
   if (!enabled) return null;
 
