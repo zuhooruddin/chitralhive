@@ -41,13 +41,15 @@ const AdSenseAd = ({
     // Note: In Next/React, multiple ad units can mount close together and race
     // before AdSense sets `data-adsbygoogle-status="done"`. We mark the element
     // as requested to avoid a second push targeting an already-queued slot.
-    if (ins.getAttribute("data-adsbygoogle-status") === "done") return;
+    // AdSense sets `data-adsbygoogle-status` when it has processed the slot.
+    // Value can vary; treat presence of the attribute as "already handled".
+    if (ins.hasAttribute("data-adsbygoogle-status")) return;
     if (ins.dataset.adsbygoogleRequested === "true") return;
 
     // Only push if there's at least one unfilled slot on the page.
     // This avoids pushing when everything is already filled (TagError).
     const hasUnfilled = Boolean(
-      document.querySelector('ins.adsbygoogle:not([data-adsbygoogle-status="done"]):not([data-adsbygoogle-requested="true"])')
+      document.querySelector('ins.adsbygoogle:not([data-adsbygoogle-status]):not([data-adsbygoogle-requested="true"])')
     );
     if (!hasUnfilled) return;
 

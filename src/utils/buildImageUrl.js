@@ -24,17 +24,20 @@ export function buildImageUrl(rawImagePath, imageBaseUrl, apiBase) {
   const cleanedPath = String(rawImagePath).replace(/^\/+/, "");
   const normalizedImageBase = normalizeBaseUrl(imageBaseUrl);
   const normalizedApiBase = normalizeBaseUrl(apiBase);
-  const mediaBase = normalizedApiBase
-    ? normalizedApiBase.replace(/\/api$/i, "/api/media").replace(/\/api\/media$/i, "/api/media")
-    : "";
+  // Many deployments expose API at `/api` but serve media at `/media` (no `/api`).
+  // E.g.:
+  // - API:   https://api.chitralhive.com/api/...
+  // - Media: https://api.chitralhive.com/media/...
+  const apiOrigin = normalizedApiBase ? normalizedApiBase.replace(/\/api$/i, "") : "";
+  const mediaBase = apiOrigin ? `${apiOrigin}/media` : "";
 
   if (cleanedPath.startsWith("api/media/") || cleanedPath.startsWith("media/")) {
     const relativePath = cleanedPath.replace(/^api\/media\//, "media/");
-    return `${normalizedApiBase}/${relativePath}`;
+    return apiOrigin ? `${apiOrigin}/${relativePath}` : `${normalizedApiBase}/${relativePath}`;
   }
 
   if (cleanedPath.startsWith("item_image/")) {
-    return `${normalizedApiBase}/media/${cleanedPath}`;
+    return apiOrigin ? `${apiOrigin}/media/${cleanedPath}` : `${normalizedApiBase}/media/${cleanedPath}`;
   }
 
   if (cleanedPath.startsWith("api/")) {
