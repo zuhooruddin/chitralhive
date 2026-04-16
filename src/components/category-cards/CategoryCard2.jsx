@@ -86,34 +86,38 @@ const CategoryTitle = styled(Box)(({ theme }) => ({
 // ============================================================
 const CategoryCard2 = ({ image, title, url }) => {
   return (
-    <Link href={url} aria-label={`Browse ${title || 'category'} products`} style={{ textDecoration: 'none', display: 'block' }}>
-      <Wrapper position="relative" sx={{ aspectRatio: '1/1' }}>
-        <Box
-          position="absolute"
-          top={0}
-          left={0}
-          width="100%"
-          height="100%"
-          sx={{
-            zIndex: 0,
-          }}
-        >
-          <BazaarImage
-            src={image || '/assets/images/banners/default.png'}
-            alt={title ? `${title} - Shop premium women's clothing` : 'Category'}
-            fill
-            sizes="(max-width: 600px) 45vw, (max-width: 960px) 30vw, 200px"
-            style={{ objectFit: 'cover' }}
-            quality={85}
-            loading="lazy"
-          />
-        </Box>
+    <Wrapper
+      component={Link}
+      href={url}
+      aria-label={`Browse ${title || "category"} products`}
+      position="relative"
+      sx={{ aspectRatio: "1/1", textDecoration: "none", display: "block" }}
+    >
+      <Box
+        position="absolute"
+        top={0}
+        left={0}
+        width="100%"
+        height="100%"
+        sx={{
+          zIndex: 0,
+        }}
+      >
+        <BazaarImage
+          src={image || "/assets/images/banners/default.png"}
+          alt={title ? `${title} - Shop premium women's clothing` : "Category"}
+          fill
+          sizes="(max-width: 600px) 45vw, (max-width: 960px) 30vw, 200px"
+          objectFit="cover"
+          quality={85}
+          loading="lazy"
+        />
+      </Box>
 
-        <CategoryTitle className="category-title">
-          <H4>{title}</H4>
-        </CategoryTitle>
-      </Wrapper>
-    </Link>
+      <CategoryTitle className="category-title">
+        <H4>{title}</H4>
+      </CategoryTitle>
+    </Wrapper>
   );
 };
 

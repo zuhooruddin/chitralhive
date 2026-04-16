@@ -11,7 +11,14 @@ export function buildImageUrl(rawImagePath, imageBaseUrl, apiBase) {
   if (!rawImagePath) return null;
 
   if (/^https?:\/\//i.test(rawImagePath)) {
-    return rawImagePath;
+    // Some upstream values come back as malformed absolute URLs like:
+    //   https://api.example.comsitesetting/foo.png
+    // which browsers interpret as host "api.example.comsitesetting".
+    // Fix the common missing "/" after the TLD for known media folders.
+    return String(rawImagePath).replace(
+      /\.(com|net|org|io|co|pk)(sitesetting|slider|category_icon|item_image|brand|blog|bundle)\//gi,
+      ".$1/$2/"
+    );
   }
 
   const cleanedPath = String(rawImagePath).replace(/^\/+/, "");

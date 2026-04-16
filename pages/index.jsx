@@ -312,6 +312,10 @@ const IndexPage = (props) => {
   // Memoize expensive computations
   const GeneralSettingMemo = useMemo(() => props.GeneralSetting, [props.GeneralSetting]);
 
+  const adsenseClient = process.env.NEXT_PUBLIC_ADSENSE_CLIENT;
+  const fluidSlot = process.env.NEXT_PUBLIC_ADSENSE_FLUID_LAYOUTKEY_SLOT;
+  const showFluidAd = Boolean(adsenseClient && fluidSlot);
+
   return (
     <ShopLayout1
       topbarBgColor={theme.palette.grey[900]}
@@ -354,30 +358,27 @@ const IndexPage = (props) => {
           slidersListLocal={props.slidersListLocal}
         />
 
-        <LazySection
-          fallback={
-            <Box
-              sx={{
-                mt: { xs: 2, sm: 3 },
-                mx: "auto",
-                maxWidth: 900,
-                width: "100%",
-                minHeight: { xs: 100, sm: 120, md: 250 },
-              }}
-              aria-hidden="true"
-            />
-          }
-          rootMargin="0px"
-        >
-          <Box sx={{ mt: { xs: 2, sm: 3 }, display: "flex", justifyContent: "center" }}>
-            <AdSenseAd
-              slot={process.env.NEXT_PUBLIC_ADSENSE_FLUID_LAYOUTKEY_SLOT}
-              format="fluid"
-              layoutKey="-eb-86+e7+go-17v"
-              sx={{ maxWidth: 900, mx: "auto" }}
-            />
-          </Box>
-        </LazySection>
+        {showFluidAd && (
+          <LazySection
+            fallback={
+              <Box
+                sx={{
+                  mt: { xs: 2, sm: 3 },
+                  mx: "auto",
+                  maxWidth: 900,
+                  width: "100%",
+                  minHeight: { xs: 100, sm: 120, md: 250 },
+                }}
+                aria-hidden="true"
+              />
+            }
+            rootMargin="0px"
+          >
+            <Box sx={{ mt: { xs: 2, sm: 3 }, display: "flex", justifyContent: "center" }}>
+              <AdSenseAd slot={fluidSlot} format="fluid" sx={{ maxWidth: 900, mx: "auto" }} />
+            </Box>
+          </LazySection>
+        )}
 
         <LazySection
           fallback={

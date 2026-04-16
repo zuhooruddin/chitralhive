@@ -34,7 +34,7 @@ const CardContent = styled(Box)(() => ({
 const BannerCard2 = ({ img, url, text1, text2, text3 }) => {
   return (
     <CardWrapper>
-      <BazaarImage alt="category" fill src={img} style={{ objectFit: "cover" }} />
+      <BazaarImage alt="category" fill src={img} objectFit="cover" />
       <CardContent>
         <Box>
           <Paragraph fontWeight={600}>{text1}</Paragraph>
@@ -44,12 +44,10 @@ const BannerCard2 = ({ img, url, text1, text2, text3 }) => {
           </H1>
         </Box>
 
-        <Link href={url}>
-
-          <Button variant="outlined" size="large" color="info">
+        <Link href={url} passHref>
+          <Button variant="outlined" size="large" color="info" component="a">
             Shop Now
           </Button>
-
         </Link>
       </CardContent>
     </CardWrapper>

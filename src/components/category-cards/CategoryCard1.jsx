@@ -41,31 +41,29 @@ const CategoryTitle = styled(Box)(() => ({
 // ============================================================
 const CategoryCard1 = ({ image, title, url }) => {
   return (
-    <Link href={url} aria-label={`Browse ${title} products`}>
+    <Wrapper
+      component={Link}
+      href={url}
+      aria-label={`Browse ${title} products`}
+      position="relative"
+      sx={{ aspectRatio: "1/1", textDecoration: "none", color: "inherit" }}
+    >
+      <Box position="absolute" top={0} left={0} width="100%" height="100%">
+        <BazaarImage
+          src={image || "/assets/images/banners/default.png"}
+          alt={title ? `${title} - Shop authentic Chitrali products` : "Category"}
+          fill
+          sizes="(max-width: 600px) 45vw, (max-width: 960px) 30vw, 200px"
+          style={{ objectFit: "cover" }}
+          quality={70}
+          loading="lazy"
+        />
+      </Box>
 
-      <Wrapper position="relative" sx={{ aspectRatio: '1/1' }}>
-        <Box
-          position="absolute"
-          top={0}
-          left={0}
-          width="100%"
-          height="100%"
-        >
-          <BazaarImage
-            src={image || '/assets/images/banners/default.png'}
-            alt={title ? `${title} - Shop authentic Chitrali products` : 'Category'}
-            fill
-            sizes="(max-width: 600px) 45vw, (max-width: 960px) 30vw, 200px"
-            style={{ objectFit: 'cover' }}
-            quality={70}
-            loading="lazy"
-          />
-        </Box>
-
-        <H4 textAlign='center'>{title}</H4>
-      </Wrapper>
-
-    </Link>
+      <H4 textAlign="center" className="category-title">
+        {title}
+      </H4>
+    </Wrapper>
   );
 };
 

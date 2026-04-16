@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Badge } from "@mui/material";
 import { LightMode, DarkMode } from "@mui/icons-material";
 import CategoryOutlined from "components/icons/CategoryOutline";
@@ -10,13 +11,17 @@ import useWindowSize from "hooks/useWindowSize";
 import { iconStyle, StyledBox, StyledNavLink, Wrapper } from "./styles";
 
 const MobileNavigationBar = () => {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   const width = useWindowSize();
   const { state } = useAppContext();
   const { settings, toggleTheme } = useSettings();
   const isDark = settings.theme === "dark";
-  
-  // `useWindowSize()` is SSR-safe and returns `undefined` on first render.
-  return typeof width === "number" && width <= 900 ? (
+
+  if (!mounted || width > 900) return null;
+
+  return (
     <Wrapper>
       {list.map((item) => (
         <StyledNavLink href={item.href} key={item.title}>
@@ -31,7 +36,7 @@ const MobileNavigationBar = () => {
           <span>{item.title}</span>
         </StyledNavLink>
       ))}
-      
+
       {/* Theme Toggle */}
       <StyledBox onClick={toggleTheme}>
         {isDark ? (
@@ -42,7 +47,7 @@ const MobileNavigationBar = () => {
         <span>Theme</span>
       </StyledBox>
     </Wrapper>
-  ) : null;
+  );
 };
 
 const list = [

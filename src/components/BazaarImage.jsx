@@ -40,7 +40,6 @@ const BazaarImage = styled(
     height === "100vh";
 
   if (canOptimize && wantsFill) {
-    // Ensure we never forward legacy width/height props to <Image fill />
     const {
       style,
       sizes,
@@ -52,22 +51,18 @@ const BazaarImage = styled(
       ...restProps
     } = rest;
 
-    delete restProps.width;
-    delete restProps.height;
-    delete restProps.layout;
-    delete restProps.objectFit;
-
     const computedObjectFit = style?.objectFit || objectFit;
+    
     return (
       <NextImage
         src={normalizedSrc}
         alt={resolvedAlt}
-        fill
-        style={{ ...(style || {}), objectFit: computedObjectFit }}
+        layout="fill"
+        objectFit={computedObjectFit}
+        style={style}
         priority={priority}
         quality={quality}
         loading={priority ? "eager" : "lazy"}
-        fetchPriority={fetchPriorityProp || (priority ? "high" : "auto")}
         sizes={sizes || "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"}
         {...restProps}
       />
@@ -86,22 +81,21 @@ const BazaarImage = styled(
       fetchPriority: fetchPriorityProp,
       ...restProps
     } = rest;
-    delete restProps.width;
-    delete restProps.height;
-    delete restProps.layout;
-    delete restProps.objectFit;
+    
     const computedObjectFit = style?.objectFit || objectFit;
+    
     return (
       <NextImage
         src={normalizedSrc}
         alt={resolvedAlt}
         width={numericWidth}
         height={numericHeight}
-        style={{ ...(style || {}), objectFit: computedObjectFit }}
+        layout="intrinsic"
+        objectFit={computedObjectFit}
+        style={style}
         priority={priority}
         quality={quality}
         loading={priority ? "eager" : "lazy"}
-        fetchPriority={fetchPriorityProp || (priority ? "high" : "auto")}
         {...restProps}
       />
     );

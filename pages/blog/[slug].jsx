@@ -14,6 +14,13 @@ import StickyBottomAd from "components/ads/StickyBottomAd";
 
 
 const BlogPostPage = ({ post, allPosts }) => {
+  const adsenseClient = process.env.NEXT_PUBLIC_ADSENSE_CLIENT;
+  const inArticleSlot = process.env.NEXT_PUBLIC_ADSENSE_IN_ARTICLE_SLOT;
+  const autoRelaxedSlot = process.env.NEXT_PUBLIC_ADSENSE_AUTORELAXED_SLOT;
+  const stickySlot = process.env.NEXT_PUBLIC_ADSENSE_FLUID_LAYOUTKEY_SLOT;
+  const showInArticle = Boolean(adsenseClient && inArticleSlot);
+  const showAutoRelaxed = Boolean(adsenseClient && autoRelaxedSlot);
+  const showSticky = Boolean(adsenseClient && stickySlot);
 
   if (!post) {
     return (
@@ -136,13 +143,15 @@ const BlogPostPage = ({ post, allPosts }) => {
           <Divider sx={{ mb: 4 }} />
 
           {/* In-article ad (fluid) */}
-          <AdSenseAd
-            slot={process.env.NEXT_PUBLIC_ADSENSE_IN_ARTICLE_SLOT}
-            format="fluid"
-            layout="in-article"
-            insStyle={{ textAlign: "center" }}
-            sx={{ mb: 4 }}
-          />
+          {showInArticle && (
+            <AdSenseAd
+              slot={inArticleSlot}
+              format="fluid"
+              layout="in-article"
+              insStyle={{ textAlign: "center" }}
+              sx={{ mb: 4 }}
+            />
+          )}
 
           {/* Content */}
           <Box
@@ -176,20 +185,14 @@ const BlogPostPage = ({ post, allPosts }) => {
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
 
-          {/* Fluid ad with layout-key */}
-          <AdSenseAd
-            slot={process.env.NEXT_PUBLIC_ADSENSE_FLUID_LAYOUTKEY_SLOT}
-            format="fluid"
-            layoutKey="-eb-86+e7+go-17v"
-            sx={{ mt: 4 }}
-          />
-
-          {/* Autorelaxed ad (typically below content) */}
-          <AdSenseAd
-            slot={process.env.NEXT_PUBLIC_ADSENSE_AUTORELAXED_SLOT}
-            format="autorelaxed"
-            sx={{ mt: 4 }}
-          />
+          {/* Autorelaxed/Multiplex ad (typically below content) */}
+          {showAutoRelaxed && (
+            <AdSenseAd
+              slot={autoRelaxedSlot}
+              format="autorelaxed"
+              sx={{ mt: 4 }}
+            />
+          )}
         </Box>
 
         <Divider sx={{ my: 4 }} />
@@ -231,13 +234,10 @@ const BlogPostPage = ({ post, allPosts }) => {
         )}
       </Container>
 
-      {/* Sticky bottom ad */}
-      <StickyBottomAd
-        slot={process.env.NEXT_PUBLIC_ADSENSE_FLUID_LAYOUTKEY_SLOT}
-        format="fluid"
-        layoutKey="-eb-86+e7+go-17v"
-        minHeight={100}
-      />
+      {/* Sticky bottom ad - uses format="auto" for standard display in sticky context */}
+      {showSticky && (
+        <StickyBottomAd slot={stickySlot} format="auto" minHeight={100} />
+      )}
     </ShopLayout1>
   );
 };

@@ -256,7 +256,6 @@ const SEO = ({
       
       {/* Mobile optimization */}
       <meta name="mobile-web-app-capable" content="yes" />
-      <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       
       {/* DNS Prefetch for external resources - Non-critical, load after page interactive */}

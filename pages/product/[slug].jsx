@@ -64,6 +64,9 @@ const ErrorContainer = styled(Box)(({ theme }) => ({
 
 const ProductDetails = (props) => {
   const { productDetails,ProductReviews } = props;
+  const adsenseClient = process.env.NEXT_PUBLIC_ADSENSE_CLIENT;
+  const fluidSlot = process.env.NEXT_PUBLIC_ADSENSE_FLUID_LAYOUTKEY_SLOT;
+  const showFluidAd = Boolean(adsenseClient && fluidSlot);
 
   const apiBaseRaw = process.env.NEXT_PUBLIC_BACKEND_API_BASE || "";
   const apiBase = apiBaseRaw.endsWith("/") ? apiBaseRaw : `${apiBaseRaw}/`;
@@ -500,14 +503,11 @@ const ProductDetails = (props) => {
         )}
 
         {/* Product intro ad */}
-        <Box sx={{ mt: 2, mb: 2, display: "flex", justifyContent: "center" }}>
-          <AdSenseAd
-            slot={process.env.NEXT_PUBLIC_ADSENSE_FLUID_LAYOUTKEY_SLOT}
-            format="fluid"
-            layoutKey="-eb-86+e7+go-17v"
-            sx={{ maxWidth: 900, width: "100%" }}
-          />
-        </Box>
+        {showFluidAd && (
+          <Box sx={{ mt: 2, mb: 2, display: "flex", justifyContent: "center" }}>
+            <AdSenseAd slot={fluidSlot} format="fluid" sx={{ maxWidth: 900, width: "100%" }} />
+          </Box>
+        )}
 
 <StyledTabs
           textColor="primary"

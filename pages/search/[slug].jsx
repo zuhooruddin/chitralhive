@@ -25,6 +25,9 @@ const ProductSearchResult = (props) => {
   const [view, setView] = useState("grid");
   const downMd = useMediaQuery((theme) => theme.breakpoints.down("md"));
   const toggleView = useCallback((v) => () => setView(v), []);
+  const adsenseClient = process.env.NEXT_PUBLIC_ADSENSE_CLIENT;
+  const fluidSlot = process.env.NEXT_PUBLIC_ADSENSE_FLUID_LAYOUTKEY_SLOT;
+  const showFluidAd = Boolean(adsenseClient && fluidSlot);
 
   const base = SITE_URL.replace(/\/$/, "");
   const slugLower = String(catSlug || "").toLowerCase();
@@ -144,14 +147,11 @@ const ProductSearchResult = (props) => {
           </FlexBox>
         </Card>
 
-        <Box sx={{ mb: 3, display: "flex", justifyContent: "center" }}>
-          <AdSenseAd
-            slot={process.env.NEXT_PUBLIC_ADSENSE_FLUID_LAYOUTKEY_SLOT}
-            format="fluid"
-            layoutKey="-eb-86+e7+go-17v"
-            sx={{ maxWidth: 900, width: "100%" }}
-          />
-        </Box>
+        {showFluidAd && (
+          <Box sx={{ mb: 3, display: "flex", justifyContent: "center" }}>
+            <AdSenseAd slot={fluidSlot} format="fluid" sx={{ maxWidth: 900, width: "100%" }} />
+          </Box>
+        )}
 
         <Grid container spacing={3}>
           {/* <Grid

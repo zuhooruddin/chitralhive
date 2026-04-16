@@ -34,9 +34,8 @@ const float = keyframes`
   }
 `;
 
-// NOTE: We intentionally avoid `styled(next/link)` here because it can lead to
-// nested <a> tags in some setups, which breaks hydration.
-const footerLinkSx = {
+// Styled link with premium hover effect
+const StyledLink = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   gap: "10px",
@@ -44,13 +43,13 @@ const footerLinkSx = {
   cursor: "pointer",
   position: "relative",
   padding: "12px 0",
-  width: "100%",
   minHeight: "44px",
   color: "rgba(255, 255, 255, 0.6)",
   fontSize: "14px",
   fontWeight: 500,
   textDecoration: "none",
   transition: "all 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
+  textDecoration: "none",
   "&::before": {
     content: '""',
     position: "absolute",
@@ -68,7 +67,7 @@ const footerLinkSx = {
       width: "30px",
     },
   },
-};
+}));
 
 // Section title with gradient underline
 const SectionTitle = styled(Box)(({ theme }) => ({
@@ -193,8 +192,8 @@ const Footer = ({ footerData: initialFooterData }) => {
   const safeFourthColumnHtml =
     footerData?.footer_fourth_column_content
       ? String(footerData.footer_fourth_column_content)
-          .replace(/<\s*a\b[^>]*>/gi, "")
-          .replace(/<\s*\/\s*a\s*>/gi, "")
+        .replace(/<\s*a\b[^>]*>/gi, "")
+        .replace(/<\s*\/\s*a\s*>/gi, "")
       : "";
 
   const footerLogoSrc = useMemo(() => {
@@ -206,11 +205,12 @@ const Footer = ({ footerData: initialFooterData }) => {
   return (
     <Footwrapper>
       <footer>
-        <Box 
+        <Box
           sx={{
             background: "linear-gradient(180deg, #0F172A 0%, #020617 100%)",
             position: "relative",
             overflow: "hidden",
+            pb: { xs: "64px", md: 0 }, // Add padding for mobile bottom bar
             // Premium gradient top border
             "&::before": {
               content: '""',
@@ -229,7 +229,7 @@ const Footer = ({ footerData: initialFooterData }) => {
           <DecorativeCircle size={400} top="-100px" left="-100px" />
           <DecorativeCircle size={300} bottom="-50px" right="-50px" />
           <DecorativeCircle size={200} top="50%" left="50%" />
-          
+
           <Container
             sx={{
               p: "1rem",
@@ -245,7 +245,7 @@ const Footer = ({ footerData: initialFooterData }) => {
                   <Link
                     href="/"
                     aria-label="Chitral Hive - Go to homepage"
-                    style={{ minHeight: "48px", minWidth: "160px", display: "inline-block" }}
+                    style={{ display: "inline-block", textDecoration: "none" }}
                   >
                     <Box
                       sx={{
@@ -269,8 +269,8 @@ const Footer = ({ footerData: initialFooterData }) => {
                     </Box>
                   </Link>
 
-                  <Paragraph 
-                    mb={3} 
+                  <Paragraph
+                    mb={3}
                     sx={{
                       color: "rgba(255, 255, 255, 0.6)",
                       fontSize: "15px",
@@ -280,7 +280,7 @@ const Footer = ({ footerData: initialFooterData }) => {
                   >
                     {footerData?.footer_description || "Discover authentic Chitrali products. Quality craftsmanship delivered to your doorstep."}
                   </Paragraph>
-                  
+
                   {/* Newsletter Signup */}
                   <Box
                     sx={{
@@ -347,13 +347,14 @@ const Footer = ({ footerData: initialFooterData }) => {
                       {footerData.column_two_links
                         .filter((item) => item.column === 2)
                         .map((item, ind) => (
-                          <Box key={ind} sx={{ display: "block", width: "100%" }}>
-                            <Link href={item.link} passHref legacyBehavior>
-                              <Box component="a" sx={footerLinkSx} style={{ display: "flex", width: "100%" }}>
-                                {formatLinkLabel(item.name)}
-                              </Box>
-                            </Link>
-                          </Box>
+                          <StyledLink
+                            key={ind}
+                            component={Link}
+                            href={item.link}
+                            aria-label={item.name}
+                          >
+                            {item.name}
+                          </StyledLink>
                         ))}
                     </Box>
                   </Grid>
@@ -365,29 +366,30 @@ const Footer = ({ footerData: initialFooterData }) => {
                     <SectionTitle>
                       {footerData.column_three_heading}
                     </SectionTitle>
-                    
+
                     <Box sx={{ mt: 4, display: "flex", flexDirection: "column" }}>
                       {footerData.column_three_links
                         .filter((item) => item.column === 3)
                         .map((item, ind) => (
-                          <Box key={ind} sx={{ display: "block", width: "100%" }}>
-                            <Link href={item.link} passHref legacyBehavior>
-                              <Box component="a" sx={footerLinkSx} style={{ display: "flex", width: "100%" }}>
-                                {formatLinkLabel(item.name)}
-                              </Box>
-                            </Link>
-                          </Box>
+                          <StyledLink
+                            key={ind}
+                            component={Link}
+                            href={item.link}
+                            aria-label={item.name}
+                          >
+                            {item.name}
+                          </StyledLink>
                         ))}
                     </Box>
                   </Grid>
                 )}
-                
+
                 {/* Column 4: Contact & Social */}
                 <Grid item lg={3} md={6} sm={6} xs={12}>
                   <SectionTitle>
                     {footerData?.footer_fourth_column_heading || "Get in Touch"}
                   </SectionTitle>
-                  
+
                   {footerData?.footer_fourth_column_content && (
                     <Box
                       sx={{
@@ -486,33 +488,13 @@ const Footer = ({ footerData: initialFooterData }) => {
                 >
                   © {new Date().getFullYear()} Chitral Hive. All rights reserved.
                 </Paragraph>
-                
+
                 <FlexBox gap={3}>
-                  <Link href="/privacy-policy" style={{ textDecoration: "none" }}>
-                    <Box
-                      component="span"
-                      sx={{
-                        color: "rgba(255, 255, 255, 0.5)",
-                        fontSize: "14px",
-                        transition: "color 0.3s ease",
-                        "&:hover": { color: "#D23F57" },
-                      }}
-                    >
-                      Privacy Policy
-                    </Box>
+                  <Link href="/privacy-policy" style={{ color: "rgba(255, 255, 255, 0.5)", fontSize: "14px", textDecoration: "none", transition: "color 0.3s ease" }}>
+                    Privacy Policy
                   </Link>
-                  <Link href="/return-policy" style={{ textDecoration: "none" }}>
-                    <Box
-                      component="span"
-                      sx={{
-                        color: "rgba(255, 255, 255, 0.5)",
-                        fontSize: "14px",
-                        transition: "color 0.3s ease",
-                        "&:hover": { color: "#D23F57" },
-                      }}
-                    >
-                      Return Policy
-                    </Box>
+                  <Link href="/return-policy" style={{ color: "rgba(255, 255, 255, 0.5)", fontSize: "14px", textDecoration: "none", transition: "color 0.3s ease" }}>
+                    Return Policy
                   </Link>
                 </FlexBox>
               </Box>

@@ -46,6 +46,9 @@ const BlogPage = ({ posts, totalCount, page, categories, activeCategory }) => {
   const router = useRouter();
   const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
   const origin = siteBase.replace(/\/$/, "");
+  const adsenseClient = process.env.NEXT_PUBLIC_ADSENSE_CLIENT;
+  const sidebarSlot = process.env.NEXT_PUBLIC_ADSENSE_BLOG_SIDEBAR_SLOT;
+  const showSidebarAd = Boolean(adsenseClient && sidebarSlot);
   const paginationBase = (() => {
     const params = new URLSearchParams();
     if (activeCategory) params.set("category", activeCategory);
@@ -229,10 +232,7 @@ const BlogPage = ({ posts, totalCount, page, categories, activeCategory }) => {
                 ))}
               </List>
 
-              <AdSenseAd
-                slot={process.env.NEXT_PUBLIC_ADSENSE_BLOG_SIDEBAR_SLOT}
-                sx={{ mt: 2.5 }}
-              />
+              {showSidebarAd && <AdSenseAd slot={sidebarSlot} sx={{ mt: 2.5 }} />}
 
               <Box sx={{ mt: 3, pt: 2, borderTop: 1, borderColor: "divider" }}>
                 <Typography variant="body2" color="text.secondary" lineHeight={1.7}>

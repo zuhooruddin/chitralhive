@@ -19,7 +19,7 @@ const StyledFooter = styled("footer")(({ theme, bgcolor }) => ({
     marginBottom: "4rem",
   },
 }));
-const StyledLink = styled("a")(({ theme }) => ({
+const StyledLink = styled("span")(({ theme }) => ({
   borderRadius: 4,
   display: "block",
   cursor: "pointer",
@@ -36,10 +36,8 @@ const PageFooter = ({ sx, id, bgcolor }) => {
   return (
     <StyledFooter id={id} sx={sx} bgcolor={bgcolor}>
       <Container>
-        <Link href="/">
-
+        <Link href="/" aria-label="Home" style={{ display: "inline-block" }}>
           <BazaarImage mb={2.5} src="/assets/images/logo.svg" alt="logo" />
-
         </Link>
 
         <Grid container spacing={6}>
@@ -56,9 +54,9 @@ const PageFooter = ({ sx, id, bgcolor }) => {
           <Grid item md={6} sm={6} xs={12}>
             <Box mt={-0.6}>
               {customerCareLinks.map((item, ind) => (
-                <Link href="/" key={ind}>
-                  <StyledLink>{item}</StyledLink>
-                </Link>
+                <StyledLink key={ind} component={Link} href="/">
+                  {item}
+                </StyledLink>
               ))}
             </Box>
 

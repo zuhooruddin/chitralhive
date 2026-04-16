@@ -35,14 +35,16 @@ const CarouselCard3 = ({ carouselData }) => {
           Starting at ${carouselData.price} & save upto {carouselData.off}%
         </Paragraph>
 
-        <Link href={`/product/${carouselData.id}`}>
-
-          <StyledShopButton>{carouselData.buttonText}</StyledShopButton>
-
-        </Link>
+        <StyledShopButton
+          component={Link}
+          href={`/product/${carouselData.id}`}
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
+          {carouselData.buttonText}
+        </StyledShopButton>
       </StyledFlexBox>
       <Box sx={{ position: "relative", width: "100%", aspectRatio: "1 / 1" }}>
-        <BazaarImage fill src={carouselData.imgUrl} alt="shoes" style={{ objectFit: "contain" }} />
+        <BazaarImage fill src={carouselData.imgUrl} alt="shoes" objectFit="contain" />
       </Box>
     </ContentWrapper>
   );

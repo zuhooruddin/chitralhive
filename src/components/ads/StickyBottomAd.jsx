@@ -13,12 +13,14 @@ const StickyBottomAd = ({
 }) => {
   const [mounted, setMounted] = useState(false);
   const [dismissed, setDismissed] = useState(false);
+  const client = process.env.NEXT_PUBLIC_ADSENSE_CLIENT;
+  const enabled = Boolean(client && slot);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  if (!mounted || dismissed) return null;
+  if (!enabled || !mounted || dismissed) return null;
 
   return (
     <Box

@@ -99,21 +99,22 @@ const BundleCard20 = ({ product, wishList }) => {
     return (
       <Card height="100%">
         <CardMedia>
-          {/* <Link href={slugbaseurl+`${product.slug}`}> */}
-            <a href={slugbaseurl`${product.slug}`}>
-            {/* {`slugbaseurl${encodeURIComponent(product.slug)}`} */}
-              <Image
-                width={300}
-                height={300}
-                alt="category"
-                objectFit="contain"
-                layout="responsive"
-                className="product-img"
-                // src="https://pictures.abebooks.com/isbn/9781338615036-us.jpg"
-                src={imgbaseurl+product.image}
-              />
-            </a>
-          {/* </Link> */}
+          <Link
+            href={`${slugbaseurl}${product.slug}`}
+            aria-label={product?.name ? `View ${product.name}` : "View bundle"}
+            style={{ display: "block" }}
+          >
+            <Image
+              width={300}
+              height={300}
+              alt="category"
+              objectFit="contain"
+              layout="responsive"
+              className="product-img"
+              // src="https://pictures.abebooks.com/isbn/9781338615036-us.jpg"
+              src={imgbaseurl+product.image}
+            />
+          </Link>
 
           <AddToCartButton
             className="product-actions"
@@ -183,8 +184,11 @@ const BundleCard20 = ({ product, wishList }) => {
     return (
       <Card height="100%">
         <CardMedia>
-          <Link href={slugbaseurl+`${product.slug}`}>
-
+          <Link
+            href={`${slugbaseurl}${product.slug}`}
+            aria-label={product?.name ? `View ${product.name}` : "View bundle"}
+            style={{ display: "block" }}
+          >
             <Image
               width={300}
               height={300}
@@ -195,7 +199,6 @@ const BundleCard20 = ({ product, wishList }) => {
               // src="https://pictures.abebooks.com/isbn/9781338615036-us.jpg"
               src={imgbaseurl+product.image}
             />
-
           </Link>
 
           <AddToCartButton
