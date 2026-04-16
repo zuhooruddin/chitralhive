@@ -163,7 +163,25 @@ const App = ({
     if (!deferredUiReady) return;
 
     const existing = document.querySelector('script[src*="pagead/js/adsbygoogle.js"]');
-    if (existing) return;
+    if (existing) {
+      // If the script is already present (e.g. due to HMR or another injection),
+      // make sure we still expose a "loaded" signal for ad components.
+      if (window.__adsenseScriptLoaded !== true) {
+        window.__adsenseScriptLoaded = existing.getAttribute("data-adsense-loaded") === "true";
+      }
+      if (!window.__adsenseScriptReady) {
+        window.__adsenseScriptReady = new Promise((resolve, reject) => {
+          if (window.__adsenseScriptLoaded === true) return resolve(true);
+          existing.addEventListener("load", () => {
+            window.__adsenseScriptLoaded = true;
+            existing.setAttribute("data-adsense-loaded", "true");
+            resolve(true);
+          });
+          existing.addEventListener("error", (e) => reject(e));
+        });
+      }
+      return;
+    }
 
     const load = () => {
       const s = document.createElement("script");
@@ -172,6 +190,21 @@ const App = ({
       s.crossOrigin = "anonymous";
       s.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${client}`;
       if ("fetchPriority" in s) s.fetchPriority = "low";
+      s.setAttribute("data-adsense-loaded", "false");
+
+      window.__adsenseScriptLoaded = false;
+      window.__adsenseScriptReady = new Promise((resolve, reject) => {
+        s.addEventListener("load", () => {
+          window.__adsenseScriptLoaded = true;
+          s.setAttribute("data-adsense-loaded", "true");
+          resolve(true);
+        });
+        s.addEventListener("error", (e) => {
+          window.__adsenseScriptLoaded = false;
+          reject(e);
+        });
+      });
+
       document.head.appendChild(s);
     };
 

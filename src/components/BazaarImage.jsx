@@ -52,6 +52,7 @@ const BazaarImage = styled(
     } = rest;
 
     const computedObjectFit = style?.objectFit || objectFit;
+    const fetchPriority = fetchPriorityProp ?? (priority ? "high" : undefined);
     
     return (
       <NextImage
@@ -61,6 +62,7 @@ const BazaarImage = styled(
         objectFit={computedObjectFit}
         style={style}
         priority={priority}
+        fetchPriority={fetchPriority}
         quality={quality}
         loading={priority ? "eager" : "lazy"}
         sizes={sizes || "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"}
@@ -83,6 +85,7 @@ const BazaarImage = styled(
     } = rest;
     
     const computedObjectFit = style?.objectFit || objectFit;
+    const fetchPriority = fetchPriorityProp ?? (priority ? "high" : undefined);
     
     return (
       <NextImage
@@ -94,6 +97,7 @@ const BazaarImage = styled(
         objectFit={computedObjectFit}
         style={style}
         priority={priority}
+        fetchPriority={fetchPriority}
         quality={quality}
         loading={priority ? "eager" : "lazy"}
         {...restProps}

@@ -262,7 +262,7 @@ const Header = ({ isFixed, headerdata, className, searchBoxType = "type2" }) => 
                   opacity: '1 !important',
                   transition: 'all 0.3s ease',
                   objectFit: 'contain',
-                  width: '100%',
+                  width: 'auto',
                   height: 'auto',
                   maxWidth: '100%',
                 }}

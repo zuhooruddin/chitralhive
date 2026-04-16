@@ -1,4 +1,4 @@
-import { AccessTime, ArticleOutlined, CommentOutlined } from "@mui/icons-material";
+import { AccessTime, ArticleOutlined } from "@mui/icons-material";
 import { Box, Card, CardContent, Chip, Typography } from "@mui/material";
 import LazyImage from "components/LazyImage";
 import { H3, Paragraph } from "components/Typography";
@@ -26,6 +26,7 @@ const BlogListingCard = ({ blog }) => {
     : "";
 
   const category = blog.section && blog.section !== "Blog" ? blog.section : null;
+  const showComments = typeof blog.comments === "number" ? blog.comments > 0 : Boolean(blog.comments);
 
   return (
     <Card
@@ -152,10 +153,11 @@ const BlogListingCard = ({ blog }) => {
               {dateLabel}
             </Typography>
           )}
-          <Typography variant="body2" component="span" sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-            <CommentOutlined sx={{ fontSize: 18 }} />
-            {blog.comments || 0} comments
-          </Typography>
+          {showComments && (
+            <Typography variant="body2" component="span">
+              {blog.comments} comments
+            </Typography>
+          )}
           {blog.author_name && (
             <Typography variant="body2" component="span">
               {blog.author_name}

@@ -6,6 +6,15 @@ const REQUEST_RETRY_MS = 250;
 const REQUEST_SETTLE_MS = 1500;
 let adRequestOwnerId = 0;
 
+const getRequestedSlotSet = () => {
+  if (typeof window === "undefined") return null;
+  if (!window.__adsenseRequestedSlots) {
+    // WeakSet so detached DOM nodes can be garbage collected
+    window.__adsenseRequestedSlots = new WeakSet();
+  }
+  return window.__adsenseRequestedSlots;
+};
+
 const isUnfilledAd = (ins) => {
   if (!ins) return false;
 
@@ -31,11 +40,22 @@ const isPendingAdSlot = (element) => {
   if (!element.isConnected) return false;
   if (element.hasAttribute("data-adsbygoogle-status")) return false;
   if (element.dataset.adsbygoogleRequested === "true") return false;
+  if (element.getAttribute("data-ad-status")) return false;
+  if (element.querySelector && element.querySelector("iframe")) return false;
   return element.childElementCount === 0 && element.innerHTML.trim() === "";
 };
 
-const getNextPendingAdSlot = () =>
-  document.querySelector('ins.adsbygoogle:not([data-adsbygoogle-status]):not([data-adsbygoogle-requested="true"])');
+const getNextPendingAdSlot = () => {
+  const candidates = document.querySelectorAll(
+    'ins.adsbygoogle:not([data-adsbygoogle-status]):not([data-adsbygoogle-requested="true"])'
+  );
+
+  for (const el of candidates) {
+    if (isPendingAdSlot(el)) return el;
+  }
+
+  return null;
+};
 
 const getAdsPushLock = () =>
   typeof window !== "undefined" ? window.__adsensePushInFlight === true : false;
@@ -49,6 +69,18 @@ const setAdsPushLock = (locked) => {
 const getNextOwnerId = () => {
   adRequestOwnerId += 1;
   return `adsense-slot-${adRequestOwnerId}`;
+};
+
+const isAdSenseScriptReady = () => {
+  if (typeof window === "undefined") return false;
+  if (window.__adsenseScriptLoaded === true) return true;
+  // If the app didn't set readiness helpers (e.g. script added elsewhere),
+  // fall back to checking if a loaded script exists.
+  const s = document.querySelector('script[src*="pagead/js/adsbygoogle.js"]');
+  if (!s) return false;
+  const loadedAttr = s.getAttribute("data-adsense-loaded");
+  if (loadedAttr === "true") return true;
+  return false;
 };
 
 /**
@@ -103,12 +135,22 @@ const AdSenseAd = ({
       if (cancelled) return;
       if (hasPushedRef.current) return;
       if (!isPendingAdSlot(ins)) return;
+      if (!isAdSenseScriptReady()) {
+        if (retryCount >= MAX_REQUEST_RETRIES) return;
+        retryCount += 1;
+        retryTimeoutId = window.setTimeout(requestAd, REQUEST_RETRY_MS);
+        return;
+      }
       if (getAdsPushLock()) {
         if (retryCount >= MAX_REQUEST_RETRIES) return;
         retryCount += 1;
         retryTimeoutId = window.setTimeout(requestAd, REQUEST_RETRY_MS);
         return;
       }
+
+      // Guard: never push unless there is at least one truly pending slot.
+      // Prevents TagError: "All 'ins' elements ... already have ads in them."
+      if (!getNextPendingAdSlot()) return;
 
       const nextPending = getNextPendingAdSlot();
       if (nextPending !== ins) {
@@ -118,13 +160,23 @@ const AdSenseAd = ({
         return;
       }
 
+      // The slot might get unmounted between the checks above and the push call
+      // (e.g. on route change). Avoid pushing in that case.
+      if (!ins.isConnected) return;
+
       ins.dataset.adsbygoogleRequested = "true";
+      const requestedSet = getRequestedSlotSet();
+      if (requestedSet && requestedSet.has(ins)) {
+        hasPushedRef.current = true;
+        return;
+      }
       window.__adsensePushOwner = ownerIdRef.current;
       setAdsPushLock(true);
       try {
         window.adsbygoogle = window.adsbygoogle || [];
         window.adsbygoogle.push({});
         hasPushedRef.current = true;
+        if (requestedSet) requestedSet.add(ins);
       } catch (error) {
         if (window.__adsensePushOwner === ownerIdRef.current) {
           window.__adsensePushOwner = undefined;
@@ -136,6 +188,7 @@ const AdSenseAd = ({
         if (message.includes("already have ads in them")) {
           // Slot got filled (or AdSense thinks it did). Don't try to push again.
           hasPushedRef.current = true;
+          if (requestedSet) requestedSet.add(ins);
           return;
         }
 

@@ -136,14 +136,24 @@ const BlogPostPage = ({ post, allPosts }) => {
 
           {/* Featured Image */}
           {post.imgUrl && (
-            <Box sx={{ mb: 4 }}>
+            <Box
+              sx={{
+                mb: 4,
+                position: "relative",
+                width: "100%",
+                // Keep a stable hero aspect ratio across devices.
+                aspectRatio: "900 / 500",
+                borderRadius: 2,
+                overflow: "hidden",
+                bgcolor: "grey.100",
+              }}
+            >
               <LazyImage
-                width={900}
-                height={500}
                 src={post.imgUrl}
                 alt={post.title}
-                layout="responsive"
-                sx={{ borderRadius: 2 }}
+                fill
+                sizes="(max-width: 900px) 100vw, 900px"
+                style={{ objectFit: "cover" }}
               />
             </Box>
           )}
@@ -165,6 +175,30 @@ const BlogPostPage = ({ post, allPosts }) => {
           <Box
             component="div"
             sx={{
+              // Defensive responsive styling for CMS/HTML content.
+              // Prevents mobile overflow caused by fixed-width images/iframes/tables/long URLs.
+              overflowX: "hidden",
+              "& img": {
+                maxWidth: "100%",
+                height: "auto",
+              },
+              "& iframe, & video": {
+                maxWidth: "100%",
+              },
+              "& table": {
+                display: "block",
+                maxWidth: "100%",
+                overflowX: "auto",
+                WebkitOverflowScrolling: "touch",
+              },
+              "& pre, & code": {
+                maxWidth: "100%",
+                overflowX: "auto",
+              },
+              "& a, & p, & li": {
+                overflowWrap: "anywhere",
+                wordBreak: "break-word",
+              },
               "& h2": {
                 mt: 4,
                 mb: 2,
