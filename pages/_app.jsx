@@ -14,7 +14,6 @@ import createEmotionCache from "../src/createEmotionCache";
 import MuiTheme from "theme/MuiTheme";
 import {SessionProvider}  from "next-auth/react";
 import { AuthenticationProvider } from '../context/AuthenticationContext'
-import useScrollRestoration from "../src/utils/useScrollRestoration";
 import dynamic from 'next/dynamic';
 import GoogleAnalytics from "utils/GoogleAnalytics";
 import { sanitizeSiteName, SITE_NAME } from "utils/seoConstants";
@@ -217,7 +216,7 @@ const App = ({
                 src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${encodeURIComponent(
                   adsenseClient
                 )}`}
-                strategy="afterInteractive"
+                strategy="lazyOnload"
                 crossOrigin="anonymous"
                 onLoad={() => {
                   if (typeof window === "undefined") return;

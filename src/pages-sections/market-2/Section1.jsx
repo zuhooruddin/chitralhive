@@ -1,11 +1,15 @@
 import { Box, Button, Container, Grid, Stack, styled } from "@mui/material";
 import BannerCard3 from "components/banners/BannerCard3";
 import CarouselCard4 from "components/carousel-cards/CarouselCard4";
-import Carousel from "components/carousel/Carousel";
 import NavLink3 from "components/nav-link/NavLink3";
 import { H1, H4, Paragraph, Span } from "components/Typography";
-
+import dynamic from "next/dynamic";
 import React, { useState, useEffect } from "react";
+
+const Carousel = dynamic(() => import("components/carousel/Carousel"), {
+  ssr: true,
+  loading: () => null,
+});
 
 // ======================================================
 const Section1 = (data) => {
