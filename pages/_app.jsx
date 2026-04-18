@@ -15,7 +15,10 @@ import MuiTheme from "theme/MuiTheme";
 import {SessionProvider}  from "next-auth/react";
 import { AuthenticationProvider } from '../context/AuthenticationContext'
 import dynamic from 'next/dynamic';
-import GoogleAnalytics from "utils/GoogleAnalytics";
+
+const GoogleAnalytics = dynamic(() => import("utils/GoogleAnalytics"), {
+  ssr: false,
+});
 import { sanitizeSiteName, SITE_NAME } from "utils/seoConstants";
 import Script from "next/script";
 // Loader removed - no popup on page load

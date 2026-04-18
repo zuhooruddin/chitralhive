@@ -84,11 +84,10 @@ const BazaarImage = styled(
 
       const computedObjectFit = style?.objectFit || objectFit;
       const fetchPriority = fetchPriorityProp ?? (priority ? "high" : undefined);
+      // Do not set height: "auto" with fill — it breaks Next/Image absolute fill + object-fit.
       const normalizedStyle = normalizeStyleObject({
         ...(style || {}),
         objectFit: computedObjectFit,
-        height: "auto",
-        maxWidth: "100%",
       });
 
       return (

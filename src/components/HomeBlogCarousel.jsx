@@ -124,11 +124,11 @@ const HomeBlogCarousel = ({
             aria-label="Scroll blog cards left"
             onClick={() => scrollStrip(-1)}
             sx={{
-              display: { xs: "none", md: "flex" },
+              display: "flex",
               position: "absolute",
-              left: -12,
+              left: { xs: 4, md: -12 },
               top: "50%",
-              transform: "translate(-50%, -50%)",
+              transform: { xs: "translateY(-50%)", md: "translate(-50%, -50%)" },
               zIndex: 2,
               bgcolor: "common.white",
               boxShadow: "0 8px 28px rgba(15, 23, 42, 0.12)",
@@ -138,17 +138,18 @@ const HomeBlogCarousel = ({
             }}
             size="small"
           >
+            
             <ChevronLeft />
           </IconButton>
           <IconButton
             aria-label="Scroll blog cards right"
             onClick={() => scrollStrip(1)}
             sx={{
-              display: { xs: "none", md: "flex" },
+              display: "flex",
               position: "absolute",
-              right: -12,
+              right: { xs: 4, md: -12 },
               top: "50%",
-              transform: "translate(50%, -50%)",
+              transform: { xs: "translateY(-50%)", md: "translate(50%, -50%)" },
               zIndex: 2,
               bgcolor: "common.white",
               boxShadow: "0 8px 28px rgba(15, 23, 42, 0.12)",
@@ -163,20 +164,21 @@ const HomeBlogCarousel = ({
 
           <Box
             ref={stripRef}
+            onWheel={(e) => {
+              if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) e.preventDefault();
+            }}
             sx={{
               display: "flex",
               gap: 2,
-              overflowX: "auto",
-              scrollSnapType: "x mandatory",
-              pb: 1,
+              overflowX: "hidden",
+              overscrollBehaviorX: "none",
+              touchAction: "pan-y",
               mx: { xs: -1, sm: 0 },
               px: { xs: 1, sm: 0 },
-              scrollbarWidth: "thin",
-              "&::-webkit-scrollbar": { height: 6 },
-              "&::-webkit-scrollbar-thumb": {
-                bgcolor: "action.hover",
-                borderRadius: 3,
-              },
+              // No horizontal scrollbar; navigation is via arrow buttons only.
+              scrollbarWidth: "none",
+              msOverflowStyle: "none",
+              "&::-webkit-scrollbar": { display: "none" },
             }}
           >
             {posts.map((post) => {

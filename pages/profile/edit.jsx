@@ -1,8 +1,8 @@
 import CameraEnhance from "@mui/icons-material/CameraEnhance";
 import Person from "@mui/icons-material/Person";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import DateTimePicker from "@mui/lab/DateTimePicker";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { Avatar, Box, Button, Grid, TextField } from "@mui/material";
 import Card1 from "components/Card1";
 import { FlexBox } from "components/flex-box";

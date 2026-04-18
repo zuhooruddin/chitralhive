@@ -8,10 +8,26 @@ import React, { useMemo } from "react";
 import apiNav from "utils/api/market-2";
 import api from "utils/api/fashion-shop-2";
 import LazySection from "components/LazySection";
-import HomeBlogCarousel from "components/HomeBlogCarousel";
 import { fetchPublishedBlogsPaged } from "utils/api/blog";
+import {
+  slimBlogPostsForHome,
+  slimFooterData,
+  slimGeneralSettings,
+  slimNavCategories,
+  slimProductArray,
+  slimProductBundles,
+  slimProductReviewsForHome,
+  slimSectionConfigNullable,
+  slimSliderList,
+  slimSubcategoryList,
+} from "@/utils/homePagePropsSerializer";
 
 const HOME_BLOG_PREVIEW_COUNT = 8;
+
+const HomeBlogCarousel = dynamic(() => import("components/HomeBlogCarousel"), {
+  ssr: false,
+  loading: () => null,
+});
 
 const AdBanner = dynamic(() => import("@/components/AdBanner"), {
   ssr: false,
@@ -120,24 +136,13 @@ const IndexPage = (props) => {
         <Section1
           data1={props.Section1SequenceData}
           data2={props.Section1SequenceData2 || []}
-          slidersList={props.slidersList}
           slidersListLocal={props.slidersListLocal}
         />
 
         {showFluidAd && (
           <LazySection
-            fallback={
-              <Box
-                sx={{
-                  mt: { xs: 2, sm: 3 },
-                  mx: "auto",
-                  maxWidth: 900,
-                  width: "100%",
-                }}
-                aria-hidden="true"
-              />
-            }
-            rootMargin="0px"
+            fallback={null}
+            rootMargin="400px 0px"
           >
             <AdBanner
               slot={fluidSlot}
@@ -152,12 +157,13 @@ const IndexPage = (props) => {
             <Box
               sx={{
                 px: { xs: 1, sm: 2 },
-                minHeight: { xs: 420, sm: 480, md: 520 },
+                // Smaller reserve than before: large blank bands under the hero looked like a broken ad.
+                minHeight: { xs: 220, sm: 260, md: 300 },
               }}
               aria-hidden="true"
             />
           }
-          rootMargin="0px"
+          rootMargin="500px 0px"
         >
           <Section9
             data={props.ProductReviews}
@@ -260,12 +266,9 @@ export async function getStaticProps(context) {
     // Parallelize all independent API calls for better performance
     const [
       navCategories,
-      brandbundles,
       productbundles,
       featuredCatalog,
       individulorder,
-      sectionsequenceorder,
-      slidersList,
       slidersListLocal,
       ProductReviews,
       GeneralSetting,
@@ -273,12 +276,9 @@ export async function getStaticProps(context) {
       blogHomePreview,
     ] = await Promise.all([
       apiNav.getNavCategories(),
-      api.getBrandBundles(),
       api.getProductBundles(),
       api.getLatestProducts(),
       api.getindvidualorderbox(),
-      api.getSectionSequence(),
-      api.getSlidersFromCloud(),
       api.getSlidersFromLocal(),
       apiNav.getReviews(),
       api.getGeneralSetting(),
@@ -300,12 +300,6 @@ export async function getStaticProps(context) {
   );
 
   ////////////////////////Section 2/////////////////////////
-  // Get all categories for Section3 (sequenceNo >= 3 and type == "box")
-  const Section2AllCategories = individulorder.filter(
-    (obj) => obj.sequenceNo >= 3 && obj.sequenceNo <= 20 && obj.type == "box"
-  ).sort((a, b) => (a.sequenceNo || 0) - (b.sequenceNo || 0));
-
-  // Keep individual data for backward compatibility if needed
   const Section2SequenceData = individulorder.find(
     (obj) => obj.sequenceNo == 3 && obj.type == "box"
   );
@@ -355,11 +349,13 @@ export async function getStaticProps(context) {
   // const Section1Name=SectionSequenceOrder.category_name;
   const Section1Name = SectionSequenceOrder?.category_name || "";
 
-  const SectionSequenceOrdera = individulorder.filter(
-    (obj) =>
-      obj.type == "section_subcategory" &&
-      obj.parent == SectionSequenceOrder.category_id_id
-  );
+  const SectionSequenceOrdera = SectionSequenceOrder
+    ? individulorder.filter(
+        (obj) =>
+          obj.type == "section_subcategory" &&
+          obj.parent == SectionSequenceOrder.category_id_id
+      )
+    : [];
 
   ////////////////////////Section Sequence Order 2/////////////////////////
 
@@ -393,53 +389,50 @@ export async function getStaticProps(context) {
 
   ////////////////////////Section Sequence Order 2/////////////////////////
 
-  // const products=sect4products;
+  const productReviewsSlim = slimProductReviewsForHome(ProductReviews);
+  const homeStructuredData = getHomePageStructuredData(GeneralSetting);
+
   return {
     props: {
-      // Add cache headers for API responses
-      _cacheTime: Date.now(),
-      navCategories,
-      products: normalizedProducts,
-      product: normalizedProduct,
-      featuredCatalog: Array.isArray(featuredCatalog) ? featuredCatalog : [],
-      // latestproduct,
-      SectionSequenceOrdera,
+      navCategories: slimNavCategories(navCategories),
+      products: slimProductArray(normalizedProducts, 20),
+      product: slimProductArray(normalizedProduct, 20),
+      featuredCatalog: slimProductArray(
+        Array.isArray(featuredCatalog) ? featuredCatalog : [],
+        36
+      ),
+      SectionSequenceOrdera: slimSubcategoryList(SectionSequenceOrdera),
       Section1Name,
       Section2Name,
-      SectionSequenceOrdera2,
+      SectionSequenceOrdera2: slimSubcategoryList(SectionSequenceOrdera2),
       slug,
       slug2,
-      // featureProducts,
-      Section1SequenceData: Section1SequenceData || null,
-      Section1SequenceData2: Section1SequenceData2 || null,
-      Section2AllCategories: Section2AllCategories || [],
-      Section2SequenceData: Section2SequenceData || null,
-      Section2SequenceData2: Section2SequenceData2 || null,
-      Section2SequenceData3: Section2SequenceData3 || null,
-      Section2SequenceData4: Section2SequenceData4 || null,
-      Section2SequenceData5: Section2SequenceData5 || null,
-      Section2SequenceData6: Section2SequenceData6 || null,
-      Section3SequenceData: Section3SequenceData || null,
-      Section3SequenceData2: Section3SequenceData2 || null,
-      Section3SequenceData3: Section3SequenceData3 || null,
-      Section4SequenceData: Section4SequenceData || null,
-      Section4SequenceData2: Section4SequenceData2 || null,
-      Section5SequenceData: Section5SequenceData || null,
-      // Don't pass entire individulorder array - it's large and not needed
-      // individulorder,
-      SectionSequenceOrder: SectionSequenceOrder || null,
-      // bundles,
-      brandbundles,
-      productbundles,
-      footerData,
-      slidersList,
-      slidersListLocal,
-      ProductReviews,
-      GeneralSetting,
-      homeStructuredData: getHomePageStructuredData(GeneralSetting),
-      homeBlogPosts: Array.isArray(blogHomePreview?.results)
-        ? blogHomePreview.results
-        : [],
+      Section1SequenceData: slimSectionConfigNullable(Section1SequenceData),
+      Section1SequenceData2: slimSectionConfigNullable(Section1SequenceData2),
+      Section2SequenceData: slimSectionConfigNullable(Section2SequenceData),
+      Section2SequenceData2: slimSectionConfigNullable(Section2SequenceData2),
+      Section2SequenceData3: slimSectionConfigNullable(Section2SequenceData3),
+      Section2SequenceData4: slimSectionConfigNullable(Section2SequenceData4),
+      Section2SequenceData5: slimSectionConfigNullable(Section2SequenceData5),
+      Section2SequenceData6: slimSectionConfigNullable(Section2SequenceData6),
+      Section3SequenceData: slimSectionConfigNullable(Section3SequenceData),
+      Section3SequenceData2: slimSectionConfigNullable(Section3SequenceData2),
+      Section3SequenceData3: slimSectionConfigNullable(Section3SequenceData3),
+      Section4SequenceData: slimSectionConfigNullable(Section4SequenceData),
+      Section4SequenceData2: slimSectionConfigNullable(Section4SequenceData2),
+      Section5SequenceData: slimSectionConfigNullable(Section5SequenceData),
+      productbundles: slimProductBundles(productbundles),
+      footerData: slimFooterData(footerData),
+      slidersListLocal: slimSliderList(
+        Array.isArray(slidersListLocal) ? slidersListLocal : []
+      ),
+      ProductReviews: productReviewsSlim,
+      GeneralSetting: slimGeneralSettings(GeneralSetting),
+      homeStructuredData,
+      homeBlogPosts: slimBlogPostsForHome(
+        Array.isArray(blogHomePreview?.results) ? blogHomePreview.results : [],
+        HOME_BLOG_PREVIEW_COUNT
+      ),
     },
     // Revalidate every 300 seconds (5 minutes) - ISR (Incremental Static Regeneration)
     // This means pages are cached and only regenerated every 5 minutes
@@ -452,11 +445,34 @@ export async function getStaticProps(context) {
     return {
       props: {
         navCategories: [],
-        products: null,
-        product: null,
+        products: [],
+        product: [],
         featuredCatalog: [],
-        GeneralSetting: [],
+        SectionSequenceOrdera: [],
+        Section1Name: "",
+        Section2Name: "",
+        SectionSequenceOrdera2: [],
+        slug: "",
+        slug2: "",
+        Section1SequenceData: null,
+        Section1SequenceData2: null,
+        Section2SequenceData: null,
+        Section2SequenceData2: null,
+        Section2SequenceData3: null,
+        Section2SequenceData4: null,
+        Section2SequenceData5: null,
+        Section2SequenceData6: null,
+        Section3SequenceData: null,
+        Section3SequenceData2: null,
+        Section3SequenceData3: null,
+        Section4SequenceData: null,
+        Section4SequenceData2: null,
+        Section5SequenceData: null,
+        productbundles: { data: [] },
         footerData: null,
+        slidersListLocal: [],
+        ProductReviews: { Reviews: [] },
+        GeneralSetting: [],
         homeStructuredData: null,
         homeBlogPosts: [],
       },

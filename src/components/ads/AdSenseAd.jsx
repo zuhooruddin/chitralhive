@@ -71,6 +71,9 @@ const getNextOwnerId = () => {
   return `adsense-slot-${adRequestOwnerId}`;
 };
 
+const hasDisplayCreative = (ins) =>
+  Boolean(ins && ins.querySelector && ins.querySelector("iframe"));
+
 const isAdSenseScriptReady = () => {
   if (typeof window === "undefined") return false;
   if (window.__adsenseScriptLoaded === true) return true;
@@ -89,6 +92,10 @@ const isAdSenseScriptReady = () => {
  * Usage requires:
  * - NEXT_PUBLIC_ADSENSE_CLIENT="ca-pub-xxxxxxxxxxxxxxxx"
  * - a valid ad `slot` for the placement
+ *
+ * Defaults (recommended for most pages):
+ * - `collapseUntilFilled: true` — avoids a tall empty strip while AdSense applies min-height; keep true.
+ * - `stuckNoCreativeMs: 15000` — long enough for slow networks; only override per slot if needed.
  */
 const AdSenseAd = ({
   slot,
@@ -106,6 +113,11 @@ const AdSenseAd = ({
   // Reserve space to prevent CLS when ads load / no-fill happens.
   // Default to false so missing/blocked ads don't leave empty sections.
   reserveSpace = false,
+  // While waiting for AdSense, the tag often applies a large min-height on <ins>.
+  // Collapse layout until an iframe exists (or slot is unfilled / timed out).
+  collapseUntilFilled = true,
+  // If no iframe and no unfilled signal after this, remove the slot (blocked / no fill).
+  stuckNoCreativeMs = 15000,
   // Typical responsive ad heights (tweak per placement if needed)
   minHeight = { xs: 100, sm: 120, md: 250 },
 }) => {
@@ -113,6 +125,8 @@ const AdSenseAd = ({
   const ownerIdRef = useRef(getNextOwnerId());
   const hasPushedRef = useRef(false);
   const [visible, setVisible] = useState(true);
+  /** True once the slot has a display iframe (creative actually rendered). */
+  const [creativeVisible, setCreativeVisible] = useState(false);
   const onNoFillRef = useRef(onNoFill);
 
   useEffect(() => {
@@ -239,11 +253,18 @@ const AdSenseAd = ({
 
   const enabled = useMemo(() => Boolean(client && slot), [client, slot]);
 
+  const clipActive =
+    Boolean(visible) &&
+    Boolean(hideIfNoFill) &&
+    !reserveSpace &&
+    Boolean(collapseUntilFilled) &&
+    !creativeVisible;
+
   useEffect(() => {
     if (typeof onVisibilityChange === "function") {
-      onVisibilityChange(visible);
+      onVisibilityChange(visible && !clipActive);
     }
-  }, [onVisibilityChange, visible]);
+  }, [onVisibilityChange, visible, clipActive]);
 
   useEffect(() => {
     if (!enabled) return;
@@ -251,6 +272,7 @@ const AdSenseAd = ({
     if (typeof window === "undefined") return;
 
     setVisible(true);
+    setCreativeVisible(false);
 
     const t = window.setTimeout(() => {
       const el = insRef.current;
@@ -270,6 +292,33 @@ const AdSenseAd = ({
   }, [enabled, hideIfNoFill, noFillCheckMs, slot, format, layout, activeLayoutKey]);
 
   useEffect(() => {
+    if (!enabled || !visible || !hideIfNoFill || !collapseUntilFilled || reserveSpace || creativeVisible) {
+      return;
+    }
+    if (typeof window === "undefined") return;
+
+    const id = window.setTimeout(() => {
+      const el = insRef.current;
+      if (!el) return;
+      if (isUnfilledAd(el)) return;
+      if (hasDisplayCreative(el)) return;
+      setVisible(false);
+      if (typeof onNoFillRef.current === "function") onNoFillRef.current();
+    }, stuckNoCreativeMs);
+
+    return () => window.clearTimeout(id);
+  }, [
+    enabled,
+    visible,
+    hideIfNoFill,
+    collapseUntilFilled,
+    reserveSpace,
+    creativeVisible,
+    stuckNoCreativeMs,
+    slot,
+  ]);
+
+  useEffect(() => {
     if (!enabled) return;
     if (!hideIfNoFill) return;
     if (typeof window === "undefined") return;
@@ -282,6 +331,9 @@ const AdSenseAd = ({
       if (typeof onNoFill === "function") onNoFill();
       return;
     }
+    if (hasDisplayCreative(el)) {
+      setCreativeVisible(true);
+    }
 
     let rafId = 0;
     const observer = new MutationObserver(() => {
@@ -293,6 +345,10 @@ const AdSenseAd = ({
         if (isUnfilledAd(current)) {
           setVisible(false);
           if (typeof onNoFill === "function") onNoFill();
+          return;
+        }
+        if (hasDisplayCreative(current)) {
+          setCreativeVisible(true);
         }
       });
     });
@@ -333,8 +389,19 @@ const AdSenseAd = ({
       sx={{
         width: "100%",
         overflow: "hidden",
+        minHeight: 0,
         ...(reserveSpace ? { minHeight } : {}),
         ...sx,
+        ...(clipActive
+          ? {
+              maxHeight: 0,
+              minHeight: "0 !important",
+              mt: 0,
+              mb: 0,
+              my: 0,
+              py: 0,
+            }
+          : {}),
       }}
       style={style}
     >

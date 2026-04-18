@@ -26,7 +26,11 @@ const Section1 = (data) => {
     { image: "/assets/images/banners/s3.png" },
     { image: "/assets/images/banners/banner-4.png" },
     { image: "/assets/images/banners/banner-5.png" },
-  ];  
+  ];
+  const heroSlideCount =
+    data.slidersListLocal.length > 0
+      ? data.slidersListLocal.length
+      : defaultDummyImages.length;
   const carouselStyles = {
     overflow: "hidden",
     borderRadius: "3px",
@@ -115,7 +119,7 @@ const Section1 = (data) => {
             <Grid item md={9} xs={12} sx={{ order: { xs: 1, md: 1 } }}>
               <Carousel
                 spacing="0px"
-                totalSlides={5}
+                totalSlides={heroSlideCount}
                 infinite={true}
                 showDots={true}
                 autoPlay={true}
