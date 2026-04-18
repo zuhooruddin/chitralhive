@@ -1,8 +1,7 @@
 import CallOutlined from "@mui/icons-material/CallOutlined";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import LogOut from "@mui/icons-material/LogOut";
 import MailOutline from "@mui/icons-material/MailOutline";
-import LogoutIcon from '@mui/icons-material/Logout';
+import LogoutIcon from "@mui/icons-material/Logout";
 import LoginIcon from '@mui/icons-material/Login';
 import { Box, Container, MenuItem, styled } from "@mui/material";
 import BazaarImage from "components/BazaarImage";

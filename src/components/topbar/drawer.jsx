@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { CallOutlined, ExpandMore, MailOutline,LogOut } from "@mui/icons-material";
+import { CallOutlined, MailOutline } from "@mui/icons-material";
 
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import { Span } from "components/Typography";
