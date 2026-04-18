@@ -1,4 +1,7 @@
-import { CallOutlined, ExpandMore, MailOutline, LogOut } from "@mui/icons-material";
+import CallOutlined from "@mui/icons-material/CallOutlined";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import LogOut from "@mui/icons-material/LogOut";
+import MailOutline from "@mui/icons-material/MailOutline";
 import LogoutIcon from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
 import { Box, Container, MenuItem, styled } from "@mui/material";
@@ -15,7 +18,7 @@ import DrawerComponent from "components/topbar/drawer";
 import { toast } from 'react-toastify';
 import ReactModal from 'react-modal'; 
 import CloseIcon from '@mui/icons-material/Close';
-import { IconButton } from '@mui/material';
+import IconButton from "@mui/material/IconButton";
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 const TopbarWrapper = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'bgColor' && prop !== 'color',

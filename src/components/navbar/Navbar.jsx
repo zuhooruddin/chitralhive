@@ -1,10 +1,8 @@
-import {
-  ArrowLeft,
-  ChevronLeft,
-  ChevronRight,
-  KeyboardArrowDown,
-} from "@mui/icons-material";
+import ArrowLeft from "@mui/icons-material/ArrowLeft";
 import ArrowRight from "@mui/icons-material/ArrowRight";
+import ChevronLeft from "@mui/icons-material/ChevronLeft";
+import ChevronRight from "@mui/icons-material/ChevronRight";
+import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
 import { Box, Container, MenuItem, styled, keyframes } from "@mui/material";
 import BazaarButton from "components/BazaarButton";
 import BazaarCard from "components/BazaarCard";

@@ -27,7 +27,7 @@ const ImageWrapper = styled(Box)(() => ({
   height: "100%",
   zIndex: 0,
   "& img": {
-    objectFit: "cover",
+    objectFit: "contain",
   },
 }));
 
@@ -51,7 +51,14 @@ const CarouselCard4 = ({
   // Note: fetchPriority is not available in Next.js 12, so we use link preload as a workaround
   
   return (
-    <div style={{ position: "relative", width: "100%", aspectRatio: "16/9" }}>
+    <Box
+      sx={{
+        position: "relative",
+        width: "100%",
+        // Wide hero ratio + contain avoids cropping typical slider artwork (was 16/9 + cover).
+        aspectRatio: { xs: "16 / 10", sm: "2 / 1", md: "5 / 2" },
+      }}
+    >
       <CardWrapper mode={mode}>
         {bgImage && (
           <ImageWrapper>
@@ -62,7 +69,7 @@ const CarouselCard4 = ({
               priority={priority}
               quality={60}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1920px"
-              style={{ objectFit: "cover" }}
+              style={{ objectFit: "contain" }}
               loading={priority ? "eager" : "lazy"}
               placeholder="blur"
               blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2YwZjBmMCIvPjwvc3ZnPg=="
@@ -73,7 +80,7 @@ const CarouselCard4 = ({
           {content}
         </ContentWrapper>
       </CardWrapper>
-    </div>
+    </Box>
   );
 };
 

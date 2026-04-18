@@ -154,6 +154,20 @@ const App = ({
   }, []);
 
   const adsenseClient = process.env.NEXT_PUBLIC_ADSENSE_CLIENT;
+  const gaMeasurementId =
+    process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "G-VVDHZDQQZC";
+  const gaBootstrapScript = `(function(){
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  window.gtag = gtag;
+  gtag('js', new Date());
+  gtag('config', ${JSON.stringify(gaMeasurementId)}, {
+    page_path: window.location.pathname,
+    page_location: window.location.href,
+    send_page_view: true,
+    transport_type: 'beacon'
+  });
+})();`;
 
   const imgbaseurl = (process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL || "").replace(/\/?$/, "/");
 
@@ -210,6 +224,18 @@ const App = ({
               {/* Canonical link is handled by SEO component - removed duplicate */}
             </Head>
 
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(
+                gaMeasurementId
+              )}`}
+              strategy="lazyOnload"
+            />
+            <Script
+              id="google-analytics-init"
+              strategy="lazyOnload"
+              dangerouslySetInnerHTML={{ __html: gaBootstrapScript }}
+            />
+
             {adsenseClient ? (
               <Script
                 id="google-adsense"
@@ -250,8 +276,7 @@ const App = ({
               <FloatingWhatsApp {...whatsappProps} />
             )}
 
-            {/* Load Google Analytics client-side only - component handles SSR check */}
-            {typeof window !== "undefined" && deferredUiReady && <GoogleAnalytics />}
+            <GoogleAnalytics />
 
             <SettingsProvider>
               <AppProvider>

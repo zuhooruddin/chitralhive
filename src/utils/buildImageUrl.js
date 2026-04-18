@@ -93,6 +93,25 @@ export function isLikelyValidHttpUrl(url) {
   }
 }
 
+/**
+ * Stricter check for Product JSON-LD / merchant listings: absolute URL, HTTPS,
+ * and a non-empty hostname (avoids values Google reports as invalid image URLs).
+ *
+ * @param {string|null|undefined} url
+ * @returns {boolean}
+ */
+export function isHttpsProductImageUrl(url) {
+  if (!url || typeof url !== "string") return false;
+  try {
+    const u = new URL(url.trim());
+    if (u.protocol !== "https:") return false;
+    if (!u.hostname || u.hostname.includes("..")) return false;
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 function normalizeBaseUrl(value) {
   if (!value || typeof value !== "string") return "";
 

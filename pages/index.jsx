@@ -8,10 +8,14 @@ import React, { useMemo } from "react";
 import apiNav from "utils/api/market-2";
 import api from "utils/api/fashion-shop-2";
 import LazySection from "components/LazySection";
+import HomeBlogCarousel from "components/HomeBlogCarousel";
+import { fetchPublishedBlogsPaged } from "utils/api/blog";
+
+const HOME_BLOG_PREVIEW_COUNT = 8;
 
 const AdBanner = dynamic(() => import("@/components/AdBanner"), {
   ssr: false,
-  loading: () => <div style={{ minHeight: 90 }} />,
+  loading: () => null,
 });
 import {
   DEFAULT_META_DESCRIPTION,
@@ -238,6 +242,8 @@ const IndexPage = (props) => {
         {/* <Section8 /> */}
       </Box>
 
+      <HomeBlogCarousel posts={props.homeBlogPosts || []} />
+
       {/* <Setting /> */}
     </ShopLayout1>
   );
@@ -264,6 +270,7 @@ export async function getStaticProps(context) {
       ProductReviews,
       GeneralSetting,
       footerData,
+      blogHomePreview,
     ] = await Promise.all([
       apiNav.getNavCategories(),
       api.getBrandBundles(),
@@ -275,7 +282,11 @@ export async function getStaticProps(context) {
       api.getSlidersFromLocal(),
       apiNav.getReviews(),
       api.getGeneralSetting(),
-      api.getFooterItem()
+      api.getFooterItem(),
+      fetchPublishedBlogsPaged(1, HOME_BLOG_PREVIEW_COUNT, "").catch(() => ({
+        results: [],
+        count: 0,
+      })),
     ]);
 
   ////////////////////////Section 1/////////////////////////
@@ -426,6 +437,9 @@ export async function getStaticProps(context) {
       ProductReviews,
       GeneralSetting,
       homeStructuredData: getHomePageStructuredData(GeneralSetting),
+      homeBlogPosts: Array.isArray(blogHomePreview?.results)
+        ? blogHomePreview.results
+        : [],
     },
     // Revalidate every 300 seconds (5 minutes) - ISR (Incremental Static Regeneration)
     // This means pages are cached and only regenerated every 5 minutes
@@ -444,6 +458,7 @@ export async function getStaticProps(context) {
         GeneralSetting: [],
         footerData: null,
         homeStructuredData: null,
+        homeBlogPosts: [],
       },
       revalidate: 300,
     };

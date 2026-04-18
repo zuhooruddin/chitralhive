@@ -1,12 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {
-  Add,
-  Favorite,
-  FavoriteBorder,
-  Remove,
-  RemoveRedEye,
-} from "@mui/icons-material";
+import Add from "@mui/icons-material/Add";
 import ShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import Favorite from "@mui/icons-material/Favorite";
+import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
+import Remove from "@mui/icons-material/Remove";
+import RemoveRedEye from "@mui/icons-material/RemoveRedEye";
 import { Box, Button, Chip, Divider, styled } from "@mui/material";
 import BazaarRating from "components/BazaarRating";
 import { FlexBetween, FlexBox } from "components/flex-box";

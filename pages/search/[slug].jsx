@@ -22,7 +22,7 @@ import dynamic from "next/dynamic";
 
 const AdBanner = dynamic(() => import("@/components/AdBanner"), {
   ssr: false,
-  loading: () => <div style={{ minHeight: 90 }} />,
+  loading: () => null,
 });
 
 const ProductSearchResult = (props) => {

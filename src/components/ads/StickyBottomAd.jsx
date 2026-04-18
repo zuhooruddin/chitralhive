@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 const AdBanner = dynamic(() => import("@/components/AdBanner"), {
   ssr: false,
-  loading: () => <div style={{ minHeight: 90 }} />,
+  loading: () => null,
 });
 
 const StickyBottomAd = ({

@@ -1,4 +1,5 @@
-import { KeyboardArrowDown, PersonOutline } from "@mui/icons-material";
+import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
+import PersonOutline from "@mui/icons-material/PersonOutline";
 import { Badge, Box, Dialog, Drawer, styled, keyframes } from "@mui/material";
 import Container from "@mui/material/Container";
 import IconButton from "@mui/material/IconButton";

@@ -256,10 +256,11 @@ const AdSenseAd = ({
       const el = insRef.current;
       if (!el) return;
 
-      const h = el.offsetHeight || 0;
-      const hasChildNodes = el.childNodes && el.childNodes.length > 0;
-
-      if (isUnfilledAd(el) || (h <= 1 && !hasChildNodes)) {
+      // Only hide on explicit unfilled / empty-completed signals from AdSense.
+      // Avoid `(height <= 1 && !childNodes)` — that often matches a slot that is
+      // still loading or queued for push, which caused a visible collapse before
+      // article/content below the ad rendered.
+      if (isUnfilledAd(el)) {
         setVisible(false);
         if (typeof onNoFill === "function") onNoFill();
       }

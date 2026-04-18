@@ -15,7 +15,7 @@ import { useState } from "react";
 
 const AdBanner = dynamic(() => import("@/components/AdBanner"), {
   ssr: false,
-  loading: () => <div style={{ minHeight: 90 }} />,
+  loading: () => null,
 });
 
 const BlogPostPage = ({ post, allPosts }) => {
@@ -164,18 +164,7 @@ const BlogPostPage = ({ post, allPosts }) => {
 
           <Divider sx={{ mb: 4 }} />
 
-          {/* In-article ad (fluid) */}
-          {showInArticle && (
-            <AdBanner
-              slot={inArticleSlot}
-              format="fluid"
-              layout="in-article"
-              insStyle={{ textAlign: "center" }}
-              sx={{ mb: 4 }}
-            />
-          )}
-
-          {/* Content */}
+          {/* Content first so an unfilled / collapsing ad never sits above the body */}
           <Box
             component="div"
             sx={{
@@ -230,6 +219,17 @@ const BlogPostPage = ({ post, allPosts }) => {
             }}
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
+
+          {/* In-article ad (fluid) — after body so no-fill does not hide content below a spacer */}
+          {showInArticle && (
+            <AdBanner
+              slot={inArticleSlot}
+              format="fluid"
+              layout="in-article"
+              insStyle={{ textAlign: "center" }}
+              sx={{ mt: 4, mb: 4 }}
+            />
+          )}
 
           {/* Autorelaxed/Multiplex ad (typically below content) */}
           {showAutoRelaxed && (

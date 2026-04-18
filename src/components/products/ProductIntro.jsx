@@ -1,5 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Add, Remove, LocalShipping, VerifiedUser, Autorenew, ShoppingCartOutlined, FavoriteBorder, Share, Category } from "@mui/icons-material";
+import Add from "@mui/icons-material/Add";
+import Autorenew from "@mui/icons-material/Autorenew";
+import Category from "@mui/icons-material/Category";
+import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
+import LocalShipping from "@mui/icons-material/LocalShipping";
+import Remove from "@mui/icons-material/Remove";
+import Share from "@mui/icons-material/Share";
+import ShoppingCartOutlined from "@mui/icons-material/ShoppingCartOutlined";
+import VerifiedUser from "@mui/icons-material/VerifiedUser";
 import { Box, Grid, Chip, Divider, Tooltip, useTheme, IconButton, styled, keyframes } from "@mui/material";
 import BazaarAvatar from "components/BazaarAvatar";
 import BazaarButton from "components/BazaarButton";

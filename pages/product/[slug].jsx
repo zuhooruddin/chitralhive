@@ -14,7 +14,11 @@ import Link from "next/link";
 import StructuredData from "components/schema/StructuredData";
 import ProductReview from "components/products/ProductReview";
 import { generateProductBreadcrumb } from "utils/breadcrumbSchema";
-import { buildImageUrl, isLikelyValidHttpUrl } from "utils/buildImageUrl";
+import {
+  buildImageUrl,
+  isHttpsProductImageUrl,
+  isLikelyValidHttpUrl,
+} from "utils/buildImageUrl";
 import dynamic from "next/dynamic";
 import {
   getFrequentlyBought,
@@ -24,7 +28,7 @@ import api from "utils/api/market-2";
 
 const AdBanner = dynamic(() => import("@/components/AdBanner"), {
   ssr: false,
-  loading: () => <div style={{ minHeight: 90 }} />,
+  loading: () => null,
 });
 
 const StyledTabs = styled(Tabs)(({ theme }) => ({
@@ -182,6 +186,10 @@ const ProductDetails = (props) => {
   if (absoluteImageUrl && /^http:\/\//i.test(absoluteImageUrl)) {
     absoluteImageUrl = `https://${absoluteImageUrl.slice(7)}`;
   }
+  const schemaImageUrl =
+    absoluteImageUrl && isHttpsProductImageUrl(absoluteImageUrl)
+      ? absoluteImageUrl
+      : null;
 
   const skuForSchema =
     productDetails[0]["sku"] || productDetails[0]["aliasCode"] || "";
@@ -196,9 +204,7 @@ const ProductDetails = (props) => {
     "@type": "Product",
     "@id": productUrl,
     name: productDetails[0]["name"],
-    ...(absoluteImageUrl && isLikelyValidHttpUrl(absoluteImageUrl)
-      ? { image: [absoluteImageUrl] }
-      : {}),
+    ...(schemaImageUrl ? { image: [schemaImageUrl] } : {}),
     description: productDetails[0]["description"] || productDetails[0]["name"],
     sku: skuForSchema || undefined,
     brand: {
@@ -270,6 +276,10 @@ const ProductDetails = (props) => {
           "https://schema.org/MerchantReturnFiniteReturnWindow",
         merchantReturnDays: 14,
         merchantReturnLink: returnPolicyPageUrl,
+        // Recommended for merchant listings / finite window (Google Search Central)
+        returnMethod: "https://schema.org/ReturnByMail",
+        // Align with your published return policy if this should differ
+        returnFees: "https://schema.org/ReturnFeesCustomerResponsibility",
       },
     },
   };
@@ -472,7 +482,8 @@ const ProductDetails = (props) => {
         keywords={`${copyFriendlyProductName} Pakistan, Chitrali products Pakistan, Chitral Hive, buy ${copyFriendlyProductName} online Pakistan, authentic Chitrali products, Chitral specialties, ${copyFriendlyProductName} price in Pakistan, buy ${copyFriendlyProductName} in Karachi, buy ${copyFriendlyProductName} in Lahore`}
         canonical={`${baseurl.replace(/\/$/, "")}${slugbaseurl}${productDetails[0]["slug"]}`}
         image={
-          absoluteImageUrl && isLikelyValidHttpUrl(absoluteImageUrl)
+          schemaImageUrl ||
+          (absoluteImageUrl && isLikelyValidHttpUrl(absoluteImageUrl)
             ? absoluteImageUrl
             : imgbaseurl && productDetails[0]["imgUrl"]
               ? buildImageUrl(
@@ -480,7 +491,7 @@ const ProductDetails = (props) => {
                   imageBaseForSchema,
                   apiBase
                 ) || ""
-              : ""
+              : "")
         }
         type="product"
         price={productDetails[0]["salePrice"] || productDetails[0]["mrp"]}
