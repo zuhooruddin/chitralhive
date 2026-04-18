@@ -47,7 +47,15 @@ const nextConfig = {
 
   experimental: {
     optimizeCss: process.env.DISABLE_CSS_OPT !== "true",
-    optimizePackageImports: ["@mui/material", "@mui/icons-material", "lodash"],
+    optimizePackageImports: [
+      "@mui/material",
+      "@mui/icons-material",
+      "@mui/lab",
+      "@mui/system",
+      "lodash",
+      "date-fns",
+      "swr",
+    ],
   },
 
   productionBrowserSourceMaps:

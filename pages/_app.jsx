@@ -154,66 +154,7 @@ const App = ({
     };
   }, []);
 
-  // Load AdSense later to reduce TBT.
-  // This can slightly delay ad fill, but it measurably improves initial interactivity on mobile.
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const client = process.env.NEXT_PUBLIC_ADSENSE_CLIENT;
-    if (!client) return;
-    if (!deferredUiReady) return;
-
-    const existing = document.querySelector('script[src*="pagead/js/adsbygoogle.js"]');
-    if (existing) {
-      // If the script is already present (e.g. due to HMR or another injection),
-      // make sure we still expose a "loaded" signal for ad components.
-      if (window.__adsenseScriptLoaded !== true) {
-        window.__adsenseScriptLoaded = existing.getAttribute("data-adsense-loaded") === "true";
-      }
-      if (!window.__adsenseScriptReady) {
-        window.__adsenseScriptReady = new Promise((resolve, reject) => {
-          if (window.__adsenseScriptLoaded === true) return resolve(true);
-          existing.addEventListener("load", () => {
-            window.__adsenseScriptLoaded = true;
-            existing.setAttribute("data-adsense-loaded", "true");
-            resolve(true);
-          });
-          existing.addEventListener("error", (e) => reject(e));
-        });
-      }
-      return;
-    }
-
-    const load = () => {
-      const s = document.createElement("script");
-      s.async = true;
-      s.defer = true;
-      s.crossOrigin = "anonymous";
-      s.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${client}`;
-      if ("fetchPriority" in s) s.fetchPriority = "low";
-      s.setAttribute("data-adsense-loaded", "false");
-
-      window.__adsenseScriptLoaded = false;
-      window.__adsenseScriptReady = new Promise((resolve, reject) => {
-        s.addEventListener("load", () => {
-          window.__adsenseScriptLoaded = true;
-          s.setAttribute("data-adsense-loaded", "true");
-          resolve(true);
-        });
-        s.addEventListener("error", (e) => {
-          window.__adsenseScriptLoaded = false;
-          reject(e);
-        });
-      });
-
-      document.head.appendChild(s);
-    };
-
-    if ("requestIdleCallback" in window) {
-      window.requestIdleCallback(load, { timeout: 2500 });
-    } else {
-      window.setTimeout(load, 1500);
-    }
-  }, [deferredUiReady]);
+  const adsenseClient = process.env.NEXT_PUBLIC_ADSENSE_CLIENT;
 
   const imgbaseurl = (process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL || "").replace(/\/?$/, "/");
 
@@ -270,19 +211,39 @@ const App = ({
               {/* Canonical link is handled by SEO component - removed duplicate */}
             </Head>
 
-            {typeof window !== "undefined" && deferredUiReady && (
+            {adsenseClient ? (
               <Script
-                id="microsoft-clarity"
-                strategy="lazyOnload"
-                dangerouslySetInnerHTML={{
-                  __html: `(function(c,l,a,r,i,t,y){
+                id="google-adsense"
+                src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${encodeURIComponent(
+                  adsenseClient
+                )}`}
+                strategy="afterInteractive"
+                crossOrigin="anonymous"
+                onLoad={() => {
+                  if (typeof window === "undefined") return;
+                  window.__adsenseScriptLoaded = true;
+                  const el = document.querySelector('script[src*="pagead/js/adsbygoogle.js"]');
+                  if (el) el.setAttribute("data-adsense-loaded", "true");
+                }}
+                onError={() => {
+                  if (typeof window !== "undefined") {
+                    window.__adsenseScriptLoaded = false;
+                  }
+                }}
+              />
+            ) : null}
+
+            <Script
+              id="microsoft-clarity"
+              strategy="lazyOnload"
+              dangerouslySetInnerHTML={{
+                __html: `(function(c,l,a,r,i,t,y){
   c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
   t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
   y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
 })(window, document, "clarity", "script", "wazku25yzp");`,
-                }}
-              />
-            )}
+              }}
+            />
             {/* Loader removed - no popup on page load */}
 
             {/* Lazy load FloatingWhatsApp - ssr: false ensures client-side only */}
