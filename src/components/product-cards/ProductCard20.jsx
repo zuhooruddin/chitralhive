@@ -3,7 +3,7 @@ import { Box, Button, IconButton, Rating, styled } from "@mui/material";
 import { Chip} from "@mui/material";
 import { Add,  Remove} from "@mui/icons-material";
 import BazaarButton from "components/BazaarButton";
-import { H1, H2, H3,H4,H5, H6 } from "components/Typography";
+import { H3, Span } from "components/Typography";
 import ProductViewDialog from "components/products/ProductViewDialog";
 import {  Paragraph, Small } from "components/Typography";
 import { useAppContext } from "contexts/AppContext";
@@ -260,8 +260,8 @@ const total=Reviews.length;
                           <Image
                             src={imgbaseurl + product.image}
                             alt={product.name || "Product"}
-                            layout="fill"
-                            objectFit="contain"
+                            fill
+                            style={{ objectFit: "contain" }}
                             sizes="(max-width: 600px) 55vw, (max-width: 1200px) 33vw, 300px"
                             quality={75}
                             className="product-img"
@@ -314,7 +314,7 @@ const total=Reviews.length;
 
      
         
-          <H5 fontWeight={900} py={0.5} textAlign="center">
+          <Span display="block" fontWeight={900} py={0.5} textAlign="center">
           <FlexBox alignItems="center" gap={1} mt={0.5} textAlign="center" flexDirection= "column">
               <Box fontWeight="600" color="primary.main" sx={{
                 textAlign: 'center',
@@ -345,7 +345,7 @@ const total=Reviews.length;
 
            
             </FlexBox>
-          </H5>
+          </Span>
 
           <FlexRowCenter gap={1} mb={2}>
           <Rating
@@ -550,8 +550,8 @@ product.isNewArrival === 1 && product.stock > "0.00" ? (
                           <Image
                             src={imgbaseurl + product.image}
                             alt={product.name || "Product"}
-                            layout="fill"
-                            objectFit="contain"
+                            fill
+                            style={{ objectFit: "contain" }}
                             sizes="(max-width: 600px) 55vw, (max-width: 1200px) 33vw, 300px"
                             quality={75}
                             className="product-img"
@@ -593,7 +593,7 @@ product.isNewArrival === 1 && product.stock > "0.00" ? (
           <Paragraph style={{ "lineHeight": "1.5em", "height": "3em", "overflow": "hidden" }}>{product.name}</Paragraph>
 
      
-          <H5 fontWeight={900} py={0.5} textAlign="center">
+          <Span display="block" fontWeight={900} py={0.5} textAlign="center">
           <FlexBox alignItems="center" gap={1} mt={0.5} textAlign="center" flexDirection= "column">
               <Box fontWeight="600" color="primary.main" sx={{
                 textAlign: 'center',
@@ -624,7 +624,7 @@ product.isNewArrival === 1 && product.stock > "0.00" ? (
 
            
             </FlexBox>
-          </H5>
+          </Span>
 
           {/* <FlexRowCenter gap={1} mb={2}>
           <Rating

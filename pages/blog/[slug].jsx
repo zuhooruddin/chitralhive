@@ -9,10 +9,14 @@ import Link from "next/link";
 import StructuredData from "components/schema/StructuredData";
 import { generateBlogBreadcrumb } from "utils/breadcrumbSchema";
 import { fetchPublishedBlog, fetchPublishedBlogs } from "utils/api/blog";
-import AdSenseAd from "components/ads/AdSenseAd";
 import StickyBottomAd from "components/ads/StickyBottomAd";
-
+import dynamic from "next/dynamic";
 import { useState } from "react";
+
+const AdBanner = dynamic(() => import("@/components/AdBanner"), {
+  ssr: false,
+  loading: () => <div style={{ minHeight: 90 }} />,
+});
 
 const BlogPostPage = ({ post, allPosts }) => {
   const adsenseClient = process.env.NEXT_PUBLIC_ADSENSE_CLIENT;
@@ -162,7 +166,7 @@ const BlogPostPage = ({ post, allPosts }) => {
 
           {/* In-article ad (fluid) */}
           {showInArticle && (
-            <AdSenseAd
+            <AdBanner
               slot={inArticleSlot}
               format="fluid"
               layout="in-article"
@@ -229,7 +233,7 @@ const BlogPostPage = ({ post, allPosts }) => {
 
           {/* Autorelaxed/Multiplex ad (typically below content) */}
           {showAutoRelaxed && (
-            <AdSenseAd
+            <AdBanner
               slot={autoRelaxedSlot}
               format="autorelaxed"
               sx={{ mt: 4 }}

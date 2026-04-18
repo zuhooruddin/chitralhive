@@ -18,7 +18,12 @@ import { H1, Paragraph } from "components/Typography";
 import { useCallback, useState } from "react";
 import api from "utils/api/market-2";
 import { SHILAJIT_KEYWORD_PHRASES, SITE_URL } from "utils/seoConstants";
-import AdSenseAd from "components/ads/AdSenseAd";
+import dynamic from "next/dynamic";
+
+const AdBanner = dynamic(() => import("@/components/AdBanner"), {
+  ssr: false,
+  loading: () => <div style={{ minHeight: 90 }} />,
+});
 
 const ProductSearchResult = (props) => {
   const {catSlug,ProductReviews} = props;
@@ -148,7 +153,7 @@ const ProductSearchResult = (props) => {
         </Card>
 
         {showFluidAd && (
-          <AdSenseAd
+          <AdBanner
             slot={fluidSlot}
             format="fluid"
             sx={{ maxWidth: 900, width: "100%", mx: "auto", mb: 3 }}

@@ -37,7 +37,13 @@ const ProductCard19 = ({ image, title, price, id }) => {
           bgcolor="grey.300"
           sx={{ position: "relative", width: 100, height: 100, overflow: "hidden" }}
         >
-          <BazaarImage fill alt="product" src={image} style={{ objectFit: "contain" }} />
+          <BazaarImage
+            fill
+            alt={title ? `Product: ${title}` : "Product thumbnail"}
+            src={image}
+            style={{ objectFit: "contain" }}
+            sizes="100px"
+          />
         </Box>
 
       </Link>

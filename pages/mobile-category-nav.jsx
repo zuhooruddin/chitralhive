@@ -147,11 +147,8 @@ const MobileCategoryNav = (props) => {
             <Grid container spacing={3}>
               {subCategoryList.map((item, ind) => (
                 <Grid item lg={1} md={2} sm={3} xs={4} key={item.href}>
-                  <a href={item.href}></a>
                   <Link href={item.href}>
-
                     <MobileCategoryImageBox {...item.icon} />
-
                   </Link>
                 </Grid>
               ))}

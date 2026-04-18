@@ -24,7 +24,12 @@ import ShopLayout1 from "components/layouts/ShopLayout1";
 import PaginationLinks from "components/PaginationLinks";
 import SEO from "components/SEO";
 import { H1, Paragraph } from "components/Typography";
-import AdSenseAd from "components/ads/AdSenseAd";
+import dynamic from "next/dynamic";
+
+const AdBanner = dynamic(() => import("@/components/AdBanner"), {
+  ssr: false,
+  loading: () => <div style={{ minHeight: 90 }} />,
+});
 import LazyImage from "components/LazyImage";
 import format from "date-fns/format";
 import {
@@ -488,7 +493,7 @@ const BlogPage = ({ posts, totalCount, page, categories, activeCategory, initial
           </Paper>
         )}
 
-        {showSidebarAd && <AdSenseAd slot={sidebarSlot} sx={{ mt: 3 }} />}
+        {showSidebarAd && <AdBanner slot={sidebarSlot} sx={{ mt: 3 }} />}
 
         {totalCount > 0 && totalPages > 1 && (
           <Box sx={{ display: "flex", justifyContent: "center", mt: 5 }}>

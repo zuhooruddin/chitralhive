@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import Image from "components/BazaarImage";
 import { FlexBetween, FlexBox } from "components/flex-box";
-import { H5, Span } from "components/Typography";
+import { Span, Paragraph } from "components/Typography";
 import { useAppContext } from "contexts/AppContext";
 import Link from "next/link";
 import React, { useCallback, useState } from "react";
@@ -204,17 +204,17 @@ const BundleCard9 = ({
             >
               <Link href={`/bundle/${slug}`}>
 
-                <H5 fontWeight="600" my="0.5rem">
+                <Paragraph fontWeight="600" my="0.5rem">
                   {name}
-                </H5>
+                </Paragraph>
 
               </Link>
   
   
               <FlexBox mt={1} mb={2} alignItems="center">
-                <H5 fontWeight={600} color="primary.main" mr={1}>
+                <Span fontWeight={600} color="primary.main" mr={1}>
                   Rs. {mrp?.toFixed(2)}
-                </H5>
+                </Span>
   
                 {!! discount && (
                   <Span fontWeight="600" color="grey.600">
@@ -270,9 +270,9 @@ const BundleCard9 = ({
                       <Remove fontSize="small" />
                     </Button>
   
-                    <H5 fontWeight="600" fontSize="15px" mx={1.5}>
+                    <Span fontWeight="600" fontSize="15px" mx={1.5}>
                       {cartItem.qty}
-                    </H5>
+                    </Span>
   
                     <Button
                       color="primary"
@@ -359,17 +359,17 @@ const BundleCard9 = ({
           >
             <Link href={`/bundle/${slug}`}>
 
-              <H5 fontWeight="600" my="0.5rem">
+              <Paragraph fontWeight="600" my="0.5rem">
                 {name}
-              </H5>
+              </Paragraph>
 
             </Link>
 
 
             <FlexBox mt={1} mb={2} alignItems="center">
-              <H5 fontWeight={600} color="primary.main" mr={1}>
+              <Span fontWeight={600} color="primary.main" mr={1}>
                 Rs. {mrp?.toFixed(2)}
-              </H5>
+              </Span>
 
               {!! discount && (
                 <Span fontWeight="600" color="grey.600">
@@ -425,9 +425,9 @@ const BundleCard9 = ({
                     <Remove fontSize="small" />
                   </Button>
 
-                  <H5 fontWeight="600" fontSize="15px" mx={1.5}>
+                  <Span fontWeight="600" fontSize="15px" mx={1.5}>
                     {cartItem.qty}
-                  </H5>
+                  </Span>
 
                   <Button
                     color="primary"

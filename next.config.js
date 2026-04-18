@@ -6,6 +6,8 @@
 
 // module.exports = nextConfig
 
+const path = require("path");
+
 // Webpack Bundle Analyzer (optional)
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALYZE === "true",
@@ -45,6 +47,7 @@ const nextConfig = {
 
   experimental: {
     optimizeCss: process.env.DISABLE_CSS_OPT !== "true",
+    optimizePackageImports: ["@mui/material", "@mui/icons-material", "lodash"],
   },
 
   productionBrowserSourceMaps:
@@ -60,11 +63,13 @@ const nextConfig = {
   },
 
   webpack: (config, { dev, isServer }) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      "@": path.join(__dirname, "src"),
+    };
+
     if (!isServer) {
       config.target = ["web", "es2020"];
-      config.resolve.alias = {
-        ...config.resolve.alias,
-      };
       config.resolve.fallback = {
         ...config.resolve.fallback,
       };
@@ -151,7 +156,7 @@ const nextConfig = {
           {
             key: "Content-Security-Policy",
             value:
-              "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://cdn.quilljs.com https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://googleads.g.doubleclick.net https://ep2.adtrafficquality.google https://*.adtrafficquality.google https://www.clarity.ms https://scripts.clarity.ms; style-src 'self' 'unsafe-inline' https://cdn.quilljs.com https://unpkg.com https://cdn.jsdelivr.net; font-src 'self' data:; img-src 'self' data: https: blob:; media-src 'self' data: https:; connect-src 'self' https://www.google-analytics.com https://api.chitralhive.com https://admin.chitralhive.com https://chitralhive.com https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://googleads.g.doubleclick.net https://ep1.adtrafficquality.google https://*.adtrafficquality.google https://www.clarity.ms https://scripts.clarity.ms https://i.clarity.ms https://v.clarity.ms; frame-src 'self' https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://googleads.g.doubleclick.net https://ep2.adtrafficquality.google https://*.adtrafficquality.google https://www.google.com; object-src 'self' data:; frame-ancestors 'none';",
+              "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://cdn.quilljs.com https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://googleads.g.doubleclick.net https://ep2.adtrafficquality.google https://*.adtrafficquality.google https://www.clarity.ms https://scripts.clarity.ms https://fundingchoicesmessages.google.com; style-src 'self' 'unsafe-inline' https://cdn.quilljs.com https://unpkg.com https://cdn.jsdelivr.net; font-src 'self' data:; img-src 'self' data: https: blob:; media-src 'self' data: https:; connect-src 'self' https://www.google-analytics.com https://api.chitralhive.com https://admin.chitralhive.com https://chitralhive.com https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://googleads.g.doubleclick.net https://ep1.adtrafficquality.google https://*.adtrafficquality.google https://www.clarity.ms https://scripts.clarity.ms https://i.clarity.ms https://v.clarity.ms https://b.clarity.ms; frame-src 'self' https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://googleads.g.doubleclick.net https://ep2.adtrafficquality.google https://*.adtrafficquality.google https://www.google.com; object-src 'self' data:; frame-ancestors 'none';",
           },
           {
             key: "Strict-Transport-Security",

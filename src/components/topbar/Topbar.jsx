@@ -3,6 +3,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
 import { Box, Container, MenuItem, styled } from "@mui/material";
 import BazaarImage from "components/BazaarImage";
+import { buildImageUrl } from "utils/buildImageUrl";
 import { FlexBox } from "components/flex-box";
 import { Span } from "components/Typography";
 // ThemeSwitcher removed from topbar
@@ -183,7 +184,21 @@ const Topbar = ({ bgColor,topbardata, color }) => {
   const rawApiBase = process.env.NEXT_PUBLIC_BACKEND_API_BASE || "";
   // Normalize to always have exactly one trailing slash for safe concatenation.
   const server_ip = rawApiBase ? rawApiBase.replace(/\/?$/, "/") : "";
-  const imgbaseurl = server_ip + "media/";
+  const imgbaseurl = server_ip ? `${server_ip}media/` : "";
+  const imageBaseUrl = process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL || "";
+  const apiBase = process.env.NEXT_PUBLIC_BACKEND_API_BASE || "";
+
+  const [topbarLogoFailed, setTopbarLogoFailed] = useState(false);
+  useEffect(() => {
+    setTopbarLogoFailed(false);
+  }, [topbardata?.[0]?.site_logo]);
+  const FALLBACK_TOPBAR_LOGO = "/assets/images/logos/webpack.png";
+  const topbarSiteLogoPath =
+    topbardata?.[0]?.site_logo && !topbarLogoFailed
+      ? buildImageUrl(topbardata[0].site_logo, imageBaseUrl, apiBase)
+      : null;
+  const topbarLogoSrc = topbarSiteLogoPath || FALLBACK_TOPBAR_LOGO;
+
     const handleSignOut = () => {tokenBlacklist()}
 
 
@@ -389,12 +404,13 @@ const Topbar = ({ bgColor,topbardata, color }) => {
                 <BazaarImage
                   height={28}
                   width={120}
-                  src={topbardata ? imgbaseurl + topbardata[0].site_logo : "/assets/images/logos/webpack.png"}
+                  src={topbarLogoSrc}
                   alt="Chitral Hive Logo"
                   style={{ objectFit: "contain" }}
                   priority
                   quality={85}
                   sizes="120px"
+                  onError={() => setTopbarLogoFailed(true)}
                 />
 
               </Link>
@@ -544,12 +560,13 @@ const Topbar = ({ bgColor,topbardata, color }) => {
                   <BazaarImage
                     height={28}
                     width={120}
-                    src={topbardata?imgbaseurl+topbardata[0].site_logo:'/assets/images/logos/webpack.png'}
+                    src={topbarLogoSrc}
                     alt="Chitral Hive Logo"
                     style={{ objectFit: "contain" }}
                     priority
                     quality={85}
                     sizes="120px"
+                    onError={() => setTopbarLogoFailed(true)}
                   />
                 </span>
               </Link>

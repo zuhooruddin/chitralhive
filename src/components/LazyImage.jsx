@@ -9,6 +9,7 @@ const LazyImage = styled(({ borderRadius, loading = "lazy", ...rest }) => {
     objectFit,
     layout, // legacy next/image prop
     fill, // modern prop
+    sizes,
     ...otherProps
   } = rest;
 
@@ -31,6 +32,10 @@ const LazyImage = styled(({ borderRadius, loading = "lazy", ...rest }) => {
       <NextImage
         loading={loading}
         fill
+        sizes={
+          sizes ||
+          "(max-width: 600px) 55vw, (max-width: 1200px) 33vw, 300px"
+        }
         {...otherProps}
         style={{
           ...style,

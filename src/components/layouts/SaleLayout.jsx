@@ -1,4 +1,4 @@
-import { Divider } from "@mui/material";
+import Divider from "@mui/material/Divider";
 import Footer from "components/footer/Footer";
 import Header from "components/header/Header";
 import MobileNavigationBar from "components/mobile-navigation/MobileNavigationBar";
@@ -7,6 +7,7 @@ import SaleNavbar from "components/navbar/SaleNavbar";
 import Sticky from "components/sticky/Sticky";
 import Topbar from "components/topbar/Topbar";
 import { Fragment } from "react"; // icons
+import { layoutConstant } from "utils/constants";
 
 import BabyFeeder from "components/icons/BabyFeeder";
 import BasketBall from "components/icons/BasketBall";
@@ -47,7 +48,12 @@ const SaleLayout = ({ children, title, type }) => (
           <SaleNavbar saleCategoryList={saleCategoryList} />
         </Sticky>
 
-        <div className="section-after-sticky">{children}</div>
+        <div
+          className="section-after-sticky"
+          style={{ minHeight: layoutConstant.headerHeight }}
+        >
+          {children}
+        </div>
       </Fragment>
     )}
 

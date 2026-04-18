@@ -15,13 +15,17 @@ import StructuredData from "components/schema/StructuredData";
 import ProductReview from "components/products/ProductReview";
 import { generateProductBreadcrumb } from "utils/breadcrumbSchema";
 import { buildImageUrl, isLikelyValidHttpUrl } from "utils/buildImageUrl";
-import AdSenseAd from "components/ads/AdSenseAd";
-
+import dynamic from "next/dynamic";
 import {
   getFrequentlyBought,
   getRelatedProducts,
 } from "utils/api/related-products";
 import api from "utils/api/market-2";
+
+const AdBanner = dynamic(() => import("@/components/AdBanner"), {
+  ssr: false,
+  loading: () => <div style={{ minHeight: 90 }} />,
+});
 
 const StyledTabs = styled(Tabs)(({ theme }) => ({
   minHeight: 0,
@@ -504,7 +508,7 @@ const ProductDetails = (props) => {
 
         {/* Product intro ad */}
         {showFluidAd && (
-          <AdSenseAd
+          <AdBanner
             slot={fluidSlot}
             format="fluid"
             sx={{ maxWidth: 900, width: "100%", mx: "auto", mt: 2, mb: 2 }}

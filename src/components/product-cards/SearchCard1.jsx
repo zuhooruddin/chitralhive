@@ -5,7 +5,7 @@ import { Box, Button, Chip, IconButton, styled, Rating } from "@mui/material";
 import BazaarCard from "components/BazaarCard";
 import LazyImage from "components/LazyImage";
 import ProductViewDialog from "components/products/ProductViewDialog";
-import { H3, H4, H5, Span } from "components/Typography";
+import { H3, Span } from "components/Typography";
 import { useAppContext } from "contexts/AppContext";
 import Link from "next/link";
 import { Fragment, useCallback, useEffect, useState } from "react";
@@ -321,8 +321,8 @@ const SearchCard1 = ({
               <Image
                 src={imgbaseurl + image}
                 alt={name || "Product"}
-                layout="fill"
-                objectFit="contain"
+                fill
+                style={{ objectFit: "contain" }}
                 sizes="(max-width: 600px) 55vw, (max-width: 1200px) 33vw, 300px"
                 quality={75}
                 className="product-img"
@@ -334,12 +334,14 @@ const SearchCard1 = ({
           <AddToCartButton
             className="product-actions"
             onClick={() => setOpenDialog(true)}
+            aria-label={name ? `View product: ${name}` : "View product details"}
           >
             <RemoveRedEye color="disabled" fontSize="small" />
           </AddToCartButton>
           <FavouriteButton
             className="product-actions"
             onClick={() => addwishtlist()}
+            aria-label={isFavorite ? `Remove ${name} from wishlist` : `Add ${name} to wishlist`}
           >
             {isFavorite ? (
               <Favorite color="primary" fontSize="small" />
@@ -371,7 +373,7 @@ const SearchCard1 = ({
             {name}
           </Paragraph>
 
-          <H4 fontWeight={700} py={0.5}>
+          <Box component="div" fontWeight={700} py={0.5}>
             <FlexBox
               alignItems="center"
               gap={1}
@@ -390,7 +392,7 @@ const SearchCard1 = ({
               >
                 {currency}. {isNaN(salePrice) ? '0.00' : salePrice.toFixed(2)}
                 {!!numericDiscount && numericDiscount > 0 && (
-                  <H5>
+                  <Span>
                     <Box
                       color="grey.600"
                       fontWeight="200"
@@ -403,11 +405,11 @@ const SearchCard1 = ({
                     >
                       <del>{currency}.{isNaN(discountprice) ? '0.00' : discountprice.toFixed(2)}</del>
                     </Box>
-                  </H5>
+                  </Span>
                 )}
               </Box>
             </FlexBox>
-          </H4>
+          </Box>
           <FlexRowCenter gap={1} mb={2}>
             <Rating
               name="read-only"
@@ -566,8 +568,8 @@ const SearchCard1 = ({
               <Image
                 src={imgbaseurl + image}
                 alt={name || "Product"}
-                layout="fill"
-                objectFit="contain"
+                fill
+                style={{ objectFit: "contain" }}
                 sizes="(max-width: 600px) 55vw, (max-width: 1200px) 33vw, 300px"
                 quality={75}
                 className="product-img"
@@ -579,6 +581,7 @@ const SearchCard1 = ({
           <AddToCartButton
             className="product-actions"
             onClick={() => setOpenDialog(true)}
+            aria-label={name ? `View product: ${name}` : "View product details"}
           >
             <RemoveRedEye color="disabled" fontSize="small" />
           </AddToCartButton>
@@ -606,7 +609,7 @@ const SearchCard1 = ({
             {name}
           </Paragraph>
 
-          <H4 fontWeight={700} py={0.5}>
+          <Box component="div" fontWeight={700} py={0.5}>
             <FlexBox
               alignItems="center"
               gap={1}
@@ -625,7 +628,7 @@ const SearchCard1 = ({
               >
                {currency}. {salePrice.toFixed(2)}
                 {!!discount && (
-                  <H5>
+                  <Span>
                     <Box
                       color="grey.600"
                       fontWeight="200"
@@ -638,11 +641,11 @@ const SearchCard1 = ({
                     >
                       <del>{currency}.{discountprice?.toFixed(2)}</del>
                     </Box>
-                  </H5>
+                  </Span>
                 )}
               </Box>
             </FlexBox>
-          </H4>
+          </Box>
           <FlexRowCenter gap={1} mb={2}>
             <Rating
               name="read-only"

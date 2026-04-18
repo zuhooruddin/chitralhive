@@ -1,9 +1,10 @@
-import { Box } from "@mui/material";
+import Box from "@mui/material/Box";
 import Header from "components/header/Header";
 import Navbar from "components/navbar/Navbar";
 import Sticky from "components/sticky/Sticky";
 import Topbar from "components/topbar/Topbar";
 import React, { Fragment, useCallback, useState } from "react";
+import { layoutConstant } from "utils/constants";
 /**
  *  Used in:
  *  1. grocery1, grocery2, healthbeauty-shop
@@ -26,7 +27,12 @@ const ShopLayout2 = ({ children, showTopbar = true, showNavbar = true }) => {
         <Header isFixed={isFixed} searchBoxType="type2" />
       </Sticky>
 
-      <Box zIndex={1} position="relative" className="section-after-sticky">
+      <Box
+        zIndex={1}
+        position="relative"
+        className="section-after-sticky"
+        sx={{ minHeight: layoutConstant.headerHeight }}
+      >
         {/* NAVIGATION BAR */}
         {showNavbar && <Navbar elevation={0} />}
 

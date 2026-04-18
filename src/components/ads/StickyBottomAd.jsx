@@ -1,7 +1,14 @@
-import { Box, IconButton, Paper } from "@mui/material";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import Paper from "@mui/material/Paper";
 import CloseIcon from "@mui/icons-material/Close";
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import AdSenseAd from "./AdSenseAd";
+
+const AdBanner = dynamic(() => import("@/components/AdBanner"), {
+  ssr: false,
+  loading: () => <div style={{ minHeight: 90 }} />,
+});
 
 const StickyBottomAd = ({
   slot,
@@ -74,7 +81,7 @@ const StickyBottomAd = ({
         </IconButton>
 
         <Box sx={{ p: 1.5, pt: 3.5 }}>
-          <AdSenseAd
+          <AdBanner
             slot={slot}
             format={format}
             layoutKey={layoutKey}

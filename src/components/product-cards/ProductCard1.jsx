@@ -5,7 +5,7 @@ import { Box, Button, Chip, IconButton, styled, Rating, keyframes } from "@mui/m
 import BazaarCard from "components/BazaarCard";
 import LazyImage from "components/LazyImage";
 import ProductViewDialog from "components/products/ProductViewDialog";
-import { H3, H4, H5, Span } from "components/Typography";
+import { H3, Span } from "components/Typography";
 import { useAppContext } from "contexts/AppContext";
 import Link from "next/link";
 import { Fragment, useCallback, useEffect, useState } from "react";
@@ -538,7 +538,7 @@ const ProductCard1 = ({
           {name}
         </Paragraph>
 
-        <H4 fontWeight={700} py={0.5}>
+        <Box component="div" fontWeight={700} py={0.5}>
           <FlexBox
             alignItems="center"
             gap={1}
@@ -575,7 +575,7 @@ const ProductCard1 = ({
               )}
             </Box>
           </FlexBox>
-        </H4>
+        </Box>
         
         <FlexRowCenter gap={1} mb={2}>
           <Rating

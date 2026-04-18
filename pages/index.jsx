@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
 import ShopLayout1 from "components/layouts/ShopLayout1";
 import SEO from "components/SEO";
@@ -8,7 +8,11 @@ import React, { useState, useEffect, useMemo } from "react";
 import apiNav from "utils/api/market-2";
 import api from "utils/api/fashion-shop-2";
 import LazySection from "components/LazySection";
-import AdSenseAd from "components/ads/AdSenseAd";
+
+const AdBanner = dynamic(() => import("@/components/AdBanner"), {
+  ssr: false,
+  loading: () => <div style={{ minHeight: 90 }} />,
+});
 import {
   DEFAULT_META_DESCRIPTION,
   SHILAJIT_KEYWORD_PHRASES,
@@ -26,39 +30,39 @@ const Section1 = dynamic(() => import("pages-sections/market-2/Section1"), {
 
 // Group frequently used sections together to reduce chunks
 const Section2 = dynamic(() => import("pages-sections/market-2/Section2"), { 
-  ssr: false,
+  ssr: true,
   loading: () => null,
 });
 const Section3 = dynamic(() => import("pages-sections/market-2/Section3"), { 
-  ssr: false,
+  ssr: true,
   loading: () => null,
 });
 const Section4 = dynamic(() => import("pages-sections/market-2/Section4"), { 
-  ssr: false,
+  ssr: true,
   loading: () => null,
 });
 const Section5 = dynamic(() => import("pages-sections/market-2/Section5"), { 
-  ssr: false,
+  ssr: true,
   loading: () => null,
 });
 const Section6 = dynamic(() => import("pages-sections/market-2/Section6"), { 
-  ssr: false,
+  ssr: true,
   loading: () => null,
 });
 const Section7 = dynamic(() => import("pages-sections/market-2/Section7"), { 
-  ssr: false,
+  ssr: true,
   loading: () => null,
 });
 const Section9 = dynamic(() => import("pages-sections/market-2/Section9"), { 
-  ssr: false,
+  ssr: true,
   loading: () => null,
 });
 const Section10 = dynamic(() => import("pages-sections/market-2/Section10"), { 
-  ssr: false,
+  ssr: true,
   loading: () => null,
 });
 const Section12 = dynamic(() => import("pages-sections/market-2/Section12"), { 
-  ssr: false,
+  ssr: true,
   loading: () => null,
 });
 
@@ -373,7 +377,7 @@ const IndexPage = (props) => {
             }
             rootMargin="0px"
           >
-            <AdSenseAd
+            <AdBanner
               slot={fluidSlot}
               format="fluid"
               sx={{ maxWidth: 900, mx: "auto", mt: { xs: 2, sm: 3 } }}

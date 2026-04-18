@@ -4,10 +4,11 @@ import MobileNavigationBar from "components/mobile-navigation/MobileNavigationBa
 import Sticky from "components/sticky/Sticky";
 import Topbar from "components/topbar/Topbar";
 import React, { Fragment, useCallback, useEffect, useState } from "react";
-import { Box } from "@mui/material";
+import Box from "@mui/material/Box";
 import Navbar from "components/navbar/Navbar";
 import useSWR from 'swr'
 import axios from 'axios';
+import { layoutConstant } from "utils/constants";
 
 
 /**
@@ -97,21 +98,21 @@ const ShopLayout1 = ({
       {/* TOPBAR */}
       {showTopbar && <Topbar bgColor={topbarBgColor} topbardata={data1 && data1.length > 0 ? data1 : null} />}
 
-      {/* HEADER
-          Avoid SSR/client hydration mismatches from media queries + scroll effects by
-          rendering a stable placeholder on SSR + first client render, then mounting
-          the real header after mount. */}
-      {mounted ? (
-        <Sticky fixedOn={0} onSticky={toggleIsFixed} scrollDistance={300}>
-          <Header isFixed={isFixed} headerdata={data1 && data1.length > 0 ? data1 : null} />
-        </Sticky>
-      ) : (
-        <div style={{ height: 88 }} aria-hidden="true" />
-      )}
+      {/* HEADER — always same DOM shape as SSR (Sticky + Header). Gating the whole header
+          behind `mounted` caused placeholder vs Sticky mismatches under HMR / edge cases.
+          Header already uses `useMediaQuery(..., { noSsr: true })` for layout stability. */}
+      <Sticky fixedOn={0} onSticky={toggleIsFixed} scrollDistance={300}>
+        <Header isFixed={isFixed} headerdata={data1 && data1.length > 0 ? data1 : null} />
+      </Sticky>
 
-      <div className="section-after-sticky">
+      <div
+        className="section-after-sticky"
+        style={{ minHeight: layoutConstant.headerHeight }}
+      >
         {/* NAVIGATION BAR */}
-        {showNavbar && (mounted ? <Navbar elevation={0} border={1} navCategories={navCategories} /> : <div style={{ height: 48 }} aria-hidden="true" />)}
+        {showNavbar && (
+          <Navbar elevation={0} border={1} navCategories={navCategories} />
+        )}
 
         {/* BODY CONTENT */}
         <main id="main-content" role="main">
@@ -123,13 +124,7 @@ const ShopLayout1 = ({
 
       <MobileNavigationBar />
 
-      {/* Keep SSR and first client render stable to avoid hydration errors. */}
-      {mounted ? (
-        <Footer footerData={data || null} />
-      ) : (
-        // Use a plain element (no emotion-generated className) to keep SSR markup identical.
-        <footer />
-      )}
+      <Footer footerData={data || null} />
     </Fragment>
   );
 };

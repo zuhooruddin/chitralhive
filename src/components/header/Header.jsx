@@ -184,6 +184,7 @@ const Header = ({ isFixed, headerdata, className, searchBoxType = "type2" }) => 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [sidenavOpen, setSidenavOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [headerLogoFailed, setHeaderLogoFailed] = useState(false);
   // Important: avoid SSR/client mismatch. Without `noSsr`, MUI can't evaluate media
   // queries during SSR and the header can hydrate into a different layout.
   const isMobile = useMediaQuery(theme.breakpoints.down("xs"), { noSsr: true });
@@ -205,6 +206,19 @@ const Header = ({ isFixed, headerdata, className, searchBoxType = "type2" }) => 
   const comopanyalt = process.env.NEXT_PUBLIC_LOGO_ALT_TEXT;
   const imageBaseUrl = process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL || "";
   const apiBase = process.env.NEXT_PUBLIC_BACKEND_API_BASE || "";
+
+  const headerLogoFromApi =
+    headerdata?.length > 0 && headerdata[0]?.site_logo
+      ? buildImageUrl(headerdata[0].site_logo, imageBaseUrl, apiBase)
+      : null;
+  const headerLogoSrc =
+    headerLogoFailed || !headerLogoFromApi
+      ? "/assets/images/logos/webpack.png"
+      : headerLogoFromApi;
+
+  useEffect(() => {
+    setHeaderLogoFailed(false);
+  }, [headerdata?.[0]?.site_logo]);
 
   return (
     <HeaderWrapper className={clsx(className, { scrolled })}>
@@ -247,13 +261,8 @@ const Header = ({ isFixed, headerdata, className, searchBoxType = "type2" }) => 
             <Image 
                 height={scrolled && isMobile ? 32 : 48} 
                 width={scrolled && isMobile ? 100 : 160}
-                src={
-                  headerdata && headerdata.length > 0 && headerdata[0]?.site_logo
-                    ? buildImageUrl(headerdata[0].site_logo, imageBaseUrl, apiBase) ||
-                      "/assets/images/logos/webpack.png"
-                    : "/assets/images/logos/webpack.png"
-                }
-              alt={comopanyalt || "Logo"}
+                src={headerLogoSrc}
+              alt={comopanyalt || "Chitral Hive logo"}
                 priority
                 quality={85}
                 style={{ 
@@ -267,6 +276,7 @@ const Header = ({ isFixed, headerdata, className, searchBoxType = "type2" }) => 
                   maxWidth: '100%',
                 }}
                 sizes="(max-width: 600px) 100px, (max-width: 960px) 120px, 160px"
+                onError={() => setHeaderLogoFailed(true)}
             />
             </LogoContainer>
 

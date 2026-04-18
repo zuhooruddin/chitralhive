@@ -118,6 +118,7 @@ export const H5 = ({
   className,
   ellipsis,
   textTransform,
+  component = "h5",
   ...props
 }) => {
   return (
@@ -127,13 +128,13 @@ export const H5 = ({
       className={clsx({
         [className || ""]: true,
       })}
-      component="h5"
       mb={0}
       mt={0}
       fontSize="16px"
       fontWeight="600"
       lineHeight="1.5"
       {...props}
+      component={component}
     >
       {children}
     </StyledBox>

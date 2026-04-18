@@ -4,15 +4,15 @@ import React from "react";
 import BazaarImage from "components/BazaarImage"; // custom styled components
 
 const CardWrapper = styled(Box)(({ theme, mode }) => ({
-  minHeight: 500,
-  position: "relative",
+  position: "absolute",
+  inset: 0,
+  minHeight: 0,
   display: "flex",
   alignItems: "center",
   overflow: "hidden",
   backgroundColor: mode === "dark" ? "#000" : "#fff",
   color: mode === "light" ? theme.palette.dark.main : "#fff",
   [theme.breakpoints.down("md")]: {
-    minHeight: 200,
     justifyContent: "center",
     padding: theme.spacing(2),
     textAlign: "center",
@@ -39,32 +39,41 @@ const ContentWrapper = styled(Box)(() => ({
 })); // ===============================================================
 
 // ===============================================================
-const CarouselCard4 = ({ bgImage, mode = "dark", content, priority = false, fetchPriority = "auto" }) => {
+const CarouselCard4 = ({
+  bgImage,
+  mode = "dark",
+  content,
+  priority = false,
+  fetchPriority = "auto",
+  alt = "Homepage promotional banner",
+}) => {
   // Use Next.js Image component for automatic optimization, WebP/AVIF conversion, and lazy loading
   // Note: fetchPriority is not available in Next.js 12, so we use link preload as a workaround
   
   return (
-    <CardWrapper mode={mode}>
-      {bgImage && (
-        <ImageWrapper>
-          <BazaarImage
-            src={bgImage}
-            alt="Carousel banner"
-            fill
-            priority={priority}
-            quality={60}
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1920px"
-            style={{ objectFit: "cover" }}
-            loading={priority ? "eager" : "lazy"}
-            placeholder="blur"
-            blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2YwZjBmMCIvPjwvc3ZnPg=="
-          />
-        </ImageWrapper>
-      )}
-      <ContentWrapper>
-        {content}
-      </ContentWrapper>
-    </CardWrapper>
+    <div style={{ position: "relative", width: "100%", aspectRatio: "16/9" }}>
+      <CardWrapper mode={mode}>
+        {bgImage && (
+          <ImageWrapper>
+            <BazaarImage
+              src={bgImage}
+              alt={alt}
+              fill
+              priority={priority}
+              quality={60}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1920px"
+              style={{ objectFit: "cover" }}
+              loading={priority ? "eager" : "lazy"}
+              placeholder="blur"
+              blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2YwZjBmMCIvPjwvc3ZnPg=="
+            />
+          </ImageWrapper>
+        )}
+        <ContentWrapper>
+          {content}
+        </ContentWrapper>
+      </CardWrapper>
+    </div>
   );
 };
 

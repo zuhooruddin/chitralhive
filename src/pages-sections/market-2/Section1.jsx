@@ -139,6 +139,7 @@ const Section1 = (data) => {
       bgImage={imgbaseurl + slider.image}
       priority={index === 0} // Mark first slider as priority for LCP
       fetchPriority={index === 0 ? "high" : "auto"}
+      alt={`Homepage hero banner, slide ${index + 1}`}
     />
   ))
 ) : (
@@ -150,6 +151,7 @@ const Section1 = (data) => {
       bgImage={dummyImage.image}
       priority={index === 0}
       fetchPriority={index === 0 ? "high" : "auto"}
+      alt={`Homepage hero banner placeholder, slide ${index + 1}`}
     />
   ))
 )}
