@@ -105,8 +105,9 @@ const CategoryMenuCard = (props) => {
     }
   );
 
-  // Use navCategories prop if available, otherwise use fetched data
-  const categoriesToDisplay = navCategories || data || [];
+  // Prefer live API data for mega menus; props are SSR / slim-payload fallback.
+  const categoriesToDisplay =
+    Array.isArray(data) && data.length > 0 ? data : navCategories || [];
   const hasCategories = categoriesToDisplay && categoriesToDisplay.length > 0;
   const shouldShow = open && (hasCategories || isLoading || error);
 

@@ -13,7 +13,6 @@ import {
   slimBlogPostsForHome,
   slimFooterData,
   slimGeneralSettings,
-  slimNavCategories,
   slimProductArray,
   slimProductBundles,
   slimProductReviewsForHome,
@@ -394,7 +393,7 @@ export async function getStaticProps(context) {
 
   return {
     props: {
-      navCategories: slimNavCategories(navCategories),
+      navCategories,
       products: slimProductArray(normalizedProducts, 20),
       product: slimProductArray(normalizedProduct, 20),
       featuredCatalog: slimProductArray(

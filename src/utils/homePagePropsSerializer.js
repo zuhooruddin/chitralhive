@@ -10,7 +10,6 @@ const MAX_FEATURED_CATALOG = 36;
 const MAX_REVIEWS = 450;
 const MAX_BLOG_EXCERPT = 360;
 const MAX_SLIDES = 10;
-const MAX_NAV_TOP = 45;
 
 const PRODUCT_CARD_KEYS = [
   "id",
@@ -200,40 +199,4 @@ export function slimSliderList(list) {
     slug: s.slug,
     image: s.image,
   }));
-}
-
-function slimNavNode(node, depth) {
-  if (!node || typeof node !== "object" || depth > 4) return null;
-  const o = {};
-  const keys = [
-    "id",
-    "name",
-    "title",
-    "slug",
-    "icon",
-    "image",
-    "href",
-    "url",
-    "megaMenu",
-    "category_slug",
-    "category_name",
-  ];
-  for (const k of keys) {
-    if (node[k] !== undefined) o[k] = node[k];
-  }
-  const childKeys = ["children", "subCategories"];
-  for (const ck of childKeys) {
-    if (Array.isArray(node[ck])) {
-      o[ck] = node[ck]
-        .slice(0, 35)
-        .map((c) => slimNavNode(c, depth + 1))
-        .filter(Boolean);
-    }
-  }
-  return o;
-}
-
-export function slimNavCategories(cats) {
-  if (!Array.isArray(cats)) return [];
-  return cats.slice(0, MAX_NAV_TOP).map((c) => slimNavNode(c, 0)).filter(Boolean);
 }

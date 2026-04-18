@@ -52,6 +52,7 @@ const nextConfig = {
       "@mui/icons-material",
       "@mui/lab",
       "@mui/system",
+      "@mui/x-date-pickers",
       "lodash",
       "date-fns",
       "swr",
