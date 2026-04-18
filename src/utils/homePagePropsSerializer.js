@@ -33,6 +33,16 @@ function trimStr(s, max) {
   return s.length <= max ? s : s.slice(0, max);
 }
 
+/** Next.js getStaticProps must not return `undefined` anywhere in props (JSON). */
+function omitUndefined(obj) {
+  if (!obj || typeof obj !== "object") return obj;
+  const o = {};
+  for (const [k, v] of Object.entries(obj)) {
+    if (v !== undefined) o[k] = v;
+  }
+  return o;
+}
+
 export function slimHomepageProduct(p) {
   if (!p || typeof p !== "object") return p;
   const o = {};
@@ -55,10 +65,14 @@ export function slimProductReviewsForHome(raw) {
   if (!raw || typeof raw !== "object") return { Reviews: [] };
   const Reviews = Array.isArray(raw.Reviews) ? raw.Reviews : [];
   return {
-    Reviews: Reviews.slice(0, MAX_REVIEWS).map((r) => ({
-      itemid_id: r.itemid_id,
-      rating: r.rating,
-    })),
+    Reviews: Reviews.slice(0, MAX_REVIEWS)
+      .map((r) =>
+        omitUndefined({
+          itemid_id: r.itemid_id,
+          rating: r.rating,
+        })
+      )
+      .filter((r) => Object.keys(r).length > 0),
   };
 }
 
@@ -69,7 +83,7 @@ export function slimBlogPostsForHome(posts, maxPosts) {
     const rawDesc = post.description || post.excerpt || "";
     const description =
       typeof rawDesc === "string" ? trimStr(rawDesc, MAX_BLOG_EXCERPT) : rawDesc;
-    return {
+    return omitUndefined({
       slug: post.slug,
       title: post.title,
       description,
@@ -86,7 +100,7 @@ export function slimBlogPostsForHome(posts, maxPosts) {
       view_count: post.view_count,
       page_views: post.page_views,
       read_count: post.read_count,
-    };
+    });
   }).filter(Boolean);
 }
 
@@ -183,20 +197,27 @@ export function slimProductBundles(pb) {
       ? pb
       : [];
   return {
-    data: raw.slice(0, 24).map((item) => ({
-      id: item.id,
-      name: item.name,
-      slug: item.slug,
-      image: item.image,
-    })),
+    data: raw.slice(0, 24).map((item) =>
+      omitUndefined({
+        id: item.id,
+        name: item.name,
+        slug: item.slug,
+        image: item.image,
+      })
+    ),
   };
 }
 
 export function slimSliderList(list) {
   if (!Array.isArray(list)) return [];
-  return list.slice(0, MAX_SLIDES).map((s) => ({
-    id: s.id,
-    slug: s.slug,
-    image: s.image,
-  }));
+  return list
+    .slice(0, MAX_SLIDES)
+    .map((s) =>
+      omitUndefined({
+        id: s.id,
+        slug: s.slug,
+        image: s.image,
+      })
+    )
+    .filter((row) => row.image != null && String(row.image).trim() !== "");
 }
