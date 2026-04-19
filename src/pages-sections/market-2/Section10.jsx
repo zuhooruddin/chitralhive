@@ -5,9 +5,14 @@ import { H3, Paragraph, Span } from "components/Typography";
 import { FlexBetween } from "components/flex-box";
 import { H2 } from "components/Typography";
 import Link from 'next/link';
-import { carouselStyled } from "components/carousel/CarouselStyled";
-import Carousel from "components/carousel/Carousel";
+import dynamic from "next/dynamic";
+import { carouselStyled } from "components/carousel/carouselSx";
 import { useEffect, useState } from "react"; // ======================================================================
+
+const Carousel = dynamic(() => import("components/carousel/Carousel"), {
+  ssr: false,
+  loading: () => null,
+});
 
 import useWindowSize from "hooks/useWindowSize";
 

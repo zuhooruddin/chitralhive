@@ -10,8 +10,13 @@ import {
 } from "@mui/material";
 import BazaarButton from "components/BazaarButton";
 import BazaarImage from "components/BazaarImage";
-import Carousel from "components/carousel/Carousel";
 import { FlexBox } from "components/flex-box";
+import dynamic from "next/dynamic";
+
+const Carousel = dynamic(() => import("components/carousel/Carousel"), {
+  ssr: false,
+  loading: () => null,
+});
 import { H1, H2, H3, H6, Paragraph } from "components/Typography";
 import { useAppContext } from "contexts/AppContext";
 import { useCallback, useEffect, useState } from "react";

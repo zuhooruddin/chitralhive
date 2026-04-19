@@ -20,9 +20,7 @@ export default class Bazaar extends Document {
           <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
           <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
           <link rel="manifest" href="/site.webmanifest" />
-          <link rel="preconnect" href="https://www.googletagmanager.com" />
-          <link rel="preconnect" href="https://www.google-analytics.com" />
-          <link rel="preconnect" href="https://pagead2.googlesyndication.com" />
+          {/* Analytics/ads: no preconnect — avoids warming connections before interactive (treemap / RUM). */}
           <link rel="dns-prefetch" href="https://scripts.clarity.ms" />
           <link rel="dns-prefetch" href="https://fundingchoicesmessages.google.com" />
           

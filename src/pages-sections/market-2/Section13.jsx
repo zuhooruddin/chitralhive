@@ -1,7 +1,12 @@
 import { Card, Container, Grid, List, ListItem, styled } from "@mui/material";
-import Carousel from "components/carousel/Carousel";
-import { carouselStyled } from "components/carousel/CarouselStyled";
+import { carouselStyled } from "components/carousel/carouselSx";
 import NavLink3 from "components/nav-link/NavLink3";
+import dynamic from "next/dynamic";
+
+const Carousel = dynamic(() => import("components/carousel/Carousel"), {
+  ssr: false,
+  loading: () => null,
+});
 import ProductCard20 from "components/product-cards/ProductCard20";
 import { H3 } from "components/Typography";
 import useWindowSize from "hooks/useWindowSize";

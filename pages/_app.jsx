@@ -37,7 +37,13 @@ const ToastContainer = dynamic(
 );
 const FloatingWhatsApp = dynamic(
   () => import('react-floating-whatsapp').then(mod => mod.FloatingWhatsApp),
-  { ssr: false }
+  {
+    ssr: false,
+    loadableGenerated: {
+      webpackPrefetch: false,
+      webpackPreload: false,
+    },
+  }
 );
 
 // Toastify CSS will be loaded only when ToastContainer is rendered (via dynamic import)

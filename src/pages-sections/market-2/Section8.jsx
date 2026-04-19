@@ -1,7 +1,12 @@
 import { Box, Container } from "@mui/material";
 import BazaarImage from "components/BazaarImage";
-import Carousel from "components/carousel/Carousel";
 import { FlexRowCenter } from "components/flex-box";
+import dynamic from "next/dynamic";
+
+const Carousel = dynamic(() => import("components/carousel/Carousel"), {
+  ssr: false,
+  loading: () => null,
+});
 import { H2 } from "components/Typography";
 import useWindowSize from "hooks/useWindowSize";
 import { useEffect, useState } from "react";

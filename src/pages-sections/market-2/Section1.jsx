@@ -7,7 +7,7 @@ import dynamic from "next/dynamic";
 import React, { useState, useEffect } from "react";
 
 const Carousel = dynamic(() => import("components/carousel/Carousel"), {
-  ssr: true,
+  ssr: false,
   loading: () => null,
 });
 
