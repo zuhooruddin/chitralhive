@@ -94,7 +94,7 @@ const isAdSenseScriptReady = () => {
  * - a valid ad `slot` for the placement
  *
  * Defaults (recommended for most pages):
- * - `collapseUntilFilled: true` — avoids a tall empty strip while AdSense applies min-height; keep true.
+ * - `collapseUntilFilled: false` — keeps the layout stable while ad loading is in progress.
  * - `stuckNoCreativeMs: 15000` — long enough for slow networks; only override per slot if needed.
  */
 const AdSenseAd = ({
@@ -114,8 +114,8 @@ const AdSenseAd = ({
   // Default to false so missing/blocked ads don't leave empty sections.
   reserveSpace = false,
   // While waiting for AdSense, the tag often applies a large min-height on <ins>.
-  // Collapse layout until an iframe exists (or slot is unfilled / timed out).
-  collapseUntilFilled = true,
+  // Keep this off by default to avoid abrupt collapse/expand behavior.
+  collapseUntilFilled = false,
   // If no iframe and no unfilled signal after this, remove the slot (blocked / no fill).
   stuckNoCreativeMs = 15000,
   // Typical responsive ad heights (tweak per placement if needed)
