@@ -1,6 +1,7 @@
 // pages/sitemap.xml.js
 
 import { SHILAJIT_LANDING_PATH } from "../src/utils/seoConstants";
+import { normalizeSiteUrl } from "../src/utils/seoConstants";
 import { buildImageUrl } from "../src/utils/buildImageUrl";
 
 // Basic XML escape to avoid invalid entities like '&' in titles/captions/URLs
@@ -56,8 +57,34 @@ function SiteMap() {
   // getServerSideProps will do the heavy lifting
 }
 
+function normalizeSlug(value) {
+  if (value === null || value === undefined) return "";
+  return String(value).trim().replace(/^\/+|\/+$/g, "");
+}
+
+function isValidDynamicSegment(value) {
+  const normalized = normalizeSlug(value);
+  if (!normalized) return false;
+
+  const blocked = new Set([
+    "undefined",
+    "null",
+    "nan",
+    "[slug]",
+    "[id]",
+    ":slug",
+    ":id",
+  ]);
+
+  if (blocked.has(normalized.toLowerCase())) return false;
+  if (normalized.includes("[") || normalized.includes("]")) return false;
+  if (normalized.includes("${")) return false;
+
+  return true;
+}
+
 export async function getServerSideProps({ res }) {
-  const baseUrl = process.env.NEXT_PUBLIC_URL || 'https://chitralhive.com';
+  const baseUrl = normalizeSiteUrl(process.env.NEXT_PUBLIC_URL);
   // Get API base URL - ensure it has trailing slash (matches API pattern: baseUrl + endpoint)
   let apiBase = process.env.NEXT_PUBLIC_BACKEND_API_BASE || 'https://api.chitralhive.com/';
   // Ensure it ends with a slash (API pattern: baseUrl + endpoint)
@@ -206,12 +233,19 @@ export async function getServerSideProps({ res }) {
     
     if (categories && categories.length > 0) {
       // Add category pages
-      const categoryPages = categories.map((category) => ({
-        loc: `${baseUrl}/categories/${category.slug || category.id}`,
-        lastmod: category.updated_at || category.updatedAt || new Date().toISOString(),
-        changefreq: 'weekly',
-        priority: '0.8',
-      }));
+      const categoryPages = categories
+        .map((category) => ({
+          slug: normalizeSlug(category.slug || category.id),
+          lastmod:
+            category.updated_at || category.updatedAt || new Date().toISOString(),
+        }))
+        .filter((category) => isValidDynamicSegment(category.slug))
+        .map((category) => ({
+          loc: `${baseUrl}/categories/${category.slug}`,
+          lastmod: category.lastmod,
+          changefreq: 'weekly',
+          priority: '0.8',
+        }));
       
       dynamicPages = [...dynamicPages, ...categoryPages];
     }
@@ -236,17 +270,37 @@ export async function getServerSideProps({ res }) {
     
     if (items && items.length > 0) {
       const imgBaseUrl = process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL || apiBase;
-      const allProductPages = items.map((item) => ({
-        loc: `${baseUrl}/product/${item.slug || item.id}`,
-        lastmod: item.updated_at || item.updatedAt || item.created_at || item.createdAt || new Date().toISOString(),
-        changefreq: 'weekly',
-        priority: '0.7',
-        images: item.imgUrl || item.image ? [{
-          url: buildImageUrl(item.imgUrl || item.image, imgBaseUrl, apiBase),
-          title: item.name || 'Chitrali Product',
-          caption: item.description || item.name ? `Buy ${item.name} from Chitral Hive - Authentic Chitrali Products` : 'Authentic Chitrali Products'
-        }].filter((image) => image.url) : []
-      }));
+      const allProductPages = items
+        .map((item) => ({
+          slug: normalizeSlug(item.slug || item.id),
+          lastmod:
+            item.updated_at ||
+            item.updatedAt ||
+            item.created_at ||
+            item.createdAt ||
+            new Date().toISOString(),
+          images:
+            item.imgUrl || item.image
+              ? [
+                  {
+                    url: buildImageUrl(item.imgUrl || item.image, imgBaseUrl, apiBase),
+                    title: item.name || 'Chitrali Product',
+                    caption:
+                      item.description || item.name
+                        ? `Buy ${item.name} from Chitral Hive - Authentic Chitrali Products`
+                        : 'Authentic Chitrali Products',
+                  },
+                ].filter((image) => image.url)
+              : [],
+        }))
+        .filter((item) => isValidDynamicSegment(item.slug))
+        .map((item) => ({
+          loc: `${baseUrl}/product/${item.slug}`,
+          lastmod: item.lastmod,
+          changefreq: 'weekly',
+          priority: '0.7',
+          images: item.images,
+        }));
       
       dynamicPages = [...dynamicPages, ...allProductPages];
     }
@@ -268,17 +322,41 @@ export async function getServerSideProps({ res }) {
     
     if (products && products.length > 0) {
       const imgBaseUrl = process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL || apiBase;
-      const productPages = products.map((product) => ({
-        loc: `${baseUrl}/product/${product.slug || product.id}`,
-        lastmod: product.updated_at || product.updatedAt || product.created_at || product.createdAt || new Date().toISOString(),
-        changefreq: 'weekly',
-        priority: '0.8',
-        images: product.imgUrl || product.image ? [{
-          url: buildImageUrl(product.imgUrl || product.image, imgBaseUrl, apiBase),
-          title: product.name || 'Chitrali Product',
-          caption: product.description || product.name ? `Buy ${product.name} from Chitral Hive` : 'Chitrali Product'
-        }].filter((image) => image.url) : []
-      }));
+      const productPages = products
+        .map((product) => ({
+          slug: normalizeSlug(product.slug || product.id),
+          lastmod:
+            product.updated_at ||
+            product.updatedAt ||
+            product.created_at ||
+            product.createdAt ||
+            new Date().toISOString(),
+          images:
+            product.imgUrl || product.image
+              ? [
+                  {
+                    url: buildImageUrl(
+                      product.imgUrl || product.image,
+                      imgBaseUrl,
+                      apiBase
+                    ),
+                    title: product.name || 'Chitrali Product',
+                    caption:
+                      product.description || product.name
+                        ? `Buy ${product.name} from Chitral Hive`
+                        : 'Chitrali Product',
+                  },
+                ].filter((image) => image.url)
+              : [],
+        }))
+        .filter((product) => isValidDynamicSegment(product.slug))
+        .map((product) => ({
+          loc: `${baseUrl}/product/${product.slug}`,
+          lastmod: product.lastmod,
+          changefreq: 'weekly',
+          priority: '0.8',
+          images: product.images,
+        }));
       
       // Only add if not already in dynamicPages (avoid duplicates)
       const existingUrls = new Set(dynamicPages.map(p => p.loc));
@@ -302,12 +380,18 @@ export async function getServerSideProps({ res }) {
           : []);
     
     if (bundles && bundles.length > 0) {
-      const bundlePages = bundles.map((bundle) => ({
-        loc: `${baseUrl}/bundle/${bundle.slug || bundle.id}`,
-        lastmod: bundle.updated_at || bundle.updatedAt || new Date().toISOString(),
-        changefreq: 'weekly',
-        priority: '0.7',
-      }));
+      const bundlePages = bundles
+        .map((bundle) => ({
+          slug: normalizeSlug(bundle.slug || bundle.id),
+          lastmod: bundle.updated_at || bundle.updatedAt || new Date().toISOString(),
+        }))
+        .filter((bundle) => isValidDynamicSegment(bundle.slug))
+        .map((bundle) => ({
+          loc: `${baseUrl}/bundle/${bundle.slug}`,
+          lastmod: bundle.lastmod,
+          changefreq: 'weekly',
+          priority: '0.7',
+        }));
       
       dynamicPages = [...dynamicPages, ...bundlePages];
     }
@@ -328,12 +412,18 @@ export async function getServerSideProps({ res }) {
           : []);
     
     if (bundles && bundles.length > 0) {
-      const bundlePages = bundles.map((bundle) => ({
-        loc: `${baseUrl}/bundle/${bundle.slug || bundle.id}`,
-        lastmod: bundle.updated_at || bundle.updatedAt || new Date().toISOString(),
-        changefreq: 'weekly',
-        priority: '0.7',
-      }));
+      const bundlePages = bundles
+        .map((bundle) => ({
+          slug: normalizeSlug(bundle.slug || bundle.id),
+          lastmod: bundle.updated_at || bundle.updatedAt || new Date().toISOString(),
+        }))
+        .filter((bundle) => isValidDynamicSegment(bundle.slug))
+        .map((bundle) => ({
+          loc: `${baseUrl}/bundle/${bundle.slug}`,
+          lastmod: bundle.lastmod,
+          changefreq: 'weekly',
+          priority: '0.7',
+        }));
       
       dynamicPages = [...dynamicPages, ...bundlePages];
     }
@@ -356,12 +446,18 @@ export async function getServerSideProps({ res }) {
               : []));
     
     if (brands && brands.length > 0) {
-      const brandPages = brands.map((brand) => ({
-        loc: `${baseUrl}/brand/${brand.slug || brand.id}`,
-        lastmod: brand.updated_at || brand.updatedAt || new Date().toISOString(),
-        changefreq: 'monthly',
-        priority: '0.7',
-      }));
+      const brandPages = brands
+        .map((brand) => ({
+          slug: normalizeSlug(brand.slug || brand.id),
+          lastmod: brand.updated_at || brand.updatedAt || new Date().toISOString(),
+        }))
+        .filter((brand) => isValidDynamicSegment(brand.slug))
+        .map((brand) => ({
+          loc: `${baseUrl}/brand/${brand.slug}`,
+          lastmod: brand.lastmod,
+          changefreq: 'monthly',
+          priority: '0.7',
+        }));
       
       dynamicPages = [...dynamicPages, ...brandPages];
     }

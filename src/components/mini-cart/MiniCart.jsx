@@ -163,7 +163,7 @@ const MiniCart = ({ toggleSidenav }) => {
             </Link>
 
             <Box flex="1 1 0">
-              <Link href="/product/[slug]" as={`/product/${item.slug}`}>
+              <Link href={`/product/${item.slug}`}>
 
                 <H5 className="title" fontSize="14px">
                   {item.name}

@@ -6,6 +6,7 @@ import {
   DEFAULT_META_DESCRIPTION,
   SITE_NAME,
   SITE_URL,
+  normalizeSiteUrl,
   sanitizeSiteName,
 } from "utils/seoConstants";
 
@@ -146,7 +147,17 @@ const SEO = ({
   const metaDesc = description || defaultDescription;
   const metaKeywords = keywords || defaultKeywords;
   const pathOnly = router.asPath.split("?")[0].split("#")[0] || "/";
-  const canonicalUrl = canonical || `${baseUrl}${pathOnly === "/" ? "" : pathOnly}`;
+  const canonicalCandidate = canonical || `${baseUrl}${pathOnly === "/" ? "" : pathOnly}`;
+  const canonicalUrl = (() => {
+    try {
+      const normalizedBase = normalizeSiteUrl(canonicalCandidate);
+      const parsed = new URL(canonicalCandidate);
+      const normalizedPath = `${parsed.pathname}${parsed.search}${parsed.hash}`;
+      return `${normalizedBase}${normalizedPath === "/" ? "" : normalizedPath}`;
+    } catch {
+      return canonicalCandidate;
+    }
+  })();
   const ogImage = image || `${baseUrl}/images/og-image.jpg`;
 
   // Determine Open Graph type based on page type

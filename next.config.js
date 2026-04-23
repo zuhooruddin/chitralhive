@@ -242,6 +242,17 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        source: "/:path*",
+        has: [
+          {
+            type: "host",
+            value: "www.chitralhive.com",
+          },
+        ],
+        destination: "https://chitralhive.com/:path*",
+        permanent: true,
+      },
+      {
         source: "/assets/images/idris-logo.png",
         destination: "/assets/images/logo.svg",
         permanent: true,
@@ -274,6 +285,21 @@ const nextConfig = {
       {
         source: "/category/:slug",
         destination: "/categories/:slug",
+        permanent: true,
+      },
+      {
+        source: "/categories/[slug]",
+        destination: "/categories",
+        permanent: true,
+      },
+      {
+        source: "/product/[slug]",
+        destination: "/products",
+        permanent: true,
+      },
+      {
+        source: "/brand/[slug]",
+        destination: "/brands",
         permanent: true,
       },
     ];

@@ -3,7 +3,25 @@
  * Shilajit / Salajeet (سلاجیت) is a primary commercial keyword cluster for PK.
  */
 
-export const SITE_URL = process.env.NEXT_PUBLIC_URL || "https://chitralhive.com";
+export const normalizeSiteUrl = (value) => {
+  const fallback = "https://chitralhive.com";
+  const raw = typeof value === "string" && value.trim() ? value.trim() : fallback;
+
+  try {
+    const parsed = new URL(raw.startsWith("http") ? raw : `https://${raw}`);
+    parsed.protocol = "https:";
+
+    if (parsed.hostname.toLowerCase() === "www.chitralhive.com") {
+      parsed.hostname = "chitralhive.com";
+    }
+
+    return parsed.origin.replace(/\/$/, "");
+  } catch {
+    return fallback;
+  }
+};
+
+export const SITE_URL = normalizeSiteUrl(process.env.NEXT_PUBLIC_URL);
 export const SITE_NAME = "Chitral Hive";
 
 export const sanitizeSiteName = (value) => {
