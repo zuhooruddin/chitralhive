@@ -3,6 +3,7 @@ import { useTheme } from "@mui/material/styles";
 import ShopLayout1 from "components/layouts/ShopLayout1";
 import SEO from "components/SEO";
 import StructuredData from "components/schema/StructuredData";
+import { Paragraph } from "components/Typography";
 import dynamic from "next/dynamic";
 import React, { useMemo } from "react";
 import apiNav from "utils/api/market-2";
@@ -137,6 +138,20 @@ const IndexPage = (props) => {
           data2={props.Section1SequenceData2 || []}
           slidersListLocal={props.slidersListLocal}
         />
+        <Container maxWidth="lg" sx={{ py: { xs: 2, md: 3 } }}>
+          <Box component="section">
+            <Paragraph sx={{ color: "text.secondary", lineHeight: 1.8, mb: 1.5 }}>
+              Chitral Hive is an online marketplace for authentic Chitrali products
+              in Pakistan, including dry fruits, mountain honey, herbs, crafts, and
+              traditional wellness items sourced from Chitral and nearby regions.
+            </Paragraph>
+            <Paragraph sx={{ color: "text.secondary", lineHeight: 1.8 }}>
+              We connect local producers with customers nationwide through clear
+              product information, secure ordering, and reliable delivery so buyers
+              can shop genuine products while supporting regional artisans.
+            </Paragraph>
+          </Box>
+        </Container>
 
         {showFluidAd && (
           <LazySection

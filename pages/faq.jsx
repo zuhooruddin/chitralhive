@@ -1,14 +1,9 @@
 import { Container } from "@mui/material";
 import ShopLayout1 from "components/layouts/ShopLayout1";
-import MobileNavigationBar from "components/mobile-navigation/MobileNavigationBar";
 import SEO from "components/SEO";
-import { H4, H2, Small, Paragraph } from "components/Typography";
-import { Box, Button, Card, Grid, styled } from "@mui/material";
-import LazyImage from "components/LazyImage";
-import Setting from "components/Setting";
-import Link from "next/link";
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { H2, Paragraph } from "components/Typography";
+import { Box, Card, Grid, styled } from "@mui/material";
+import { useMemo } from "react";
 const StyledCard = styled(Card)(({ theme }) => ({
   display: "flex",
   boxShadow: "none",
@@ -26,31 +21,11 @@ const StyledCard = styled(Card)(({ theme }) => ({
 })); // ======================================================
 
 // ======================================================
-const FAQPage = (props) => {
-  const imgbaseurl = process.env.NEXT_PUBLIC_BACKEND_API_BASE + "media/";
-  const apiUrl = process.env.NEXT_PUBLIC_BACKEND_API_BASE;
-
-  const title = "return-policy";
-  const [data, setData] = useState(null);
-  useEffect(() => {
-    if (title) {
-      fetchData();
-    }
-  }, [title]);
-
-  const fetchData = () => {
-    const url = `${apiUrl}get_dynamictext?key=${encodeURIComponent(title)}`;
-
-    axios
-      .get(url)
-      .then((response) => {
-        setData(response.data);
-        console.log("Respomse", response.data);
-      })
-      .catch((error) => {
-        console.error("API Error:", error);
-      });
-  };
+const FAQPage = ({ data = [] }) => {
+  const publishedItems = useMemo(
+    () => (Array.isArray(data) ? data.filter((item) => item.status === 1) : []),
+    [data]
+  );
 
   return (
     <ShopLayout1>
@@ -77,16 +52,20 @@ const FAQPage = (props) => {
         </Box>
         <Grid container spacing={3}>
           <Grid item xs={12} md={12}>
-            {data && data
-              .filter((item) => item.status === 1)
-              .map((item) => (
-                <Box
-                  key={item.id}
-                  component="article"
-                  sx={{ mb: 3 }}
-                  dangerouslySetInnerHTML={{ __html: item.value }}
-                />
-              ))}
+            {publishedItems.map((item) => (
+              <Box
+                key={item.id}
+                component="article"
+                sx={{ mb: 3 }}
+                dangerouslySetInnerHTML={{ __html: item.value }}
+              />
+            ))}
+            {publishedItems.length === 0 && (
+              <Paragraph color="text.secondary">
+                Browse common questions about ordering, shipping, delivery,
+                payments, and authentic Chitrali products.
+              </Paragraph>
+            )}
           </Grid>
         </Grid>
       </Container>
@@ -95,3 +74,19 @@ const FAQPage = (props) => {
 };
 
 export default FAQPage;
+
+export async function getServerSideProps() {
+  const apiUrl = process.env.NEXT_PUBLIC_BACKEND_API_BASE;
+  if (!apiUrl) return { props: { data: [] } };
+
+  try {
+    const response = await fetch(
+      `${apiUrl}get_dynamictext?key=${encodeURIComponent("faq")}`
+    );
+    const data = await response.json();
+    return { props: { data: Array.isArray(data) ? data : [] } };
+  } catch (error) {
+    console.error("faq getServerSideProps:", error);
+    return { props: { data: [] } };
+  }
+}

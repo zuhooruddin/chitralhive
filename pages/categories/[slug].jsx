@@ -13,7 +13,7 @@ import { FlexBox } from "components/flex-box";
 import ShopLayout1 from "components/layouts/ShopLayout1";
 import ProductCard1List from "components/products/ProductCard1List";
 import ProductCard9List from "components/products/ProductCard9List";
-import { H3, H5, Paragraph } from "components/Typography";
+import { H1, H3, H5, Paragraph } from "components/Typography";
 import { useCallback, useState } from "react";
 import api from "utils/api/market-2";
 import { generateCategoryBreadcrumb } from "utils/breadcrumbSchema";
@@ -92,6 +92,9 @@ const CategoryPage = ({ categoryDetail, ProductReviews }) => {
       />
 
       <Container sx={{ mt: 4, mb: 6 }}>
+        <H1 component="h1" sx={{ mb: 2 }}>
+          {categoryDetail.name} in Pakistan
+        </H1>
         <Card
           elevation={1}
           sx={{
@@ -130,6 +133,25 @@ const CategoryPage = ({ categoryDetail, ProductReviews }) => {
             </FlexBox>
           </FlexBox>
         </Card>
+
+        <Box component="section" sx={{ mb: 4 }}>
+          <Paragraph color="text.secondary" sx={{ lineHeight: 1.9, mb: 1.5 }}>
+            Explore authentic {categoryDetail.name} from Chitral Hive with carefully
+            selected products sourced from trusted regional sellers. We focus on
+            quality, clear product details, and practical packaging so every order
+            reaches customers in good condition across Pakistan.
+          </Paragraph>
+          <Paragraph color="text.secondary" sx={{ lineHeight: 1.9, mb: 1.5 }}>
+            This category includes handpicked options for daily use and gifting.
+            You can compare sizes, ingredients, and product notes directly on each
+            listing to choose items that match your needs and budget.
+          </Paragraph>
+          <Paragraph color="text.secondary" sx={{ lineHeight: 1.9 }}>
+            Chitral Hive is built to support local producers by making traditional
+            Chitrali products accessible nationwide. For the latest stock and
+            pricing, review individual product pages before checkout.
+          </Paragraph>
+        </Box>
 
         <Grid container spacing={3}>
           <Grid item md={12} xs={12}>

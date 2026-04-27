@@ -3,15 +3,14 @@ import ShopLayout1 from "components/layouts/ShopLayout1";
 import MobileNavigationBar from "components/mobile-navigation/MobileNavigationBar";
 import SEO from "components/SEO";
 import StructuredData from "components/schema/StructuredData";
-import { H2, H3, H5, Small, Paragraph } from "components/Typography";
+import { H1, H2, H3, H5, Small, Paragraph } from "components/Typography";
 import { Box, Button, Card, Grid, styled } from "@mui/material";
 import LazyImage from "components/LazyImage";
 import Setting from "components/Setting";
 import Link from "next/link";
 import { CreditCard, Email, Phone, Place } from "@mui/icons-material";
 import { FlexBox } from "components/flex-box";
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 
 const HeroSection = styled(Box)(({ theme }) => ({
   background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
@@ -67,32 +66,11 @@ const ContactItem = styled(Box)({
   gap: "8px",
 });
 
-const ContactUs = (props) => {
-  const imgbaseurl = process.env.NEXT_PUBLIC_BACKEND_API_BASE + "media/";
-  const apiUrl = process.env.NEXT_PUBLIC_BACKEND_API_BASE;
-
-  const title = "contact-us";
-  const [data, setData] = useState(null);
-  
-  useEffect(() => {
-    if (title) {
-      fetchData();
-    }
-  }, [title]);
-
-  const fetchData = () => {
-    const url = `${apiUrl}get_dynamictext?key=${encodeURIComponent(title)}`;
-
-    axios
-      .get(url)
-      .then((response) => {
-        setData(response.data);
-        console.log("Response", response.data);
-      })
-      .catch((error) => {
-        console.error("API Error:", error);
-      });
-  };
+const ContactUs = ({ data = [] }) => {
+  const publishedItems = useMemo(
+    () => (Array.isArray(data) ? data.filter((item) => item.status === 1) : []),
+    [data]
+  );
 
   const baseUrl = process.env.NEXT_PUBLIC_URL || "https://chitralhive.com";
   
@@ -188,7 +166,9 @@ const ContactUs = (props) => {
       
       <HeroSection>
         <Container>
-          <H2 sx={{ color: "white", mb: 2, fontWeight: 700 }}>Get in Touch</H2>
+          <H1 component="h1" sx={{ color: "white", mb: 2, fontWeight: 700 }}>
+            Contact Chitral Hive
+          </H1>
           <Paragraph
             sx={{
               color: "rgba(255,255,255,0.9)",
@@ -203,16 +183,13 @@ const ContactUs = (props) => {
       </HeroSection>
 
       <Container sx={{ mb: "80px" }}>
-        {data &&
-          data
-            .filter((item) => item.status === 1)
-            .map((item) => (
-              <Box
-                key={item.id}
-                sx={{ mb: 4 }}
-                dangerouslySetInnerHTML={{ __html: item.value }}
-              />
-            ))}
+        {publishedItems.map((item) => (
+          <Box
+            key={item.id}
+            sx={{ mb: 4 }}
+            dangerouslySetInnerHTML={{ __html: item.value }}
+          />
+        ))}
 
         <Grid container spacing={4}>
           {/* ==================== CHITRAL LOCATION ================== */}
@@ -467,3 +444,19 @@ const ContactUs = (props) => {
 };
 
 export default ContactUs;
+
+export async function getServerSideProps() {
+  const apiUrl = process.env.NEXT_PUBLIC_BACKEND_API_BASE;
+  if (!apiUrl) return { props: { data: [] } };
+
+  try {
+    const response = await fetch(
+      `${apiUrl}get_dynamictext?key=${encodeURIComponent("contact-us")}`
+    );
+    const data = await response.json();
+    return { props: { data: Array.isArray(data) ? data : [] } };
+  } catch (error) {
+    console.error("contact-us getServerSideProps:", error);
+    return { props: { data: [] } };
+  }
+}
