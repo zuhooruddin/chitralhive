@@ -1,4 +1,5 @@
 import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
 import { useTheme } from "@mui/material/styles";
 import ShopLayout1 from "components/layouts/ShopLayout1";
 import SEO from "components/SEO";
