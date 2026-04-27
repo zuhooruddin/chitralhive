@@ -175,7 +175,6 @@ const IndexPage = (props) => {
             <AdBanner
               slot={fluidSlot}
               format="fluid"
-              reserveSpace
               minHeight={{ xs: 120, sm: 140, md: 160 }}
               insStyle={{ minHeight: "120px" }}
               sx={{ maxWidth: 900, mx: "auto", mt: { xs: 2, sm: 3 } }}
