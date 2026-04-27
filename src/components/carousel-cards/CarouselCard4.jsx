@@ -1,21 +1,18 @@
 /* eslint-disable react/no-unescaped-entities */
 import { Box, styled } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 import BazaarImage from "components/BazaarImage"; // custom styled components
 
 const CardWrapper = styled(Box)(({ theme, mode }) => ({
-  minHeight: 380,
+  minHeight: 500,
   position: "relative",
   display: "flex",
   alignItems: "center",
   overflow: "hidden",
   backgroundColor: mode === "dark" ? "#000" : "#fff",
   color: mode === "light" ? theme.palette.dark.main : "#fff",
-  [theme.breakpoints.down("lg")]: {
-    minHeight: 320,
-  },
   [theme.breakpoints.down("md")]: {
-    minHeight: 240,
+    minHeight: 200,
     justifyContent: "center",
     padding: theme.spacing(2),
     textAlign: "center",
@@ -42,18 +39,16 @@ const ContentWrapper = styled(Box)(() => ({
 })); // ===============================================================
 
 // ===============================================================
-const CarouselCard4 = ({ bgImage, mode = "dark", content, priority = false }) => {
+const CarouselCard4 = ({ bgImage, mode = "dark", content, priority = false, fetchPriority = "auto" }) => {
   // Use Next.js Image component for automatic optimization, WebP/AVIF conversion, and lazy loading
-  const [imageFailed, setImageFailed] = useState(false);
-  const fallbackImage = "/assets/images/banners/s1.png";
-  const resolvedImage = imageFailed || !bgImage ? fallbackImage : bgImage;
-
+  // Note: fetchPriority is not available in Next.js 12, so we use link preload as a workaround
+  
   return (
-    <CardWrapper mode={mode} sx={imageFailed ? { backgroundColor: "#f6f6f6" } : undefined}>
-      {resolvedImage && (
+    <CardWrapper mode={mode}>
+      {bgImage && (
         <ImageWrapper>
           <BazaarImage
-            src={resolvedImage}
+            src={bgImage}
             alt="Carousel banner"
             fill
             priority={priority}
@@ -61,7 +56,6 @@ const CarouselCard4 = ({ bgImage, mode = "dark", content, priority = false }) =>
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1920px"
             style={{ objectFit: "cover" }}
             loading={priority ? "eager" : "lazy"}
-            onError={() => setImageFailed(true)}
             placeholder="blur"
             blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2YwZjBmMCIvPjwvc3ZnPg=="
           />
@@ -70,6 +64,8 @@ const CarouselCard4 = ({ bgImage, mode = "dark", content, priority = false }) =>
       <ContentWrapper>
         {content}
       </ContentWrapper>
+
+      
     </CardWrapper>
   );
 };
