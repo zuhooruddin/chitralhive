@@ -1,5 +1,4 @@
 import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
 import { useTheme } from "@mui/material/styles";
 import ShopLayout1 from "components/layouts/ShopLayout1";
 import SEO from "components/SEO";
@@ -140,20 +139,33 @@ const IndexPage = (props) => {
           data2={props.Section1SequenceData2 || []}
           slidersListLocal={props.slidersListLocal}
         />
-        <Container maxWidth="lg" sx={{ py: { xs: 2, md: 3 } }}>
-          <Box component="section">
-            <Paragraph sx={{ color: "text.secondary", lineHeight: 1.8, mb: 1.5 }}>
-              Chitral Hive is an online marketplace for authentic Chitrali products
-              in Pakistan, including dry fruits, mountain honey, herbs, crafts, and
-              traditional wellness items sourced from Chitral and nearby regions.
-            </Paragraph>
-            <Paragraph sx={{ color: "text.secondary", lineHeight: 1.8 }}>
-              We connect local producers with customers nationwide through clear
-              product information, secure ordering, and reliable delivery so buyers
-              can shop genuine products while supporting regional artisans.
-            </Paragraph>
-          </Box>
-        </Container>
+        <Box
+          component="section"
+          sx={{
+            position: "absolute",
+            width: "1px",
+            height: "1px",
+            padding: 0,
+            margin: "-1px",
+            overflow: "hidden",
+            clip: "rect(0, 0, 0, 0)",
+            whiteSpace: "nowrap",
+            border: 0,
+          }}
+        >
+          <Paragraph sx={{ lineHeight: 1.8, mb: 1.5 }}>
+            Chitral Hive is a Pakistan-based online store for authentic Chitrali dry
+            fruits, pure mountain honey, traditional herbs, handmade gifts, and
+            natural wellness products sourced from trusted local producers in
+            Chitral.
+          </Paragraph>
+          <Paragraph sx={{ lineHeight: 1.8 }}>
+            Customers across Pakistan can buy premium Chitrali almonds, walnuts,
+            apricots, and regional specialty products with transparent details,
+            secure checkout, and reliable doorstep delivery while supporting
+            communities in northern Pakistan.
+          </Paragraph>
+        </Box>
 
         {showFluidAd && (
           <LazySection
