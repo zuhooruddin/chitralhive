@@ -1,62 +1,41 @@
 import { Container } from "@mui/material";
 import ShopLayout1 from "components/layouts/ShopLayout1";
-import MobileNavigationBar from "components/mobile-navigation/MobileNavigationBar";
 import SEO from "components/SEO";
 import StructuredData from "components/schema/StructuredData";
-import { H1, H2, H3, H5, Small, Paragraph } from "components/Typography";
-import { Box, Button, Card, Grid, styled } from "@mui/material";
-import LazyImage from "components/LazyImage";
-import Setting from "components/Setting";
-import Link from "next/link";
-import { CreditCard, Email, Phone, Place } from "@mui/icons-material";
-import { FlexBox } from "components/flex-box";
+import { H1, H3, Paragraph } from "components/Typography";
+import { Box, Card, Grid, styled } from "@mui/material";
+import { Email, Phone, Place } from "@mui/icons-material";
 import { useMemo } from "react";
 
 const HeroSection = styled(Box)(({ theme }) => ({
-  background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-  padding: "60px 0",
-  marginBottom: "40px",
-  textAlign: "center",
-}));
-
-const StyledCard = styled(Card)(({ theme }) => ({
-  display: "flex",
-  boxShadow: "none",
-  background: "white !important",
-  alignItems: "center",
-  padding: "20px 50px",
-  justifyContent: "center",
-  background: theme.palette.paste[50],
-  [theme.breakpoints.down("sm")]: {
-    padding: "20px 30px",
-    "& h3": {
-      fontSize: 20,
-    },
-  },
+  background:
+    "radial-gradient(circle at 12% 15%, rgba(25,118,210,0.16) 0%, rgba(25,118,210,0.04) 35%, rgba(255,255,255,0) 72%)",
+  padding: "58px 0 42px",
+  textAlign: "left",
 }));
 
 const LocationCard = styled(Card)(({ theme }) => ({
-  padding: "30px",
+  padding: "22px",
   height: "100%",
-  boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
+  border: `1px solid ${theme.palette.divider}`,
+  boxShadow: "none",
   borderRadius: "12px",
-  transition: "transform 0.3s ease, box-shadow 0.3s ease",
+  transition: "all 0.2s ease",
   "&:hover": {
-    transform: "translateY(-5px)",
-    boxShadow: "0 8px 30px rgba(0,0,0,0.12)",
+    borderColor: theme.palette.primary.main,
   },
 }));
 
 const IconWrapper = styled(Box)(({ theme }) => ({
-  width: "50px",
-  height: "50px",
-  borderRadius: "50%",
-  background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+  width: "36px",
+  height: "36px",
+  borderRadius: "8px",
+  background: "rgba(25,118,210,0.1)",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  color: "white",
-  marginBottom: "15px",
+  color: theme.palette.primary.main,
+  marginBottom: "10px",
 }));
 
 const ContactItem = styled(Box)({
@@ -154,6 +133,14 @@ const ContactUs = ({ data = [] }) => {
     ]
   };
 
+  const dynamicContentSx = {
+    "& p": { color: "text.secondary", lineHeight: 1.8, mb: 1.25 },
+    "& h1, & h2, & h3, & h4": { mt: 2, mb: 1, fontWeight: 700 },
+    "& ul, & ol": { pl: 2.5, mb: 1.5, color: "text.secondary" },
+    "& li": { mb: 0.75 },
+    "& a": { color: "primary.main" },
+  };
+
   return (
     <ShopLayout1>
       <StructuredData data={localBusinessSchema} />
@@ -165,16 +152,29 @@ const ContactUs = ({ data = [] }) => {
       />
       
       <HeroSection>
-        <Container>
-          <H1 component="h1" sx={{ color: "white", mb: 2, fontWeight: 700 }}>
+        <Container sx={{ position: "relative" }}>
+          <Box
+            sx={{
+              position: "absolute",
+              right: 0,
+              top: { xs: -8, md: -20 },
+              width: { xs: 100, md: 150 },
+              height: { xs: 100, md: 150 },
+              borderRadius: "50%",
+              background:
+                "radial-gradient(circle, rgba(25,118,210,0.18) 0%, rgba(25,118,210,0.02) 65%, rgba(255,255,255,0) 100%)",
+              pointerEvents: "none",
+            }}
+          />
+          <H1 component="h1" sx={{ color: "text.primary", mb: 2, fontWeight: 800, letterSpacing: "-0.02em" }}>
             Contact Chitral Hive
           </H1>
           <Paragraph
             sx={{
-              color: "rgba(255,255,255,0.9)",
-              fontSize: "18px",
-              maxWidth: "600px",
-              margin: "0 auto",
+              color: "text.secondary",
+              fontSize: { xs: "1rem", md: "1.06rem" },
+              lineHeight: 1.9,
+              maxWidth: "720px",
             }}
           >
             Have questions? We would love to hear from you. Send us a message and we will respond as soon as possible.
@@ -183,13 +183,27 @@ const ContactUs = ({ data = [] }) => {
       </HeroSection>
 
       <Container sx={{ mb: "80px" }}>
-        {publishedItems.map((item) => (
-          <Box
-            key={item.id}
-            sx={{ mb: 4 }}
-            dangerouslySetInnerHTML={{ __html: item.value }}
-          />
-        ))}
+        {publishedItems.length > 0 && (
+          <Card
+            sx={{
+              mb: 4,
+              p: { xs: 2, sm: 3 },
+              borderRadius: 3,
+              boxShadow: "none",
+              border: "1px solid",
+              borderColor: "divider",
+              boxShadow: "0 12px 30px rgba(15, 23, 42, 0.05)",
+            }}
+          >
+            {publishedItems.map((item) => (
+              <Box
+                key={item.id}
+                sx={dynamicContentSx}
+                dangerouslySetInnerHTML={{ __html: item.value }}
+              />
+            ))}
+          </Card>
+        )}
 
         <Grid container spacing={4}>
           {/* ==================== CHITRAL LOCATION ================== */}
@@ -205,14 +219,14 @@ const ContactUs = ({ data = [] }) => {
               ></iframe>
               
               <Box sx={{ mt: 3 }}>
-                <H3 sx={{ mb: 2, fontWeight: 600, color: "#667eea" }}>Chitral</H3>
+                <H3 sx={{ mb: 2, fontWeight: 700 }}>Chitral</H3>
                 
                 <Box sx={{ mb: 3 }}>
                   <IconWrapper>
                     <Place fontSize="medium" />
                   </IconWrapper>
-                  <H5 sx={{ mb: 1, fontWeight: 600 }}>Location</H5>
-                  <Paragraph sx={{ color: "#666", fontSize: "15px" }}>
+                  <Paragraph sx={{ mb: 1, fontWeight: 600, color: "text.primary" }}>Location</Paragraph>
+                  <Paragraph sx={{ color: "text.secondary", fontSize: "15px" }}>
                     Chitral, Khyber Pakhtunkhwa, Pakistan
                   </Paragraph>
                 </Box>
@@ -221,12 +235,12 @@ const ContactUs = ({ data = [] }) => {
                   <IconWrapper>
                     <Phone fontSize="medium" />
                   </IconWrapper>
-                  <H5 sx={{ mb: 2, fontWeight: 600 }}>Call Us</H5>
+                  <Paragraph sx={{ mb: 2, fontWeight: 600, color: "text.primary" }}>Call Us</Paragraph>
                   <ContactItem>
                     <a
                       href="tel:03239119309"
                       style={{
-                        color: "#667eea",
+                        color: "#1976d2",
                         textDecoration: "none",
                         fontWeight: 500,
                         fontSize: "16px",
@@ -239,7 +253,7 @@ const ContactUs = ({ data = [] }) => {
                     <a
                       href="tel:03407964648"
                       style={{
-                        color: "#667eea",
+                        color: "#1976d2",
                         textDecoration: "none",
                         fontWeight: 500,
                         fontSize: "16px",
@@ -254,12 +268,12 @@ const ContactUs = ({ data = [] }) => {
                   <IconWrapper>
                     <Email fontSize="medium" />
                   </IconWrapper>
-                  <H5 sx={{ mb: 2, fontWeight: 600 }}>Email Us</H5>
+                  <Paragraph sx={{ mb: 2, fontWeight: 600, color: "text.primary" }}>Email Us</Paragraph>
                   <ContactItem>
                     <a
                       href="mailto:zuhooruddin055@gmail.com"
                       style={{
-                        color: "#667eea",
+                        color: "#1976d2",
                         textDecoration: "none",
                         fontWeight: 500,
                         fontSize: "16px",
@@ -287,14 +301,14 @@ const ContactUs = ({ data = [] }) => {
               ></iframe>
               
               <Box sx={{ mt: 3 }}>
-                <H3 sx={{ mb: 2, fontWeight: 600, color: "#667eea" }}>Upper Chitral</H3>
+                <H3 sx={{ mb: 2, fontWeight: 700 }}>Upper Chitral</H3>
                 
                 <Box sx={{ mb: 3 }}>
                   <IconWrapper>
                     <Place fontSize="medium" />
                   </IconWrapper>
-                  <H5 sx={{ mb: 1, fontWeight: 600 }}>Location</H5>
-                  <Paragraph sx={{ color: "#666", fontSize: "15px" }}>
+                  <Paragraph sx={{ mb: 1, fontWeight: 600, color: "text.primary" }}>Location</Paragraph>
+                  <Paragraph sx={{ color: "text.secondary", fontSize: "15px" }}>
                     Upper Chitral, Khyber Pakhtunkhwa, Pakistan
                   </Paragraph>
                 </Box>
@@ -303,12 +317,12 @@ const ContactUs = ({ data = [] }) => {
                   <IconWrapper>
                     <Phone fontSize="medium" />
                   </IconWrapper>
-                  <H5 sx={{ mb: 2, fontWeight: 600 }}>Call Us</H5>
+                  <Paragraph sx={{ mb: 2, fontWeight: 600, color: "text.primary" }}>Call Us</Paragraph>
                   <ContactItem>
                     <a
                       href="tel:03239119309"
                       style={{
-                        color: "#667eea",
+                        color: "#1976d2",
                         textDecoration: "none",
                         fontWeight: 500,
                         fontSize: "16px",
@@ -321,7 +335,7 @@ const ContactUs = ({ data = [] }) => {
                     <a
                       href="tel:03407964648"
                       style={{
-                        color: "#667eea",
+                        color: "#1976d2",
                         textDecoration: "none",
                         fontWeight: 500,
                         fontSize: "16px",
@@ -336,12 +350,12 @@ const ContactUs = ({ data = [] }) => {
                   <IconWrapper>
                     <Email fontSize="medium" />
                   </IconWrapper>
-                  <H5 sx={{ mb: 2, fontWeight: 600 }}>Email Us</H5>
+                  <Paragraph sx={{ mb: 2, fontWeight: 600, color: "text.primary" }}>Email Us</Paragraph>
                   <ContactItem>
                     <a
                       href="mailto:zuhooruddin055@gmail.com"
                       style={{
-                        color: "#667eea",
+                        color: "#1976d2",
                         textDecoration: "none",
                         fontWeight: 500,
                         fontSize: "16px",
@@ -369,14 +383,14 @@ const ContactUs = ({ data = [] }) => {
               ></iframe>
               
               <Box sx={{ mt: 3 }}>
-                <H3 sx={{ mb: 2, fontWeight: 600, color: "#667eea" }}>Islamabad</H3>
+                <H3 sx={{ mb: 2, fontWeight: 700 }}>Islamabad</H3>
                 
                 <Box sx={{ mb: 3 }}>
                   <IconWrapper>
                     <Place fontSize="medium" />
                   </IconWrapper>
-                  <H5 sx={{ mb: 1, fontWeight: 600 }}>Location</H5>
-                  <Paragraph sx={{ color: "#666", fontSize: "15px" }}>
+                  <Paragraph sx={{ mb: 1, fontWeight: 600, color: "text.primary" }}>Location</Paragraph>
+                  <Paragraph sx={{ color: "text.secondary", fontSize: "15px" }}>
                     Islamabad, Federal Capital, Pakistan
                   </Paragraph>
                 </Box>
@@ -385,12 +399,12 @@ const ContactUs = ({ data = [] }) => {
                   <IconWrapper>
                     <Phone fontSize="medium" />
                   </IconWrapper>
-                  <H5 sx={{ mb: 2, fontWeight: 600 }}>Call Us</H5>
+                  <Paragraph sx={{ mb: 2, fontWeight: 600, color: "text.primary" }}>Call Us</Paragraph>
                   <ContactItem>
                     <a
                       href="tel:03239119309"
                       style={{
-                        color: "#667eea",
+                        color: "#1976d2",
                         textDecoration: "none",
                         fontWeight: 500,
                         fontSize: "16px",
@@ -403,7 +417,7 @@ const ContactUs = ({ data = [] }) => {
                     <a
                       href="tel:03407964648"
                       style={{
-                        color: "#667eea",
+                        color: "#1976d2",
                         textDecoration: "none",
                         fontWeight: 500,
                         fontSize: "16px",
@@ -418,12 +432,12 @@ const ContactUs = ({ data = [] }) => {
                   <IconWrapper>
                     <Email fontSize="medium" />
                   </IconWrapper>
-                  <H5 sx={{ mb: 2, fontWeight: 600 }}>Email Us</H5>
+                  <Paragraph sx={{ mb: 2, fontWeight: 600, color: "text.primary" }}>Email Us</Paragraph>
                   <ContactItem>
                     <a
                       href="mailto:zuhooruddin055@gmail.com"
                       style={{
-                        color: "#667eea",
+                        color: "#1976d2",
                         textDecoration: "none",
                         fontWeight: 500,
                         fontSize: "16px",

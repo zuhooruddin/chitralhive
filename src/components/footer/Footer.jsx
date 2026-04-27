@@ -39,32 +39,52 @@ const StyledLink = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   gap: "10px",
-  borderRadius: 2,
+  borderRadius: "12px",
   cursor: "pointer",
   position: "relative",
-  padding: "12px 0",
-  minHeight: "44px",
-  color: "rgba(255, 255, 255, 0.6)",
-  fontSize: "14px",
-  fontWeight: 500,
+  padding: "10px 14px",
+  minHeight: "46px",
+  color: "rgba(255, 255, 255, 0.78)",
+  fontSize: "15px",
+  fontWeight: 600,
+  lineHeight: 1.35,
   textDecoration: "none",
   transition: "all 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
-  textDecoration: "none",
+  border: "1px solid transparent",
+  background: "transparent",
   "&::before": {
     content: '""',
     position: "absolute",
-    left: 0,
-    bottom: 8,
-    width: 0,
+    left: "14px",
+    bottom: "8px",
+    width: "24px",
     height: "2px",
+    opacity: 0,
+    borderRadius: "999px",
     background: "linear-gradient(135deg, #D23F57 0%, #E94560 100%)",
-    transition: "width 0.35s ease",
+    transition: "opacity 0.25s ease",
   },
   "&:hover": {
     color: "#ffffff",
-    transform: "translateX(8px)",
+    transform: "translateX(4px)",
+    background: "rgba(255, 255, 255, 0.04)",
+    borderColor: "rgba(255, 255, 255, 0.12)",
     "&::before": {
-      width: "30px",
+      opacity: 1,
+    },
+  },
+  "&:focus-visible": {
+    outline: "none",
+    boxShadow: "0 0 0 3px rgba(233, 69, 96, 0.3)",
+    borderColor: "rgba(233, 69, 96, 0.6)",
+    color: "#ffffff",
+    background: "rgba(255, 255, 255, 0.06)",
+  },
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "14px",
+    padding: "10px 12px",
+    "&:hover": {
+      transform: "none",
     },
   },
 }));
@@ -348,12 +368,12 @@ const Footer = ({ footerData: initialFooterData }) => {
                         .filter((item) => item.column === 2)
                         .map((item, ind) => (
                           <StyledLink
-                            key={ind}
+                            key={item.id || `${item.link || "column-two-link"}-${ind}`}
                             component={Link}
-                            href={item.link}
-                            aria-label={item.name}
+                            href={item.link || "#"}
+                            aria-label={formatLinkLabel(item.name)}
                           >
-                            {item.name}
+                            {formatLinkLabel(item.name)}
                           </StyledLink>
                         ))}
                     </Box>
@@ -372,12 +392,12 @@ const Footer = ({ footerData: initialFooterData }) => {
                         .filter((item) => item.column === 3)
                         .map((item, ind) => (
                           <StyledLink
-                            key={ind}
+                            key={item.id || `${item.link || "column-three-link"}-${ind}`}
                             component={Link}
-                            href={item.link}
-                            aria-label={item.name}
+                            href={item.link || "#"}
+                            aria-label={formatLinkLabel(item.name)}
                           >
-                            {item.name}
+                            {formatLinkLabel(item.name)}
                           </StyledLink>
                         ))}
                     </Box>
