@@ -43,8 +43,6 @@ const Section9 = ({ data, products = [] }) => {
     <Container sx={{ mb: { xs: 4, sm: 6, md: 8 }, px: { xs: 1, sm: 2 } }}>
       <FlexBetween gap={2} flexWrap="wrap" mb={{ xs: 2, sm: 2.5, md: 3 }}>
         <Box>
-          <br />
-          <br />
           <H2 fontSize={{ xs: 18, sm: 19, md: 20 }}>Selected Products</H2>
           <Paragraph fontSize={{ xs: 13, sm: 14, md: 16 }}>All our new arrivals and featured products</Paragraph>
         </Box>
