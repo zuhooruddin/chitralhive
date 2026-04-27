@@ -8,6 +8,7 @@ import { Paragraph } from "components/Typography";
 import dynamic from "next/dynamic";
 import React, { useMemo } from "react";
 import apiNav from "utils/api/market-2";
+
 import api from "utils/api/fashion-shop-2";
 import LazySection from "components/LazySection";
 import { fetchPublishedBlogsPaged } from "utils/api/blog";
