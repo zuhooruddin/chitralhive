@@ -21,7 +21,7 @@ const StickyBottomAd = ({
 }) => {
   const [mounted, setMounted] = useState(false);
   const [dismissed, setDismissed] = useState(false);
-  const [adVisible, setAdVisible] = useState(true);
+  const [adVisible, setAdVisible] = useState(false);
   const client = process.env.NEXT_PUBLIC_ADSENSE_CLIENT;
   const enabled = Boolean(client && slot);
 
@@ -74,13 +74,14 @@ const StickyBottomAd = ({
             border: "1px solid",
             borderColor: "divider",
             zIndex: 1,
+            display: adVisible ? "inline-flex" : "none",
             "&:hover": { bgcolor: "grey.100" },
           }}
         >
           <CloseIcon fontSize="small" />
         </IconButton>
 
-        <Box sx={{ p: 1.5, pt: 3.5 }}>
+        <Box sx={{ p: adVisible ? 1.5 : 0, pt: adVisible ? 3.5 : 0 }}>
           <AdBanner
             slot={slot}
             format={format}
@@ -88,6 +89,7 @@ const StickyBottomAd = ({
             layout={layout}
             fullWidthResponsive={fullWidthResponsive}
             reserveSpace={false}
+            collapseUntilFilled
             onNoFill={() => {
               setAdVisible(false);
               setDismissed(true);

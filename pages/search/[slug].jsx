@@ -157,6 +157,7 @@ const ProductSearchResult = (props) => {
             slot={fluidSlot}
             format="fluid"
             sx={{ maxWidth: 900, width: "100%", mx: "auto", mb: 3 }}
+            collapseUntilFilled
           />
         )}
 

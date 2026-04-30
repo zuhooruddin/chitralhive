@@ -26,7 +26,7 @@ const BlogPostPage = ({ post, allPosts }) => {
   const showInArticle = Boolean(adsenseClient && inArticleSlot);
   const showAutoRelaxed = Boolean(adsenseClient && autoRelaxedSlot);
   const showSticky = Boolean(adsenseClient && stickySlot);
-  const [stickyVisible, setStickyVisible] = useState(showSticky);
+  const [stickyVisible, setStickyVisible] = useState(false);
 
   if (!post) {
     return (
@@ -228,6 +228,7 @@ const BlogPostPage = ({ post, allPosts }) => {
               layout="in-article"
               insStyle={{ textAlign: "center" }}
               sx={{ mt: 4, mb: 4 }}
+              collapseUntilFilled
             />
           )}
 
@@ -237,6 +238,7 @@ const BlogPostPage = ({ post, allPosts }) => {
               slot={autoRelaxedSlot}
               format="autorelaxed"
               sx={{ mt: 4 }}
+              collapseUntilFilled
             />
           )}
         </Box>
