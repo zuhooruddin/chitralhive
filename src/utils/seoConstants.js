@@ -50,3 +50,4 @@ export const DEFAULT_META_DESCRIPTION =
   "Shop authentic Chitrali products online in Pakistan at Chitral Hive — including pure Himalayan Shilajit (Salajeet), honey, dry fruits, herbs, and crafts from Chitral, Khyber Pakhtunkhwa. Nationwide delivery.";
 
 export const SHILAJIT_LANDING_PATH = "/shilajit-salajeet";
+export const CHITRAL_DIARY_LANDING_PATH = "/chitral-diary-website-and-products";

@@ -1,6 +1,9 @@
 // pages/sitemap.xml.js
 
-import { SHILAJIT_LANDING_PATH } from "../src/utils/seoConstants";
+import {
+  CHITRAL_DIARY_LANDING_PATH,
+  SHILAJIT_LANDING_PATH,
+} from "../src/utils/seoConstants";
 import { normalizeSiteUrl } from "../src/utils/seoConstants";
 import { buildImageUrl } from "../src/utils/buildImageUrl";
 
@@ -111,6 +114,12 @@ export async function getServerSideProps({ res }) {
       lastmod: new Date().toISOString(),
       changefreq: 'weekly',
       priority: '0.95',
+    },
+    {
+      loc: `${baseUrl}${CHITRAL_DIARY_LANDING_PATH}`,
+      lastmod: new Date().toISOString(),
+      changefreq: 'weekly',
+      priority: '0.9',
     },
     {
       loc: `${baseUrl}/faq`,
