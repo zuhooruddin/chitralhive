@@ -7,6 +7,7 @@ import BazaarCard from "components/BazaarCard";
 import Link from "next/link";
 import { H1, Paragraph, H3 } from "components/Typography";
 import api from "utils/api/market-2";
+import { buildImageUrl } from "utils/buildImageUrl";
 
 const StyledBazaarCard = styled(BazaarCard)(() => ({
   height: "100%",
@@ -33,15 +34,9 @@ const ContentWrapper = styled(Box)(() => ({
   },
 }));
 
-const normalizeImageUrl = (imagePath, imageBaseUrl) => {
-  if (!imagePath) return null;
-  if (/^https?:\/\//i.test(imagePath)) return imagePath;
-  if (imagePath.startsWith("/")) return `${imageBaseUrl}${imagePath}`;
-  return `${imageBaseUrl}/${imagePath}`.replace(/([^:]\/)\/+/g, "$1");
-};
-
 const CategoriesIndexPage = ({ categories }) => {
   const imageBaseUrl = process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL || "https://api.chitralhive.com";
+  const apiBaseUrl = process.env.NEXT_PUBLIC_BACKEND_API_BASE || "https://api.chitralhive.com/api";
 
   return (
     <ShopLayout1>
@@ -64,9 +59,10 @@ const CategoriesIndexPage = ({ categories }) => {
             const categoryName =
               category.category_name || category.name || category.title || "Category";
             const categorySlug = category.slug || category.id;
-            const categoryImage = normalizeImageUrl(
+            const categoryImage = buildImageUrl(
               category.icon || category.image || category.imgUrl || "",
-              imageBaseUrl
+              imageBaseUrl,
+              apiBaseUrl
             );
 
             return (

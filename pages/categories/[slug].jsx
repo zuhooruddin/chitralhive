@@ -5,17 +5,20 @@ import {
   Container,
   Grid,
   IconButton,
+  Chip,
 } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import SEO from "components/SEO";
 import StructuredData from "components/schema/StructuredData";
 import { FlexBox } from "components/flex-box";
 import ShopLayout1 from "components/layouts/ShopLayout1";
+import LazyImage from "components/LazyImage";
 import ProductCard1List from "components/products/ProductCard1List";
 import ProductCard9List from "components/products/ProductCard9List";
 import { H1, H3, H5, Paragraph } from "components/Typography";
 import { useCallback, useState } from "react";
 import api from "utils/api/market-2";
+import { buildImageUrl } from "utils/buildImageUrl";
 import { generateCategoryBreadcrumb } from "utils/breadcrumbSchema";
 
 const CategoryPage = ({ categoryDetail, ProductReviews }) => {
@@ -47,6 +50,15 @@ const CategoryPage = ({ categoryDetail, ProductReviews }) => {
     categoryDetail.metaDescription !== "undefined"
       ? categoryDetail.metaDescription
       : `Shop authentic ${categoryDetail.name} from Chitral Hive in Pakistan. Browse our wide collection of Chitrali ${categoryDetail.name} products with nationwide delivery.`;
+  const imageBaseUrl =
+    process.env.NEXT_PUBLIC_IMAGE_BASE_API_URL || "https://api.chitralhive.com";
+  const apiBaseUrl =
+    process.env.NEXT_PUBLIC_BACKEND_API_BASE || "https://api.chitralhive.com/api";
+  const heroImage = buildImageUrl(
+    categoryDetail.icon || categoryDetail.image || categoryDetail.imgUrl || "",
+    imageBaseUrl,
+    apiBaseUrl
+  );
 
   const categoryStructuredData = {
     "@context": "https://schema.org",
@@ -91,67 +103,94 @@ const CategoryPage = ({ categoryDetail, ProductReviews }) => {
         category={categoryDetail.name}
       />
 
-      <Container sx={{ mt: 4, mb: 6 }}>
-        <H1 component="h1" sx={{ mb: 2 }}>
-          {categoryDetail.name} in Pakistan
-        </H1>
+      <Container sx={{ mt: { xs: 2.5, md: 4 }, mb: 6 }}>
         <Card
-          elevation={1}
+          elevation={0}
           sx={{
-            mb: "55px",
+            mb: 3,
+            borderRadius: 3,
+            border: "1px solid",
+            borderColor: "divider",
+            p: { xs: 2, sm: 2.5, md: 3 },
+            background:
+              "linear-gradient(180deg, rgba(210,63,87,0.04) 0%, rgba(210,63,87,0.00) 85%)",
+          }}
+        >
+          <Grid container spacing={2.5} alignItems="center">
+            <Grid item xs={12} md={heroImage ? 8 : 12}>
+              <Paragraph color="primary.main" sx={{ fontWeight: 700, mb: 1 }}>
+                Chitrali Collection
+              </Paragraph>
+              <H1 component="h1" sx={{ mb: 1.25 }}>
+                {categoryDetail.name} in Pakistan
+              </H1>
+              <Paragraph color="text.secondary" sx={{ lineHeight: 1.8, maxWidth: 720 }}>
+                {categoryDescription}
+              </Paragraph>
+              <FlexBox flexWrap="wrap" gap={1} mt={2}>
+                <Chip label="Authentic products" size="small" />
+                <Chip label="Nationwide delivery" size="small" />
+                <Chip label="Secure checkout" size="small" />
+              </FlexBox>
+            </Grid>
+
+            {heroImage && (
+              <Grid item xs={12} md={4}>
+                <Card
+                  elevation={0}
+                  sx={{
+                    borderRadius: 2.5,
+                    overflow: "hidden",
+                    border: "1px solid",
+                    borderColor: "divider",
+                    bgcolor: "#fff",
+                    maxWidth: downMd ? "100%" : 280,
+                    ml: downMd ? 0 : "auto",
+                  }}
+                >
+                  <LazyImage
+                    src={heroImage}
+                    width={560}
+                    height={420}
+                    objectFit="cover"
+                    alt={`${categoryDetail.name} category`}
+                  />
+                </Card>
+              </Grid>
+            )}
+          </Grid>
+        </Card>
+
+        <Card
+          elevation={0}
+          sx={{
+            mb: 3.5,
             display: "flex",
             flexWrap: "wrap",
             alignItems: "center",
             justifyContent: "space-between",
-            p: {
-              sm: "1rem 1.25rem",
-              md: "0.5rem 1.25rem",
-              xs: "1.25rem 1.25rem 0.25rem",
-            },
+            gap: 1.5,
+            p: { xs: 1.25, sm: "0.9rem 1rem" },
+            borderRadius: 2.5,
+            border: "1px solid",
+            borderColor: "divider",
           }}
         >
-          <Box>
-            <H5>{categoryDetail.name} Products</H5>
-            <Paragraph color="grey.600">
-              Authentic Chitrali {categoryDetail.name} with delivery across Pakistan.
+          <H5 sx={{ mb: 0 }}>{categoryDetail.name} Products</H5>
+          <FlexBox alignItems="center" my="0.15rem">
+            <Paragraph color="grey.600" mr={0.75}>
+              View:
             </Paragraph>
-          </Box>
 
-          <FlexBox alignItems="center" columnGap={4} flexWrap="wrap" my="0.5rem">
-            <FlexBox alignItems="center" my="0.25rem">
-              <Paragraph color="grey.600" mr={1}>
-                View:
-              </Paragraph>
+            <IconButton size="small" onClick={toggleView("grid")}>
+              <Apps color={view === "grid" ? "primary" : "inherit"} fontSize="small" />
+            </IconButton>
 
-              <IconButton onClick={toggleView("grid")}>
-                <Apps color={view === "grid" ? "primary" : "inherit"} fontSize="small" />
-              </IconButton>
-
-              <IconButton onClick={toggleView("list")}>
-                <ViewList color={view === "list" ? "primary" : "inherit"} fontSize="small" />
-              </IconButton>
-            </FlexBox>
+            <IconButton size="small" onClick={toggleView("list")}>
+              <ViewList color={view === "list" ? "primary" : "inherit"} fontSize="small" />
+            </IconButton>
           </FlexBox>
         </Card>
-
-        <Box component="section" sx={{ mb: 4 }}>
-          <Paragraph color="text.secondary" sx={{ lineHeight: 1.9, mb: 1.5 }}>
-            Explore authentic {categoryDetail.name} from Chitral Hive with carefully
-            selected products sourced from trusted regional sellers. We focus on
-            quality, clear product details, and practical packaging so every order
-            reaches customers in good condition across Pakistan.
-          </Paragraph>
-          <Paragraph color="text.secondary" sx={{ lineHeight: 1.9, mb: 1.5 }}>
-            This category includes handpicked options for daily use and gifting.
-            You can compare sizes, ingredients, and product notes directly on each
-            listing to choose items that match your needs and budget.
-          </Paragraph>
-          <Paragraph color="text.secondary" sx={{ lineHeight: 1.9 }}>
-            Chitral Hive is built to support local producers by making traditional
-            Chitrali products accessible nationwide. For the latest stock and
-            pricing, review individual product pages before checkout.
-          </Paragraph>
-        </Box>
 
         <Grid container spacing={3}>
           <Grid item md={12} xs={12}>

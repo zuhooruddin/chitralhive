@@ -1,5 +1,8 @@
 import {
   SHILAJIT_LANDING_PATH,
+  SHANDUR_FESTIVAL_LANDING_PATH,
+  CHITRAL_FOOD_LANDING_PATH,
+  CHITRAL_DIARY_LANDING_PATH,
   SITE_URL,
 } from "utils/seoConstants";
 
@@ -150,6 +153,47 @@ export function getHomePageStructuredData(generalSetting) {
             description:
               "Get in touch with Chitral Hive for inquiries, orders, and customer support. We're here to help you find the best Chitrali products.",
           },
+          {
+            "@type": "WebPage",
+            "@id": `${baseUrl}${SHILAJIT_LANDING_PATH}#webpage`,
+            url: `${baseUrl}${SHILAJIT_LANDING_PATH}`,
+            name: "Buy Shilajit (Salajeet) Online in Pakistan - Chitral Hive",
+            description:
+              "Authentic Himalayan Shilajit and Salajeet from Chitral — compare products, PKR pricing, and buy online with nationwide delivery.",
+          },
+          {
+            "@type": "WebPage",
+            "@id": `${baseUrl}${SHANDUR_FESTIVAL_LANDING_PATH}#webpage`,
+            url: `${baseUrl}${SHANDUR_FESTIVAL_LANDING_PATH}`,
+            name: "Shandur Polo Festival 2026 - Dates, Travel & Chitrali Products",
+            description:
+              "Everything about the Shandur Polo Festival 2026 — event dates, Shandur Pass travel guide, and authentic Chitrali products.",
+          },
+          {
+            "@type": "WebPage",
+            "@id": `${baseUrl}${CHITRAL_FOOD_LANDING_PATH}#webpage`,
+            url: `${baseUrl}${CHITRAL_FOOD_LANDING_PATH}`,
+            name: "Chitral Food - Traditional Chitrali Cuisine & Products",
+            description:
+              "Discover traditional Chitral food and buy authentic Chitrali food products online — dry fruits, honey, and more with delivery across Pakistan.",
+          },
+          {
+            "@type": "WebPage",
+            "@id": `${baseUrl}/chitral-house-shilajit#webpage`,
+            url: `${baseUrl}/chitral-house-shilajit`,
+            name: "Chitral House Shilajit - Buy Authentic Chitrali Salajeet Online",
+            description:
+              "Looking for Chitral House Shilajit? Browse authentic Chitrali Shilajit (Salajeet) products at Chitral Hive with PKR pricing and nationwide delivery.",
+          },
+          {
+            "@type": "WebPage",
+            "@id": `${baseUrl}${CHITRAL_DIARY_LANDING_PATH}#webpage`,
+            url: `${baseUrl}${CHITRAL_DIARY_LANDING_PATH}`,
+            name: "Chitral Diary Website and Products - Chitral Hive Guide",
+            description:
+              "Explore the Chitral Hive website — your guide to authentic Chitrali products in Pakistan including dry fruits, honey, Shilajit, and traditional items.",
+          },
+
         ],
       },
       {
@@ -194,6 +238,24 @@ export function getHomePageStructuredData(generalSetting) {
             url: `${baseUrl}${SHILAJIT_LANDING_PATH}`,
             description:
               "Pure Himalayan Shilajit and Salajeet from Chitral — buy online in Pakistan",
+          },
+          {
+            "@type": "SiteNavigationElement",
+            name: "Chitral Food",
+            url: `${baseUrl}${CHITRAL_FOOD_LANDING_PATH}`,
+            description: "Traditional Chitrali food and cuisine — recipes, dry fruits, honey, and more",
+          },
+          {
+            "@type": "SiteNavigationElement",
+            name: "Shandur Polo Festival 2026",
+            url: `${baseUrl}${SHANDUR_FESTIVAL_LANDING_PATH}`,
+            description: "Shandur Polo Festival 2026 — dates, travel tips, and Chitrali products",
+          },
+          {
+            "@type": "SiteNavigationElement",
+            name: "Chitral Diary Website and Products",
+            url: `${baseUrl}${CHITRAL_DIARY_LANDING_PATH}`,
+            description: "Explore the Chitral Hive website and discover authentic Chitrali products",
           },
           {
             "@type": "SiteNavigationElement",
@@ -250,6 +312,22 @@ export function getHomePageStructuredData(generalSetting) {
             acceptedAnswer: {
               "@type": "Answer",
               text: "Chitral Hive offers authentic Himalayan Shilajit — also called Salajeet (سلاجیت) in Urdu — sourced from the Chitral region. You can order online for delivery across Pakistan including Karachi, Lahore, Islamabad, Rawalpindi, and Peshawar. See our Shilajit guide and shop listings for current prices and purity details.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "When is the Shandur Polo Festival 2026?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "The Shandur Polo Festival 2026 is expected to take place in July 2026 (typically July 7–9) at Shandur Pass, the world's highest polo ground at 3,700 m in Chitral, Khyber Pakhtunkhwa. Exact dates are announced by KP Tourism Authority. Chitral Hive ships authentic Chitrali products for visitors planning to attend.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "What is traditional Chitral food?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Traditional Chitral food includes Shorak (stone-ground bread), Doudo (corn and buttermilk porridge), sun-dried apricots (Badrang), dried mulberries, wild mountain honey, Chitrali walnuts, and almonds. Chitral Hive sells authentic Chitrali food products online with nationwide delivery in Pakistan.",
             },
           },
         ],

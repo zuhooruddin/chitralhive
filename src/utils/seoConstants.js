@@ -51,3 +51,5 @@ export const DEFAULT_META_DESCRIPTION =
 
 export const SHILAJIT_LANDING_PATH = "/shilajit-salajeet";
 export const CHITRAL_DIARY_LANDING_PATH = "/chitral-diary-website-and-products";
+export const SHANDUR_FESTIVAL_LANDING_PATH = "/shandur-polo-festival-2026";
+export const CHITRAL_FOOD_LANDING_PATH = "/chitral-food";

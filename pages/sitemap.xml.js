@@ -3,6 +3,8 @@
 import {
   CHITRAL_DIARY_LANDING_PATH,
   SHILAJIT_LANDING_PATH,
+  SHANDUR_FESTIVAL_LANDING_PATH,
+  CHITRAL_FOOD_LANDING_PATH,
 } from "../src/utils/seoConstants";
 import { normalizeSiteUrl } from "../src/utils/seoConstants";
 import { buildImageUrl } from "../src/utils/buildImageUrl";
@@ -122,10 +124,34 @@ export async function getServerSideProps({ res }) {
       priority: '0.9',
     },
     {
+      loc: `${baseUrl}${SHANDUR_FESTIVAL_LANDING_PATH}`,
+      lastmod: new Date().toISOString(),
+      changefreq: 'weekly',
+      priority: '0.9',
+    },
+    {
+      loc: `${baseUrl}${CHITRAL_FOOD_LANDING_PATH}`,
+      lastmod: new Date().toISOString(),
+      changefreq: 'weekly',
+      priority: '0.85',
+    },
+    {
       loc: `${baseUrl}/faq`,
       lastmod: new Date().toISOString(),
       changefreq: 'monthly',
       priority: '0.75',
+    },
+    {
+      loc: `${baseUrl}/chitral-house-shilajit`,
+      lastmod: new Date().toISOString(),
+      changefreq: 'weekly',
+      priority: '0.85',
+    },
+    {
+      loc: `${baseUrl}/chitral-food`,
+      lastmod: new Date().toISOString(),
+      changefreq: 'weekly',
+      priority: '0.85',
     },
     {
       loc: `${baseUrl}/blog`,

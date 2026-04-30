@@ -62,9 +62,10 @@ const ProductBundles = (data) => {
   return data && data.productbundles ?  (
     <ShopLayout1>
       <SEO 
-        title="Product Bundles"
-        description="Browse curated Chitrali product bundles on Chitral Hive, including authentic foods, wellness products, and specialty gift packs from Chitral."
-        metaTitle="Chitrali Product Bundles | Chitral Hive"
+        title="Shop Chitrali Product Bundles"
+        description="Browse curated Chitrali product bundles at Chitral Hive — authentic dry fruits, honey, Shilajit, and traditional gift packs sourced from Chitral, KPK. Shop online with nationwide delivery in Pakistan."
+        metaTitle="Chitrali Product Bundles — Dry Fruits, Honey & Wellness Packs | Chitral Hive"
+        keywords="Chitrali product bundles Pakistan, Chitral dry fruit bundle, Chitrali honey gift pack, buy Chitrali products bundle online Pakistan, Chitral Hive bundles"
         canonical="https://chitralhive.com/products"
       />
   
